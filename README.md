@@ -29,3 +29,7 @@
   <a href="https://github.com/COS301-SE-2021/E-Park-Smart-Water-Monitor/projects/1">Project</a>
 </h2>
 
+[![Frontend](https://img.shields.io/badge/React-%2361dafb?style=for-the-badge&logo=React&logoColor=61dafb&color=20232a)](https://reactjs.org/)
+
+
+
