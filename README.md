@@ -1,5 +1,5 @@
-[![GitHub contributors](https://img.shields.io/github/contributors/COS301-SE-2021/E-Park-Smart-Water-Monitor?color=green&style=flat-square)](https://img.shields.io/github/contributors/COS301-SE-2021/E-Park-Smart-Water-Monitor?color=green&style=flat-square)
-[![GitHub issues](https://img.shields.io/github/issues/COS301-SE-2021/E-Park-Smart-Water-Monitor?color=orange&style=flat-square)](https://img.shields.io/github/issues/COS301-SE-2021/E-Park-Smart-Water-Monitor?color=orange&style=flat-square)
+[![GitHub contributors](https://img.shields.io/github/contributors/COS301-SE-2021/E-Park-Smart-Water-Monitor?color=green&style=flat-square)](https://github.com/COS301-SE-2021/E-Park-Smart-Water-Monitor/graphs/contributors)
+[![GitHub issues](https://img.shields.io/github/issues/COS301-SE-2021/E-Park-Smart-Water-Monitor?color=orange&style=flat-square)](https://github.com/COS301-SE-2021/E-Park-Smart-Water-Monitor/issues)
 
 
 # Dynative
