@@ -1,6 +1,8 @@
-language: nodejs
-nodejs:
-  - 14
-
-before_install:
-  - cd frontend
+jobs:
+  include:
+    - language: nodejs
+    nodejs: 14
+    before_script:
+      - cd frontend
+    script:
+      - npm start
