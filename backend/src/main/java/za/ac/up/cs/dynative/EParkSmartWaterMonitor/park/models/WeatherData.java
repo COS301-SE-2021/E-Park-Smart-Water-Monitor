@@ -11,7 +11,7 @@ public class WeatherData {
 
     @Id
     @GeneratedValue
-    private int id;
+    private long id;
 
     private double temperature;
 
@@ -36,7 +36,7 @@ public class WeatherData {
     public WeatherData() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
