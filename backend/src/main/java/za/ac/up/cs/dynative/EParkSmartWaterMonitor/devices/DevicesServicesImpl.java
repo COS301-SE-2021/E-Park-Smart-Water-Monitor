@@ -2,7 +2,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repos.DeviceRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -29,7 +29,14 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     public Optional<WaterSourceDevice> findDevice() {
-        return deviceRepo.findById("Graig");
+
+        Optional<WaterSourceDevice> device =  deviceRepo.findById("Water Device");
+
+        if (device.isPresent())
+        {
+            device.get().getDeviceName();
+        }
+        return deviceRepo.findById("Water Device");
     }
 
 }
