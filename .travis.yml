@@ -4,5 +4,7 @@ jobs:
       nodejs: 14
       before_script:
         - cd frontend
+      install:
+        - npm install
       script:
-        - npm install && npm start
+        - npm run build
