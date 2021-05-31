@@ -26,6 +26,15 @@ public class Park {
     @Relationship(type = "HAS_WATER_SITE", direction = Relationship.Direction.OUTGOING)
     private Set<WaterSite> parkWaterSites;
 
+    public Park(UUID id, String parkName, double latitude, double longitude, Set<WeatherData> parkWeather, Set<WaterSite> parkWaterSites) {
+        this.id = id;
+        this.parkName = parkName;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.parkWeather = parkWeather;
+        this.parkWaterSites = parkWaterSites;
+    }
+
     public Park(UUID id, String parkName, double latitude, double longitude) {
         this.id = id;
         this.parkName = parkName;

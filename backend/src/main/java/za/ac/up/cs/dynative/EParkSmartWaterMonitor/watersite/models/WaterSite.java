@@ -11,15 +11,15 @@ public class WaterSite {
     @Id
     private UUID id;
 
-    private String name;
+    private String waterSiteName;
 
     private double latitude;
 
     private double longitude;
 
-    public WaterSite(UUID id, String name, double latitude, double longitude) {
+    public WaterSite(UUID id, String waterSiteName, double latitude, double longitude) {
         this.id = id;
-        this.name = name;
+        this.waterSiteName = waterSiteName;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -35,12 +35,12 @@ public class WaterSite {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getwaterSiteName() {
+        return waterSiteName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setwaterSiteName(String waterSiteName) {
+        this.waterSiteName = waterSiteName;
     }
 
     public double getLatitude() {
@@ -63,7 +63,7 @@ public class WaterSite {
     public String toString() {
         return "WaterSite{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", waterSiteName='" + waterSiteName + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 '}';
