@@ -1,7 +1,8 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/COS301-SE-2021/E-Park-Smart-Water-Monitor?color=green&style=flat-square)](https://github.com/COS301-SE-2021/E-Park-Smart-Water-Monitor/graphs/contributors)
 [![GitHub issues](https://img.shields.io/github/issues/COS301-SE-2021/E-Park-Smart-Water-Monitor?color=orange&style=flat-square)](https://github.com/COS301-SE-2021/E-Park-Smart-Water-Monitor/issues)
-[![master tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/master?label=master%20tests&logo=Travis%20CI&style=flat-square)]()
-[![development tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/development?label=development%20tests&logo=Travis%20CI&style=flat-square)]()
+[![Build](https://img.shields.io/github/deployments/COS301-SE-2021/E-Park-Smart-Water-Monitor/e-park-water-monitor?label=build&logo=Heroku&style=flat-square)](https://e-park-water-monitor.herokuapp.com/)
+[![master tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/master?label=master%20tests&logo=Travis%20CI&style=flat-square&logoColor=white)]()
+[![development tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/development?label=development%20tests&logo=Travis%20CI&style=flat-square&logoColor=white)]()
 
 &nbsp;
 
@@ -57,8 +58,13 @@
 
 <h3>Frontend</h3>
 
-[![Frontend](https://img.shields.io/badge/React-%2361dafb?style=for-the-badge&logo=React&logoColor=61dafb&color=20232a)](https://reactjs.org/)
+[![React](https://img.shields.io/badge/React-%2361dafb?style=for-the-badge&logo=React&logoColor=61dafb&color=20232a)](https://reactjs.org/)
 
 <h3>Backend</h3>
 
+[![Spring](https://img.shields.io/badge/Springboot-%2361dafb?style=for-the-badge&logo=Spring&logoColor=white&color=#6db33f)](https://spring.io/)
+
 <h3>Hosting</h3>
+
+[![AWS](https://img.shields.io/badge/aws-%2361dafb?style=for-the-badge&logo=Amazon%20AWS&logoColor=white&color=FF9900)](https://aws.amazon.com/)
+[![Heroku](https://img.shields.io/badge/Heroku-%2361dafb?style=for-the-badge&logo=Heroku&logoColor=white&color=634987)](https://www.heroku.com/)
