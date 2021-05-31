@@ -26,20 +26,21 @@
 </p>
 
 <h2 align="center">
+  <a href="https://github.com/COS301-SE-2021/E-Park-Smart-Water-Monitor/projects/1">Project</a>
+  <span> · </span>
   <a href="/">SRS</a>
   <span> · </span>
   <a href="/">Demo</a>
-  <span> · </span>
-  <a href="https://github.com/COS301-SE-2021/E-Park-Smart-Water-Monitor/projects/1">Project</a>
 </h2>
 
 ## Table of Contents
 
 - [Branching Strategy](#branching-strategy)
+- [Technology](#technology)
 
-[![Frontend](https://img.shields.io/badge/React-%2361dafb?style=for-the-badge&logo=React&logoColor=61dafb&color=20232a)](https://reactjs.org/)
 
-<h1>Branching Strategy</h1>
+
+<h2>Branching Strategy</h2>
 
 <h3>Monorepo & Git Flow</h3>
 
@@ -50,3 +51,12 @@
         * feature/MC (microcontroller feature)
         * ...
 
+<h2>Technologies</h2>
+
+<h3>Frontend</h3>
+
+[![Frontend](https://img.shields.io/badge/React-%2361dafb?style=for-the-badge&logo=React&logoColor=61dafb&color=20232a)](https://reactjs.org/)
+
+<h3>Backend</h3>
+
+<h3>Hosting</h3>
