@@ -5,4 +5,4 @@ jobs:
       before_script:
         - cd frontend
       script:
-        - npm start
+        - npm install && npm start
