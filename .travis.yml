@@ -1,8 +1,8 @@
 jobs:
   include:
     - language: nodejs
-    nodejs: 14
-    before_script:
-      - cd frontend
-    script:
-      - npm start
+      nodejs: 14
+      before_script:
+        - cd frontend
+      script:
+        - npm start
