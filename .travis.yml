@@ -1,0 +1,6 @@
+language: nodejs
+nodejs:
+  - 14
+
+before_install:
+  - cd frontend
