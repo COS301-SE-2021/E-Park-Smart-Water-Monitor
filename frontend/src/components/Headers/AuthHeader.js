@@ -3,8 +3,8 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
+// import Container from "@material-ui/core/Container";
+// import Grid from "@material-ui/core/Grid";
 
 // core components
 import componentStyles from "assets/theme/components/auth-header.js";
@@ -22,29 +22,28 @@ const AuthHeader = () => {
         paddingTop="8rem"
         paddingBottom="8rem"
       >
-        <Container maxWidth="xl">
-          <Box marginBottom="6rem" textAlign="center">
-            <Box
-              component={Grid}
-              container
-              justifyContent="center"
-              color={theme.palette.white.main}
-            >
-              <Grid item lg={5} md={6} xs={12}>
-                <h1>Welcome!</h1>
-                <Box
-                  component="p"
-                  color={theme.palette.gray[400]}
-                  lineHeight="1.7"
-                  fontSize="1rem"
-                >
-                  Use these awesome forms to login or create new account in your
-                  project for free.
-                </Box>
-              </Grid>
-            </Box>
-          </Box>
-        </Container>
+        {/*<Container maxWidth="xl">*/}
+        {/*  <Box marginBottom="6rem" textAlign="center">*/}
+        {/*    <Box*/}
+        {/*      component={Grid}*/}
+        {/*      container*/}
+        {/*      justifyContent="center"*/}
+        {/*      color={theme.palette.white.main}*/}
+        {/*    >*/}
+        {/*      <Grid item lg={5} md={6} xs={12}>*/}
+        {/*        <h1>E-Park Monitoring</h1>*/}
+        {/*        <Box*/}
+        {/*          component="p"*/}
+        {/*          color={theme.palette.gray[400]}*/}
+        {/*          lineHeight="1.7"*/}
+        {/*          fontSize="1rem"*/}
+        {/*        >*/}
+        {/*          An IoT based system for the maintenance and protection of South Africa's parks*/}
+        {/*        </Box>*/}
+        {/*      </Grid>*/}
+        {/*    </Box>*/}
+        {/*  </Box>*/}
+        {/*</Container>*/}
         <Box
           position="absolute"
           zIndex="100"

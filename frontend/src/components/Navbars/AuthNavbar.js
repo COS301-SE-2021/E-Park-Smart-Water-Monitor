@@ -130,10 +130,10 @@ export default function AuthNavbar() {
           >
             <Box
               alt="..."
-              height="30px"
+              height="60px"
               component="img"
               className={classes.headerImg}
-              src={require("assets/img/brand/argon-react-white.png").default}
+              src={require("assets/img/brand/ERP-logo.png").default}
             />
             <Hidden mdUp implementation="css">
               <IconButton
