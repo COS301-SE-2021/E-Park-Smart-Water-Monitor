@@ -35,7 +35,7 @@
 
 ## Table of Contents
 
-- [Branching Strategy]()
+- [Branching Strategy](#branching-strategy)
 
 [![Frontend](https://img.shields.io/badge/React-%2361dafb?style=for-the-badge&logo=React&logoColor=61dafb&color=20232a)](https://reactjs.org/)
 
