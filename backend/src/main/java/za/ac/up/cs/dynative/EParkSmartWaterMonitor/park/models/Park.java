@@ -2,7 +2,9 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models;
 
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Node
@@ -16,6 +18,9 @@ public class Park {
     private double latitude;
 
     private double longitude;
+
+    @Relationship(type = "HAS_WEATHER_DATA", direction = Relationship.Direction.OUTGOING)
+    private Set<WeatherData> parkWeather;
 
     public Park(UUID id, String parkName, double latitude, double longitude) {
         this.id = id;
