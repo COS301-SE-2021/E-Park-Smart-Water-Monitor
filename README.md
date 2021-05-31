@@ -38,13 +38,13 @@
 
 ## Table of Contents
 
-- [Branching Strategy](#branching-strategy)
-- [Technologies](#technologies)
-- [The Team](#the-team)
+1. [Branching Strategy](#-branching-strategy)
+1. [Technologies](#-technologies)
+1. [The Team](#-the-team)
 
 
 
-<h2>Branching Strategy</h2>
+<h2>🔱 Branching Strategy</h2>
 
 <h3>Monorepo & Git Flow</h3>
 
@@ -55,7 +55,7 @@
         * feature/MC (microcontroller feature)
         * ...
 
-<h2>Technologies</h2>
+<h2>💡 Technologies</h2>
 
 <h3>Frontend</h3>
 
@@ -80,7 +80,7 @@
 
 <h3>Code Coverage</h3>
 
-<h2>The Team</h2>
+<h2>🐘 The Team</h2>
 
 <h3>Rolan Strydom</h3>
 
