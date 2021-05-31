@@ -1,7 +1,8 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/COS301-SE-2021/E-Park-Smart-Water-Monitor?color=green&style=flat-square)](https://github.com/COS301-SE-2021/E-Park-Smart-Water-Monitor/graphs/contributors)
 [![GitHub issues](https://img.shields.io/github/issues/COS301-SE-2021/E-Park-Smart-Water-Monitor?color=orange&style=flat-square)](https://github.com/COS301-SE-2021/E-Park-Smart-Water-Monitor/issues)
-[![master build](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/master?label=master%20build&logo=React&style=flat-square)]()
-[![master build](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/development?label=develop%20build&logo=React&style=flat-square)]()
+[![master tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/master?label=master%20tests&logo=Travis%20CI&style=flat-square)]()
+[![development tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/development?label=development%20tests&logo=Travis%20CI&style=flat-square)]()
+
 
 
 <p align="center">
