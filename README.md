@@ -68,3 +68,10 @@
 
 [![AWS](https://img.shields.io/badge/aws-%2361dafb?style=for-the-badge&logo=Amazon%20AWS&logoColor=white&color=FF9900)](https://aws.amazon.com/)
 [![Heroku](https://img.shields.io/badge/Heroku-%2361dafb?style=for-the-badge&logo=Heroku&logoColor=white&color=634987)](https://www.heroku.com/)
+
+<h3>Project Management</h3>
+
+<h3>CI</h3>
+
+[![Travis](https://img.shields.io/badge/travis-%2361dafb?style=for-the-badge&logo=Travis%20CI&logoColor=white&color=3EAAAF)](https://travis-ci.com/)
+
