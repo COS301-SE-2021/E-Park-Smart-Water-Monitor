@@ -36,7 +36,7 @@
 ## Table of Contents
 
 - [Branching Strategy](#branching-strategy)
-- [Technology](#technologies)
+- [Technologies](#technologies)
 
 
 
