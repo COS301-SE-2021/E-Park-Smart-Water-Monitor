@@ -1,17 +1,16 @@
 jobs:
-include:
-- language: nodejs
-nodejs: 14
-before_install:
-- cd frontend
-install:
-- npm install
-script:
-- npm run build
+  include:
+    - language: nodejs
+      nodejs: 14
+      before_install:
+        - cd frontend
+      install:
+        - npm install
+      script:
+        - npm run build
 
-- langauge: java
-jdk:
-- openjdk11
-before_install:
-- cd backend
-script: mvn test
+    - langauge: java
+      jdk: opendjdk11
+      before_install:
+        - cd backend
+      script: mvn test
