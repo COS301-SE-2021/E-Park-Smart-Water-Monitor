@@ -3,7 +3,7 @@
 [![master tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/master?label=master%20tests&logo=Travis%20CI&style=flat-square)]()
 [![development tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/development?label=development%20tests&logo=Travis%20CI&style=flat-square)]()
 
-
+&nbsp;
 
 <p align="center">
 <img width="300" src="https://www.epiuse.com/wp-content/uploads/2018/10/Full-Logo.png" alt="Epi-Use logo">
@@ -33,7 +33,20 @@
   <a href="https://github.com/COS301-SE-2021/E-Park-Smart-Water-Monitor/projects/1">Project</a>
 </h2>
 
+## Table of Contents
+
+- [Branching Strategy]()
+
 [![Frontend](https://img.shields.io/badge/React-%2361dafb?style=for-the-badge&logo=React&logoColor=61dafb&color=20232a)](https://reactjs.org/)
 
+<h1>Branching Strategy</h1>
 
+<h3>Monorepo & Git Flow</h3>
+
+* master
+    * development
+        * feature/FE (frontend feature)
+        * bugfix/BE (backend bug)
+        * feature/MC (microcontroller feature)
+        * ...
 
