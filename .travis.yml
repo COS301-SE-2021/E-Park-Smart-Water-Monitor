@@ -11,7 +11,7 @@ script:
 
 - langauge: java
 jdk:
-- opendjdk11
+- openjdk11
 before_install:
 - cd backend
 script: mvn test
