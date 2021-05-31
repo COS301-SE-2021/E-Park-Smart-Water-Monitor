@@ -13,4 +13,5 @@ jobs:
       jdk: openjdk11
       before_install:
         - cd backend
+        - chmod +x mvnw
       script: mvn test
