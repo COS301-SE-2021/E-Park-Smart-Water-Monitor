@@ -1,4 +1,4 @@
-package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories;
+package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories;
 
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
@@ -9,5 +9,4 @@ public interface SiteRepo extends Neo4jRepository<Site, Long>
 {
 //    Site findBySiteId(Long SiteId);
     Site findBySiteName(String SiteName);
-
 }

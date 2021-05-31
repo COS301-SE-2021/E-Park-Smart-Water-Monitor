@@ -3,7 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.SiteRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.SiteRepo;
 
 import java.util.Collection;
 
