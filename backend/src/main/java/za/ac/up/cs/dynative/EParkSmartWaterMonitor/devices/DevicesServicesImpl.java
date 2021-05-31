@@ -2,10 +2,12 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service("DeviceSeriviceImpl")
 public class DevicesServicesImpl implements DevicesService {
@@ -21,22 +23,22 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     public void addDevice() {
-        WaterSourceDevice waterSourceDevice = new WaterSourceDevice("Water Device");
-        WaterSourceDevice otherWaterSourceDevice = new WaterSourceDevice("Other Water Device");
-
-        deviceRepo.save(waterSourceDevice);
-        deviceRepo.save(otherWaterSourceDevice);
+//        WaterSourceDevice waterSourceDevice = new WaterSourceDevice("Water Device");
+//        WaterSourceDevice otherWaterSourceDevice = new WaterSourceDevice("Other Water Device");
+//
+//        deviceRepo.save(waterSourceDevice);
+//        deviceRepo.save(otherWaterSourceDevice);
     }
 
     public Optional<WaterSourceDevice> findDevice() {
 
-        Optional<WaterSourceDevice> device =  deviceRepo.findById("Water Device");
-
+        Optional<WaterSourceDevice> device =  deviceRepo.findById(UUID.randomUUID());
+///
         if (device.isPresent())
         {
             device.get().getDeviceName();
         }
-        return deviceRepo.findById("Water Device");
+        return deviceRepo.findById(UUID.randomUUID());
     }
 
 }

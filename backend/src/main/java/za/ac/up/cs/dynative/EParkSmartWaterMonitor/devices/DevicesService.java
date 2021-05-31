@@ -1,5 +1,7 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices;
 
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+
 import java.util.Collection;
 import java.util.Optional;
 

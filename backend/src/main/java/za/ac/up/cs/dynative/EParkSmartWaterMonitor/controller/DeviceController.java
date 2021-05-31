@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 
 import java.util.Optional;
 
@@ -26,7 +26,7 @@ public class DeviceController {
 
 
     @GetMapping("/getDevice")
-    public java.util.Collection<za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.WaterSourceDevice> getDevice() {
+    public java.util.Collection<WaterSourceDevice> getDevice() {
         return devicesService.getAll();
     }
 
