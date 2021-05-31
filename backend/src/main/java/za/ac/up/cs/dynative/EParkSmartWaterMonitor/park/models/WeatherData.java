@@ -33,6 +33,9 @@ public class WeatherData {
         this.dateTime = dateTime;
     }
 
+    public WeatherData() {
+    }
+
     public int getId() {
         return id;
     }

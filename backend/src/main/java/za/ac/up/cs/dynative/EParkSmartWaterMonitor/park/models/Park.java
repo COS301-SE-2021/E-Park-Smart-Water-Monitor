@@ -3,6 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 
 import java.util.Set;
 import java.util.UUID;
@@ -21,6 +22,9 @@ public class Park {
 
     @Relationship(type = "HAS_WEATHER_DATA", direction = Relationship.Direction.OUTGOING)
     private Set<WeatherData> parkWeather;
+
+    @Relationship(type = "HAS_WATER_SITE", direction = Relationship.Direction.OUTGOING)
+    private Set<WaterSite> parkWaterSites;
 
     public Park(UUID id, String parkName, double latitude, double longitude) {
         this.id = id;
@@ -64,6 +68,22 @@ public class Park {
         this.longitude = longitude;
     }
 
+    public Set<WeatherData> getParkWeather() {
+        return parkWeather;
+    }
+
+    public void setParkWeather(Set<WeatherData> parkWeather) {
+        this.parkWeather = parkWeather;
+    }
+
+    public Set<WaterSite> getParkWaterSites() {
+        return parkWaterSites;
+    }
+
+    public void setParkWaterSites(Set<WaterSite> parkWaterSites) {
+        this.parkWaterSites = parkWaterSites;
+    }
+
     @Override
     public String toString() {
         return "Park{" +
@@ -71,6 +91,8 @@ public class Park {
                 ", parkName='" + parkName + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
+                ", parkWeather=" + parkWeather +
+                ", parkWaterSites=" + parkWaterSites +
                 '}';
     }
 }
