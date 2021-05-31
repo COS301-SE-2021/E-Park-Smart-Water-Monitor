@@ -2,7 +2,11 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models;
 
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.InfrastructureDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Node
@@ -16,6 +20,21 @@ public class WaterSite {
     private double latitude;
 
     private double longitude;
+
+    @Relationship(type = "WATER_MONITORED_BY", direction = Relationship.Direction.OUTGOING)
+    private Set<WaterSourceDevice> waterSourceDevices;
+
+    @Relationship(type = "INFRASTRUCTURE_MONITORED_BY", direction = Relationship.Direction.OUTGOING)
+    private Set<InfrastructureDevice> infrastructureDevices;
+
+    public WaterSite(UUID id, String waterSiteName, double latitude, double longitude, Set<WaterSourceDevice> waterSourceDevices, Set<InfrastructureDevice> infrastructureDevices) {
+        this.id = id;
+        this.waterSiteName = waterSiteName;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.waterSourceDevices = waterSourceDevices;
+        this.infrastructureDevices = infrastructureDevices;
+    }
 
     public WaterSite(UUID id, String waterSiteName, double latitude, double longitude) {
         this.id = id;
@@ -59,6 +78,30 @@ public class WaterSite {
         this.longitude = longitude;
     }
 
+    public String getWaterSiteName() {
+        return waterSiteName;
+    }
+
+    public void setWaterSiteName(String waterSiteName) {
+        this.waterSiteName = waterSiteName;
+    }
+
+    public Set<WaterSourceDevice> getWaterSourceDevices() {
+        return waterSourceDevices;
+    }
+
+    public void setWaterSourceDevices(Set<WaterSourceDevice> waterSourceDevices) {
+        this.waterSourceDevices = waterSourceDevices;
+    }
+
+    public Set<InfrastructureDevice> getInfrastructureDevices() {
+        return infrastructureDevices;
+    }
+
+    public void setInfrastructureDevices(Set<InfrastructureDevice> infrastructureDevices) {
+        this.infrastructureDevices = infrastructureDevices;
+    }
+
     @Override
     public String toString() {
         return "WaterSite{" +
@@ -66,6 +109,8 @@ public class WaterSite {
                 ", waterSiteName='" + waterSiteName + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
+                ", waterSourceDevices=" + waterSourceDevices +
+                ", infrastructureDevices=" + infrastructureDevices +
                 '}';
     }
 }
