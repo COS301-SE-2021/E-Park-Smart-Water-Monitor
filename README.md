@@ -5,9 +5,11 @@
 
 &nbsp;
 
-<p align="center">
+<a href="https://www.epiuse.com/">
+    <p align="center">
 <img width="300" src="https://www.epiuse.com/wp-content/uploads/2018/10/Full-Logo.png" alt="Epi-Use logo">
-</p>
+    </p>
+</a>
 
 <h1 align="center">
     Dynative
