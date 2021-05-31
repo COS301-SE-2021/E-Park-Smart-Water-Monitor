@@ -2,7 +2,7 @@ jobs:
   include:
     - language: nodejs
       nodejs: 14
-      before_script:
+      before_install:
         - cd frontend
       install:
         - npm install
