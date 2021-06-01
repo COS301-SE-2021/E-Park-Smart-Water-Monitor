@@ -6,7 +6,11 @@ import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.CreateParkResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.SaveParkResponse;
 
 import java.util.UUID;
 
@@ -38,5 +42,21 @@ public class ParkServiceImpl implements ParkService {
         return response;
     }
 
+    @Override
+    public FindByParkNameResponse findParkByName(FindByParkNameRequest request) {
+        if (!request.getParkName().equals("")) {
+            Park park = parkRepo.findParkByParkName(request.getParkName());
+            return new FindByParkNameResponse(park);
+        }
+        else return new FindByParkNameResponse(null);
+    }
 
+    @Override
+    public SaveParkResponse savePark(SaveParkRequest request) {
+        if (request.getPark() != null) {
+            parkRepo.save(request.getPark());
+            return new SaveParkResponse("Saved park successfully",true);
+        }
+        return new SaveParkResponse("Error in saving park!",false);
+    }
 }

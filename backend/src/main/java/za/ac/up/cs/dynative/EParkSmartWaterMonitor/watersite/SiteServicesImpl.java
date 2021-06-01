@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.SiteRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
@@ -18,14 +21,14 @@ import java.util.UUID;
 public class SiteServicesImpl implements SiteService
 {
 
-    ParkRepo parkRepo;
+    ParkServiceImpl parkService;
     SiteRepo siteRepo;
 
     @Autowired
-    public SiteServicesImpl(@Qualifier("ParkRepo") ParkRepo parkRepo, @Qualifier("SiteRepo") SiteRepo sRepo)
+    public SiteServicesImpl(@Qualifier("ParkService") ParkServiceImpl parkService, @Qualifier("SiteRepo") SiteRepo sRepo)
     {
         this.siteRepo = sRepo;
-        this.parkRepo = parkRepo;
+        this.parkService = parkService;
     }
 
     @Override
@@ -35,14 +38,15 @@ public class SiteServicesImpl implements SiteService
         if (!request.getParkName().equals("")) {
             WaterSite waterSite = new WaterSite(UUID.randomUUID(),request.getSiteName(),request.getLatitude(), request.getLongitude());
 
-            Park park = parkRepo.findParkByParkName(request.getParkName());
-            park.addWaterSite(waterSite);
+            FindByParkNameResponse findByParkNameResponse = parkService.findParkByName(new FindByParkNameRequest(request.getParkName()));
 
-            siteRepo.save(waterSite);
-            parkRepo.save(park);
-
-            response.setStatus("Successfully added: " + request.getSiteName());
-            response.setSuccess(true);
+            if (findByParkNameResponse != null) {
+                findByParkNameResponse.getPark().addWaterSite(waterSite);
+                siteRepo.save(waterSite);
+                parkService.savePark(new SaveParkRequest(findByParkNameResponse.getPark()));
+                response.setStatus("Successfully added: " + request.getSiteName());
+                response.setSuccess(true);
+            }
         }
         else {
             response.setStatus("No Park Name specified! No park to add site to!");

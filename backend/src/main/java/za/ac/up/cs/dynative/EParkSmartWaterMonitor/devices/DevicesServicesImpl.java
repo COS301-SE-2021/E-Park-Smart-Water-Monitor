@@ -21,9 +21,10 @@ import java.util.UUID;
 @Service("DeviceSeriviceImpl")
 public class DevicesServicesImpl implements DevicesService {
 
-    DeviceRepo deviceRepo;
-    SiteRepo siteRepo;
-    SourceDataRepo sourceDataRepo;
+    private DeviceRepo deviceRepo;
+
+    private SiteRepo siteRepo;
+    private SourceDataRepo sourceDataRepo;
 
     public DevicesServicesImpl(@Qualifier("DeviceRepo") DeviceRepo deviceRepo, @Qualifier("SiteRepo") SiteRepo siteRepo, @Qualifier("SourceDataRepo") SourceDataRepo sourceDataRepo) {
         this.deviceRepo = deviceRepo;
