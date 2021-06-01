@@ -17,8 +17,13 @@ public class addWaterSourceDeviceRequest {
 
 
 
-    public addWaterSourceDeviceRequest(@JsonProperty("parkName") String parkName, @JsonProperty("siteId") UUID siteId, @JsonProperty("deviceId") UUID deviceId, @JsonProperty("deviceModel") String deviceModel, @JsonProperty("deviceName") String deviceName, @JsonProperty("longitude") double longitude, @JsonProperty("latitude") double latitude) {
-        this.deviceId       =   deviceId;
+    public addWaterSourceDeviceRequest(@JsonProperty("parkName") String parkName,
+                                       @JsonProperty("siteId") UUID siteId,
+                                       @JsonProperty("deviceModel") String deviceModel,
+                                       @JsonProperty("deviceName") String deviceName,
+                                       @JsonProperty("longitude") double longitude,
+                                       @JsonProperty("latitude") double latitude) {
+        this.deviceId       =   UUID.randomUUID();
         this.deviceModel    =   deviceModel;
         this.deviceName     =   deviceName;
         this.longitude      =   longitude;

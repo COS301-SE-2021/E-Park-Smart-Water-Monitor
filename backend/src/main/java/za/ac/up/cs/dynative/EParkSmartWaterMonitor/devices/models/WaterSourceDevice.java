@@ -24,14 +24,14 @@ public class WaterSourceDevice
     @Relationship(type = "PRODUCES", direction = OUTGOING)
     private Set<SourceData> deviceDataProduced;
 
-    public WaterSourceDevice(String deviceName, String deviceModel,double  longitude,double  latitude, Set<SourceData> deviceDataProduced)
+    public WaterSourceDevice(String deviceName, String deviceModel,double  longitude,double  latitude)
     {
         this.deviceId    = UUID.randomUUID();
         this.deviceName  = deviceName;
         this.deviceModel = deviceModel;
         this.longitude   = longitude;
         this.latitude    = latitude;
-        this.deviceDataProduced = deviceDataProduced;
+        this.deviceDataProduced = null;
     }
 
     public WaterSourceDevice()

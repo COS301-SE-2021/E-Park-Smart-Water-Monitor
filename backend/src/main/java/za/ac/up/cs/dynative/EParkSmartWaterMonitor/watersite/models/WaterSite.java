@@ -52,6 +52,13 @@ public class WaterSite {
     public WaterSite() {
     }
 
+    public void addWaterSourceDevice(WaterSourceDevice waterSourceDevice) {
+        if ( waterSourceDevices== null) {
+            waterSourceDevices = new HashSet<>();
+        }
+        waterSourceDevices.add(waterSourceDevice);
+    }
+
     public void addWaterSiteData(SourceData sourceData) {
         if (waterSiteData == null) {
             waterSiteData = new HashSet<>();

@@ -7,9 +7,13 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDev
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.SourceDataRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.addWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.addWaterSourceDeviceResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.SiteRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AddSiteResponse;
 
 import java.util.Collection;
 import java.util.Date;
@@ -25,14 +29,45 @@ public class DevicesServicesImpl implements DevicesService {
 
     public DevicesServicesImpl(@Qualifier("DeviceRepo") DeviceRepo deviceRepo, @Qualifier("SiteRepo") SiteRepo siteRepo, @Qualifier("SourceDataRepo") SourceDataRepo sourceDataRepo) {
         this.deviceRepo = deviceRepo;
+        this.siteRepo = siteRepo;
     }
 
     public Collection<WaterSourceDevice> getAll() {
         return deviceRepo.findAll();
     }
 
-    public void addDevice() {
-//        WaterSourceDevice waterSourceDevice = new WaterSourceDevice("Water Device");
+    public addWaterSourceDeviceResponse addDevice(addWaterSourceDeviceRequest addWSDRequest) {
+        WaterSourceDevice newDevice = new WaterSourceDevice(addWSDRequest.getDeviceName(),addWSDRequest.getDeviceModel(),addWSDRequest.getLongitude(),addWSDRequest.getLatitude());
+        addWaterSourceDeviceResponse response = new addWaterSourceDeviceResponse();
+
+        WaterSourceDevice device = deviceRepo.findWaterSourceDeviceByDeviceName(addWSDRequest.getDeviceName());
+        if (device==null)
+        {
+            System.out.println("HERE");
+            //@Qualifier("ParkRepo") ParkRepo parkRepo
+            Optional<WaterSite> waterSiteToAddToSite = siteRepo.findById(addWSDRequest.getSiteId());
+            if (waterSiteToAddToSite.isEmpty())
+            {
+                response.setSuccess(false);
+                response.setStatus("The water site "+addWSDRequest.getSiteId()+" does not exist.");
+            }
+            else
+            {
+                waterSiteToAddToSite.get().addWaterSourceDevice(newDevice);
+                response.setSuccess(true);
+                response.setStatus("Device "+addWSDRequest.getDeviceName()+"successfully added");
+            }
+
+        }
+        else
+        {
+            response.setSuccess(false);
+            response.setStatus("Device "+addWSDRequest.getDeviceName()+" already exists.");
+        }
+
+        return response;
+
+        //        WaterSourceDevice waterSourceDevice = new WaterSourceDevice("Water Device");
 //        WaterSourceDevice otherWaterSourceDevice = new WaterSourceDevice("Other Water Device");
 //
 //        deviceRepo.save(waterSourceDevice);
