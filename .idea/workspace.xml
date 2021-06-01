@@ -4,11 +4,7 @@
     <list default="true" id="e5ff9d0e-3f9f-436e-90a6-d286956c0c53" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.eslintcache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/assets/theme/components/auth-header.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/assets/theme/components/auth-header.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/views/admin/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/views/admin/Dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/theme/views/admin/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/assets/theme/views/admin/dashboard.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +52,7 @@
       <option name="presentableId" value="Default" />
       <updated>1622366521353</updated>
       <workItem from="1622366528154" duration="13000" />
-      <workItem from="1622482912124" duration="14220000" />
+      <workItem from="1622482912124" duration="14907000" />
     </task>
     <servers />
   </component>

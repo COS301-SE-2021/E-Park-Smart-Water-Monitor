@@ -42,6 +42,11 @@ import componentStyles from "assets/theme/views/admin/dashboard.js";
 
 const useStyles = makeStyles(componentStyles);
 
+const mapStyles = {
+  width: `100%`,
+  height: `300px`
+};
+
 function Dashboard() {
   const classes = useStyles();
   const theme = useTheme();
@@ -186,7 +191,7 @@ function Dashboard() {
               <CardContent>
 
                 <div style={ { height: 300 } }>
-                  <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+                  <MapContainer style={mapStyles} center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
                     <TileLayer
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
