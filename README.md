@@ -84,7 +84,7 @@
 
 <h3>Rolan Strydom</h3>
 
-<img src="https://user-images.githubusercontent.com/73602692/115803778-dd422200-a3e1-11eb-8f91-0cb8e5b123a3.jpeg" align="left" width="200px"/> <p>Description</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/TheySeeMeRolan)
+<img src="https://user-images.githubusercontent.com/73602692/115803778-dd422200-a3e1-11eb-8f91-0cb8e5b123a3.jpeg" align="left" width="200px"/> <p>Group Leader and Backend Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/TheySeeMeRolan)
 
 [![Linkedin](https://img.shields.io/badge/linkedin-%2361dafb?style=for-the-badge&logoColor=white&color=0A66C2&logo=Linkedin)](https://www.linkedin.com/in/rolanstrydom/)
 
@@ -94,7 +94,7 @@
 
 <h3>Joanita Nell</h3>
 
-<img src="https://camo.githubusercontent.com/764f26fa2cc14f55de66ad8d1f093fb05eb5d120862aa9b414917897ab566c5c/68747470733a2f2f6d656469612d657870312e6c6963646e2e636f6d2f646d732f696d6167652f433444303341514749517a4a476c68445854412f70726f66696c652d646973706c617970686f746f2d736872696e6b5f3830305f3830302f302f313631383932303336343736373f653d3136323434393238303026763d6265746126743d3234395477627a737430575a72314c596537565a70506f595362704d6a3047795146526744534957385351" align="left" width="200px"/> <p>Description</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/JoanitaNell)
+<img src="https://camo.githubusercontent.com/764f26fa2cc14f55de66ad8d1f093fb05eb5d120862aa9b414917897ab566c5c/68747470733a2f2f6d656469612d657870312e6c6963646e2e636f6d2f646d732f696d6167652f433444303341514749517a4a476c68445854412f70726f66696c652d646973706c617970686f746f2d736872696e6b5f3830305f3830302f302f313631383932303336343736373f653d3136323434393238303026763d6265746126743d3234395477627a737430575a72314c596537565a70506f595362704d6a3047795146526744534957385351" align="left" width="200px"/> <p>Frontend Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/JoanitaNell)
 
 [![Linkedin](https://img.shields.io/badge/linkedin-%2361dafb?style=for-the-badge&logoColor=white&color=0A66C2&logo=Linkedin)](https://www.linkedin.com/in/joanita-nell-4b8294197/)
 
@@ -104,7 +104,7 @@
 
 <h3>Abel Jansen</h3>
 
-<img src="https://media-exp1.licdn.com/dms/image/C4D03AQHQrc4WkijXBg/profile-displayphoto-shrink_200_200/0/1618595111331?e=1628121600&v=beta&t=rGx9epclDkp6efivPN_PeSX3UUCQjbvp85leK7cooYw" align="left" width="200px"/> <p>Description</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/jack-of-blades)
+<img src="https://media-exp1.licdn.com/dms/image/C4D03AQHQrc4WkijXBg/profile-displayphoto-shrink_200_200/0/1618595111331?e=1628121600&v=beta&t=rGx9epclDkp6efivPN_PeSX3UUCQjbvp85leK7cooYw" align="left" width="200px"/> <p>Backend and Embedded Systems Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/jack-of-blades)
 
 [![Linkedin](https://img.shields.io/badge/linkedin-%2361dafb?style=for-the-badge&logoColor=white&color=0A66C2&logo=Linkedin)](https://www.linkedin.com/in/abel-jansen-b3ba7a20b/)
 
@@ -114,7 +114,7 @@
 
 <h3>Janlu Pretorius</h3>
 
-<img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.v0Cw6Gydr5bjYPAQrKRljwHaHa%26pid%3DApi&f=1" align="left" width="200px"/> <p>Description</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/JLooping)
+<img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.v0Cw6Gydr5bjYPAQrKRljwHaHa%26pid%3DApi&f=1" align="left" width="200px"/> <p>Fullstack Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/JLooping)
 
 [![Linkedin](https://img.shields.io/badge/linkedin-%2361dafb?style=for-the-badge&logoColor=white&color=0A66C2&logo=Linkedin)](https://www.linkedin.com/in/janlu-p)
 
@@ -124,7 +124,7 @@
 
 <h3>Michaela Shormann</h3>
 
-<img src="https://media-exp1.licdn.com/dms/image/C5603AQG32gtGkTnrIg/profile-displayphoto-shrink_200_200/0/1618576752796?e=1628121600&v=beta&t=eGZDan8xXrgb_NkK1i18TRr00ilYpjtzAL3syDiMQJQ" align="left" width="200px"/> <p>Description</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/glithcy)
+<img src="https://media-exp1.licdn.com/dms/image/C5603AQG32gtGkTnrIg/profile-displayphoto-shrink_200_200/0/1618576752796?e=1628121600&v=beta&t=eGZDan8xXrgb_NkK1i18TRr00ilYpjtzAL3syDiMQJQ" align="left" width="200px"/> <p>Frontend Designer and Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/glithcy)
 
 [![Linkedin](https://img.shields.io/badge/linkedin-%2361dafb?style=for-the-badge&logoColor=white&color=0A66C2&logo=Linkedin)](https://www.linkedin.com/in/michaela-schormann/)
 
