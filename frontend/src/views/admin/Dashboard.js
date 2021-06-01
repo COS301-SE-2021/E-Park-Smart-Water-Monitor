@@ -44,7 +44,7 @@ const useStyles = makeStyles(componentStyles);
 
 const mapStyles = {
   width: `100%`,
-  height: `300px`
+  height: `100%`
 };
 
 function Dashboard() {
@@ -64,9 +64,6 @@ function Dashboard() {
   return (
     <>
 
-
-
-
       <Header />
       {/* Page content */}
       <Container
@@ -75,7 +72,161 @@ function Dashboard() {
         marginTop="-6rem"
         classes={{ root: classes.containerRoot }}
       >
-        <Grid container>
+
+
+
+        <Grid container
+              marginBottom="3rem!important">
+
+          {/*MAP*/}
+          <Grid
+              item
+              xs={12}
+              xl={8}
+              component={Box}
+              marginBottom="3rem!important"
+              classes={{ root: classes.gridItemRoot }}
+          >
+            <Card
+                // classes={{
+                //   root: classes.cardRoot + " " + classes.cardRootBgGradient,
+                // }}
+            >
+              <CardHeader
+                  title={
+                    <Box component="span" color={theme.palette.gray[600]}>
+                      device layout
+                    </Box>
+                  }
+                  subheader="Park Map"
+                  classes={{ root: classes.cardHeaderRoot }}
+                  titleTypographyProps={{
+                    component: Box,
+                    variant: "h6",
+                    letterSpacing: ".0625rem",
+                    marginBottom: ".25rem!important",
+                    classes: {
+                      root: classes.textUppercase,
+                    },
+                  }}
+                  subheaderTypographyProps={{
+                    component: Box,
+                    variant: "h2",
+                    marginBottom: "0!important",
+                    color: "initial",
+                  }}
+              ></CardHeader>
+              <CardContent>
+
+                <div style={ { height: 350 } }>
+                  {/*rietvlei centre*/}
+                  <MapContainer style={mapStyles} center={[-25.88536975144579, 28.277796392845673]} zoom={14} scrollWheelZoom={false}>
+                    <TileLayer
+                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <Marker position={[-25.8825,28.2639 ]}>
+                      <Popup>
+                        Rietvlei Nature Reserve. <br /> Pretoria.
+                      </Popup>
+                    </Marker>
+                  </MapContainer>
+                </div>
+
+              </CardContent>
+            </Card>
+          </Grid>
+
+
+          {/*Bar GRAPH*/}
+          <Grid item
+                xs={12}
+                xl={4}
+                marginBottom="3rem!important"
+          >
+            <Card classes={{ root: classes.cardRoot }}>
+              <CardHeader
+                  title={
+                    <Box component="span" color={theme.palette.gray[600]}>
+                      Performane
+                    </Box>
+                  }
+                  subheader="Total orders"
+                  classes={{ root: classes.cardHeaderRoot }}
+                  titleTypographyProps={{
+                    component: Box,
+                    variant: "h6",
+                    letterSpacing: ".0625rem",
+                    marginBottom: ".25rem!important",
+                    classes: {
+                      root: classes.textUppercase,
+                    },
+                  }}
+                  subheaderTypographyProps={{
+                    component: Box,
+                    variant: "h2",
+                    marginBottom: "0!important",
+                    color: "initial",
+                  }}
+              ></CardHeader>
+              <CardContent>
+                <Box position="relative" height="350px">
+                  <Bar
+                      data={chartExample2.data}
+                      options={chartExample2.options}
+                  />
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+
+        </Grid>
+
+
+        <Grid container component={Box} marginTop="3rem!important">
+
+          {/*SECOND BAR GRAPH*/}
+          <Grid item
+                xs={12}
+                xl={4}
+                marginBottom="3rem!important">
+            <Card classes={{ root: classes.cardRoot }}>
+              <CardHeader
+                  title={
+                    <Box component="span" color={theme.palette.gray[600]}>
+                      Performane
+                    </Box>
+                  }
+                  subheader="Total orders"
+                  classes={{ root: classes.cardHeaderRoot }}
+                  titleTypographyProps={{
+                    component: Box,
+                    variant: "h6",
+                    letterSpacing: ".0625rem",
+                    marginBottom: ".25rem!important",
+                    classes: {
+                      root: classes.textUppercase,
+                    },
+                  }}
+                  subheaderTypographyProps={{
+                    component: Box,
+                    variant: "h2",
+                    marginBottom: "0!important",
+                    color: "initial",
+                  }}
+              ></CardHeader>
+              <CardContent>
+                <Box position="relative" height="350px">
+                  <Bar
+                      data={chartExample2.data}
+                      options={chartExample2.options}
+                  />
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          {/*Line Graph*/}
           <Grid
             item
             xs={12}
@@ -172,82 +323,7 @@ function Dashboard() {
           </Grid>
 
 
-          <Grid
-              item
-              xs={12}
-              xl={8}
-              component={Box}
-              marginBottom="3rem!important"
-              classes={{ root: classes.gridItemRoot }}
-          >
-            <Card
-                classes={{
-                  root: classes.cardRoot + " " + classes.cardRootBgGradient,
-                }}
-            >
-              <CardHeader
-          
-              ></CardHeader>
-              <CardContent>
 
-                <div style={ { height: 300 } }>
-                  <MapContainer style={mapStyles} center={[-25.8825, 28.2639]} zoom={13} scrollWheelZoom={false}>
-                    <TileLayer
-                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <Marker position={[-25.8825,28.2639 ]}>
-                      <Popup>
-                        Rietvlei Nature Reserve. <br /> Pretoria.
-                      </Popup>
-                    </Marker>
-                  </MapContainer>
-                </div>
-          
-              </CardContent>
-            </Card>
-          </Grid>
-
-
-
-
-          {/*GRAPH*/}
-          <Grid item xs={12} xl={4}>
-            <Card classes={{ root: classes.cardRoot }}>
-              <CardHeader
-                title={
-                  <Box component="span" color={theme.palette.gray[600]}>
-                    Performane
-                  </Box>
-                }
-                subheader="Total orders"
-                classes={{ root: classes.cardHeaderRoot }}
-                titleTypographyProps={{
-                  component: Box,
-                  variant: "h6",
-                  letterSpacing: ".0625rem",
-                  marginBottom: ".25rem!important",
-                  classes: {
-                    root: classes.textUppercase,
-                  },
-                }}
-                subheaderTypographyProps={{
-                  component: Box,
-                  variant: "h2",
-                  marginBottom: "0!important",
-                  color: "initial",
-                }}
-              ></CardHeader>
-              <CardContent>
-                <Box position="relative" height="350px">
-                  <Bar
-                    data={chartExample2.data}
-                    options={chartExample2.options}
-                  />
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
         </Grid>
         <Grid container component={Box} marginTop="3rem">
           <Grid
