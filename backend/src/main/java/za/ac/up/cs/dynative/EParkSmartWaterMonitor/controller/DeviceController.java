@@ -4,16 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/devices")
 public class DeviceController {
 
     DevicesService devicesService;
@@ -24,6 +23,10 @@ public class DeviceController {
         this.devicesService = devicesService;
     }
 
+    @PostMapping("/receiveDeviceData")
+    public ResponseEntity<Object> receiveWaterDeviceData(@RequestBody ReceiveDeviceDataRequest request) {
+        return new ResponseEntity<>(devicesService.receiveWaterDeviceData(request),HttpStatus.OK);
+    }
 
     @GetMapping("/getDevice")
     public java.util.Collection<WaterSourceDevice> getDevice() {

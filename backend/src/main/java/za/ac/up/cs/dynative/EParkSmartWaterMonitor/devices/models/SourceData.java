@@ -11,7 +11,7 @@ public class SourceData {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     private double waterLevel;
 
@@ -19,13 +19,24 @@ public class SourceData {
 
     private double waterTemperature;
 
+    String deviceDateTime;
+
     private Date dateTime;
 
-    public SourceData(long id, double waterLevel, double waterQuality, double waterTemperature, Date dateTime) {
+    public SourceData(long id, double waterLevel, double waterQuality, double waterTemperature, String deviceDateTime, Date dateTime) {
         this.id = id;
         this.waterLevel = waterLevel;
         this.waterQuality = waterQuality;
         this.waterTemperature = waterTemperature;
+        this.deviceDateTime = deviceDateTime;
+        this.dateTime = dateTime;
+    }
+
+    public SourceData(double waterLevel, double waterQuality, double waterTemperature, String deviceDateTime, Date dateTime) {
+        this.waterLevel = waterLevel;
+        this.waterQuality = waterQuality;
+        this.waterTemperature = waterTemperature;
+        this.deviceDateTime = deviceDateTime;
         this.dateTime = dateTime;
     }
 
@@ -59,6 +70,14 @@ public class SourceData {
 
     public void setWaterTemperature(double waterTemperature) {
         this.waterTemperature = waterTemperature;
+    }
+
+    public String getDeviceDateTime() {
+        return deviceDateTime;
+    }
+
+    public void setDeviceDateTime(String deviceDateTime) {
+        this.deviceDateTime = deviceDateTime;
     }
 
     public Date getDateTime() {

@@ -7,4 +7,6 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDev
 import java.util.UUID;
 
 @Repository("DeviceRepo")
-public interface DeviceRepo extends Neo4jRepository< WaterSourceDevice, UUID> { }
+public interface DeviceRepo extends Neo4jRepository< WaterSourceDevice, UUID> {
+    WaterSourceDevice findWaterSourceDeviceByDeviceName(String deviceName);
+}

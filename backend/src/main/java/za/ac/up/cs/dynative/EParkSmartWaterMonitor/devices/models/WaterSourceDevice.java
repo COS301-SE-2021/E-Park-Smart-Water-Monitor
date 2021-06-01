@@ -9,6 +9,7 @@ import org.springframework.data.neo4j.core.schema.Id;
         import java.util.UUID;
 
         import static org.springframework.data.neo4j.core.schema.Relationship.Direction.INCOMING;
+import static org.springframework.data.neo4j.core.schema.Relationship.Direction.OUTGOING;
 
 @Node
 public class WaterSourceDevice
@@ -20,20 +21,29 @@ public class WaterSourceDevice
     private double  longitude;
     private double  latitude;
 
-    public WaterSourceDevice(String deviceName, String deviceModel,double  longitude,double  latitude)
-    {
+    @Relationship(type = "PRODUCES", direction = OUTGOING)
+    private Set<SourceData> deviceDataProduced;
 
+    public WaterSourceDevice(String deviceName, String deviceModel,double  longitude,double  latitude, Set<SourceData> deviceDataProduced)
+    {
         this.deviceId    = UUID.randomUUID();
         this.deviceName  = deviceName;
         this.deviceModel = deviceModel;
         this.longitude   = longitude;
         this.latitude    = latitude;
-
+        this.deviceDataProduced = deviceDataProduced;
     }
 
     public WaterSourceDevice()
     {
 
+    }
+
+    public void addDeviceDataProduced(SourceData data) {
+        if (deviceDataProduced == null) {
+            deviceDataProduced = new HashSet<>();
+        }
+        deviceDataProduced.add(data);
     }
 
     public String getDeviceName()
