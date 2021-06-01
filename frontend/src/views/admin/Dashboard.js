@@ -25,6 +25,9 @@ import Typography from "@material-ui/core/Typography";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 
+// Leaflet map
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+
 // core components
 import Header from "components/Headers/Header.js";
 
@@ -55,6 +58,10 @@ function Dashboard() {
   };
   return (
     <>
+
+
+
+
       <Header />
       {/* Page content */}
       <Container
@@ -158,6 +165,48 @@ function Dashboard() {
               </CardContent>
             </Card>
           </Grid>
+
+
+          <Grid
+              item
+              xs={12}
+              xl={8}
+              component={Box}
+              marginBottom="3rem!important"
+              classes={{ root: classes.gridItemRoot }}
+          >
+            <Card
+                classes={{
+                  root: classes.cardRoot + " " + classes.cardRootBgGradient,
+                }}
+            >
+              <CardHeader
+          
+              ></CardHeader>
+              <CardContent>
+
+                <div style={ { height: 300 } }>
+                  <MapContainer center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+                    <TileLayer
+                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <Marker position={[51.505, -0.09]}>
+                      <Popup>
+                        A pretty CSS3 popup. <br /> Easily customizable.
+                      </Popup>
+                    </Marker>
+                  </MapContainer>
+                </div>
+          
+              </CardContent>
+            </Card>
+          </Grid>
+
+
+
+
+          {/*GRAPH*/}
           <Grid item xs={12} xl={4}>
             <Card classes={{ root: classes.cardRoot }}>
               <CardHeader
@@ -245,6 +294,7 @@ function Dashboard() {
                 }
                 classes={{ root: classes.cardHeaderRoot }}
               ></CardHeader>
+
               <TableContainer>
                 <Box
                   component={Table}
