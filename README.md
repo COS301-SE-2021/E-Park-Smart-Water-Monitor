@@ -3,6 +3,9 @@
 [![Build](https://img.shields.io/github/deployments/COS301-SE-2021/E-Park-Smart-Water-Monitor/e-park-water-monitor?label=build&logo=Heroku&style=flat-square)](https://e-park-water-monitor.herokuapp.com/)
 [![master tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/master?label=master%20tests&logo=Travis%20CI&style=flat-square&logoColor=white)](https://travis-ci.com/)
 [![development tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/development?label=development%20tests&logo=Travis%20CI&style=flat-square&logoColor=white)](https://travis-ci.com/)
+[![Uptime](https://img.shields.io/uptimerobot/ratio/7/m788292405-312287984b9cb9ab81115749?style=flat-square)](https://uptimerobot.com/dashboard.php#788292405)
+
+
 
 &nbsp;
 
