@@ -6,10 +6,16 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.SourceData;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.SourceDataRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.SiteRepo;
 
@@ -22,12 +28,16 @@ import java.util.UUID;
 public class DevicesServicesImpl implements DevicesService {
 
     private DeviceRepo deviceRepo;
-
+    private ParkService parkService;
     private SiteRepo siteRepo;
     private SourceDataRepo sourceDataRepo;
 
-    public DevicesServicesImpl(@Qualifier("DeviceRepo") DeviceRepo deviceRepo, @Qualifier("SiteRepo") SiteRepo siteRepo, @Qualifier("SourceDataRepo") SourceDataRepo sourceDataRepo) {
+    public DevicesServicesImpl(@Qualifier("DeviceRepo") DeviceRepo deviceRepo,
+                               @Qualifier("ParkService") ParkService parkService,
+                               @Qualifier("SiteRepo") SiteRepo siteRepo,
+                               @Qualifier("SourceDataRepo") SourceDataRepo sourceDataRepo) {
         this.deviceRepo = deviceRepo;
+        this.parkService = parkService;
         this.siteRepo = siteRepo;
         this.sourceDataRepo = sourceDataRepo;
     }
@@ -108,5 +118,19 @@ public class DevicesServicesImpl implements DevicesService {
             response.setStatus("Request Failed...");
         }
         return response;
+    }
+
+    @Override
+    public GetNumDevicesResponse getNumDevices(GetNumDevicesRequest request) {
+        GetNumDevicesResponse getNumDevicesResponse = new GetNumDevicesResponse();
+        if (!request.getParkName().equals("")) {
+            FindByParkNameResponse parkNameResponse = parkService.findParkByName(new FindByParkNameRequest(request.getParkName()));
+            if (parkNameResponse.getPark() != null) {
+
+                getNumDevicesResponse.setNumDevices(deviceRepo.getAllParkDevices(request.getParkName()).size());
+                getNumDevicesResponse.setSuccess(true);
+            }
+        } else getNumDevicesResponse.setSuccess(false);
+        return getNumDevicesResponse;
     }
 }
