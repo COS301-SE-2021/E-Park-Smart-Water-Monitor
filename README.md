@@ -4,6 +4,7 @@
 [![master tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/master?label=master%20tests&logo=Travis%20CI&style=flat-square&logoColor=white)](https://travis-ci.com/)
 [![development tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/development?label=development%20tests&logo=Travis%20CI&style=flat-square&logoColor=white)](https://travis-ci.com/)
 [![Uptime](https://img.shields.io/uptimerobot/ratio/7/m788292405-312287984b9cb9ab81115749?style=flat-square)](https://uptimerobot.com/dashboard.php#788292405)
+[![Dependencies](https://img.shields.io/librariesio/github/COS301-SE-2021/E-Park-Smart-Water-Monitor?style=flat-square)](https://libraries.io/)
 
 
 
@@ -73,15 +74,30 @@
 [![AWS](https://img.shields.io/badge/aws-%2361dafb?style=for-the-badge&logo=Amazon%20AWS&logoColor=white&color=FF9900)](https://aws.amazon.com/)
 [![Heroku](https://img.shields.io/badge/Heroku-%2361dafb?style=for-the-badge&logo=Heroku&logoColor=white&color=634987)](https://www.heroku.com/)
 
-<h3>Project Management</h3>
+<h3>CMS</h3>
 
-[![Zenhub](https://img.shields.io/badge/zenhub-%2361dafb?style=for-the-badge&logoColor=white&color=4660f9)](https://www.zenhub.com/)
+[![Neo4j](https://img.shields.io/badge/Neo4j-%2361dafb?style=for-the-badge&logo=Neo4j&logoColor=61dafb&color=008CC1)](https://neo4j.com/)
 
 <h3>CI</h3>
 
 [![Travis](https://img.shields.io/badge/Travis%20CI-%2361dafb?style=for-the-badge&logo=Travis%20CI&logoColor=white&color=3EAAAF)](https://travis-ci.com/)
 
 <h3>Code Coverage</h3>
+
+<h3>Dependencies</h3>
+
+[![Libraries](https://img.shields.io/badge/libraries.io-%2361dafb?style=for-the-badge&logo=libraries-dot-io&color=337AB7&logoColor=white)](https://libraries.io/)
+
+<h3>Monitoring</h3>
+
+[![Uptime](https://img.shields.io/badge/uptime%20robot-%2361dafb?style=for-the-badge&color=3bd671)](https://uptimerobot.com/)
+
+<h3>Project Management</h3>
+
+[![Zenhub](https://img.shields.io/badge/zenhub-%2361dafb?style=for-the-badge&logoColor=white&color=4660f9)](https://www.zenhub.com/)
+
+
+
 
 <h2>🐘 The Team</h2>
 
