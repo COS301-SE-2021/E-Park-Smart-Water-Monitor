@@ -9,7 +9,10 @@ public class AddSiteRequest {
     private double latitude;
     private double longitude;
 
-    public AddSiteRequest(@JsonProperty("parkName") String parkName, @JsonProperty("siteName") String siteName, @JsonProperty("latitude") double latitude, @JsonProperty("longitude")  double longitude) {
+    public AddSiteRequest(@JsonProperty("parkName") String parkName,
+                          @JsonProperty("siteName") String siteName,
+                          @JsonProperty("latitude") double latitude,
+                          @JsonProperty("longitude")  double longitude) {
         this.parkName = parkName;
         this.siteName = siteName;
         this.latitude = latitude;

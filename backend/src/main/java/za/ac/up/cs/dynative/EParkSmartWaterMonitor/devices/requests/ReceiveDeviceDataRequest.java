@@ -10,7 +10,11 @@ public class ReceiveDeviceDataRequest {
     private double waterTemperature;
     private String deviceDateTime;
 
-    public ReceiveDeviceDataRequest(@JsonProperty("deviceName") String deviceName, @JsonProperty("waterLevel") double waterLevel, @JsonProperty("waterQuality") double waterQuality, @JsonProperty("waterTemperature") double waterTemperature, @JsonProperty("deviceDateTime") String deviceDateTime) {
+    public ReceiveDeviceDataRequest(@JsonProperty("deviceName") String deviceName,
+                                    @JsonProperty("waterLevel") double waterLevel,
+                                    @JsonProperty("waterQuality") double waterQuality,
+                                    @JsonProperty("waterTemperature") double waterTemperature,
+                                    @JsonProperty("deviceDateTime") String deviceDateTime) {
         this.deviceName = deviceName;
         this.waterLevel = waterLevel;
         this.waterQuality = waterQuality;

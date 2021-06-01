@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
 
-public class addWaterSourceDeviceRequest {
+public class AddWaterSourceDeviceRequest {
 
 
     private UUID deviceId;
@@ -17,7 +17,7 @@ public class addWaterSourceDeviceRequest {
 
 
 
-    public addWaterSourceDeviceRequest(@JsonProperty("parkName") String parkName,
+    public AddWaterSourceDeviceRequest(@JsonProperty("parkName") String parkName,
                                        @JsonProperty("siteId") UUID siteId,
                                        @JsonProperty("deviceModel") String deviceModel,
                                        @JsonProperty("deviceName") String deviceName,

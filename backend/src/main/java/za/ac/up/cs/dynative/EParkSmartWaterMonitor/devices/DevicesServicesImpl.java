@@ -7,9 +7,9 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDev
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.SourceDataRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.addWaterSourceDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.addWaterSourceDeviceResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.SiteRepo;
 
@@ -35,9 +35,9 @@ public class DevicesServicesImpl implements DevicesService {
         return deviceRepo.findAll();
     }
 
-    public addWaterSourceDeviceResponse addDevice(addWaterSourceDeviceRequest addWSDRequest) {
+    public AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest) {
         WaterSourceDevice newDevice = new WaterSourceDevice(addWSDRequest.getDeviceName(),addWSDRequest.getDeviceModel(),addWSDRequest.getLongitude(),addWSDRequest.getLatitude());
-        addWaterSourceDeviceResponse response = new addWaterSourceDeviceResponse();
+        AddWaterSourceDeviceResponse response = new AddWaterSourceDeviceResponse();
 
         WaterSourceDevice device = deviceRepo.findWaterSourceDeviceByDeviceName(addWSDRequest.getDeviceName());
         if (device==null)
@@ -89,7 +89,6 @@ public class DevicesServicesImpl implements DevicesService {
     @Override
     public ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request) {
         WaterSourceDevice device = deviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName());
-        System.out.println("things");
         ReceiveDeviceDataResponse response = new ReceiveDeviceDataResponse();
         if (!device.getDeviceName().equals("")) {
             SourceData data = new SourceData(request.getWaterLevel(),request.getWaterQuality(), request.getWaterTemperature(), request.getDeviceDateTime(), new Date());
@@ -100,8 +99,8 @@ public class DevicesServicesImpl implements DevicesService {
                             + request.getDeviceDateTime());
             response.setSuccess(true);
             device.addDeviceDataProduced(data);
-            deviceRepo.save(device);
             sourceDataRepo.save(data);
+            deviceRepo.save(device);
         }
         else {
             response.setSuccess(false);

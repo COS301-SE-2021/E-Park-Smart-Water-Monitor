@@ -2,14 +2,11 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models;
 import org.springframework.data.neo4j.core.schema.Id;
         import org.springframework.data.neo4j.core.schema.Node;
         import org.springframework.data.neo4j.core.schema.Relationship;
-        import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.Site;
 
         import java.util.HashSet;
         import java.util.Set;
         import java.util.UUID;
 
-        import static org.springframework.data.neo4j.core.schema.Relationship.Direction.INCOMING;
-import static org.springframework.data.neo4j.core.schema.Relationship.Direction.OUTGOING;
 
 @Node
 public class WaterSourceDevice
@@ -21,7 +18,7 @@ public class WaterSourceDevice
     private double  longitude;
     private double  latitude;
 
-    @Relationship(type = "PRODUCES", direction = OUTGOING)
+    @Relationship(type = "PRODUCES", direction = Relationship.Direction.OUTGOING)
     private Set<SourceData> deviceDataProduced;
 
     public WaterSourceDevice(String deviceName, String deviceModel,double  longitude,double  latitude)
@@ -31,7 +28,6 @@ public class WaterSourceDevice
         this.deviceModel = deviceModel;
         this.longitude   = longitude;
         this.latitude    = latitude;
-        this.deviceDataProduced = null;
     }
 
     public WaterSourceDevice()

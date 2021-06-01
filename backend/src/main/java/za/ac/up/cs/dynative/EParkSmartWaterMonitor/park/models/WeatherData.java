@@ -24,7 +24,12 @@ public class WeatherData {
     private Date dateTime;
 
 
-    public WeatherData(int id, double temperature, String moonPhase, double humidity, double windSpeed, Date dateTime) {
+    public WeatherData(int id,
+                       double temperature,
+                       String moonPhase,
+                       double humidity,
+                       double windSpeed,
+                       Date dateTime) {
         this.id = id;
         this.temperature = temperature;
         this.moonPhase = moonPhase;

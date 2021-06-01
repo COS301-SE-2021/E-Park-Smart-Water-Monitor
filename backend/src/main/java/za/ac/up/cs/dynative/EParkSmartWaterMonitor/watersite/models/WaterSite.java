@@ -4,7 +4,6 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.InfrastructureDevice;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.SourceData;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 
 import java.util.HashSet;
@@ -28,19 +27,6 @@ public class WaterSite {
 
     @Relationship(type = "INFRASTRUCTURE_MONITORED_BY", direction = Relationship.Direction.OUTGOING)
     private Set<InfrastructureDevice> infrastructureDevices;
-//
-//    @Relationship(type = "HAS_WATER_DATA", direction = Relationship.Direction.OUTGOING)
-//    private Set<SourceData> waterSiteData;
-
-//    public WaterSite(UUID id, String waterSiteName, double latitude, double longitude, Set<WaterSourceDevice> waterSourceDevices, Set<InfrastructureDevice> infrastructureDevices, Set<SourceData> sourceData) {
-//        this.id = id;
-//        this.waterSiteName = waterSiteName;
-//        this.latitude = latitude;
-//        this.longitude = longitude;
-//        this.waterSourceDevices = waterSourceDevices;
-//        this.infrastructureDevices = infrastructureDevices;
-//        this.waterSiteData = sourceData;
-//    }
 
     public WaterSite(UUID id, String waterSiteName, double latitude, double longitude) {
         this.id = id;
@@ -58,13 +44,6 @@ public class WaterSite {
         }
         waterSourceDevices.add(waterSourceDevice);
     }
-
-//    public void addWaterSiteData(SourceData sourceData) {
-//        if (waterSiteData == null) {
-//            waterSiteData = new HashSet<>();
-//        }
-//        waterSiteData.add(sourceData);
-//    }
 
     public UUID getId() {
         return id;
@@ -121,14 +100,6 @@ public class WaterSite {
     public void setInfrastructureDevices(Set<InfrastructureDevice> infrastructureDevices) {
         this.infrastructureDevices = infrastructureDevices;
     }
-
-//    public Set<SourceData> getWaterSiteData() {
-//        return waterSiteData;
-//    }
-//
-//    public void setWaterSiteData(Set<SourceData> waterSiteData) {
-//        this.waterSiteData = waterSiteData;
-//    }
 
     @Override
     public String toString() {

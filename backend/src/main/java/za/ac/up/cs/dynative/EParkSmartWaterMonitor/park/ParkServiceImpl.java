@@ -25,7 +25,7 @@ public class ParkServiceImpl implements ParkService {
 
         CreateParkResponse response = new CreateParkResponse();
         if (!request.getParkName().equals("")) {
-            Park park = new Park(UUID.randomUUID(),request.getParkName(),request.getLatitude(),request.getLongitude());
+            Park park = new Park(request.getParkName(),request.getLatitude(),request.getLongitude());
             parkRepo.save(park);
 
             response.setStatus("Park Added!");

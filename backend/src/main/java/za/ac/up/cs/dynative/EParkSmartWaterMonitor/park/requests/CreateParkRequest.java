@@ -8,7 +8,9 @@ public class CreateParkRequest {
     private double latitude;
     private double longitude;
 
-    public CreateParkRequest(@JsonProperty("parkName") String parkName, @JsonProperty("latitude") double latitude, @JsonProperty("longitude")  double longitude) {
+    public CreateParkRequest(@JsonProperty("parkName") String parkName,
+                             @JsonProperty("latitude") double latitude,
+                             @JsonProperty("longitude")  double longitude) {
         this.parkName = parkName;
         this.latitude = latitude;
         this.longitude = longitude;

@@ -22,15 +22,6 @@ public class SourceData {
 
     private Date dateTime;
 
-    public SourceData(UUID dataId, double waterLevel, double waterQuality, double waterTemperature, String deviceDateTime, Date dateTime) {
-        this.dataId = dataId;
-        this.waterLevel = waterLevel;
-        this.waterQuality = waterQuality;
-        this.waterTemperature = waterTemperature;
-        this.deviceDateTime = deviceDateTime;
-        this.dateTime = dateTime;
-    }
-
     public SourceData(double waterLevel, double waterQuality, double waterTemperature, String deviceDateTime, Date dateTime) {
         this.dataId = UUID.randomUUID();
         this.waterLevel = waterLevel;

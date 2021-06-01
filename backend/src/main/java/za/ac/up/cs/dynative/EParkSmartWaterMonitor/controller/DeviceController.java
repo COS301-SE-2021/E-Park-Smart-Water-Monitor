@@ -7,8 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.addWaterSourceDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.addWaterSourceDeviceResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
 
 import java.util.Optional;
@@ -41,7 +40,7 @@ public class DeviceController {
     }
 
     @PostMapping("/addDevice")
-    public ResponseEntity<Object> addDevice(@RequestBody addWaterSourceDeviceRequest addWSDRequest) {
+    public ResponseEntity<Object> addDevice(@RequestBody AddWaterSourceDeviceRequest addWSDRequest) {
         ;
         return new ResponseEntity<>(devicesService.addDevice(addWSDRequest),HttpStatus.OK);
     }
