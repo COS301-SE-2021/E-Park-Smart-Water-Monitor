@@ -5,7 +5,7 @@
 [![development tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/development?label=development%20tests&logo=Travis%20CI&style=flat-square&logoColor=white)](https://travis-ci.com/)
 [![Uptime](https://img.shields.io/uptimerobot/ratio/7/m788292405-312287984b9cb9ab81115749?style=flat-square)](https://uptimerobot.com/dashboard.php#788292405)
 [![Dependencies](https://img.shields.io/librariesio/github/COS301-SE-2021/E-Park-Smart-Water-Monitor?style=flat-square&logo=libraries-dot-io&logoColor=white)](https://libraries.io/)
-
+[![Coverage](https://img.shields.io/coveralls/github/COS301-SE-2021/E-Park-Smart-Water-Monitor?logo=Coveralls&style=flat-square)](https://coveralls.io/repos/new?name=cos301-se-2021&service=github)
 
 
 &nbsp;
@@ -83,6 +83,8 @@
 [![Travis](https://img.shields.io/badge/Travis%20CI-%2361dafb?style=for-the-badge&logo=Travis%20CI&logoColor=white&color=3EAAAF)](https://travis-ci.com/)
 
 <h3>Code Coverage</h3>
+
+[![Travis](https://img.shields.io/badge/Coveralls-%2361dafb?style=for-the-badge&logo=Coveralls&logoColor=white&color=3F5767)](https://coveralls.io/)
 
 <h3>Dependencies</h3>
 
