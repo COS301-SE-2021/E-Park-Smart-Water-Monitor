@@ -10,10 +10,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDevic
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.addWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.addWaterSourceDeviceResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.SiteRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AddSiteResponse;
 
 import java.util.Collection;
 import java.util.Date;
@@ -30,6 +28,7 @@ public class DevicesServicesImpl implements DevicesService {
     public DevicesServicesImpl(@Qualifier("DeviceRepo") DeviceRepo deviceRepo, @Qualifier("SiteRepo") SiteRepo siteRepo, @Qualifier("SourceDataRepo") SourceDataRepo sourceDataRepo) {
         this.deviceRepo = deviceRepo;
         this.siteRepo = siteRepo;
+        this.sourceDataRepo = sourceDataRepo;
     }
 
     public Collection<WaterSourceDevice> getAll() {
@@ -43,7 +42,6 @@ public class DevicesServicesImpl implements DevicesService {
         WaterSourceDevice device = deviceRepo.findWaterSourceDeviceByDeviceName(addWSDRequest.getDeviceName());
         if (device==null)
         {
-            System.out.println("HERE");
             //@Qualifier("ParkRepo") ParkRepo parkRepo
             Optional<WaterSite> waterSiteToAddToSite = siteRepo.findById(addWSDRequest.getSiteId());
             if (waterSiteToAddToSite.isEmpty())
@@ -91,22 +89,16 @@ public class DevicesServicesImpl implements DevicesService {
     @Override
     public ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request) {
         WaterSourceDevice device = deviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName());
+        System.out.println("things");
         ReceiveDeviceDataResponse response = new ReceiveDeviceDataResponse();
-        if (device != null) {
-            WaterSite site = siteRepo.getWaterSiteByWaterSourceDevicesContains(device);
+        if (!device.getDeviceName().equals("")) {
             SourceData data = new SourceData(request.getWaterLevel(),request.getWaterQuality(), request.getWaterTemperature(), request.getDeviceDateTime(), new Date());
-            if (site != null) {
-                site.addWaterSiteData(data);
-                siteRepo.save(site);
-                response.setStatus(
-                        "Successfully added data send from ESP: "
-                        + request.getDeviceName()
-                        + "sent at: "
-                        + request.getDeviceDateTime()
-                        + " to Site: "
-                        + site.getWaterSiteName());
-                response.setSuccess(true);
-            }
+            response.setStatus(
+                    "Successfully added data send from ESP: "
+                            + request.getDeviceName()
+                            + "sent at: "
+                            + request.getDeviceDateTime());
+            response.setSuccess(true);
             device.addDeviceDataProduced(data);
             deviceRepo.save(device);
             sourceDataRepo.save(data);

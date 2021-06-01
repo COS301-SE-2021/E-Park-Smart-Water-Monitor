@@ -13,5 +13,4 @@ public interface SiteRepo extends Neo4jRepository<WaterSite, UUID>
 {
 //    Site findBySiteId(Long SiteId);
     WaterSite findByWaterSiteName(String SiteName);
-    WaterSite getWaterSiteByWaterSourceDevicesContains(WaterSourceDevice waterSourceDevice);
 }

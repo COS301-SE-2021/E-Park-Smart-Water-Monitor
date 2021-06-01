@@ -1,17 +1,16 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models;
 
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Node
 public class SourceData {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    private UUID dataId;
 
     private double waterLevel;
 
@@ -23,8 +22,8 @@ public class SourceData {
 
     private Date dateTime;
 
-    public SourceData(long id, double waterLevel, double waterQuality, double waterTemperature, String deviceDateTime, Date dateTime) {
-        this.id = id;
+    public SourceData(UUID dataId, double waterLevel, double waterQuality, double waterTemperature, String deviceDateTime, Date dateTime) {
+        this.dataId = dataId;
         this.waterLevel = waterLevel;
         this.waterQuality = waterQuality;
         this.waterTemperature = waterTemperature;
@@ -33,6 +32,7 @@ public class SourceData {
     }
 
     public SourceData(double waterLevel, double waterQuality, double waterTemperature, String deviceDateTime, Date dateTime) {
+        this.dataId = UUID.randomUUID();
         this.waterLevel = waterLevel;
         this.waterQuality = waterQuality;
         this.waterTemperature = waterTemperature;
@@ -40,12 +40,12 @@ public class SourceData {
         this.dateTime = dateTime;
     }
 
-    public long getId() {
-        return id;
+    public UUID getId() {
+        return dataId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(UUID dataId) {
+        this.dataId = dataId;
     }
 
     public double getWaterLevel() {
@@ -91,7 +91,7 @@ public class SourceData {
     @Override
     public String toString() {
         return "SourceData{" +
-                "id=" + id +
+                "dataId=" + dataId +
                 ", waterLevel=" + waterLevel +
                 ", waterQuality=" + waterQuality +
                 ", waterTemperature=" + waterTemperature +

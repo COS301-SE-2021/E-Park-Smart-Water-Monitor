@@ -4,6 +4,8 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.SourceData;
 
+import java.util.UUID;
+
 @Repository("SourceDataRepo")
-public interface SourceDataRepo extends Neo4jRepository<SourceData, Long> {
+public interface SourceDataRepo extends Neo4jRepository<SourceData, UUID> {
 }
