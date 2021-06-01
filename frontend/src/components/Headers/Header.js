@@ -35,8 +35,8 @@ const Header = () => {
             <Grid container>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="Traffic"
-                  title="350,897"
+                  subtitle="Devices"
+                  title="34"
                   icon={InsertChartOutlined}
                   color="bgError"
                   footer={
@@ -65,7 +65,7 @@ const Header = () => {
               </Grid>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="New users"
+                  subtitle="Inspections"
                   title="2,356"
                   icon={PieChart}
                   color="bgWarning"
@@ -95,7 +95,7 @@ const Header = () => {
               </Grid>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="Sales"
+                  subtitle="Users"
                   title="924"
                   icon={GroupAdd}
                   color="bgWarningLight"
@@ -125,7 +125,7 @@ const Header = () => {
               </Grid>
               <Grid item xl={3} lg={6} xs={12}>
                 <CardStats
-                  subtitle="Performance"
+                  subtitle="Predictions"
                   title="49,65%"
                   icon={EmojiEvents}
                   color="bgInfo"
