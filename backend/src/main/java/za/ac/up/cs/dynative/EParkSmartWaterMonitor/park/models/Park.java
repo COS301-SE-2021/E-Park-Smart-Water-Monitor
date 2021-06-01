@@ -5,6 +5,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -43,6 +44,13 @@ public class Park {
     }
 
     public Park() {
+    }
+
+    public void addWaterSite(WaterSite waterSite) {
+        if (parkWaterSites == null) {
+            parkWaterSites = new HashSet<>();
+        }
+        parkWaterSites.add(waterSite);
     }
 
     public UUID getId() {

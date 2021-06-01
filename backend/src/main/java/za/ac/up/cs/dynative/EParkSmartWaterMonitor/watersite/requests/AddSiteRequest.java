@@ -1,20 +1,22 @@
-package za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests;
+package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CreateParkRequest {
+public class AddSiteRequest {
 
     private String parkName;
+    private String siteName;
     private double latitude;
     private double longitude;
 
-    public CreateParkRequest(@JsonProperty("parkName") String parkName, @JsonProperty("latitude") double latitude, @JsonProperty("longitude")  double longitude) {
+    public AddSiteRequest(@JsonProperty("parkName") String parkName, @JsonProperty("siteName") String siteName, @JsonProperty("latitude") double latitude, @JsonProperty("longitude")  double longitude) {
         this.parkName = parkName;
+        this.siteName = siteName;
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
-    public CreateParkRequest() {
+    public AddSiteRequest() {
     }
 
     public String getParkName() {
@@ -23,6 +25,14 @@ public class CreateParkRequest {
 
     public void setParkName(String parkName) {
         this.parkName = parkName;
+    }
+
+    public String getSiteName() {
+        return siteName;
+    }
+
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
     }
 
     public double getLatitude() {

@@ -13,16 +13,12 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkReque
 @RequestMapping("/api/park")
 public class ParkController {
 
-
-
     ParkService parkService;
-
 
     @Autowired
     ParkController(@Qualifier("ParkService") ParkService parkService){
         this.parkService = parkService;
     }
-
 
     @PostMapping("/addPark")
     public ResponseEntity<Object> addPark(@RequestBody CreateParkRequest createParkRequest) {
