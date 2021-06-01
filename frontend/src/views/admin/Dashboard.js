@@ -196,9 +196,9 @@ function Dashboard() {
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
-                    <Marker position={[51.505, -0.09]}>
+                    <Marker position={[-25.8825,28.2639 ]}>
                       <Popup>
-                        A pretty CSS3 popup. <br /> Easily customizable.
+                        Rietvlei Nature Reserve. <br /> Pretoria.
                       </Popup>
                     </Marker>
                   </MapContainer>
