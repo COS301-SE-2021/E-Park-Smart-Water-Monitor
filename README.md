@@ -4,8 +4,8 @@
 [![master tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/master?label=master%20tests&logo=Travis%20CI&style=flat-square&logoColor=white)](https://travis-ci.com/)
 [![development tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/development?label=development%20tests&logo=Travis%20CI&style=flat-square&logoColor=white)](https://travis-ci.com/)
 [![Uptime](https://img.shields.io/uptimerobot/ratio/7/m788292405-312287984b9cb9ab81115749?style=flat-square)](https://uptimerobot.com/dashboard.php#788292405)
-[![Dependencies](https://img.shields.io/librariesio/github/COS301-SE-2021/E-Park-Smart-Water-Monitor?style=flat-square&logo=libraries-dot-io&logoColor=white)](https://libraries.io/)
-
+[![Dependencies](https://img.shields.io/librariesio/github/COS301-SE-2021/E-Park-Smart-Water-Monitor?style=flat-square&logo=libraries-dot-io&logoColor=white)](https://libraries.io/github/COS301-SE-2021/E-Park-Smart-Water-Monitor)
+[![Coverage](https://img.shields.io/coveralls/github/COS301-SE-2021/E-Park-Smart-Water-Monitor?logo=Coveralls&style=flat-square)](https://coveralls.io/repos/new?name=cos301-se-2021&service=github)
 
 
 &nbsp;
@@ -40,7 +40,7 @@
   <a href="https://drive.google.com/drive/folders/1HRHIfULwivVIk_WgBqOFxxoT9gDwKCS2?usp=sharing">Demo Videos</a>
 </h2>
 
-## Table of Contents
+## 📋 Table of Contents
 
 1. [Branching Strategy](#-branching-strategy)
 1. [Technologies](#-technologies)
@@ -83,6 +83,8 @@
 [![Travis](https://img.shields.io/badge/Travis%20CI-%2361dafb?style=for-the-badge&logo=Travis%20CI&logoColor=white&color=3EAAAF)](https://travis-ci.com/)
 
 <h3>Code Coverage</h3>
+
+[![Travis](https://img.shields.io/badge/Coveralls-%2361dafb?style=for-the-badge&logo=Coveralls&logoColor=white&color=3F5767)](https://coveralls.io/)
 
 <h3>Dependencies</h3>
 
@@ -133,7 +135,7 @@
 
 <h3>Janlu Pretorius</h3>
 
-<img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.v0Cw6Gydr5bjYPAQrKRljwHaHa%26pid%3DApi&f=1" align="left" width="200px"/> <p>Fullstack Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/JLooping)
+<img src="https://media-exp1.licdn.com/dms/image/C4D03AQGM79za0zrJAQ/profile-displayphoto-shrink_200_200/0/1620078455932?e=1628121600&v=beta&t=QRxKTWQvMmw49wvbm6-Qx8PNoUT_PvR0O_DiifTmU0k" align="left" width="200px"/> <p>Fullstack Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/JLooping)
 
 [![Linkedin](https://img.shields.io/badge/linkedin-%2361dafb?style=for-the-badge&logoColor=white&color=0A66C2&logo=Linkedin)](https://www.linkedin.com/in/janlu-p)
 
