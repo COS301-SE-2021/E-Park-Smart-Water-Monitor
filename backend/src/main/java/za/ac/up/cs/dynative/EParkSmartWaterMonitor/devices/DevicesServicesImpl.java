@@ -54,6 +54,9 @@ public class DevicesServicesImpl implements DevicesService {
             else
             {
                 waterSiteToAddToSite.get().addWaterSourceDevice(newDevice);
+
+                deviceRepo.save(newDevice);
+                siteRepo.save(waterSiteToAddToSite.get());
                 response.setSuccess(true);
                 response.setStatus("Device "+addWSDRequest.getDeviceName()+"successfully added");
             }
