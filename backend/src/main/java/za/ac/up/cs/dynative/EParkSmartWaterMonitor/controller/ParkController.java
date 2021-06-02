@@ -24,4 +24,10 @@ public class ParkController {
     public ResponseEntity<Object> addPark(@RequestBody CreateParkRequest createParkRequest) {
         return new ResponseEntity<>(parkService.createPark(createParkRequest), HttpStatus.OK);
     }
+
+    @GetMapping("testBackend")
+    public ResponseEntity<Object> testBackend() {
+        System.out.println("made it to the controller");
+        return new ResponseEntity<>("Hello", HttpStatus.OK);
+    }
 }
