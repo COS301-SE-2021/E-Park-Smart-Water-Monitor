@@ -8,8 +8,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 
 import java.util.UUID;
 
-@Repository("SiteRepo")
-public interface SiteRepo extends Neo4jRepository<WaterSite, UUID>
+@Repository("WaterSiteRepo")
+public interface WaterSiteRepo extends Neo4jRepository<WaterSite, UUID>
 {
     WaterSite findByWaterSiteName(String SiteName);
 }

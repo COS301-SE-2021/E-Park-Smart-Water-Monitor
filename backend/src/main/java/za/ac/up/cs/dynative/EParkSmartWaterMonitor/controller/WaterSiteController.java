@@ -6,34 +6,34 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.Site;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.SiteService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
 
 @RestController
 @RequestMapping("/api/sites")
-public class SiteController {
+public class WaterSiteController {
 
-    SiteService siteService;
+    WaterSiteService waterSiteService;
 
     @Autowired
-    SiteController(@Qualifier("SiteServiceImpl") SiteService devicesService){
-        this.siteService = devicesService;
+    WaterSiteController(@Qualifier("WaterSiteServiceImpl") WaterSiteService devicesService){
+        this.waterSiteService = devicesService;
     }
 
     @PostMapping("/addSite")
     public ResponseEntity<Object> addSite(@RequestBody AddSiteRequest addSiteRequest) {
-        return new ResponseEntity<>(siteService.addSite(addSiteRequest),HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(waterSiteService.addSite(addSiteRequest),HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/getAllSites")
-    public java.util.Collection<Site> getDevice() {
-        return siteService.getAll();
+    public java.util.Collection<WaterSite> getDevice() {
+        return waterSiteService.getAll();
     }
 
-
     @GetMapping("getSite")
-    public Site getSite() {
-      return  siteService.findSite();
+    public WaterSite getSite() {
+      return  null;
     }
 
 }
