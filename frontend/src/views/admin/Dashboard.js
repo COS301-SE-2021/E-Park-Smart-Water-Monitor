@@ -184,7 +184,17 @@ function Dashboard() {
                     />
                     <Marker position={[-25.8825,28.2639 ]}>
                       <Popup>
-                        Rietvlei Nature Reserve. <br /> Pretoria.
+                        Site Buffalo
+                      </Popup>
+                    </Marker>
+                    <Marker position={[-25.8840,28.27 ]}>
+                      <Popup>
+                        Site Rhino
+                      </Popup>
+                    </Marker>
+                    <Marker position={[-25.89,28.28 ]}>
+                      <Popup>
+                        Site Cheetah
                       </Popup>
                     </Marker>
                   </MapContainer>
