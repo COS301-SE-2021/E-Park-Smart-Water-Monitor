@@ -2,10 +2,10 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.measurement;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.SourceData;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.SourceDataRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
@@ -13,13 +13,18 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevic
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWaterSourceDeviceResponse;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service("DeviceServiceImpl")
 public class DevicesServicesImpl implements DevicesService {
@@ -27,12 +32,12 @@ public class DevicesServicesImpl implements DevicesService {
     private DeviceRepo deviceRepo;
     private ParkService parkService;
     private WaterSiteService waterSiteService;
-    private MeasurementRepo measurementRepo;
+    private SourceDataRepo sourceDataRepo;
 
-    public DevicesServicesImpl(@Qualifier("DeviceRepo") DeviceRepo deviceRepo,@Qualifier("ParkService") ParkService parkService, @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService, @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo) {
+    public DevicesServicesImpl(@Qualifier("DeviceRepo") DeviceRepo deviceRepo,@Qualifier("ParkService") ParkService parkService, @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService, @Qualifier("SourceDataRepo") SourceDataRepo sourceDataRepo) {
         this.deviceRepo = deviceRepo;
         this.parkService = parkService;
-        this.measurementRepo = measurementRepo;
+        this.sourceDataRepo = sourceDataRepo;
         this.waterSiteService=waterSiteService;
     }
 
@@ -86,28 +91,20 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     @Override
-    public ReceiveDeviceDataResponse receiveWaterDeviceData(List<ReceiveDeviceDataRequest> request) {
-        WaterSourceDevice device = deviceRepo.findWaterSourceDeviceByDeviceName(request.get(0).getDeviceName());
+    public ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request) {
+        WaterSourceDevice device = deviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName());
         ReceiveDeviceDataResponse response = new ReceiveDeviceDataResponse();
         if (!device.getDeviceName().equals("")) {
-
-            measurement data;
-            for (int i = 0; i <request.size() ; i++)
-            {
-                data = new measurement(request.get(i).getType(), request.get(i).getUnitOfMeasurement(), request.get(i).getValue(),request.get(i).getDeviceDateTime(), new Date());
-                device.addDeviceDataProduced(data);
-                measurementRepo.save(data);
-            }
-            deviceRepo.save(device);
-
-
+            SourceData data = new SourceData(request.getWaterLevel(),request.getWaterQuality(), request.getWaterTemperature(), request.getDeviceDateTime(), new Date());
             response.setStatus(
                     "Successfully added data send from ESP: "
-                            + request.get(0).getDeviceName()
+                            + request.getDeviceName()
                             + "sent at: "
-                            + request.get(0).getDeviceDateTime());
+                            + request.getDeviceDateTime());
             response.setSuccess(true);
-
+            device.addDeviceDataProduced(data);
+            sourceDataRepo.save(data);
+            deviceRepo.save(device);
         }
         else {
             response.setSuccess(false);
