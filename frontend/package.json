@@ -4,7 +4,6 @@
   "author": "Creative Tim",
   "license": "MIT",
   "description": "Material UI version of Argon Dashboard React by Creative Tim",
-  "homepage": "https://demos.creative-tim.com/argon-dashboard-material-ui/#/admin/dashboard",
   "bugs": {
     "url": "https://github.com/creativetimofficial/argon-dashboard-material-ui/issues"
   },
@@ -64,18 +63,11 @@
   "optionalDependencies": {
     "typescript": "4.1.5"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
   "devDependencies": {
     "@types/leaflet": "^1.7.0",
     "eslint": "7.20.0",
