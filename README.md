@@ -35,7 +35,7 @@
 <h2 align="center">
   <a href="https://github.com/COS301-SE-2021/E-Park-Smart-Water-Monitor/projects/1">Project</a>
   <span> · </span>
-  <a href="/">SRS</a>
+  <a href="https://drive.google.com/drive/folders/1JtEAoGzD2fdj7B_4H0G4I81tGimblV0U?usp=sharing">SRS</a>
   <span> · </span>
   <a href="https://drive.google.com/drive/folders/1HRHIfULwivVIk_WgBqOFxxoT9gDwKCS2?usp=sharing">Demo Videos</a>
 </h2>
