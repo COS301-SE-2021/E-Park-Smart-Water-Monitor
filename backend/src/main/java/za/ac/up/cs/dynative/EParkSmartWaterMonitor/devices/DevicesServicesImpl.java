@@ -2,7 +2,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.SourceData;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.measurement;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.SourceDataRepo;
@@ -13,11 +13,9 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevic
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWaterSourceDeviceResponse;
 
@@ -95,7 +93,7 @@ public class DevicesServicesImpl implements DevicesService {
         WaterSourceDevice device = deviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName());
         ReceiveDeviceDataResponse response = new ReceiveDeviceDataResponse();
         if (!device.getDeviceName().equals("")) {
-            SourceData data = new SourceData(request.getWaterLevel(),request.getWaterQuality(), request.getWaterTemperature(), request.getDeviceDateTime(), new Date());
+            measurement data = new measurement(request.getType(), request.getUnitOfMeasurement(), request.getValue(),request.getDeviceDateTime(), new Date());
             response.setStatus(
                     "Successfully added data send from ESP: "
                             + request.getDeviceName()
