@@ -53,14 +53,6 @@ public class WaterSite {
         this.id = id;
     }
 
-    public String getwaterSiteName() {
-        return waterSiteName;
-    }
-
-    public void setwaterSiteName(String waterSiteName) {
-        this.waterSiteName = waterSiteName;
-    }
-
     public double getLatitude() {
         return latitude;
     }

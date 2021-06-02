@@ -16,30 +16,27 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.SiteRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWaterSourceDeviceResponse;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service("DeviceSeriviceImpl")
+@Service("DeviceServiceImpl")
 public class DevicesServicesImpl implements DevicesService {
 
     private DeviceRepo deviceRepo;
-    private ParkService parkService;
-    private SiteRepo siteRepo;
+    private WaterSiteService waterSiteService;
     private SourceDataRepo sourceDataRepo;
 
-    public DevicesServicesImpl(@Qualifier("DeviceRepo") DeviceRepo deviceRepo,
-                               @Qualifier("ParkService") ParkService parkService,
-                               @Qualifier("SiteRepo") SiteRepo siteRepo,
-                               @Qualifier("SourceDataRepo") SourceDataRepo sourceDataRepo) {
+    public DevicesServicesImpl(@Qualifier("DeviceRepo") DeviceRepo deviceRepo, @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService, @Qualifier("SourceDataRepo") SourceDataRepo sourceDataRepo) {
         this.deviceRepo = deviceRepo;
-        this.parkService = parkService;
-        this.siteRepo = siteRepo;
         this.sourceDataRepo = sourceDataRepo;
+        this.waterSiteService=waterSiteService;
     }
 
     public Collection<WaterSourceDevice> getAll() {
@@ -53,19 +50,18 @@ public class DevicesServicesImpl implements DevicesService {
         WaterSourceDevice device = deviceRepo.findWaterSourceDeviceByDeviceName(addWSDRequest.getDeviceName());
         if (device==null)
         {
-            //@Qualifier("ParkRepo") ParkRepo parkRepo
-            Optional<WaterSite> waterSiteToAddToSite = siteRepo.findById(addWSDRequest.getSiteId());
-            if (waterSiteToAddToSite.isEmpty())
+
+            AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse= waterSiteService.attachWaterSourceDevice( new AttachWaterSourceDeviceRequest(addWSDRequest.getSiteId(),newDevice));
+
+            if (!attachWaterSourceDeviceResponse.getSuccess())
             {
                 response.setSuccess(false);
                 response.setStatus("The water site "+addWSDRequest.getSiteId()+" does not exist.");
             }
             else
             {
-                waterSiteToAddToSite.get().addWaterSourceDevice(newDevice);
 
                 deviceRepo.save(newDevice);
-                siteRepo.save(waterSiteToAddToSite.get());
                 response.setSuccess(true);
                 response.setStatus("Device "+addWSDRequest.getDeviceName()+"successfully added");
             }
@@ -79,11 +75,6 @@ public class DevicesServicesImpl implements DevicesService {
 
         return response;
 
-        //        WaterSourceDevice waterSourceDevice = new WaterSourceDevice("Water Device");
-//        WaterSourceDevice otherWaterSourceDevice = new WaterSourceDevice("Other Water Device");
-//
-//        deviceRepo.save(waterSourceDevice);
-//        deviceRepo.save(otherWaterSourceDevice);
     }
 
     public Optional<WaterSourceDevice> findDevice() {
