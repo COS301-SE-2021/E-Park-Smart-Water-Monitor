@@ -12,15 +12,16 @@ public class InfrastructureDevice {
     private UUID deviceId;
     private String deviceModel;
     private String deviceName;
-    private double longitude;
-    private double latitude;
+    private DeviceData deviceData;
 
-    public InfrastructureDevice(String deviceModel, String deviceName, double longitude, double latitude) {
-        this.deviceId = UUID.randomUUID();;
+
+    public InfrastructureDevice(String deviceModel,
+                                String deviceName,
+                                DeviceData deviceData) {
+        this.deviceId = UUID.randomUUID();
         this.deviceModel = deviceModel;
         this.deviceName = deviceName;
-        this.longitude = longitude;
-        this.latitude = latitude;
+        this.deviceData = deviceData;
     }
 
     public InfrastructureDevice() {
@@ -50,19 +51,7 @@ public class InfrastructureDevice {
         this.deviceName = deviceName;
     }
 
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public DeviceData getDeviceData() {
+        return deviceData;
     }
 }

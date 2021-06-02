@@ -9,10 +9,11 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDevi
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface DevicesService {
-    ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request);
+    ReceiveDeviceDataResponse receiveWaterDeviceData(List<ReceiveDeviceDataRequest> request);
     AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest);
     Collection<WaterSourceDevice> getAll();
     Optional<WaterSourceDevice> findDevice();

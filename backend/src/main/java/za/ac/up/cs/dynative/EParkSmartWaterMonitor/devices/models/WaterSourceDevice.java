@@ -3,7 +3,7 @@ import org.springframework.data.neo4j.core.schema.Id;
         import org.springframework.data.neo4j.core.schema.Node;
         import org.springframework.data.neo4j.core.schema.Relationship;
 
-        import java.util.HashSet;
+import java.util.HashSet;
         import java.util.Set;
         import java.util.UUID;
 
@@ -15,31 +15,36 @@ public class WaterSourceDevice
     private UUID    deviceId;
     private String  deviceModel;
     private String  deviceName;
-    private double  longitude;
-    private double  latitude;
+    private DeviceData deviceData;
 
     @Relationship(type = "PRODUCES", direction = Relationship.Direction.OUTGOING)
-    private Set<SourceData> deviceDataProduced;
+    private Set<Measurement> measurementSet;
 
-    public WaterSourceDevice(String deviceName, String deviceModel,double  longitude,double  latitude)
+    public WaterSourceDevice(String deviceName,
+                             String deviceModel,
+                             double longitude,
+                             double latitude)
     {
         this.deviceId    = UUID.randomUUID();
         this.deviceName  = deviceName;
         this.deviceModel = deviceModel;
-        this.longitude   = longitude;
-        this.latitude    = latitude;
+        this.deviceData = new DeviceData();
+        this.deviceData.setLatitude(latitude);
+        this.deviceData.setLatitude(longitude);
     }
+
+
 
     public WaterSourceDevice()
     {
 
     }
 
-    public void addDeviceDataProduced(SourceData data) {
-        if (deviceDataProduced == null) {
-            deviceDataProduced = new HashSet<>();
+    public void addDeviceDataProduced(Measurement data) {
+        if (measurementSet == null) {
+            measurementSet = new HashSet<>();
         }
-        deviceDataProduced.add(data);
+        measurementSet.add(data);
     }
 
     public String getDeviceName()
@@ -59,22 +64,6 @@ public class WaterSourceDevice
         this.deviceName = deviceName;
     }
 
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
     public UUID getDeviceId() {
         return deviceId;
     }
@@ -83,4 +72,19 @@ public class WaterSourceDevice
         this.deviceId = deviceId;
     }
 
+    public DeviceData getDeviceData() {
+        return deviceData;
+    }
+
+    public void setDeviceData(DeviceData deviceData) {
+        this.deviceData = deviceData;
+    }
+
+    public Set<Measurement> getMeasurementSet() {
+        return measurementSet;
+    }
+
+    public void setMeasurementSet(Set<Measurement> measurementSet) {
+        this.measurementSet = measurementSet;
+    }
 }

@@ -11,6 +11,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSour
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -26,10 +27,9 @@ public class DeviceController {
     }
 
     @PostMapping("/receiveDeviceData")
-    public ResponseEntity<Object> receiveWaterDeviceData(@RequestBody ReceiveDeviceDataRequest request) {
+    public ResponseEntity<Object> receiveWaterDeviceData(@RequestBody List<ReceiveDeviceDataRequest> request) {
         return new ResponseEntity<>(devicesService.receiveWaterDeviceData(request),HttpStatus.OK);
     }
-
     @GetMapping("/getDevice")
     public java.util.Collection<WaterSourceDevice> getDevice() {
         return devicesService.getAll();
