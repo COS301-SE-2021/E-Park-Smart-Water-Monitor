@@ -18,7 +18,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service("DeviceSeriviceImpl")
+@Service("DeviceServiceImpl")
 public class DevicesServicesImpl implements DevicesService {
 
     private DeviceRepo deviceRepo;
@@ -57,7 +57,7 @@ public class DevicesServicesImpl implements DevicesService {
                 deviceRepo.save(newDevice);
                 siteRepo.save(waterSiteToAddToSite.get());
                 response.setSuccess(true);
-                response.setStatus("Device "+addWSDRequest.getDeviceName()+"successfully added");
+                response.setStatus("Device "+addWSDRequest.getDeviceName()+" successfully added");
             }
 
         }

@@ -20,7 +20,7 @@ public class DeviceController {
 
 
     @Autowired
-    DeviceController(@Qualifier("DeviceSeriviceImpl") DevicesService devicesService){
+    DeviceController(@Qualifier("DeviceServiceImpl") DevicesService devicesService){
         this.devicesService = devicesService;
     }
 
