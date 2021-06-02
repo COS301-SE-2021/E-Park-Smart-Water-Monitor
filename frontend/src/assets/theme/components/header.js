@@ -2,7 +2,7 @@ const componentStyles = (theme) => ({
   header: {
     position: "relative",
     background:
-      "linear-gradient(87deg," + theme.palette.info.main + ",#1171ef)",
+      "linear-gradient(87deg, #4B7B71, #17292D)",
     paddingBottom: "8rem",
     paddingTop: "3rem",
     [theme.breakpoints.up("md")]: {
