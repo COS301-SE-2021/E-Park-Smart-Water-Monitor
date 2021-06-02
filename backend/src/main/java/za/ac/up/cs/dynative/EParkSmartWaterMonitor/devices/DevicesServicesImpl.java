@@ -30,11 +30,13 @@ import java.util.UUID;
 public class DevicesServicesImpl implements DevicesService {
 
     private DeviceRepo deviceRepo;
+    private ParkService parkService;
     private WaterSiteService waterSiteService;
     private SourceDataRepo sourceDataRepo;
 
-    public DevicesServicesImpl(@Qualifier("DeviceRepo") DeviceRepo deviceRepo, @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService, @Qualifier("SourceDataRepo") SourceDataRepo sourceDataRepo) {
+    public DevicesServicesImpl(@Qualifier("DeviceRepo") DeviceRepo deviceRepo,@Qualifier("ParkService") ParkService parkService, @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService, @Qualifier("SourceDataRepo") SourceDataRepo sourceDataRepo) {
         this.deviceRepo = deviceRepo;
+        this.parkService = parkService;
         this.sourceDataRepo = sourceDataRepo;
         this.waterSiteService=waterSiteService;
     }
