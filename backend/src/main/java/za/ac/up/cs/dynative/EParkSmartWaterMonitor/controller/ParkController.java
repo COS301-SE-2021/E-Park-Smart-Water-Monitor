@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
 
 
 @RestController
@@ -23,5 +24,10 @@ public class ParkController {
     @PostMapping("/addPark")
     public ResponseEntity<Object> addPark(@RequestBody CreateParkRequest createParkRequest) {
         return new ResponseEntity<>(parkService.createPark(createParkRequest), HttpStatus.OK);
+    }
+
+    @PostMapping("getParkWaterSites")
+    public ResponseEntity<Object> getParkWaterSites(@RequestBody GetParkSitesRequest getParkSitesRequest) {
+        return new ResponseEntity<>(parkService.getParkWaterSites(getParkSitesRequest),HttpStatus.OK);
     }
 }
