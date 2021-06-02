@@ -85,6 +85,15 @@ function Dashboard() {
 
    */
 
+
+  // CHART 2 - Bar Chart
+  console.log("chartExample2.data")
+  console.log(chartExample2.data)
+  console.log("chartExample2.options")
+  console.log(chartExample2.options)
+
+
+
   const newChartData = function chartData() {
     return {
       // labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -124,7 +133,7 @@ function Dashboard() {
       >
 
         <Grid container
-              marginBottom="3rem!important">
+              >
 
           {/*MAP*/}
           <Grid
@@ -190,16 +199,16 @@ function Dashboard() {
           <Grid item
                 xs={12}
                 xl={4}
-                marginBottom="3rem!important"
+
           >
             <Card classes={{ root: classes.cardRoot }}>
               <CardHeader
                   title={
                     <Box component="span" color={theme.palette.gray[600]}>
-                      Performane
+                      Inspections
                     </Box>
                   }
-                  subheader="Total orders"
+                  subheader="Water Refills"
                   classes={{ root: classes.cardHeaderRoot }}
                   titleTypographyProps={{
                     component: Box,
@@ -242,7 +251,7 @@ function Dashboard() {
               <CardHeader
                   title={
                     <Box component="span" color={theme.palette.gray[600]}>
-                      Performane
+                      Inspections
                     </Box>
                   }
                   subheader="Total orders"
