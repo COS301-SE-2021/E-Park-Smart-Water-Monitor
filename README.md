@@ -54,9 +54,9 @@
 
 * master
     * development
-        * feature/FE## (frontend feature, ticket number ##)
-        * bugfix/BE## (backend bug, ticket number ##)
-        * test/MC## (microcontroller test addition, ticket number ##)
+        * feature/FE (frontend feature)
+        * bugfix/BE (backend bugfix)
+        * test/MC (microcontroller test addition)
         * ...
 
 <h2>💡 Technologies</h2>
