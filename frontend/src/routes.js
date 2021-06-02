@@ -6,7 +6,6 @@ import Maps from "views/admin/Maps.js";
 import Profile from "views/admin/Profile.js";
 import Register from "views/auth/Register.js";
 import Tables from "views/admin/Tables.js";
-import Device from "views/device/Device";
 // @material-ui/icons components
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Dns from "@material-ui/icons/Dns";
@@ -33,13 +32,6 @@ var routes = [
     iconColor: "Primary",
     component: Dashboard,
     layout: "/admin",
-  },
-  {
-    path: "/device",
-    name: "Device",
-    icon: Tv,
-    iconColor: "Primary",
-    component: Device
   },
   {
     path: "/icons",
