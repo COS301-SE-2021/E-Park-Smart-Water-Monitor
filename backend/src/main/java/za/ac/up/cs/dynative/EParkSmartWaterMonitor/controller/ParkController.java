@@ -9,7 +9,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api/park")
 public class ParkController {

@@ -14,6 +14,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDevic
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/devices")
 public class DeviceController {
