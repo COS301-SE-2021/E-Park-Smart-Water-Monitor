@@ -3,7 +3,6 @@ import org.springframework.data.neo4j.core.schema.Id;
         import org.springframework.data.neo4j.core.schema.Node;
         import org.springframework.data.neo4j.core.schema.Relationship;
 
-import javax.xml.crypto.Data;
 import java.util.HashSet;
         import java.util.Set;
         import java.util.UUID;
@@ -19,7 +18,7 @@ public class WaterSourceDevice
     private DeviceData deviceData;
 
     @Relationship(type = "PRODUCES", direction = Relationship.Direction.OUTGOING)
-    private Set<Measurement> deviceDataProduced;
+    private Set<Measurement> measurementSet;
 
     public WaterSourceDevice(String deviceName,
                              String deviceModel,
@@ -42,10 +41,10 @@ public class WaterSourceDevice
     }
 
     public void addDeviceDataProduced(Measurement data) {
-        if (deviceDataProduced == null) {
-            deviceDataProduced = new HashSet<>();
+        if (measurementSet == null) {
+            measurementSet = new HashSet<>();
         }
-        deviceDataProduced.add(data);
+        measurementSet.add(data);
     }
 
     public String getDeviceName()
@@ -81,11 +80,11 @@ public class WaterSourceDevice
         this.deviceData = deviceData;
     }
 
-    public Set<SourceData> getDeviceDataProduced() {
-        return deviceDataProduced;
+    public Set<Measurement> getMeasurementSet() {
+        return measurementSet;
     }
 
-    public void setDeviceDataProduced(Set<SourceData> deviceDataProduced) {
-        this.deviceDataProduced = deviceDataProduced;
+    public void setMeasurementSet(Set<Measurement> measurementSet) {
+        this.measurementSet = measurementSet;
     }
 }
