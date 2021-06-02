@@ -7,5 +7,5 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.measurement;
 import java.util.UUID;
 
 @Repository("SourceDataRepo")
-public interface SourceDataRepo extends Neo4jRepository<measurement, UUID> {
+public interface MeasurementRepo extends Neo4jRepository<measurement, UUID> {
 }
