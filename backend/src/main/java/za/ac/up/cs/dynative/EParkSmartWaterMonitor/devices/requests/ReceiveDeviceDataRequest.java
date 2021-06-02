@@ -2,27 +2,29 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Date;
+
 public class ReceiveDeviceDataRequest {
 
     private String deviceName;
-    private double waterLevel;
-    private double waterQuality;
-    private double waterTemperature;
+    private double value;
+    private String unitOfMeasurement;
     private String deviceDateTime;
+    private String type;
 
-    public ReceiveDeviceDataRequest(@JsonProperty("deviceName") String deviceName,
-                                    @JsonProperty("waterLevel") double waterLevel,
-                                    @JsonProperty("waterQuality") double waterQuality,
-                                    @JsonProperty("waterTemperature") double waterTemperature,
-                                    @JsonProperty("deviceDateTime") String deviceDateTime) {
+    public ReceiveDeviceDataRequest(
+                                            @JsonProperty("deviceName") String deviceName,
+                                            @JsonProperty("type") String type,
+                                            @JsonProperty("value") double value,
+                                            @JsonProperty("unitOfMeasurement") String unitOfMeasurement,
+                                            @JsonProperty("deviceDateTime") String deviceDateTime
+                                    )
+    {
         this.deviceName = deviceName;
-        this.waterLevel = waterLevel;
-        this.waterQuality = waterQuality;
-        this.waterTemperature = waterTemperature;
+        this.value = value;
+        this.unitOfMeasurement = unitOfMeasurement;
+        this.type = type;
         this.deviceDateTime = deviceDateTime;
-    }
-
-    public ReceiveDeviceDataRequest() {
     }
 
     public String getDeviceName() {
@@ -33,28 +35,20 @@ public class ReceiveDeviceDataRequest {
         this.deviceName = deviceName;
     }
 
-    public double getWaterLevel() {
-        return waterLevel;
+    public double getValue() {
+        return value;
     }
 
-    public void setWaterLevel(double waterLevel) {
-        this.waterLevel = waterLevel;
+    public void setValue(double value) {
+        this.value = value;
     }
 
-    public double getWaterQuality() {
-        return waterQuality;
+    public String getUnitOfMeasurement() {
+        return unitOfMeasurement;
     }
 
-    public void setWaterQuality(double waterQuality) {
-        this.waterQuality = waterQuality;
-    }
-
-    public double getWaterTemperature() {
-        return waterTemperature;
-    }
-
-    public void setWaterTemperature(double waterTemperature) {
-        this.waterTemperature = waterTemperature;
+    public void setUnitOfMeasurement(String unitOfMeasurement) {
+        this.unitOfMeasurement = unitOfMeasurement;
     }
 
     public String getDeviceDateTime() {
@@ -63,5 +57,13 @@ public class ReceiveDeviceDataRequest {
 
     public void setDeviceDateTime(String deviceDateTime) {
         this.deviceDateTime = deviceDateTime;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
