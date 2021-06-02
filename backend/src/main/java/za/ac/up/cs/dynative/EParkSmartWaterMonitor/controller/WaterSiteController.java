@@ -9,6 +9,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.Site;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
 
 @RestController
 @RequestMapping("/api/sites")
@@ -31,9 +33,10 @@ public class WaterSiteController {
         return waterSiteService.getAll();
     }
 
-    @GetMapping("getSite")
-    public WaterSite getSite() {
-      return  null;
+    @PostMapping("getSite")
+    public ResponseEntity<Object> getSite(@RequestBody GetSiteByIdRequest request) {
+
+      return  new ResponseEntity<>(waterSiteService.getSiteById(request),HttpStatus.ACCEPTED);
     }
 
 }
