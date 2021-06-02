@@ -353,7 +353,7 @@ function Dashboard() {
                         variant="h3"
                         marginBottom="0!important"
                       >
-                        Page visits
+                        Device Details
                       </Box>
                     </Grid>
                     <Grid item xs="auto">
