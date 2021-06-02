@@ -7,9 +7,11 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.CreateParkResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetParkSitesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.SaveParkResponse;
 
 import java.util.UUID;
@@ -58,5 +60,23 @@ public class ParkServiceImpl implements ParkService {
             return new SaveParkResponse("Saved park successfully",true);
         }
         return new SaveParkResponse("Error in saving park!",false);
+    }
+
+    @Override
+    public GetParkSitesResponse getParkWaterSites(GetParkSitesRequest request) {
+        GetParkSitesResponse response = new GetParkSitesResponse();
+        if (request.getParkId() != null) {
+            Park park = parkRepo.findParkById(request.getParkId());
+            if (park!=null) {
+                response.setSite(park.getParkWaterSites());
+                response.setSuccess(true);
+                response.setStatus("Park Sites and their IoT devices");
+            }
+        }
+        else {
+            response.setStatus("Failed to the sites!");
+            response.setSuccess(false);
+        }
+        return response;
     }
 }
