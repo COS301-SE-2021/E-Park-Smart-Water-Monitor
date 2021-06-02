@@ -242,52 +242,52 @@ function Dashboard() {
 
         <Grid container component={Box} marginTop="3rem!important">
 
-          {/*SECOND BAR GRAPH*/}
-          <Grid item
-                xs={12}
-                xl={4}
-                marginBottom="3rem!important">
-            <Card classes={{ root: classes.cardRoot }}>
-              <CardHeader
-                  title={
-                    <Box component="span" color={theme.palette.gray[600]}>
-                      Inspections
-                    </Box>
-                  }
-                  subheader="Total orders"
-                  classes={{ root: classes.cardHeaderRoot }}
-                  titleTypographyProps={{
-                    component: Box,
-                    variant: "h6",
-                    letterSpacing: ".0625rem",
-                    marginBottom: ".25rem!important",
-                    classes: {
-                      root: classes.textUppercase,
-                    },
-                  }}
-                  subheaderTypographyProps={{
-                    component: Box,
-                    variant: "h2",
-                    marginBottom: "0!important",
-                    color: "initial",
-                  }}
-              ></CardHeader>
-              <CardContent>
-                <Box position="relative" height="350px">
-                  <Bar
-                      data={chartExample2.data}
-                      options={chartExample2.options}
-                  />
-                </Box>
-              </CardContent>
-            </Card>
-          </Grid>
+        {/*  /!*SECOND BAR GRAPH*!/*/}
+        {/*  <Grid item*/}
+        {/*        xs={12}*/}
+        {/*        xl={4}*/}
+        {/*        marginBottom="3rem!important">*/}
+        {/*    <Card classes={{ root: classes.cardRoot }}>*/}
+        {/*      <CardHeader*/}
+        {/*          title={*/}
+        {/*            <Box component="span" color={theme.palette.gray[600]}>*/}
+        {/*              Inspections*/}
+        {/*            </Box>*/}
+        {/*          }*/}
+        {/*          subheader="Total orders"*/}
+        {/*          classes={{ root: classes.cardHeaderRoot }}*/}
+        {/*          titleTypographyProps={{*/}
+        {/*            component: Box,*/}
+        {/*            variant: "h6",*/}
+        {/*            letterSpacing: ".0625rem",*/}
+        {/*            marginBottom: ".25rem!important",*/}
+        {/*            classes: {*/}
+        {/*              root: classes.textUppercase,*/}
+        {/*            },*/}
+        {/*          }}*/}
+        {/*          subheaderTypographyProps={{*/}
+        {/*            component: Box,*/}
+        {/*            variant: "h2",*/}
+        {/*            marginBottom: "0!important",*/}
+        {/*            color: "initial",*/}
+        {/*          }}*/}
+        {/*      ></CardHeader>*/}
+        {/*      <CardContent>*/}
+        {/*        <Box position="relative" height="350px">*/}
+        {/*          <Bar*/}
+        {/*              data={chartExample2.data}*/}
+        {/*              options={chartExample2.options}*/}
+        {/*          />*/}
+        {/*        </Box>*/}
+        {/*      </CardContent>*/}
+        {/*    </Card>*/}
+        {/*  </Grid>*/}
 
           {/*Line Graph*/}
           <Grid
             item
             xs={12}
-            xl={8}
+            xl={12}
             component={Box}
             marginBottom="3rem!important"
             classes={{ root: classes.gridItemRoot }}
@@ -323,7 +323,7 @@ function Dashboard() {
                         marginBottom="0!important"
                       >
                         <Box component="span" color={theme.palette.white.main}>
-                          Sales value
+                          Device Readings
                         </Box>
                       </Box>
                     </Grid>
