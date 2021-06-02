@@ -19,7 +19,7 @@ public class WaterSourceDevice
     private double  latitude;
 
     @Relationship(type = "PRODUCES", direction = Relationship.Direction.OUTGOING)
-    private Set<measurement> deviceDataProduced;
+    private Set<SourceData> deviceDataProduced;
 
     public WaterSourceDevice(String deviceName, String deviceModel,double  longitude,double  latitude)
     {
@@ -35,7 +35,7 @@ public class WaterSourceDevice
 
     }
 
-    public void addDeviceDataProduced(measurement data) {
+    public void addDeviceDataProduced(SourceData data) {
         if (deviceDataProduced == null) {
             deviceDataProduced = new HashSet<>();
         }
