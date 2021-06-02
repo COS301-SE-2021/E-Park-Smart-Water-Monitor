@@ -19,6 +19,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
+//import Axios from 'axios';
 // @material-ui/icons components
 // import ArrowDownward from "@material-ui/icons/ArrowDownward";
 // import ArrowUpward from "@material-ui/icons/ArrowUpward";
@@ -653,33 +654,49 @@ function Dashboard() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    <TableRow>
-                      <TableCell
-                        classes={{
-                          root:
-                            classes.tableCellRoot +
-                            " " +
-                            classes.tableCellRootBodyHead,
-                        }}
-                        component="th"
-                        variant="head"
-                        scope="row"
-                      >
-                        /argon/index.html
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        3,985
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        3,985
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        3,985
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        3,985
-                      </TableCell>
-                    </TableRow>
+                    {/*{Axios.post('localhost:8080/api/park/getParkWaterSites',{*/}
+                    {/*  parkId: "dda99bb7-4116-4e8a-ac35-9dad7e8c1b3f"}).*/}
+                    {/*    then(function (response) {*/}
+                    {/*      console.log(response);*/}
+                    {/*    })*/}
+                    {/*}*/}
+
+                    {/*{Axios.post('localhost:8080/api/park/getParkWaterSites', {*/}
+                    {/*parkId: "dda99bb7-4116-4e8a-ac35-9dad7e8c1b3f"})*/}
+                    {/*.then(function (response) {*/}
+                    {/*    response.map((values)=>(*/}
+                    {/*      <>*/}
+                    {/*        <TableRow>*/}
+                    {/*        <TableCell*/}
+                    {/*        classes={{*/}
+                    {/*          root:*/}
+                    {/*          classes.tableCellRoot +*/}
+                    {/*          " " +*/}
+                    {/*          classes.tableCellRootBodyHead,*/}
+                    {/*        }}*/}
+                    {/*        component="th"*/}
+                    {/*        variant="head"*/}
+                    {/*        scope="row"*/}
+                    {/*        >*/}
+                    {/*          {values.deviceName}*/}
+                    {/*        </TableCell>*/}
+                    {/*        <TableCell classes={{ root: classes.tableCellRoot }}>*/}
+                    {/*          {values.deviceData.latitude}*/}
+                    {/*        </TableCell>*/}
+                    {/*        <TableCell classes={{ root: classes.tableCellRoot }}>*/}
+                    {/*          {values.deviceData.longitude}*/}
+                    {/*        </TableCell>*/}
+                    {/*        <TableCell classes={{ root: classes.tableCellRoot }}>*/}
+                    {/*          {values.deviceData.deviceStatus}*/}
+                    {/*        </TableCell>*/}
+                    {/*        <TableCell classes={{ root: classes.tableCellRoot }}>*/}
+                    {/*          {values.deviceData.battery}*/}
+                    {/*        </TableCell>*/}
+                    {/*        </TableRow>*/}
+                    {/*      </>*/}
+                    {/*    ))*/}
+
+                    {/*})}*/}
                   </TableBody>
                 </Box>
               </TableContainer>
