@@ -28,12 +28,16 @@ public class WaterSourceDevice
         this.deviceId    = UUID.randomUUID();
         this.deviceName  = deviceName;
         this.deviceModel = deviceModel;
-        this.deviceData = new DeviceData();
+        this.deviceData  = new DeviceData();
+
         this.deviceData.setLatitude(latitude);
-        this.deviceData.setLatitude(longitude);
+        this.deviceData.setLongitude(longitude);
+        this.deviceData.setBattery(100);
+        this.deviceData.setDeviceStatus("FINE");
+        this.deviceData.setUpTime(100);
+        this.deviceData.setLifeTime(10);
+
     }
-
-
 
     public WaterSourceDevice()
     {
