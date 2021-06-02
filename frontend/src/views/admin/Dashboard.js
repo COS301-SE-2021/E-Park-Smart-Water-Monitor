@@ -53,6 +53,56 @@ function Dashboard() {
   const [activeNav, setActiveNav] = React.useState(1);
   const [chartExample1Data, setChartExample1Data] = React.useState("data1");
 
+  console.log("chartExample1Data: "+ chartExample1[chartExample1Data])
+  // chart data structure
+  /*
+    chartExample1Data: function data1() {
+    return {
+      labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      datasets: [{
+        label: "Performance",
+        data: [0, 20, 10, 30, 15, 40, 20, 60, 60]
+      }]
+    };
+  }
+  */
+
+  // Example
+  /*
+
+  data: {
+        datasets: [{
+            type: 'bar',
+            label: 'Bar Dataset',
+            data: [10, 20, 30, 40]
+        }, {
+            type: 'line',
+            label: 'Line Dataset',
+            data: [50, 50, 50, 50],
+        }],
+        labels: ['January', 'February', 'March', 'April']
+    },
+
+   */
+
+  const newChartData = function chartData() {
+    return {
+      // labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      datasets: [{
+        type: 'line',
+        label: 'Line Dataset',
+        data: [10, 20, 27, 40]
+      }, {
+        type: 'line',
+        label: 'Line Dataset',
+        data: [50, 50, 45, 50],
+        color: "orange"
+      }],
+      labels: ['January', 'February', 'March', 'April']
+    }
+  }
+
+
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
@@ -72,8 +122,6 @@ function Dashboard() {
         marginTop="-6rem"
         classes={{ root: classes.containerRoot }}
       >
-
-
 
         <Grid container
               marginBottom="3rem!important">
@@ -313,7 +361,8 @@ function Dashboard() {
               <CardContent>
                 <Box position="relative" height="350px">
                   <Line
-                    data={chartExample1[chartExample1Data]}
+                    // data={chartExample1[chartExample1Data]}
+                    data={newChartData}
                     options={chartExample1.options}
                     getDatasetAtEvent={(e) => console.log(e)}
                   />
