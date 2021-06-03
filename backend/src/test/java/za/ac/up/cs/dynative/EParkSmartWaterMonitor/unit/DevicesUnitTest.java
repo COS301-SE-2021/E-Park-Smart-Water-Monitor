@@ -5,9 +5,13 @@ import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevicesResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class DevicesUnitTest extends UnitTestBaseClass {
@@ -60,6 +64,55 @@ public class DevicesUnitTest extends UnitTestBaseClass {
 
         LOGGER.info("AddWaterSourceDeviceResponse status: " + response.getStatus());
         LOGGER.info("AddWaterSourceDeviceResponse success: " + response.getSuccess());
+    }
+
+    @Test
+    public void testReceiveWaterDeviceData() throws JsonProcessingException {
+        LOGGER.info("Testing ReceiveDeviceDataRequest construction");
+
+        String deviceName = "testDevice";
+        String type = "WATER_TEMP";
+        double value = 20.9;
+        String unitOfMeasurement = "Centigrade";
+        String deviceDateTime = "1-1-1997";
+
+        String jsonData = "{"
+                + "\"deviceName\" : \""
+                + deviceName
+                + "\","
+                + "\"type\" : \""
+                + type
+                + "\","
+                + "\"value\" : \""
+                + value
+                + "\","
+                + "\"unitOfMeasurement\" : \""
+                + unitOfMeasurement
+                + "\","
+                + "\"deviceDateTime\" : \""
+                + deviceDateTime
+                + "\""
+                + "}";
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        ReceiveDeviceDataRequest request = mapper.readValue(jsonData, ReceiveDeviceDataRequest.class);
+        assert (request != null);
+
+        List<ReceiveDeviceDataRequest> requestList = new ArrayList<ReceiveDeviceDataRequest>();
+        requestList.add(request);
+
+        LOGGER.info("DONE Testing ReceiveDeviceDataRequest construction");
+
+//        LOGGER.info("Testing receiveWaterDeviceData");
+//
+//        ReceiveDeviceDataResponse response = devicesService.receiveWaterDeviceData(requestList);
+//        assert (response != null);
+//
+//        LOGGER.info("DONE Testing receiveWaterDeviceData");
+//
+//        LOGGER.info("ReceiveDeviceDataResponse status: " + response.getStatus());
+//        LOGGER.info("ReceiveDeviceDataResponse success: " + response.getSuccess());
     }
 
 
