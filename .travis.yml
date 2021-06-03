@@ -1,9 +1,3 @@
-deploy:
-  provider: script
-  script: bash scripts/testScript.sh
-  on:
-    all_branches: true
-
 jobs:
   include:
     - language: nodejs
@@ -21,6 +15,7 @@ jobs:
         - cd backend
         - chmod +x mvnw
         - mkdir src/main/resources
-        - echo ${COVERALLS_REPO_TOKEN}
+        - echo hello
       script:
+        - echo hello
         - mvn test
