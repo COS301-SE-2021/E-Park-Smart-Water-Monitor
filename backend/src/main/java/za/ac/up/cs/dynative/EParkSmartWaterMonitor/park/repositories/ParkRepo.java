@@ -13,7 +13,7 @@ import java.util.UUID;
 @Repository("ParkRepo")
 public interface ParkRepo extends Neo4jRepository<Park, UUID> {
 
-    Park findParkByParkName(String parkName);
+    Collection<Park> findParkByParkName(String parkName);
     Park findParkById(UUID id);
 
 
