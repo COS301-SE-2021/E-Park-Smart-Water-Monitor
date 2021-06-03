@@ -3,10 +3,15 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.unit;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.CreateParkResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.SaveParkResponse;
+
+import java.util.UUID;
 
 public class ParkUnitTest extends UnitTestBaseClass {
 
@@ -82,5 +87,30 @@ public class ParkUnitTest extends UnitTestBaseClass {
         else {
             LOGGER.info("FindByParkNameResponse park name: " + response.getPark().getParkName());
         }
+    }
+
+    @Test
+    public void testSavePark() {
+        LOGGER.info("Testing SaveParkRequest construction");
+
+        String parkName = "testPark";
+        double latitude = 13.24;
+        double longitude = 41.32;
+        Park testPark = new Park(parkName, latitude, longitude);
+
+        SaveParkRequest request = new SaveParkRequest(testPark);
+        assert (request != null);
+
+        LOGGER.info("DONE Testing SaveParkRequest construction");
+
+        LOGGER.info("Testing savePark");
+
+        SaveParkResponse response = parkService.savePark(request);
+        assert (response != null);
+
+        LOGGER.info("DONE Testing savePark");
+
+        LOGGER.info("SaveParkResponse status: " + response.getStatus());
+        LOGGER.info("SaveParkResponse success: " + response.isSuccess());
     }
 }
