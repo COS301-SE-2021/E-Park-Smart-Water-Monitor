@@ -94,7 +94,7 @@ public class DevicesServicesImpl implements DevicesService {
             Measurement data;
             for (int i = 0; i <request.getMeasurements().size() ; i++)
             {
-                data = request.getMeasurements().get(i);//new Measurement(request.get(i).getType(), request.get(i).getUnitOfMeasurement(), request.get(i).getValue(),request.get(i).getDeviceDateTime());
+                data = request.getMeasurements().get(i);
                 device.addDeviceDataProduced(data);
                 measurementRepo.save(data);
             }
