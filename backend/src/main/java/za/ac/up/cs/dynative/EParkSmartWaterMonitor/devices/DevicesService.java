@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DevicesService {
-    ReceiveDeviceDataResponse receiveWaterDeviceData(List<ReceiveDeviceDataRequest> request);
+    ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request);
     AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest);
     Collection<WaterSourceDevice> getAll();
     Optional<WaterSourceDevice> findDevice();
