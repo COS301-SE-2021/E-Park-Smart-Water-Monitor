@@ -12,13 +12,13 @@ export default function DeviceData() {
 
     useEffect(() => {
         fetchResponse();
-        console.log(response.data);
+        console.log(response);
     }, []);
 
     const fetchResponse = () => {
         axios
             .post('http://localhost:8080/api/park/getParkWaterSites',
-                {parkId: "dda99bb7-4116-4e8a-ac35-9dad7e8c1b3f"})
+                {parkId: "40844ac0-b8f7-4a89-a9b9-285f0c097d49"})
             .then(res => setResponse(res))
     };
 
