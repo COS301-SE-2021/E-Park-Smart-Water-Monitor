@@ -1,9 +1,9 @@
 {
-  "name": "argon-dashboard-material-ui",
+  "name": "e-park water monitoring",
   "version": "1.0.0",
-  "author": "Creative Tim",
+  "author": "Dynatie",
   "license": "MIT",
-  "description": "Material UI version of Argon Dashboard React by Creative Tim",
+  "description": "An IoT water monitoring dashboard",
   "homepage": "https://demos.creative-tim.com/argon-dashboard-material-ui/#/admin/dashboard",
   "bugs": {
     "url": "https://github.com/creativetimofficial/argon-dashboard-material-ui/issues"
