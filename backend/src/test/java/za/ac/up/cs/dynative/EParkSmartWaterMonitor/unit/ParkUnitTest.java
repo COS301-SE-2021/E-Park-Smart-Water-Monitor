@@ -6,9 +6,11 @@ import org.junit.Test;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.CreateParkResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetParkSitesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.SaveParkResponse;
 
 import java.util.UUID;
@@ -112,5 +114,36 @@ public class ParkUnitTest extends UnitTestBaseClass {
 
         LOGGER.info("SaveParkResponse status: " + response.getStatus());
         LOGGER.info("SaveParkResponse success: " + response.isSuccess());
+    }
+
+    @Test
+    public void testGetParkWaterSites() throws JsonProcessingException {
+        LOGGER.info("Testing GetParkSitesRequest construction");
+
+        UUID parkId = UUID.randomUUID();
+
+        String jsonData = "{"
+                + "\"parkId\" : \""
+                + parkId
+                + "\""
+                + "}";
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        GetParkSitesRequest request = mapper.readValue(jsonData, GetParkSitesRequest.class);
+        assert (request != null);
+
+        LOGGER.info("DONE Testing GetParkSitesRequest construction");
+
+
+        LOGGER.info("Testing getParkWaterSites");
+
+        GetParkSitesResponse response = parkService.getParkWaterSites(request);
+        assert (response != null);
+
+        LOGGER.info("DONE Testing getParkWaterSites");
+
+        LOGGER.info("SaveParkResponse status: " + response.getStatus());
+        LOGGER.info("SaveParkResponse success: " + response.getSuccess());
     }
 }
