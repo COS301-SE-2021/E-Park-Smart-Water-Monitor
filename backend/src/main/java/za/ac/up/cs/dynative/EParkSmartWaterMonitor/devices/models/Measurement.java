@@ -11,13 +11,10 @@ public class Measurement {
 
     @Id
     private UUID dataId;
-
     private String type;
     private String unitOfMeasurement;
     private double value;
-
     String deviceDateTime;
-
     private Date dateTime;
 
     public Measurement(
