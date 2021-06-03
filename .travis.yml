@@ -14,8 +14,8 @@ jobs:
       before_install:
         - cd backend
         - chmod +x mvnw
-        - mkdir src/main/resources
       script:
+        - ls
         - echo hello
         - echo $COVERALLS_REPO_TOKEN
         - mvn test
