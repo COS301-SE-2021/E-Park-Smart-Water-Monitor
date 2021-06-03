@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.CreateParkResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
 
 public class ParkUnitTest extends UnitTestBaseClass {
 
@@ -45,5 +47,40 @@ public class ParkUnitTest extends UnitTestBaseClass {
 
         LOGGER.info("CreateParkResponse status: " + response.getStatus());
         LOGGER.info("CreateParkResponse success: " + response.getSuccess());
+    }
+
+    @Test
+    public void testFindParkByName() throws JsonProcessingException {
+        LOGGER.info("Testing FindByParkNameRequest construction");
+
+        String testParkName = "testPark";
+
+        String jsonData = "{"
+                + "\"parkName\" : \""
+                + testParkName
+                + "\""
+                + "}";
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        FindByParkNameRequest request = mapper.readValue(jsonData, FindByParkNameRequest.class);
+        assert (request != null);
+
+        LOGGER.info("DONE Testing FindByParkNameRequest construction");
+
+
+        LOGGER.info("Testing findParkByName");
+
+        FindByParkNameResponse response = parkService.findParkByName(request);
+        assert (response != null);
+
+        LOGGER.info("DONE Testing findParkByName");
+
+        if (response.getPark() == null) {
+            LOGGER.info("No park found");
+        }
+        else {
+            LOGGER.info("FindByParkNameResponse park name: " + response.getPark().getParkName());
+        }
     }
 }
