@@ -1,8 +1,9 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.unit;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@SpringBootTest
 public class DevicesUnitTest extends UnitTestBaseClass {
     @Test
     public void testAddDevice() throws JsonProcessingException {
@@ -116,7 +118,7 @@ public class DevicesUnitTest extends UnitTestBaseClass {
     }
 
 
-    @Test
+   @Test
     public void testGetNumDevices() throws JsonProcessingException {
         LOGGER.info("Testing GetNumDevicesRequest construction");
 

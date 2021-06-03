@@ -3,6 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.unit;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
@@ -13,6 +14,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteBy
 
 import java.util.UUID;
 
+@SpringBootTest
 public class WaterSiteUnitTest extends UnitTestBaseClass {
     @Test
     public void testAddSite() throws JsonProcessingException {

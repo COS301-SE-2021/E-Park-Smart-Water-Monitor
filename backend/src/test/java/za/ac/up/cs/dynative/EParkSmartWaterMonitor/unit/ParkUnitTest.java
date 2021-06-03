@@ -3,6 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.unit;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
@@ -15,6 +16,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.SaveParkRespon
 
 import java.util.UUID;
 
+@SpringBootTest
 public class ParkUnitTest extends UnitTestBaseClass {
 
     @Test
