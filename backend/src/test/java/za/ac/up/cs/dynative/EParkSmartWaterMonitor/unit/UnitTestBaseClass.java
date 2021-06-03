@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesServicesImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.InfrastructureRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
@@ -12,6 +13,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.WaterSiteRepo;
 
 import javax.annotation.PostConstruct;
@@ -37,13 +39,23 @@ class UnitTestBaseClass {
     @Autowired
     WaterSiteRepo waterSiteRepo;
 
-    DevicesService devicesService;
-    ParkService parkService;
-    WaterSiteService waterSiteService;
+    DevicesServicesImpl devicesService;
+    ParkServiceImpl parkService;
+    WaterSiteServicesImpl waterSiteService;
 
     @PostConstruct
     void initialize(){
         LOGGER.info("Testing Constructing ParkService");
         parkService = new ParkServiceImpl(parkRepo);
+        assert (parkService != null);
+        LOGGER.info("DONE Testing Constructing ParkService");
+        LOGGER.info("Testing Constructing waterSiteService");
+        waterSiteService = new WaterSiteServicesImpl(parkService, waterSiteRepo);;
+        assert (waterSiteService != null);
+        LOGGER.info("DONE Testing Constructing waterSiteService");;
+        LOGGER.info("Testing Constructing devicesService");
+        devicesService = new DevicesServicesImpl(deviceRepo, parkService, waterSiteService, measurementRepo);
+        assert (devicesService != null);
+        LOGGER.info("DONE Testing Constructing devicesService");
     }
 }
