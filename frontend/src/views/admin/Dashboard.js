@@ -20,14 +20,14 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 
-import DeviceData from "components/DeviceData/DeviceData"
+import DeviceData from "components/Custom/DeviceData"
+import Map from "components/Cards/Map.js"
 //import Axios from 'axios';
 // @material-ui/icons components
 // import ArrowDownward from "@material-ui/icons/ArrowDownward";
 // import ArrowUpward from "@material-ui/icons/ArrowUpward";
 
-// Leaflet map
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+
 
 // core components
 import Header from "components/Headers/Header.js";
@@ -43,10 +43,7 @@ import componentStyles from "assets/theme/views/admin/dashboard.js";
 
 const useStyles = makeStyles(componentStyles);
 
-const mapStyles = {
-  width: `100%`,
-  height: `100%`
-};
+
 
 function Dashboard() {
   const classes = useStyles();
@@ -162,64 +159,65 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            <Card
-                // classes={{
-                //   root: classes.cardRoot + " " + classes.cardRootBgGradient,
-                // }}
-            >
-              <CardHeader
-                  title={
-                    <Box component="span" color={theme.palette.gray[600]}>
-                      device layout
-                    </Box>
-                  }
-                  subheader="Park Map"
-                  classes={{ root: classes.cardHeaderRoot }}
-                  titleTypographyProps={{
-                    component: Box,
-                    variant: "h6",
-                    letterSpacing: ".0625rem",
-                    marginBottom: ".25rem!important",
-                    classes: {
-                      root: classes.textUppercase,
-                    },
-                  }}
-                  subheaderTypographyProps={{
-                    component: Box,
-                    variant: "h2",
-                    marginBottom: "0!important",
-                    color: "initial",
-                  }}
-              ></CardHeader>
-              <CardContent>
+            <Map></Map>
+            {/*<Card*/}
+            {/*    // classes={{*/}
+            {/*    //   root: classes.cardRoot + " " + classes.cardRootBgGradient,*/}
+            {/*    // }}*/}
+            {/*>*/}
+            {/*  <CardHeader*/}
+            {/*      title={*/}
+            {/*        <Box component="span" color={theme.palette.gray[600]}>*/}
+            {/*          device layout*/}
+            {/*        </Box>*/}
+            {/*      }*/}
+            {/*      subheader="Park Map"*/}
+            {/*      classes={{ root: classes.cardHeaderRoot }}*/}
+            {/*      titleTypographyProps={{*/}
+            {/*        component: Box,*/}
+            {/*        variant: "h6",*/}
+            {/*        letterSpacing: ".0625rem",*/}
+            {/*        marginBottom: ".25rem!important",*/}
+            {/*        classes: {*/}
+            {/*          root: classes.textUppercase,*/}
+            {/*        },*/}
+            {/*      }}*/}
+            {/*      subheaderTypographyProps={{*/}
+            {/*        component: Box,*/}
+            {/*        variant: "h2",*/}
+            {/*        marginBottom: "0!important",*/}
+            {/*        color: "initial",*/}
+            {/*      }}*/}
+            {/*  ></CardHeader>*/}
+            {/*  <CardContent>*/}
 
-                <div style={ { height: 350 } }>
-                  {/*rietvlei centre*/}
-                  <MapContainer style={mapStyles} center={[-25.88536975144579, 28.277796392845673]} zoom={14} scrollWheelZoom={false}>
-                    <TileLayer
-                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <Marker position={[-25.8825,28.2639 ]}>
-                      <Popup>
-                        Site Buffalo
-                      </Popup>
-                    </Marker>
-                    <Marker position={[-25.8840,28.27 ]}>
-                      <Popup>
-                        Site Rhino
-                      </Popup>
-                    </Marker>
-                    <Marker position={[-25.89,28.28 ]}>
-                      <Popup>
-                        Site Cheetah
-                      </Popup>
-                    </Marker>
-                  </MapContainer>
-                </div>
+            {/*    <div style={ { height: 350 } }>*/}
+            {/*      /!*rietvlei centre*!/*/}
+            {/*      <MapContainer style={mapStyles} center={[-25.88536975144579, 28.277796392845673]} zoom={14} scrollWheelZoom={false}>*/}
+            {/*        <TileLayer*/}
+            {/*            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'*/}
+            {/*            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"*/}
+            {/*        />*/}
+            {/*        <Marker position={[-25.8825,28.2639 ]}>*/}
+            {/*          <Popup>*/}
+            {/*            Site Buffalo*/}
+            {/*          </Popup>*/}
+            {/*        </Marker>*/}
+            {/*        <Marker position={[-25.8840,28.27 ]}>*/}
+            {/*          <Popup>*/}
+            {/*            Site Rhino*/}
+            {/*          </Popup>*/}
+            {/*        </Marker>*/}
+            {/*        <Marker position={[-25.89,28.28 ]}>*/}
+            {/*          <Popup>*/}
+            {/*            Site Cheetah*/}
+            {/*          </Popup>*/}
+            {/*        </Marker>*/}
+            {/*      </MapContainer>*/}
+            {/*    </div>*/}
 
-              </CardContent>
-            </Card>
+            {/*  </CardContent>*/}
+            {/*</Card>*/}
           </Grid>
         </Grid>
 
