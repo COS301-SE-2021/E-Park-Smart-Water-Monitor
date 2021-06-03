@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevicesResponse;
 
 import java.util.UUID;
 
@@ -58,5 +60,36 @@ public class DevicesUnitTest extends UnitTestBaseClass {
 
         LOGGER.info("AddWaterSourceDeviceResponse status: " + response.getStatus());
         LOGGER.info("AddWaterSourceDeviceResponse success: " + response.getSuccess());
+    }
+
+
+    @Test
+    public void testGetNumDevices() throws JsonProcessingException {
+        LOGGER.info("Testing GetNumDevicesRequest construction");
+
+        String parkName = "testPark";
+
+        String jsonData = "{"
+                + "\"parkName\" : \""
+                + parkName
+                + "\""
+                + "}";
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        GetNumDevicesRequest request = mapper.readValue(jsonData, GetNumDevicesRequest.class);
+        assert (request != null);
+
+        LOGGER.info("DONE Testing GetNumDevicesRequest construction");
+
+        LOGGER.info("Testing getNumDevices");
+
+        GetNumDevicesResponse response = devicesService.getNumDevices(request);
+        assert (response != null);
+
+        LOGGER.info("DONE Testing getNumDevices");
+
+        LOGGER.info("GetNumDevicesResponse numDevices: " + response.getNumDevices());
+        LOGGER.info("GetNumDevicesResponse success: " + response.isSuccess());
     }
 }
