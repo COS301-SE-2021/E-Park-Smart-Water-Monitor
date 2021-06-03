@@ -1,6 +1,6 @@
 deploy:
   provider: script
-  script: echo "hello"
+  script: bash scripts/testScript.sh
 
 
 jobs:
