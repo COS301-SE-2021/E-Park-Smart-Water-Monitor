@@ -104,7 +104,7 @@ public class DevicesServicesImpl implements DevicesService {
             response.setStatus(
                     "Successfully added data send from ESP: "
                             + request.getDeviceName()
-                            + "sent at: "
+                            + " sent at: "
                             + request.getMeasurements().get(0).getDeviceDateTime());
             response.setSuccess(true);
 

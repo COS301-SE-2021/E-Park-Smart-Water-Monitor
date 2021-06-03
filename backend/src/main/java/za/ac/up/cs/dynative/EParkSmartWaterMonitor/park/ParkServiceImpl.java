@@ -34,7 +34,7 @@ public class ParkServiceImpl implements ParkService {
             Park park = new Park(request.getParkName(),request.getLatitude(),request.getLongitude());
             parkRepo.save(park);
 
-            response.setStatus("Park Added!");
+            response.setStatus("Park "+request.getParkName()+" Added!");
             response.setSuccess(true);
         }
         else {
