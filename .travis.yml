@@ -16,7 +16,7 @@ jobs:
         - chmod +x mvnw
       script:
         - mkdir src/main/resources
-        - echo "spring.neo4j.uri=${$NEO_URL}" >> src/main/resources/application.properties
+        - echo "spring.neo4j.uri=${NEO_URL}" > src/main/resources/application.properties
         - echo "spring.neo4j.authentication.username=${NEO_USERNAME}" >> src/main/resources/application.properties
         - echo "spring.neo4j.authentication.password=${NEO_PASS}" >> src/main/resources/application.properties
         - cat src/main/resources/application.properties
