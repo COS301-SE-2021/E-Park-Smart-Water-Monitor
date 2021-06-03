@@ -24,60 +24,67 @@ const mapStyles = {
 function Map({}) {
   const classes = useStyles();
   const theme = useTheme();
-  const [result, setResult] = useState(null)
+  // const [result, setResult] = useState(null)
+  const [markers, setMarkers] = useState(null)
 
+  // const data = {
+  //   "status": "Successfully found site.",
+  //     "success": true,
+  //     "site": {
+  //   "id": "7b75749a-d7b1-4012-9596-e5a50a92037d",
+  //       "waterSiteName": "Rhino Water Site",
+  //       "latitude": -25.88248274150901,
+  //       "longitude": 28.26649806207706,
+  //       "waterSourceDevices": [
+  //     {
+  //       "deviceId": "92666ea5-fcc6-441c-9522-704566ff3e75",
+  //       "deviceModel": "ESP32",
+  //       "deviceName": "Water3000",
+  //       "deviceData": {
+  //         "longitude": -25.881565737140885,
+  //         "latitude": 28.265639755240308,
+  //         "battery": 0.0,
+  //         "deviceStatus": null,
+  //         "upTime": 0.0,
+  //         "lifeTime": 0.0
+  //       },
+  //       "measurementSet": []
+  //     }
+  //   ],
+  //       "infrastructureDevices": []
+  // }
+  // }
 
-  const data = {
-    "status": "Successfully found site.",
-      "success": true,
-      "site": {
-    "id": "7b75749a-d7b1-4012-9596-e5a50a92037d",
-        "waterSiteName": "Rhino Water Site",
-        "latitude": -25.88248274150901,
-        "longitude": 28.26649806207706,
-        "waterSourceDevices": [
-      {
-        "deviceId": "92666ea5-fcc6-441c-9522-704566ff3e75",
-        "deviceModel": "ESP32",
-        "deviceName": "Water3000",
-        "deviceData": {
-          "longitude": -25.881565737140885,
-          "latitude": 28.265639755240308,
-          "battery": 0.0,
-          "deviceStatus": null,
-          "upTime": 0.0,
-          "lifeTime": 0.0
-        },
-        "measurementSet": []
-      }
-    ],
-        "infrastructureDevices": []
-  }
-  }
-
-  const siteName = data.site;
-  const devices = data.site.waterSourceDevices;
-  const markers = devices.map((device) =>
-      // <ListItem key={number.toString()}
-      //           value={number} />
-      <Marker key={device.toString()} position={[ device.deviceData.latitude , device.deviceData.longitude ]}>
-        <Popup>
-          { device.deviceName }
-        </Popup>
-      </Marker>
-  );
-
-
-  useEffect(() => {
-    axios.post('http://localhost:8080/api/park/getParkWaterSites', {
-          parkId: ""
+    useEffect(() => {
+        axios.post('http://localhost:8080/api/park/getParkWaterSites', {
+            parkId: "2ea5ba27-9d8e-41a4-9628-485f0ae2fb57"
         }).then((res)=>{
-            setResult(res.data)
-    });
-  }, []) // second param [] is a list of dependency to watch and run useEffect
+            if(res)
+            {
+                console.log("result water data: "+JSON.stringify(res))
 
-  console.log("result: "+JSON.stringify(result))
-  // {result === null ? 'loading' : result.name}
+                const siteName = res.data.site[2].waterSiteName;
+                const devices = res.data.site[2].waterSourceDevices;
+                console.log("devices: "+JSON.stringify(devices))
+                const m = devices.map((device) =>
+                    // <ListItem key={number.toString()}
+                    //           value={number} />
+                    <Marker key={device.deviceName} position={[ device.deviceData.latitude , device.deviceData.longitude ]}>
+                        <Popup>
+                            { device.deviceName }
+                        </Popup>
+                    </Marker>
+                );
+                setMarkers(m);
+                console.log("markers: "+JSON.stringify(m))
+            }
+        });
+    }, []) // second param [] is a list of dependency to watch and run useEffect
+
+
+
+    // {result === null ? 'loading' : result.name}
+
 
   return (
     <>
@@ -115,6 +122,16 @@ function Map({}) {
                   attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
+                {/*<Marker position={[  -25.88248274150901, 28.26649806207706 ]}>*/}
+                {/*    <Popup>*/}
+                {/*        Site Name*/}
+                {/*    </Popup>*/}
+                {/*</Marker>*/}
+                {/*<Marker position={[  -25.89, 28.27 ]}>*/}
+                {/*    <Popup>*/}
+                {/*        Site Name*/}
+                {/*    </Popup>*/}
+                {/*</Marker>*/}
               { markers }
             </MapContainer>
           </div>
