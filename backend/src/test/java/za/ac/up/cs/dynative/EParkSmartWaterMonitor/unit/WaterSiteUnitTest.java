@@ -3,9 +3,12 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.unit;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AddSiteResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
 
 import java.util.UUID;
@@ -80,7 +83,7 @@ public class WaterSiteUnitTest extends UnitTestBaseClass {
         LOGGER.info("DONE Testing getSiteById");
 
         LOGGER.info("GetSiteByIdResponse status: " + response.getStatus());
-        LOGGER.info("GetSiteByIdResponse success: " + response.getSuccess());;
+        LOGGER.info("GetSiteByIdResponse success: " + response.getSuccess());
 
         if (response.getSite() == null) {
             LOGGER.info("GetSiteByIdResponse returned no water site");
@@ -88,5 +91,33 @@ public class WaterSiteUnitTest extends UnitTestBaseClass {
         else {
             LOGGER.info("GetSiteByIdResponse site name: " + response.getSite().getWaterSiteName());
         }
+    }
+
+    @Test
+    public void testAttachWaterSourceDevice() {
+        LOGGER.info("Testing AttachWaterSourceDeviceRequest construction");
+
+        UUID siteId = UUID.randomUUID();
+        String deviceName = "testDevice";
+        String deviceModel = "ESP32";
+        double longitude = 10.20;
+        double latitude = 30.40;
+        WaterSourceDevice waterSourceDevice = new WaterSourceDevice(deviceName, deviceModel, longitude, latitude);
+
+
+        AttachWaterSourceDeviceRequest request = new AttachWaterSourceDeviceRequest(siteId, waterSourceDevice);
+        assert (request != null);
+
+        LOGGER.info("DONE Testing AttachWaterSourceDeviceRequest construction");
+
+        LOGGER.info("Testing attachWaterSourceDevice");
+
+        AttachWaterSourceDeviceResponse response = waterSiteService.attachWaterSourceDevice(request);
+        assert (response != null);
+
+        LOGGER.info("DONE Testing attachWaterSourceDevice");
+
+        LOGGER.info("GetSiteByIdResponse status: " + response.getStatus());
+        LOGGER.info("GetSiteByIdResponse success: " + response.getSuccess());
     }
 }
