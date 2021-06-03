@@ -15,7 +15,6 @@ jobs:
         - cd backend
         - chmod +x mvnw
         - mkdir src/main/resources
-        - echo hello
       script:
         - echo hello
         - mvn test
