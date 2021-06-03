@@ -24,7 +24,6 @@ const useStyles = makeStyles(componentStyles);
 const Header = () => {
   const classes = useStyles();
   const theme = useTheme();
-
   const [result, setResult] = useState(null)
 
 
@@ -35,9 +34,6 @@ const Header = () => {
       setResult(res.data)
     });
   }, []) // second param [] is a list of dependency to watch and run useEffect
-
-  console.log("result: "+JSON.stringify(result))
-  // {result === null ? 'loading' : result.name}
 
 
   return (

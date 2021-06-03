@@ -27,9 +27,50 @@ function Map({}) {
   const [result, setResult] = useState(null)
 
 
+  const data = {
+    "status": "Successfully found site.",
+      "success": true,
+      "site": {
+    "id": "7b75749a-d7b1-4012-9596-e5a50a92037d",
+        "waterSiteName": "Rhino Water Site",
+        "latitude": -25.88248274150901,
+        "longitude": 28.26649806207706,
+        "waterSourceDevices": [
+      {
+        "deviceId": "92666ea5-fcc6-441c-9522-704566ff3e75",
+        "deviceModel": "ESP32",
+        "deviceName": "Water3000",
+        "deviceData": {
+          "longitude": -25.881565737140885,
+          "latitude": 28.265639755240308,
+          "battery": 0.0,
+          "deviceStatus": null,
+          "upTime": 0.0,
+          "lifeTime": 0.0
+        },
+        "measurementSet": []
+      }
+    ],
+        "infrastructureDevices": []
+  }
+  }
+
+  const siteName = data.site;
+  const devices = data.site.waterSourceDevices;
+  const markers = devices.map((device) =>
+      // <ListItem key={number.toString()}
+      //           value={number} />
+      <Marker key={device.toString()} position={[ device.deviceData.latitude , device.deviceData.longitude ]}>
+        <Popup>
+          { device.deviceName }
+        </Popup>
+      </Marker>
+  );
+
+
   useEffect(() => {
-    axios.post('http://localhost:8080/api/devices/getNumDevices', {
-          parkName: "Rietvlei Nature Reserve"
+    axios.post('http://localhost:8080/api/park/getParkWaterSites', {
+          parkId: ""
         }).then((res)=>{
             setResult(res.data)
     });
@@ -74,21 +115,7 @@ function Map({}) {
                   attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <Marker position={[-25.8825,28.2639 ]}>
-                <Popup>
-                  Site Buffalo
-                </Popup>
-              </Marker>
-              <Marker position={[-25.8840,28.27 ]}>
-                <Popup>
-                  Site RMap.jshino
-                </Popup>
-              </Marker>
-              <Marker position={[-25.89,28.28 ]}>
-                <Popup>
-                  Site Cheetah
-                </Popup>
-              </Marker>
+              { markers }
             </MapContainer>
           </div>
 
