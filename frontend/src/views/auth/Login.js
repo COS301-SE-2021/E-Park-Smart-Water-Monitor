@@ -48,50 +48,6 @@ function Login() {
               marginTop: "0.5rem!important",
               fontSize: "1rem!important",
             }}
-            // subheader={
-            //   <Box textAlign="center">
-            //     <Box
-            //       component={Button}
-            //       variant="contained"
-            //       marginRight=".5rem!important"
-            //       classes={{ root: classes.buttonRoot }}
-            //     >
-            //       <Box component="span" marginRight="4px">
-            //         <Box
-            //           alt="..."
-            //           component="img"
-            //           width="20px"
-            //           className={classes.buttonImg}
-            //           src={
-            //             require("assets/img/icons/common/github.svg").default
-            //           }
-            //         ></Box>
-            //       </Box>
-            //       <Box component="span" marginLeft=".75rem">
-            //         Github
-            //       </Box>
-            //     </Box>
-            //     <Button
-            //       variant="contained"
-            //       classes={{ root: classes.buttonRoot }}
-            //     >
-            //       <Box component="span" marginRight="4px">
-            //         <Box
-            //           alt="..."
-            //           component="img"
-            //           width="20px"
-            //           className={classes.buttonImg}
-            //           src={
-            //             require("assets/img/icons/common/google.svg").default
-            //           }
-            //         ></Box>
-            //       </Box>
-            //       <Box component="span" marginLeft=".75rem">
-            //         Google
-            //       </Box>
-            //     </Button>
-            //   </Box>
-            // }
           ></CardHeader>
           <CardContent classes={{ root: classes.cardContent }}>
             <Box
@@ -101,9 +57,6 @@ function Login() {
               // marginTop=".5rem"
               fontSize="1rem"
             >
-              {/*<Box fontSize="80%" fontWeight="400" component="small">*/}
-              {/*  Or sign in with credentials*/}
-              {/*</Box>*/}
             </Box>
             <FormControl
               variant="filled"
