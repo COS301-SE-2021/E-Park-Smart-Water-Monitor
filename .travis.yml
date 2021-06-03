@@ -1,8 +1,8 @@
 deploy:
   provider: script
   script: bash scripts/testScript.sh
-    on:
-    all_branches: true
+  on:
+  all_branches: true
 
 jobs:
   include:
