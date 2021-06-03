@@ -2,7 +2,7 @@ import React from "react";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -22,6 +22,7 @@ import Typography from "@material-ui/core/Typography";
 
 import DeviceData from "components/Custom/DeviceData"
 import Map from "components/Cards/Map.js"
+import BarChart from "components/Cards/BarChart.js"
 //import Axios from 'axios';
 // @material-ui/icons components
 // import ArrowDownward from "@material-ui/icons/ArrowDownward";
@@ -147,10 +148,7 @@ function Dashboard() {
         marginTop="-6rem"
         classes={{ root: classes.containerRoot }}
       >
-
         <Grid container>
-
-          {/*MAP*/}
           <Grid
               item
               xs={12}
@@ -160,64 +158,6 @@ function Dashboard() {
               classes={{ root: classes.gridItemRoot }}
           >
             <Map></Map>
-            {/*<Card*/}
-            {/*    // classes={{*/}
-            {/*    //   root: classes.cardRoot + " " + classes.cardRootBgGradient,*/}
-            {/*    // }}*/}
-            {/*>*/}
-            {/*  <CardHeader*/}
-            {/*      title={*/}
-            {/*        <Box component="span" color={theme.palette.gray[600]}>*/}
-            {/*          device layout*/}
-            {/*        </Box>*/}
-            {/*      }*/}
-            {/*      subheader="Park Map"*/}
-            {/*      classes={{ root: classes.cardHeaderRoot }}*/}
-            {/*      titleTypographyProps={{*/}
-            {/*        component: Box,*/}
-            {/*        variant: "h6",*/}
-            {/*        letterSpacing: ".0625rem",*/}
-            {/*        marginBottom: ".25rem!important",*/}
-            {/*        classes: {*/}
-            {/*          root: classes.textUppercase,*/}
-            {/*        },*/}
-            {/*      }}*/}
-            {/*      subheaderTypographyProps={{*/}
-            {/*        component: Box,*/}
-            {/*        variant: "h2",*/}
-            {/*        marginBottom: "0!important",*/}
-            {/*        color: "initial",*/}
-            {/*      }}*/}
-            {/*  ></CardHeader>*/}
-            {/*  <CardContent>*/}
-
-            {/*    <div style={ { height: 350 } }>*/}
-            {/*      /!*rietvlei centre*!/*/}
-            {/*      <MapContainer style={mapStyles} center={[-25.88536975144579, 28.277796392845673]} zoom={14} scrollWheelZoom={false}>*/}
-            {/*        <TileLayer*/}
-            {/*            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'*/}
-            {/*            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"*/}
-            {/*        />*/}
-            {/*        <Marker position={[-25.8825,28.2639 ]}>*/}
-            {/*          <Popup>*/}
-            {/*            Site Buffalo*/}
-            {/*          </Popup>*/}
-            {/*        </Marker>*/}
-            {/*        <Marker position={[-25.8840,28.27 ]}>*/}
-            {/*          <Popup>*/}
-            {/*            Site Rhino*/}
-            {/*          </Popup>*/}
-            {/*        </Marker>*/}
-            {/*        <Marker position={[-25.89,28.28 ]}>*/}
-            {/*          <Popup>*/}
-            {/*            Site Cheetah*/}
-            {/*          </Popup>*/}
-            {/*        </Marker>*/}
-            {/*      </MapContainer>*/}
-            {/*    </div>*/}
-
-            {/*  </CardContent>*/}
-            {/*</Card>*/}
           </Grid>
         </Grid>
 
@@ -232,40 +172,7 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            <Card classes={{ root: classes.cardRoot }}>
-              <CardHeader
-                  title={
-                    <Box component="span" color={theme.palette.gray[600]}>
-                      Inspections
-                    </Box>
-                  }
-                  subheader="Water Refills"
-                  classes={{ root: classes.cardHeaderRoot }}
-                  titleTypographyProps={{
-                    component: Box,
-                    variant: "h6",
-                    letterSpacing: ".0625rem",
-                    marginBottom: ".25rem!important",
-                    classes: {
-                      root: classes.textUppercase,
-                    },
-                  }}
-                  subheaderTypographyProps={{
-                    component: Box,
-                    variant: "h2",
-                    marginBottom: "0!important",
-                    color: "initial",
-                  }}
-              ></CardHeader>
-              <CardContent>
-                <Box position="relative" height="350px">
-                  <Bar
-                      data={chartExample2.data}
-                      options={chartExample2.options}
-                  />
-                </Box>
-              </CardContent>
-            </Card>
+            <BarChart></BarChart>
           </Grid>
           {/*  /!*SECOND BAR GRAPH*!/*/}
           {/*  <Grid item*/}

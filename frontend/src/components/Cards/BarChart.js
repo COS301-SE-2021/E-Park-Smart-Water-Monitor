@@ -6,34 +6,36 @@ import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import { Bar } from "react-chartjs-2";
 
 
 // core components
 import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
-import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
+
+import {
+    // chartOptions,
+    // parseOptions,
+    // chartExample1,
+    chartExample2,
+} from "variables/charts.js";
 
 
 const useStyles = makeStyles(componentStyles);
 
-const mapStyles = {
-  width: `100%`,
-  height: `100%`
-};
-
-function Map({ subtitle, title, footer, icon, color }) {
+function BarChart({ subtitle, title, footer, icon, color }) {
   const classes = useStyles();
   const theme = useTheme();
   return (
     <>
-      <Card>
+      <Card classes={{ root: classes.cardRoot }}>
         <CardHeader
             title={
               <Box component="span" color={theme.palette.gray[600]}>
-                device layout
+                Inspections
               </Box>
             }
-            subheader="Park Map"
+            subheader="Water Refills"
             classes={{ root: classes.cardHeaderRoot }}
             titleTypographyProps={{
               component: Box,
@@ -52,32 +54,12 @@ function Map({ subtitle, title, footer, icon, color }) {
             }}
         ></CardHeader>
         <CardContent>
-
-          <div style={ { height: 350 } }>
-            {/*rietvlei centre*/}
-            <MapContainer style={mapStyles} center={[-25.88536975144579, 28.277796392845673]} zoom={14} scrollWheelZoom={false}>
-              <TileLayer
-                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              <Marker position={[-25.8825,28.2639 ]}>
-                <Popup>
-                  Site Buffalo
-                </Popup>
-              </Marker>
-              <Marker position={[-25.8840,28.27 ]}>
-                <Popup>
-                  Site RMap.jshino
-                </Popup>
-              </Marker>
-              <Marker position={[-25.89,28.28 ]}>
-                <Popup>
-                  Site Cheetah
-                </Popup>
-              </Marker>
-            </MapContainer>
-          </div>
-
+          <Box position="relative" height="350px">
+            <Bar
+                data={chartExample2.data}
+                options={chartExample2.options}
+            />
+          </Box>
         </CardContent>
       </Card>
     </>
@@ -111,4 +93,4 @@ function Map({ subtitle, title, footer, icon, color }) {
 //   ]),
 // };
 
-export default Map;
+export default BarChart;
