@@ -11,14 +11,14 @@ public class DeviceData {
     private double longitude;
     private double latitude;
     private double battery;
-    private Enum<DeviceStatus> deviceStatus;
+    private String deviceStatus;
     private double upTime;
     private double lifeTime;
 
     public DeviceData(double longitude,
                       double latitude,
                       double battery,
-                      Enum<DeviceStatus> deviceStatus,
+                      String deviceStatus,
                       double upTime,
                       double lifeTime) {
         this.deviceDataId = UUID.randomUUID();
@@ -58,11 +58,19 @@ public class DeviceData {
         this.battery = battery;
     }
 
-    public Enum<DeviceStatus> getDeviceStatus() {
+//    public Enum<DeviceStatus> getDeviceStatus() {
+//        return deviceStatus;
+//    }
+
+//    public void setDeviceStatus(Enum<DeviceStatus> deviceStatus) {
+//        this.deviceStatus = deviceStatus;
+//    }
+
+    public String getDeviceStatus() {
         return deviceStatus;
     }
 
-    public void setDeviceStatus(Enum<DeviceStatus> deviceStatus) {
+    public void setDeviceStatus(String deviceStatus) {
         this.deviceStatus = deviceStatus;
     }
 
