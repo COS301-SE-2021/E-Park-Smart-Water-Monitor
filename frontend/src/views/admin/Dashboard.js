@@ -19,6 +19,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
+//import DeviceData from "components/DeviceData/DeviceData"
 //import Axios from 'axios';
 // @material-ui/icons components
 // import ArrowDownward from "@material-ui/icons/ArrowDownward";
@@ -654,6 +655,11 @@ function Dashboard() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
+
+                    {/*<DeviceData />*/}
+
+
+
                     {/*{Axios.post('localhost:8080/api/park/getParkWaterSites',{*/}
                     {/*  parkId: "dda99bb7-4116-4e8a-ac35-9dad7e8c1b3f"}).*/}
                     {/*    then(function (response) {*/}
@@ -697,6 +703,116 @@ function Dashboard() {
                     {/*    ))*/}
 
                     {/*})}*/}
+
+                    {/*default values:*/}
+                    <TableRow>
+                      <TableCell
+                          classes={{
+                            root:
+                                classes.tableCellRoot +
+                                " " +
+                                classes.tableCellRootBodyHead,
+                          }}
+                          component="th"
+                          variant="head"
+                          scope="row"
+                      >
+                        Water2000
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        -25.812494434
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        28.239765508
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        FINE
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        100%
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell
+                          classes={{
+                            root:
+                                classes.tableCellRoot +
+                                " " +
+                                classes.tableCellRootBodyHead,
+                          }}
+                          component="th"
+                          variant="head"
+                          scope="row"
+                      >
+                        Water5000
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        -25.112494434
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        28.129765508
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        FINE
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        100%
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell
+                          classes={{
+                            root:
+                                classes.tableCellRoot +
+                                " " +
+                                classes.tableCellRootBodyHead,
+                          }}
+                          component="th"
+                          variant="head"
+                          scope="row"
+                      >
+                        Water1000
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        -25.892494434
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        28.289765508
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        FINE
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        100%
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell
+                          classes={{
+                            root:
+                                classes.tableCellRoot +
+                                " " +
+                                classes.tableCellRootBodyHead,
+                          }}
+                          component="th"
+                          variant="head"
+                          scope="row"
+                      >
+                        Water3000
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        -25.112494434
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        28.129765508
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        FINE
+                      </TableCell>
+                      <TableCell classes={{ root: classes.tableCellRoot }}>
+                        100%
+                      </TableCell>
+                    </TableRow>
                   </TableBody>
                 </Box>
               </TableContainer>
@@ -704,6 +820,7 @@ function Dashboard() {
           </Grid>
         </Grid>
       </Container>
+      <br/><br/>
     </>
   );
 }
