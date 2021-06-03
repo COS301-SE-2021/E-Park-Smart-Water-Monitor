@@ -8,7 +8,6 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import { Bar } from "react-chartjs-2";
 
-
 // core components
 import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -23,9 +22,17 @@ import {
 
 const useStyles = makeStyles(componentStyles);
 
-function BarChart({ subtitle, title, footer, icon, color }) {
+function BarChart({  }) {
   const classes = useStyles();
   const theme = useTheme();
+
+    // CHART 2 - Bar Chart
+    console.log("chartExample2.data")
+    console.log(chartExample2.data)
+    console.log("chartExample2.options")
+    console.log(chartExample2.options)
+
+
   return (
     <>
       <Card classes={{ root: classes.cardRoot }}>
@@ -65,32 +72,5 @@ function BarChart({ subtitle, title, footer, icon, color }) {
     </>
   );
 }
-
-// CardStats.defaultProps = {
-//   color: "bgPrimaryLight",
-// };
-
-// CardStats.propTypes = {
-//   subtitle: PropTypes.string,
-//   title: PropTypes.string,
-//   footer: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-//   icon: PropTypes.oneOfType([
-//     // i.e. an icon name from Nucleo Icons - e.g. ni ni-atom
-//     // // or an icon name from Font Awesome - e.g. fa fa-heart
-//     PropTypes.string,
-//     // i.e. a component from @material-ui/icons
-//     PropTypes.object,
-//   ]),
-//   color: PropTypes.oneOf([
-//     "bgPrimary",
-//     "bgPrimaryLight",
-//     "bgError",
-//     "bgErrorLight",
-//     "bgWarning",
-//     "bgWarningLight",
-//     "bgInfo",
-//     "bgInfoLight",
-//   ]),
-// };
 
 export default BarChart;

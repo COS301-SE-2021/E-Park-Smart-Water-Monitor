@@ -2,14 +2,13 @@ import React from "react";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
-import { Line } from "react-chartjs-2";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
+
 import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
+
 import CardHeader from "@material-ui/core/CardHeader";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";import Table from "@material-ui/core/Table";
@@ -23,6 +22,7 @@ import Typography from "@material-ui/core/Typography";
 import DeviceData from "components/Custom/DeviceData"
 import Map from "components/Cards/Map.js"
 import BarChart from "components/Cards/BarChart.js"
+import LineChart from "components/Cards/LineChart.js"
 //import Axios from 'axios';
 // @material-ui/icons components
 // import ArrowDownward from "@material-ui/icons/ArrowDownward";
@@ -36,8 +36,8 @@ import Header from "components/Headers/Header.js";
 import {
   chartOptions,
   parseOptions,
-  chartExample1,
-  chartExample2,
+  // chartExample1,
+  // chartExample2,
 } from "variables/charts.js";
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
@@ -60,64 +60,6 @@ function Dashboard() {
   // const [long,setLong]= useState()
   // const [lat,setLat]= useState()
 
-  console.log("chartExample1Data: "+ chartExample1[chartExample1Data])
-  // chart data structure
-  /*
-    chartExample1Data: function data1() {
-    return {
-      labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      datasets: [{
-        label: "Performance",
-        data: [0, 20, 10, 30, 15, 40, 20, 60, 60]
-      }]
-    };
-  }
-  */
-
-  // Example
-  /*
-
-  data: {
-        datasets: [{
-            type: 'bar',
-            label: 'Bar Dataset',
-            data: [10, 20, 30, 40]
-        }, {
-            type: 'line',
-            label: 'Line Dataset',
-            data: [50, 50, 50, 50],
-        }],
-        labels: ['January', 'February', 'March', 'April']
-    },
-
-   */
-
-
-  // CHART 2 - Bar Chart
-  console.log("chartExample2.data")
-  console.log(chartExample2.data)
-  console.log("chartExample2.options")
-  console.log(chartExample2.options)
-
-
-
-  const newChartData = function chartData() {
-    return {
-      // labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      datasets: [{
-        type: 'line',
-        label: 'Line Dataset',
-        data: [10, 20, 27, 40]
-      }, {
-        type: 'line',
-        label: 'Line Dataset',
-        data: [50, 50, 45, 50],
-        color: "orange"
-      }],
-      labels: ['January', 'February', 'March', 'April']
-    }
-  }
-
 
   // get controller data
   // axios.post('localhost:8080/api/park/getParkWaterSites',{
@@ -133,10 +75,8 @@ function Dashboard() {
     parseOptions(Chart, chartOptions());
   }
 
-  const toggleNavs = (index) => {
-    setActiveNav(index);
-    setChartExample1Data("data" + index);
-  };
+
+
   return (
     <>
 
@@ -163,7 +103,6 @@ function Dashboard() {
 
 
         <Grid container component={Box} marginTop="3rem!important">
-          {/*Bar GRAPH*/}
           <Grid
               item
               xs={12}
@@ -174,48 +113,6 @@ function Dashboard() {
           >
             <BarChart></BarChart>
           </Grid>
-          {/*  /!*SECOND BAR GRAPH*!/*/}
-          {/*  <Grid item*/}
-          {/*        xs={12}*/}
-          {/*        xl={4}*/}
-          {/*        marginBottom="3rem!important">*/}
-          {/*    <Card classes={{ root: classes.cardRoot }}>*/}
-          {/*      <CardHeader*/}
-          {/*          title={*/}
-          {/*            <Box component="span" color={theme.palette.gray[600]}>*/}
-          {/*              Inspections*/}
-          {/*            </Box>*/}
-          {/*          }*/}
-          {/*          subheader="Total orders"*/}
-          {/*          classes={{ root: classes.cardHeaderRoot }}*/}
-          {/*          titleTypographyProps={{*/}
-          {/*            component: Box,*/}
-          {/*            variant: "h6",*/}
-          {/*            letterSpacing: ".0625rem",*/}
-          {/*            marginBottom: ".25rem!important",*/}
-          {/*            classes: {*/}
-          {/*              root: classes.textUppercase,*/}
-          {/*            },*/}
-          {/*          }}*/}
-          {/*          subheaderTypographyProps={{*/}
-          {/*            component: Box,*/}
-          {/*            variant: "h2",*/}
-          {/*            marginBottom: "0!important",*/}
-          {/*            color: "initial",*/}
-          {/*          }}*/}
-          {/*      ></CardHeader>*/}
-          {/*      <CardContent>*/}
-          {/*        <Box position="relative" height="350px">*/}
-          {/*          <Bar*/}
-          {/*              data={chartExample2.data}*/}
-          {/*              options={chartExample2.options}*/}
-          {/*          />*/}
-          {/*        </Box>*/}
-          {/*      </CardContent>*/}
-          {/*    </Card>*/}
-          {/*  </Grid>*/}
-
-          {/*Line Graph*/}
           <Grid
               item
               xs={12}
@@ -224,238 +121,9 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            <Card
-                classes={{
-                  root: classes.cardRoot + " " + classes.cardRootBgGradient,
-                }}
-            >
-              <CardHeader
-                  subheader={
-                    <Grid
-                        container
-                        component={Box}
-                        alignItems="center"
-                        justifyContent="space-between"
-                    >
-                      <Grid item xs="auto">
-                        <Box
-                            component={Typography}
-                            variant="h6"
-                            letterSpacing=".0625rem"
-                            marginBottom=".25rem!important"
-                            className={classes.textUppercase}
-                        >
-                          <Box component="span" color={theme.palette.gray[400]}>
-                            Overview
-                          </Box>
-                        </Box>
-                        <Box
-                            component={Typography}
-                            variant="h2"
-                            marginBottom="0!important"
-                        >
-                          <Box component="span" color={theme.palette.white.main}>
-                            Device Readings
-                          </Box>
-                        </Box>
-                      </Grid>
-                      <Grid item xs="auto">
-                        <Box
-                            justifyContent="flex-end"
-                            display="flex"
-                            flexWrap="wrap"
-                        >
-                          <Button
-                              variant="contained"
-                              color="primary"
-                              component={Box}
-                              marginRight="1rem!important"
-                              onClick={() => toggleNavs(1)}
-                              classes={{
-                                root:
-                                    activeNav === 1
-                                        ? ""
-                                        : classes.buttonRootUnselected,
-                              }}
-                          >
-                            Month
-                          </Button>
-                          <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={() => toggleNavs(2)}
-                              classes={{
-                                root:
-                                    activeNav === 2
-                                        ? ""
-                                        : classes.buttonRootUnselected,
-                              }}
-                          >
-                            Week
-                          </Button>
-                        </Box>
-                      </Grid>
-                    </Grid>
-                  }
-                  classes={{ root: classes.cardHeaderRoot }}
-              ></CardHeader>
-              <CardContent>
-                <Box position="relative" height="350px">
-                  <Line
-                      // data={chartExample1[chartExample1Data]}
-                      data={newChartData}
-                      options={chartExample1.options}
-                      getDatasetAtEvent={(e) => console.log(e)}
-                  />
-                </Box>
-              </CardContent>
-            </Card>
+            <LineChart></LineChart>
           </Grid>
-
-
         </Grid>
-
-
-        {/*<Grid container >*/}
-
-        {/*/!*  /!*SECOND BAR GRAPH*!/*!/*/}
-        {/*/!*  <Grid item*!/*/}
-        {/*/!*        xs={12}*!/*/}
-        {/*/!*        xl={4}*!/*/}
-        {/*/!*        marginBottom="3rem!important">*!/*/}
-        {/*/!*    <Card classes={{ root: classes.cardRoot }}>*!/*/}
-        {/*/!*      <CardHeader*!/*/}
-        {/*/!*          title={*!/*/}
-        {/*/!*            <Box component="span" color={theme.palette.gray[600]}>*!/*/}
-        {/*/!*              Inspections*!/*/}
-        {/*/!*            </Box>*!/*/}
-        {/*/!*          }*!/*/}
-        {/*/!*          subheader="Total orders"*!/*/}
-        {/*/!*          classes={{ root: classes.cardHeaderRoot }}*!/*/}
-        {/*/!*          titleTypographyProps={{*!/*/}
-        {/*/!*            component: Box,*!/*/}
-        {/*/!*            variant: "h6",*!/*/}
-        {/*/!*            letterSpacing: ".0625rem",*!/*/}
-        {/*/!*            marginBottom: ".25rem!important",*!/*/}
-        {/*/!*            classes: {*!/*/}
-        {/*/!*              root: classes.textUppercase,*!/*/}
-        {/*/!*            },*!/*/}
-        {/*/!*          }}*!/*/}
-        {/*/!*          subheaderTypographyProps={{*!/*/}
-        {/*/!*            component: Box,*!/*/}
-        {/*/!*            variant: "h2",*!/*/}
-        {/*/!*            marginBottom: "0!important",*!/*/}
-        {/*/!*            color: "initial",*!/*/}
-        {/*/!*          }}*!/*/}
-        {/*/!*      ></CardHeader>*!/*/}
-        {/*/!*      <CardContent>*!/*/}
-        {/*/!*        <Box position="relative" height="350px">*!/*/}
-        {/*/!*          <Bar*!/*/}
-        {/*/!*              data={chartExample2.data}*!/*/}
-        {/*/!*              options={chartExample2.options}*!/*/}
-        {/*/!*          />*!/*/}
-        {/*/!*        </Box>*!/*/}
-        {/*/!*      </CardContent>*!/*/}
-        {/*/!*    </Card>*!/*/}
-        {/*/!*  </Grid>*!/*/}
-
-        {/*  /!*Line Graph*!/*/}
-        {/*  <Grid*/}
-        {/*    item*/}
-        {/*    xs={12}*/}
-        {/*    xl={6}*/}
-        {/*    component={Box}*/}
-        {/*    marginBottom="3rem!important"*/}
-        {/*    classes={{ root: classes.gridItemRoot }}*/}
-        {/*  >*/}
-        {/*    <Card*/}
-        {/*      classes={{*/}
-        {/*        root: classes.cardRoot + " " + classes.cardRootBgGradient,*/}
-        {/*      }}*/}
-        {/*    >*/}
-        {/*      <CardHeader*/}
-        {/*        subheader={*/}
-        {/*          <Grid*/}
-        {/*            container*/}
-        {/*            component={Box}*/}
-        {/*            alignItems="center"*/}
-        {/*            justifyContent="space-between"*/}
-        {/*          >*/}
-        {/*            <Grid item xs="auto">*/}
-        {/*              <Box*/}
-        {/*                component={Typography}*/}
-        {/*                variant="h6"*/}
-        {/*                letterSpacing=".0625rem"*/}
-        {/*                marginBottom=".25rem!important"*/}
-        {/*                className={classes.textUppercase}*/}
-        {/*              >*/}
-        {/*                <Box component="span" color={theme.palette.gray[400]}>*/}
-        {/*                  Overview*/}
-        {/*                </Box>*/}
-        {/*              </Box>*/}
-        {/*              <Box*/}
-        {/*                component={Typography}*/}
-        {/*                variant="h2"*/}
-        {/*                marginBottom="0!important"*/}
-        {/*              >*/}
-        {/*                <Box component="span" color={theme.palette.white.main}>*/}
-        {/*                  Device Readings*/}
-        {/*                </Box>*/}
-        {/*              </Box>*/}
-        {/*            </Grid>*/}
-        {/*            <Grid item xs="auto">*/}
-        {/*              <Box*/}
-        {/*                justifyContent="flex-end"*/}
-        {/*                display="flex"*/}
-        {/*                flexWrap="wrap"*/}
-        {/*              >*/}
-        {/*                <Button*/}
-        {/*                  variant="contained"*/}
-        {/*                  color="primary"*/}
-        {/*                  component={Box}*/}
-        {/*                  marginRight="1rem!important"*/}
-        {/*                  onClick={() => toggleNavs(1)}*/}
-        {/*                  classes={{*/}
-        {/*                    root:*/}
-        {/*                      activeNav === 1*/}
-        {/*                        ? ""*/}
-        {/*                        : classes.buttonRootUnselected,*/}
-        {/*                  }}*/}
-        {/*                >*/}
-        {/*                  Month*/}
-        {/*                </Button>*/}
-        {/*                <Button*/}
-        {/*                  variant="contained"*/}
-        {/*                  color="primary"*/}
-        {/*                  onClick={() => toggleNavs(2)}*/}
-        {/*                  classes={{*/}
-        {/*                    root:*/}
-        {/*                      activeNav === 2*/}
-        {/*                        ? ""*/}
-        {/*                        : classes.buttonRootUnselected,*/}
-        {/*                  }}*/}
-        {/*                >*/}
-        {/*                  Week*/}
-        {/*                </Button>*/}
-        {/*              </Box>*/}
-        {/*            </Grid>*/}
-        {/*          </Grid>*/}
-        {/*        }*/}
-        {/*        classes={{ root: classes.cardHeaderRoot }}*/}
-        {/*      ></CardHeader>*/}
-        {/*      <CardContent>*/}
-        {/*        <Box position="relative" height="350px">*/}
-        {/*          <Line*/}
-        {/*            // data={chartExample1[chartExample1Data]}*/}
-        {/*            data={newChartData}*/}
-        {/*            options={chartExample1.options}*/}
-        {/*            getDatasetAtEvent={(e) => console.log(e)}*/}
-        {/*          />*/}
-        {/*        </Box>*/}
-        {/*      </CardContent>*/}
-        {/*    </Card>*/}
-        {/*  </Grid>*/}
-
 
 
         {/*</Grid>*/}
