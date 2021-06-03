@@ -14,6 +14,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkName
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetParkSitesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.SaveParkResponse;
 
+import java.util.Collection;
 import java.util.UUID;
 
 @Service("ParkService")
@@ -47,8 +48,8 @@ public class ParkServiceImpl implements ParkService {
     @Override
     public FindByParkNameResponse findParkByName(FindByParkNameRequest request) {
         if (!request.getParkName().equals("")) {
-            Park park = parkRepo.findParkByParkName(request.getParkName());
-            return new FindByParkNameResponse(park);
+            Collection<Park> park = parkRepo.findParkByParkName(request.getParkName());
+            return new FindByParkNameResponse((Park)park.toArray()[0]);
         }
         else return new FindByParkNameResponse(null);
     }
