@@ -27,7 +27,7 @@ public class DeviceController {
     }
 
     @PostMapping("/receiveDeviceData")
-    public ResponseEntity<Object> receiveWaterDeviceData(@RequestBody List<ReceiveDeviceDataRequest> request) {
+    public ResponseEntity<Object> receiveWaterDeviceData(@RequestBody ReceiveDeviceDataRequest request) {
         return new ResponseEntity<>(devicesService.receiveWaterDeviceData(request),HttpStatus.OK);
     }
     @GetMapping("/getDevice")

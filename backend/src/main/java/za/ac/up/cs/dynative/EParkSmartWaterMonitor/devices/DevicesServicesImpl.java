@@ -86,15 +86,15 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     @Override
-    public ReceiveDeviceDataResponse receiveWaterDeviceData(List<ReceiveDeviceDataRequest> request) {
-        WaterSourceDevice device = deviceRepo.findWaterSourceDeviceByDeviceName(request.get(0).getDeviceName());
+    public ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request) {
+        WaterSourceDevice device = deviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName());
         ReceiveDeviceDataResponse response = new ReceiveDeviceDataResponse();
         if (!device.getDeviceName().equals("")) {
 
             Measurement data;
-            for (int i = 0; i <request.size() ; i++)
+            for (int i = 0; i <request.getMeasurements().size() ; i++)
             {
-                data = new Measurement(request.get(i).getType(), request.get(i).getUnitOfMeasurement(), request.get(i).getValue(),request.get(i).getDeviceDateTime(), new Date());
+                data = request.getMeasurements().get(i);
                 device.addDeviceDataProduced(data);
                 measurementRepo.save(data);
             }
@@ -103,9 +103,9 @@ public class DevicesServicesImpl implements DevicesService {
 
             response.setStatus(
                     "Successfully added data send from ESP: "
-                            + request.get(0).getDeviceName()
-                            + "sent at: "
-                            + request.get(0).getDeviceDateTime());
+                            + request.getDeviceName()
+                            + " sent at: "
+                            + request.getMeasurements().get(0).getDeviceDateTime());
             response.setSuccess(true);
 
         }
