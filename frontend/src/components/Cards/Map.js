@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 // import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,7 +12,7 @@ import CardContent from "@material-ui/core/CardContent";
 import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
-
+import axios from 'axios'
 
 const useStyles = makeStyles(componentStyles);
 
@@ -21,9 +21,23 @@ const mapStyles = {
   height: `100%`
 };
 
-function Map({ subtitle, title, footer, icon, color }) {
+function Map({}) {
   const classes = useStyles();
   const theme = useTheme();
+  const [result, setResult] = useState(null)
+
+
+  useEffect(() => {
+    axios.post('http://localhost:8080/api/devices/getNumDevices', {
+          parkName: "Rietvlei Nature Reserve"
+        }).then((res)=>{
+            setResult(res.data)
+    });
+  }, []) // second param [] is a list of dependency to watch and run useEffect
+
+  console.log("result: "+JSON.stringify(result))
+  // {result === null ? 'loading' : result.name}
+
   return (
     <>
       <Card>
