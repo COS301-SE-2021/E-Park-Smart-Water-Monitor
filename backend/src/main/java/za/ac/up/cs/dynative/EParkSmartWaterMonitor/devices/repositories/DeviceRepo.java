@@ -11,7 +11,8 @@ import java.util.UUID;
 
 @Repository("DeviceRepo")
 public interface DeviceRepo extends Neo4jRepository< WaterSourceDevice, UUID> {
-    WaterSourceDevice findWaterSourceDeviceByDeviceName(String deviceName);
+
+    Collection<WaterSourceDevice> findWaterSourceDeviceByDeviceName(String deviceName);
     @Query("MATCH (:Park{parkName: $parkname})-->(watersite)-->(w) RETURN w")
     Collection<WaterSourceDevice> getAllParkDevices(@Param("parkname") String parkName);
 
