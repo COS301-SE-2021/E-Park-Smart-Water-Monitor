@@ -1,5 +1,6 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 
@@ -18,11 +19,11 @@ public class Measurement {
     private Date dateTime;
 
     public Measurement(
-            String type,
-            String unitOfMeasurement,
-            double value,
-            String deviceDateTime,
-            Date dateTime)
+            @JsonProperty("type") String type,
+            @JsonProperty("value") double value,
+            @JsonProperty("unitOfMeasurement") String unitOfMeasurement,
+            @JsonProperty("deviceDateTime") String deviceDateTime
+)
     {
         this.dataId = UUID.randomUUID();
 
@@ -31,7 +32,7 @@ public class Measurement {
         this.value = value;
 
         this.deviceDateTime = deviceDateTime;
-        this.dateTime = dateTime;
+        this.dateTime = new Date();
     }
 
     public UUID getId() {

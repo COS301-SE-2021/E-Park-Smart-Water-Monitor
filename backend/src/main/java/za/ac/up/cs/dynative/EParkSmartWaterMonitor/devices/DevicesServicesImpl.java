@@ -7,9 +7,11 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDev
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetParkDevicesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevicesResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetParkDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
@@ -86,15 +88,15 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     @Override
-    public ReceiveDeviceDataResponse receiveWaterDeviceData(List<ReceiveDeviceDataRequest> request) {
-        WaterSourceDevice device = deviceRepo.findWaterSourceDeviceByDeviceName(request.get(0).getDeviceName());
+    public ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request) {
+        WaterSourceDevice device = deviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName());
         ReceiveDeviceDataResponse response = new ReceiveDeviceDataResponse();
         if (!device.getDeviceName().equals("")) {
 
             Measurement data;
-            for (int i = 0; i <request.size() ; i++)
+            for (int i = 0; i <request.getMeasurements().size() ; i++)
             {
-                data = new Measurement(request.get(i).getType(), request.get(i).getUnitOfMeasurement(), request.get(i).getValue(),request.get(i).getDeviceDateTime(), new Date());
+                data = request.getMeasurements().get(i);
                 device.addDeviceDataProduced(data);
                 measurementRepo.save(data);
             }
@@ -103,9 +105,9 @@ public class DevicesServicesImpl implements DevicesService {
 
             response.setStatus(
                     "Successfully added data send from ESP: "
-                            + request.get(0).getDeviceName()
-                            + "sent at: "
-                            + request.get(0).getDeviceDateTime());
+                            + request.getDeviceName()
+                            + " sent at: "
+                            + request.getMeasurements().get(0).getDeviceDateTime());
             response.setSuccess(true);
 
         }
@@ -128,5 +130,22 @@ public class DevicesServicesImpl implements DevicesService {
             }
         } else getNumDevicesResponse.setSuccess(false);
         return getNumDevicesResponse;
+    }
+
+    @Override
+    public GetParkDevicesResponse getParkDevices(GetParkDevicesRequest request) {
+        GetParkDevicesResponse getParkDevicesResponse = new GetParkDevicesResponse();
+        if (request.getSiteId() != null) {
+            Collection<WaterSourceDevice> waterSourceDevices = deviceRepo.getAllParkDevicesById(request.getSiteId());
+            if (waterSourceDevices != null) {
+                getParkDevicesResponse.setSite(waterSourceDevices);
+                getParkDevicesResponse.setSuccess(true);
+                getParkDevicesResponse.setStatus("Successfully got the Park's devices");
+            }
+        } else {
+            getParkDevicesResponse.setStatus("Failed to get the park's devices");
+            getParkDevicesResponse.setSuccess(false);
+        }
+        return getParkDevicesResponse;
     }
 }

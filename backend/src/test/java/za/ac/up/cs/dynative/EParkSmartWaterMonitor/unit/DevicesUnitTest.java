@@ -2,8 +2,10 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.unit;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONException;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.util.JSONPObject;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
@@ -79,42 +81,33 @@ public class DevicesUnitTest extends UnitTestBaseClass {
         String deviceDateTime = "1-1-1997";
 
         String jsonData = "{"
-                + "\"deviceName\" : \""
-                + deviceName
-                + "\","
-                + "\"type\" : \""
-                + type
-                + "\","
-                + "\"value\" : \""
-                + value
-                + "\","
-                + "\"unitOfMeasurement\" : \""
-                + unitOfMeasurement
-                + "\","
-                + "\"deviceDateTime\" : \""
-                + deviceDateTime
-                + "\""
-                + "}";
+            + "\"deviceName\" : \"" + deviceName + "\","
+            + "\"measurements\" : ["
+                + "{"
+                    + "\"type\" : \"" + type + "\","
+                    + "\"value\" : \"" + value + "\","
+                    + "\"unitOfMeasurement\" : \"" + unitOfMeasurement + "\","
+                    + "\"deviceDateTime\": \"" + deviceDateTime + "\""
+                + "}"
+            + "]"
+        + "}";
 
         ObjectMapper mapper = new ObjectMapper();
 
         ReceiveDeviceDataRequest request = mapper.readValue(jsonData, ReceiveDeviceDataRequest.class);
         assert (request != null);
 
-        List<ReceiveDeviceDataRequest> requestList = new ArrayList<ReceiveDeviceDataRequest>();
-        requestList.add(request);
-
         LOGGER.info("DONE Testing ReceiveDeviceDataRequest construction");
 
-//        LOGGER.info("Testing receiveWaterDeviceData");
-//
-//        ReceiveDeviceDataResponse response = devicesService.receiveWaterDeviceData(requestList);
-//        assert (response != null);
-//
-//        LOGGER.info("DONE Testing receiveWaterDeviceData");
-//
-//        LOGGER.info("ReceiveDeviceDataResponse status: " + response.getStatus());
-//        LOGGER.info("ReceiveDeviceDataResponse success: " + response.getSuccess());
+        LOGGER.info("Testing receiveWaterDeviceData");
+
+        ReceiveDeviceDataResponse response = devicesService.receiveWaterDeviceData(request);
+        assert (response != null);
+
+        LOGGER.info("DONE Testing receiveWaterDeviceData");
+
+        LOGGER.info("ReceiveDeviceDataResponse status: " + response.getStatus());
+        LOGGER.info("ReceiveDeviceDataResponse success: " + response.getSuccess());
     }
 
 
