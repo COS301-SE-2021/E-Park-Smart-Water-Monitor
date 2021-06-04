@@ -1,38 +1,66 @@
 {
-  "name": "e-park",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.12.0",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.1.2"
+  "name": "epark-water-monitoring",
+  "version": "1.0.0",
+  "author": "Dynative",
+  "license": "MIT",
+  "description": "An IoT water monitoring dashboard",
+  "bugs": {
+    "url": "https://github.com/creativetimofficial/argon-dashboard-material-ui/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/creativetimofficial/argon-dashboard-material-ui.git"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
+  },
+  "dependencies": {
+    "@emotion/react": "11.1.5",
+    "@emotion/styled": "11.1.5",
+    "@fortawesome/fontawesome-free": "5.15.2",
+    "@material-ui/core": "4.11.3",
+    "@material-ui/icons": "4.11.2",
+    "@material-ui/lab": "4.0.0-alpha.57",
+    "axios": "^0.21.1",
+    "chart.js": "2.9.4",
+    "leaflet": "^1.7.1",
+    "nouislider": "14.6.3",
+    "prop-types": "15.7.2",
+    "react": "^17.0.1",
+    "react-chartjs-2": "2.11.1",
+    "react-copy-to-clipboard": "5.0.3",
+    "react-datetime": "3.0.4",
+    "react-dom": "^17.0.1",
+    "react-leaflet": "^3.2.0",
+    "react-router-dom": "5.2.0",
+    "react-scripts": "4.0.1",
+    "sass": "^1.34.0",
+    "sass-loader": "^8.0.2"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "optionalDependencies": {
+    "typescript": "4.1.5"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "@types/leaflet": "^1.7.0",
+    "eslint": "7.20.0",
+    "gulp": "4.0.2",
+    "gulp-append-prepend": "1.0.8",
+    "sass": "^1.34.0",
+    "sass-loader": "^8.0.2",
+    "webpack": "^4.44.2"
   }
 }
