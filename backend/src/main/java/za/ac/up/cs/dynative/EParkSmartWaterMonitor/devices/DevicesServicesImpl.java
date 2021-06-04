@@ -102,7 +102,7 @@ public class DevicesServicesImpl implements DevicesService {
         ReceiveDeviceDataResponse response = new ReceiveDeviceDataResponse();
 
         WaterSourceDevice device = null;
-        if (devices != null) {
+        if (!request.getDeviceName().equals("") && devices.size() > 0) {
             device = devices.get(0);
         }
         if (device != null) {
