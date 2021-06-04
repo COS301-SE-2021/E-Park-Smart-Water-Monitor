@@ -61,12 +61,22 @@ function Map({}) {
         }).then((res)=>{
             if(res)
             {
-                console.log("result water data: "+JSON.stringify(res))
+                // console.log("result water data: "+JSON.stringify(res))
 
                 const siteName = res.data.site[2].waterSiteName;
                 const devices = res.data.site[2].waterSourceDevices;
-                console.log("devices: "+JSON.stringify(devices))
-                const m = devices.map((device) =>
+                // console.log("devices: "+JSON.stringify(devices))
+                const site = res.data.site; // site array
+                const site_devices = []
+                for (let i = 0; i < site.length ; i++) {
+                    for (let p = 0; p < site[i].waterSourceDevices.length ; p++) {
+                        site_devices.push(site[i].waterSourceDevices[p]);
+                    }
+                }
+
+                // console.log("site devices: "+JSON.stringify(site_devices))
+
+                const m = site_devices.map((device) =>
                     // <ListItem key={number.toString()}
                     //           value={number} />
                     <Marker key={device.deviceName} position={[ device.deviceData.latitude , device.deviceData.longitude ]}>
@@ -80,11 +90,6 @@ function Map({}) {
             }
         });
     }, []) // second param [] is a list of dependency to watch and run useEffect
-
-
-
-    // {result === null ? 'loading' : result.name}
-
 
   return (
     <>
