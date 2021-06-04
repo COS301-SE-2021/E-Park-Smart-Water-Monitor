@@ -46,8 +46,14 @@ public class DevicesServicesImpl implements DevicesService {
         WaterSourceDevice newDevice = new WaterSourceDevice(addWSDRequest.getDeviceName(),addWSDRequest.getDeviceModel(),addWSDRequest.getLongitude(),addWSDRequest.getLatitude());
         AddWaterSourceDeviceResponse response = new AddWaterSourceDeviceResponse();
 
-        WaterSourceDevice device = deviceRepo.findWaterSourceDeviceByDeviceName(addWSDRequest.getDeviceName());
-        if (device==null)
+        Collection<WaterSourceDevice> devices = deviceRepo.findWaterSourceDeviceByDeviceName(addWSDRequest.getDeviceName());
+        WaterSourceDevice device = null;
+
+        if (devices.toArray().length > 0 ) {
+            device = (WaterSourceDevice) devices.toArray()[0];
+        }
+
+        if (device!=null)
         {
 
             AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse= waterSiteService.attachWaterSourceDevice( new AttachWaterSourceDeviceRequest(addWSDRequest.getSiteId(),newDevice));
@@ -89,9 +95,14 @@ public class DevicesServicesImpl implements DevicesService {
 
     @Override
     public ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request) {
-        WaterSourceDevice device = deviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName());
+        Collection<WaterSourceDevice> devices = deviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName());
         ReceiveDeviceDataResponse response = new ReceiveDeviceDataResponse();
-        if (!device.getDeviceName().equals("")) {
+
+        WaterSourceDevice device = null;
+        if (devices.toArray().length > 0) {
+            device = (WaterSourceDevice) devices.toArray()[0];
+        }
+        if (device != null) {
 
             Measurement data;
             for (int i = 0; i <request.getMeasurements().size() ; i++)
@@ -113,7 +124,7 @@ public class DevicesServicesImpl implements DevicesService {
         }
         else {
             response.setSuccess(false);
-            response.setStatus("Request Failed...");
+            response.setStatus("Request Failed... fix not appplied!");
         }
         return response;
     }
