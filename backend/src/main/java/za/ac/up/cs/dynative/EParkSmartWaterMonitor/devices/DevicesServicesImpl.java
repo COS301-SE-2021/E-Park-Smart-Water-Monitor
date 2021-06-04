@@ -49,14 +49,14 @@ public class DevicesServicesImpl implements DevicesService {
         WaterSourceDevice newDevice = new WaterSourceDevice(addWSDRequest.getDeviceName(),addWSDRequest.getDeviceModel(),addWSDRequest.getLongitude(),addWSDRequest.getLatitude());
         AddWaterSourceDeviceResponse response = new AddWaterSourceDeviceResponse();
 
-        Collection<WaterSourceDevice> devices = deviceRepo.findWaterSourceDeviceByDeviceName(addWSDRequest.getDeviceName());
+        List<WaterSourceDevice> devices = deviceRepo.findWaterSourceDeviceByDeviceName(addWSDRequest.getDeviceName());
         WaterSourceDevice device = null;
 
-        if (devices.toArray().length > 0 ) {
+        if (devices == null) {
             device = (WaterSourceDevice) devices.toArray()[0];
         }
 
-        if (device!=null)
+        if (device==null)
         {
 
             AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse= waterSiteService.attachWaterSourceDevice( new AttachWaterSourceDeviceRequest(addWSDRequest.getSiteId(),newDevice));
@@ -98,12 +98,12 @@ public class DevicesServicesImpl implements DevicesService {
 
     @Override
     public ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request) {
-        Collection<WaterSourceDevice> devices = deviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName());
+        List<WaterSourceDevice> devices = deviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName());
         ReceiveDeviceDataResponse response = new ReceiveDeviceDataResponse();
 
         WaterSourceDevice device = null;
-        if (devices.toArray().length > 0) {
-            device = (WaterSourceDevice) devices.toArray()[0];
+        if (devices != null) {
+            device = devices.get(0);
         }
         if (device != null) {
 
