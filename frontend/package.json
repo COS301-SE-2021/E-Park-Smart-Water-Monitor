@@ -1,7 +1,7 @@
 {
   "name": "epark-water-monitoring",
   "version": "1.0.0",
-  "author": "Dynatie",
+  "author": "Dynative",
   "license": "MIT",
   "description": "An IoT water monitoring dashboard",
   "bugs": {
