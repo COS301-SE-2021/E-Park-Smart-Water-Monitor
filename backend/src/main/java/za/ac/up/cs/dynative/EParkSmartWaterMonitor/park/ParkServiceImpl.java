@@ -9,10 +9,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkReque
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.CreateParkResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetParkSitesResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.SaveParkResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.*;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -79,5 +76,10 @@ public class ParkServiceImpl implements ParkService {
             response.setSuccess(false);
         }
         return response;
+    }
+
+    @Override
+    public FindByParkIdResponse findParkById(UUID parkId) {
+        return new FindByParkIdResponse(true,parkRepo.findParkById(parkId));
     }
 }

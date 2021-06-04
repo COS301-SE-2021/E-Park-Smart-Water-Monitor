@@ -15,9 +15,12 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetParkDevi
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWaterSourceDeviceResponse;
 
@@ -146,10 +149,12 @@ public class DevicesServicesImpl implements DevicesService {
     @Override
     public GetParkDevicesResponse getParkDevices(GetParkDevicesRequest request) {
         GetParkDevicesResponse getParkDevicesResponse = new GetParkDevicesResponse();
-        if (request.getSiteId() != null) {
-            Collection<WaterSourceDevice> waterSourceDevices = deviceRepo.getAllParkDevicesById(request.getSiteId());
-            if (waterSourceDevices != null) {
-                getParkDevicesResponse.setSite(waterSourceDevices);
+        if (request.getParkId() != null) {
+
+            List<WaterSourceDevice> devices  = deviceRepo.findAll();
+
+            if (devices != null) {
+                getParkDevicesResponse.setSite(devices);
                 getParkDevicesResponse.setSuccess(true);
                 getParkDevicesResponse.setStatus("Successfully got the Park's devices");
             }
