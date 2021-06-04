@@ -1,9 +1,9 @@
 {
-  "name": "argon-dashboard-material-ui",
+  "name": "epark-water-monitoring",
   "version": "1.0.0",
-  "author": "Creative Tim",
+  "author": "Dynative",
   "license": "MIT",
-  "description": "Material UI version of Argon Dashboard React by Creative Tim",
+  "description": "An IoT water monitoring dashboard",
   "bugs": {
     "url": "https://github.com/creativetimofficial/argon-dashboard-material-ui/issues"
   },
@@ -25,6 +25,7 @@
     "@material-ui/core": "4.11.3",
     "@material-ui/icons": "4.11.2",
     "@material-ui/lab": "4.0.0-alpha.57",
+    "axios": "^0.21.1",
     "chart.js": "2.9.4",
     "leaflet": "^1.7.1",
     "nouislider": "14.6.3",

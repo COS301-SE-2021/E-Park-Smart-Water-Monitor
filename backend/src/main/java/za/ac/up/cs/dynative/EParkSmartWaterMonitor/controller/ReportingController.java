@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.reporting.ReportingService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api/reporting")
 public class ReportingController {

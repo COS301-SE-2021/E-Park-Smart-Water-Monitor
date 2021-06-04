@@ -13,7 +13,6 @@ import Search from "@material-ui/icons/Search";
 
 // core components
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
-import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import NavbarDropdown from "components/Dropdowns/NavbarDropdown.js";
 
@@ -102,7 +101,7 @@ const Admin = () => {
             component={Box}
             classes={{ root: classes.containerRoot }}
           >
-            <AdminFooter />
+
           </Container>
         </Box>
       </>

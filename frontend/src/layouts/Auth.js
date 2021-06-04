@@ -9,7 +9,6 @@ import Grid from "@material-ui/core/Grid";
 // core components
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthHeader from "components/Headers/AuthHeader.js";
-import AuthFooter from "components/Footers/AuthFooter.js";
 
 import routes from "routes.js";
 
@@ -72,7 +71,7 @@ const Auth = () => {
           </Box>
         </Container>
       </div>
-      <AuthFooter />
+      {/*<AuthFooter />*/}
     </>
   );
 };
