@@ -7,7 +7,7 @@ jobs:
       install:
         - npm install
       script:
-        - npm run build
+        - CI='' npm run build
 
     - langauge: java
       jdk: openjdk11
