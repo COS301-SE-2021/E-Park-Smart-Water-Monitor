@@ -48,34 +48,11 @@ const useStyles = makeStyles(componentStyles);
 
 function Dashboard() {
   const classes = useStyles();
-  const theme = useTheme();
-  const [activeNav, setActiveNav] = React.useState(1);
-  const [chartExample1Data, setChartExample1Data] = React.useState("data1");
-
-
-  // //for devices:
-  // const [name,setName]= useState()
-  // const [battery,setBattery]= useState()
-  // const [status,setStatus]= useState()
-  // const [long,setLong]= useState()
-  // const [lat,setLat]= useState()
-
-
-  // get controller data
-  // axios.post('localhost:8080/api/park/getParkWaterSites',{
-  //   parkId: "dda99bb7-4116-4e8a-ac35-9dad7e8c1b3f"}).
-  //   then(function (response) {
-  //     console.log("get water sites")
-  //     console.log(response);
-  //   }).catch(err => console.log(err));
-  //
-
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
-
-
+  
 
   return (
     <>
