@@ -22,7 +22,7 @@ import {
 
 const useStyles = makeStyles(componentStyles);
 
-function BarChart({  }) {
+function BarChart() {
   const classes = useStyles();
   const theme = useTheme();
 

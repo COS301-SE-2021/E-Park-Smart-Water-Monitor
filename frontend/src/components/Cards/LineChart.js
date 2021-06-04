@@ -27,7 +27,7 @@ import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(componentStyles);
 
-function LineChart({ }) {
+function LineChart() {
   const classes = useStyles();
   const theme = useTheme();
   const [activeNav, setActiveNav] = React.useState(1);

@@ -4,7 +4,7 @@ import Chart from "chart.js";
 // react plugin used to create charts
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
+// import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 
 import Card from "@material-ui/core/Card";
@@ -52,7 +52,7 @@ function Dashboard() {
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
-  
+
 
   return (
     <>

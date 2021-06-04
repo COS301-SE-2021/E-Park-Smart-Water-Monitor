@@ -21,39 +21,11 @@ const mapStyles = {
   height: `100%`
 };
 
-function Map({}) {
+function Map() {
   const classes = useStyles();
   const theme = useTheme();
   // const [result, setResult] = useState(null)
-  const [markers, setMarkers] = useState(null)
-
-  // const data = {
-  //   "status": "Successfully found site.",
-  //     "success": true,
-  //     "site": {
-  //   "id": "7b75749a-d7b1-4012-9596-e5a50a92037d",
-  //       "waterSiteName": "Rhino Water Site",
-  //       "latitude": -25.88248274150901,
-  //       "longitude": 28.26649806207706,
-  //       "waterSourceDevices": [
-  //     {
-  //       "deviceId": "92666ea5-fcc6-441c-9522-704566ff3e75",
-  //       "deviceModel": "ESP32",
-  //       "deviceName": "Water3000",
-  //       "deviceData": {
-  //         "longitude": -25.881565737140885,
-  //         "latitude": 28.265639755240308,
-  //         "battery": 0.0,
-  //         "deviceStatus": null,
-  //         "upTime": 0.0,
-  //         "lifeTime": 0.0
-  //       },
-  //       "measurementSet": []
-  //     }
-  //   ],
-  //       "infrastructureDevices": []
-  // }
-  // }
+  const [response, setResponse] = useState(null)
 
     useEffect(() => {
         axios.post('http://localhost:8080/api/park/getParkWaterSites', {
@@ -63,8 +35,6 @@ function Map({}) {
             {
                 // console.log("result water data: "+JSON.stringify(res))
 
-                const siteName = res.data.site[2].waterSiteName;
-                const devices = res.data.site[2].waterSourceDevices;
                 // console.log("devices: "+JSON.stringify(devices))
                 const site = res.data.site; // site array
                 const site_devices = []
@@ -85,7 +55,7 @@ function Map({}) {
                         </Popup>
                     </Marker>
                 );
-                setMarkers(m);
+                setResponse(m);
                 console.log("markers: "+JSON.stringify(m))
             }
         });
@@ -137,7 +107,7 @@ function Map({}) {
                 {/*        Site Name*/}
                 {/*    </Popup>*/}
                 {/*</Marker>*/}
-              { markers }
+              { response }
             </MapContainer>
           </div>
 
