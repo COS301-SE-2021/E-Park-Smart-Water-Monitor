@@ -1,23 +1,12 @@
-import React from "react";
-// import PropTypes from "prop-types";
-// @material-ui/core components
+import React, {useEffect, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import { Bar } from "react-chartjs-2";
+
 
 // core components
 import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
-
-import {
-    // chartOptions,
-    // parseOptions,
-    // chartExample1,
-    chartExample2,
-} from "variables/charts.js";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -27,20 +16,33 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import DeviceData from "../Custom/DeviceData";
+import {Marker, Popup} from "react-leaflet";
 
 
 const useStyles = makeStyles(componentStyles);
 
-function BarChart() {
+function DeviceTable(props) {
   const classes = useStyles();
-  const theme = useTheme();
+  const [response, setResponse] = useState(null)
 
-    // CHART 2 - Bar Chart
-    console.log("chartExample2.data")
-    console.log(chartExample2.data)
-    console.log("chartExample2.options")
-    console.log(chartExample2.options)
 
+    useEffect(() => {
+        if(props.devices)
+        {
+            console.log("props.devices:")
+            console.log(props.devices)
+            const m = props.devices.map((device) =>
+                <Marker key={device.deviceName} position={[ device.deviceData.latitude , device.deviceData.longitude ]}>
+                    <Popup>
+                        { device.deviceName }
+                    </Popup>
+                </Marker>
+            );
+            setResponse(m);
+        }else{
+            console.log("no device prop added")
+        }
+    },[])
 
   return (
     <>
@@ -227,4 +229,4 @@ function BarChart() {
   );
 }
 
-export default BarChart;
+export default DeviceTable;

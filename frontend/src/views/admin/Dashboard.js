@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
@@ -43,6 +43,8 @@ import {
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
 import DeviceTable from "../../components/Cards/DeviceTable";
+import axios from "axios";
+import {Marker, Popup} from "react-leaflet";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -50,10 +52,52 @@ const useStyles = makeStyles(componentStyles);
 
 function Dashboard() {
   const classes = useStyles();
+  const [response, setResponse] = useState(null)
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
+
+
+  const devices = []
+  const sites = []
+  // MONOLITH of SITES
+
+  useEffect(() => {
+    axios.post('http://localhost:8080/api/park/getParkWaterSites', {
+      parkId: "2ea5ba27-9d8e-41a4-9628-485f0ae2fb57"
+    }).then((res)=>{
+      if(res.data)
+      {
+        // console.log("result water data: "+JSON.stringify(res))
+
+        // console.log("devices: "+JSON.stringify(devices))
+        const site = res.data.site; // site array
+        // const site_devices = []
+        for (let i = 0; i < site.length ; i++) {
+          for (let p = 0; p < site[i].waterSourceDevices.length ; p++) {
+            devices.push(site[i].waterSourceDevices[p]);
+          }
+        }
+
+        // console.log("site devices: "+JSON.stringify(site_devices))
+
+        const m = devices.map((device) =>
+            // <ListItem key={number.toString()}
+            //           value={number} />
+            <Marker key={device.deviceName} position={[ device.deviceData.latitude , device.deviceData.longitude ]}>
+              <Popup>
+                { device.deviceName }
+              </Popup>
+            </Marker>
+        );
+        setResponse(m);
+        console.log("markers: "+JSON.stringify(m))
+      }else{
+        console.log('res.data null')
+      }
+    });
+  }, []) // second param [] is a list of dependency to watch and run useEffect
 
 
   return (
@@ -86,7 +130,7 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            <DeviceTable></DeviceTable>
+            <DeviceTable devices={devices}></DeviceTable>
           </Grid>
         </Grid>
 
