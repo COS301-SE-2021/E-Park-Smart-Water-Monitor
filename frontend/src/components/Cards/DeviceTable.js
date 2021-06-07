@@ -112,26 +112,6 @@ function BarChart() {
                                         classes.tableCellRootHead,
                                 }}
                             >
-                                Latitude
-                            </TableCell>
-                            <TableCell
-                                classes={{
-                                    root:
-                                        classes.tableCellRoot +
-                                        " " +
-                                        classes.tableCellRootHead,
-                                }}
-                            >
-                                Longitude
-                            </TableCell>
-                            <TableCell
-                                classes={{
-                                    root:
-                                        classes.tableCellRoot +
-                                        " " +
-                                        classes.tableCellRootHead,
-                                }}
-                            >
                                 Status
                             </TableCell>
                             <TableCell
@@ -166,12 +146,7 @@ function BarChart() {
                             >
                                 Water2000
                             </TableCell>
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                -25.812494434
-                            </TableCell>
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                28.239765508
-                            </TableCell>
+
                             <TableCell classes={{ root: classes.tableCellRoot }}>
                                 FINE
                             </TableCell>
@@ -193,12 +168,7 @@ function BarChart() {
                             >
                                 Water5000
                             </TableCell>
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                -25.112494434
-                            </TableCell>
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                28.129765508
-                            </TableCell>
+
                             <TableCell classes={{ root: classes.tableCellRoot }}>
                                 FINE
                             </TableCell>
@@ -220,12 +190,7 @@ function BarChart() {
                             >
                                 Water1000
                             </TableCell>
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                -25.892494434
-                            </TableCell>
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                28.289765508
-                            </TableCell>
+
                             <TableCell classes={{ root: classes.tableCellRoot }}>
                                 FINE
                             </TableCell>
@@ -248,63 +213,12 @@ function BarChart() {
                                 Water3000
                             </TableCell>
                             <TableCell classes={{ root: classes.tableCellRoot }}>
-                                -25.112494434
-                            </TableCell>
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                28.129765508
-                            </TableCell>
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
                                 FINE
                             </TableCell>
                             <TableCell classes={{ root: classes.tableCellRoot }}>
                                 100%
                             </TableCell>
                         </TableRow>
-
-                        {/*{axios.post('localhost:8080/api/park/getParkWaterSites',{*/}
-                        {/*  parkId: "dda99bb7-4116-4e8a-ac35-9dad7e8c1b3f"}).*/}
-                        {/*    then(function (response) {*/}
-                        {/*      console.log(response);*/}
-                        {/*    })*/}
-                        {/*}*/}
-
-                        {/*{Axios.post('localhost:8080/api/park/getParkWaterSites', {*/}
-                        {/*parkId: "dda99bb7-4116-4e8a-ac35-9dad7e8c1b3f"})*/}
-                        {/*.then(function (response) {*/}
-                        {/*    response.map((values)=>(*/}
-                        {/*      <>*/}
-                        {/*        <TableRow>*/}
-                        {/*        <TableCell*/}
-                        {/*        classes={{*/}
-                        {/*          root:*/}
-                        {/*          classes.tableCellRoot +*/}
-                        {/*          " " +*/}
-                        {/*          classes.tableCellRootBodyHead,*/}
-                        {/*        }}*/}
-                        {/*        component="th"*/}
-                        {/*        variant="head"*/}
-                        {/*        scope="row"*/}
-                        {/*        >*/}
-                        {/*          {values.deviceName}*/}
-                        {/*        </TableCell>*/}
-                        {/*        <TableCell classes={{ root: classes.tableCellRoot }}>*/}
-                        {/*          {values.deviceData.latitude}*/}
-                        {/*        </TableCell>*/}
-                        {/*        <TableCell classes={{ root: classes.tableCellRoot }}>*/}
-                        {/*          {values.deviceData.longitude}*/}
-                        {/*        </TableCell>*/}
-                        {/*        <TableCell classes={{ root: classes.tableCellRoot }}>*/}
-                        {/*          {values.deviceData.deviceStatus}*/}
-                        {/*        </TableCell>*/}
-                        {/*        <TableCell classes={{ root: classes.tableCellRoot }}>*/}
-                        {/*          {values.deviceData.battery}*/}
-                        {/*        </TableCell>*/}
-                        {/*        </TableRow>*/}
-                        {/*      </>*/}
-                        {/*    ))*/}
-
-                        {/*})}*/}
-
                     </TableBody>
                 </Box>
             </TableContainer>
