@@ -81,7 +81,6 @@ public class WaterSiteServicesImpl implements WaterSiteService
     }
 
     public Collection<WaterSite> getAll() {
-//        return siteRepo.findAll();
         return null;
     }
 
