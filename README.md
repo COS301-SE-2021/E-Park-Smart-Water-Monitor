@@ -56,6 +56,7 @@
     * development
         * feature/FE (frontend feature)
         * bugfix/BE (backend bugfix)
+        * feature/FS (fullstack feature)
         * test/MC (microcontroller test addition)
         * ...
 
