@@ -85,7 +85,6 @@ public class DevicesServicesImpl implements DevicesService {
     public Optional<WaterSourceDevice> findDevice() {
 
         Optional<WaterSourceDevice> device =  deviceRepo.findById(UUID.randomUUID());
-///
         if (device.isPresent())
         {
             device.get().getDeviceName();

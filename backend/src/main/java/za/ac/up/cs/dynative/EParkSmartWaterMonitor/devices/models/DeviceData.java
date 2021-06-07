@@ -57,15 +57,7 @@ public class DeviceData {
     public void setBattery(double battery) {
         this.battery = battery;
     }
-
-//    public Enum<DeviceStatus> getDeviceStatus() {
-//        return deviceStatus;
-//    }
-
-//    public void setDeviceStatus(Enum<DeviceStatus> deviceStatus) {
-//        this.deviceStatus = deviceStatus;
-//    }
-
+    
     public String getDeviceStatus() {
         return deviceStatus;
     }
