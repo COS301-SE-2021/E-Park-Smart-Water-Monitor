@@ -1,33 +1,19 @@
 import React, {useEffect, useState} from "react";
-// javascipt plugin for creating charts
+// javascript plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-
-import Card from "@material-ui/core/Card";
-
-import CardHeader from "@material-ui/core/CardHeader";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Typography from "@material-ui/core/Typography";
 
-import DeviceData from "components/Custom/DeviceData"
 import Map from "components/Cards/Map.js"
 import BarChart from "components/Cards/BarChart.js"
 import LineChart from "components/Cards/LineChart.js"
-//import Axios from 'axios';
-// @material-ui/icons components
-// import ArrowDownward from "@material-ui/icons/ArrowDownward";
-// import ArrowUpward from "@material-ui/icons/ArrowUpward";
+import DeviceTable from "../../components/Cards/DeviceTable";
+
 
 
 
@@ -42,7 +28,6 @@ import {
 } from "variables/charts.js";
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
-import DeviceTable from "../../components/Cards/DeviceTable";
 import axios from "axios";
 import {Marker, Popup} from "react-leaflet";
 
@@ -53,13 +38,14 @@ const useStyles = makeStyles(componentStyles);
 function Dashboard() {
   const classes = useStyles();
   const [response, setResponse] = useState(null)
+  const [devices, setDevices] = useState()
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
 
 
-  const devices = []
+  // const devices = []
   const sites = []
   // MONOLITH of SITES
 
@@ -69,22 +55,16 @@ function Dashboard() {
     }).then((res)=>{
       if(res.data)
       {
-        // console.log("result water data: "+JSON.stringify(res))
-
-        // console.log("devices: "+JSON.stringify(devices))
         const site = res.data.site; // site array
-        // const site_devices = []
+        const site_devices = []
         for (let i = 0; i < site.length ; i++) {
           for (let p = 0; p < site[i].waterSourceDevices.length ; p++) {
-            devices.push(site[i].waterSourceDevices[p]);
+            site_devices.push(site[i].waterSourceDevices[p]);
           }
         }
+        setDevices(site_devices)
 
-        // console.log("site devices: "+JSON.stringify(site_devices))
-
-        const m = devices.map((device) =>
-            // <ListItem key={number.toString()}
-            //           value={number} />
+        const m = site_devices.map((device) =>
             <Marker key={device.deviceName} position={[ device.deviceData.latitude , device.deviceData.longitude ]}>
               <Popup>
                 { device.deviceName }
@@ -92,7 +72,7 @@ function Dashboard() {
             </Marker>
         );
         setResponse(m);
-        console.log("markers: "+JSON.stringify(m))
+        console.log("dashboard devices: "+ JSON.stringify(devices))
       }else{
         console.log('res.data null')
       }
@@ -130,7 +110,8 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            <DeviceTable devices={devices}></DeviceTable>
+
+            { devices && <DeviceTable devices={ devices }></DeviceTable> }
           </Grid>
         </Grid>
 

@@ -26,12 +26,6 @@ function BarChart() {
   const classes = useStyles();
   const theme = useTheme();
 
-    // CHART 2 - Bar Chart
-    console.log("chartExample2.data")
-    console.log(chartExample2.data)
-    console.log("chartExample2.options")
-    console.log(chartExample2.options)
-
 
   return (
     <>

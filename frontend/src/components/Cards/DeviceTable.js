@@ -15,8 +15,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
-import DeviceData from "../Custom/DeviceData";
-import {Marker, Popup} from "react-leaflet";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -29,14 +27,29 @@ function DeviceTable(props) {
     useEffect(() => {
         if(props.devices)
         {
-            console.log("props.devices:")
-            console.log(props.devices)
             const m = props.devices.map((device) =>
-                <Marker key={device.deviceName} position={[ device.deviceData.latitude , device.deviceData.longitude ]}>
-                    <Popup>
+                <TableRow key={device.deviceName}>
+                    <TableCell
+                        classes={{
+                            root:
+                                classes.tableCellRoot +
+                                " " +
+                                classes.tableCellRootBodyHead,
+                        }}
+                        component="th"
+                        variant="head"
+                        scope="row"
+                    >
                         { device.deviceName }
-                    </Popup>
-                </Marker>
+                    </TableCell>
+
+                    <TableCell classes={{ root: classes.tableCellRoot }}>
+                        { device.deviceData.deviceStatus }
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}>
+                        { device.deviceData.battery }%
+                    </TableCell>
+                </TableRow>
             );
             setResponse(m);
         }else{
@@ -74,13 +87,6 @@ function DeviceTable(props) {
                                 display="flex"
                                 flexWrap="wrap"
                             >
-                                {/*<Button*/}
-                                {/*  variant="contained"*/}
-                                {/*  color="primary"*/}
-                                {/*  size="small"*/}
-                                {/*>*/}
-                                {/*  See all*/}
-                                {/*</Button>*/}
                             </Box>
                         </Grid>
                     </Grid>
@@ -129,98 +135,7 @@ function DeviceTable(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-
-
-                        <DeviceData />
-
-                        {/*default values:*/}
-                        <TableRow>
-                            <TableCell
-                                classes={{
-                                    root:
-                                        classes.tableCellRoot +
-                                        " " +
-                                        classes.tableCellRootBodyHead,
-                                }}
-                                component="th"
-                                variant="head"
-                                scope="row"
-                            >
-                                Water2000
-                            </TableCell>
-
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                FINE
-                            </TableCell>
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                100%
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell
-                                classes={{
-                                    root:
-                                        classes.tableCellRoot +
-                                        " " +
-                                        classes.tableCellRootBodyHead,
-                                }}
-                                component="th"
-                                variant="head"
-                                scope="row"
-                            >
-                                Water5000
-                            </TableCell>
-
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                FINE
-                            </TableCell>
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                100%
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell
-                                classes={{
-                                    root:
-                                        classes.tableCellRoot +
-                                        " " +
-                                        classes.tableCellRootBodyHead,
-                                }}
-                                component="th"
-                                variant="head"
-                                scope="row"
-                            >
-                                Water1000
-                            </TableCell>
-
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                FINE
-                            </TableCell>
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                100%
-                            </TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell
-                                classes={{
-                                    root:
-                                        classes.tableCellRoot +
-                                        " " +
-                                        classes.tableCellRootBodyHead,
-                                }}
-                                component="th"
-                                variant="head"
-                                scope="row"
-                            >
-                                Water3000
-                            </TableCell>
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                FINE
-                            </TableCell>
-                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                100%
-                            </TableCell>
-                        </TableRow>
+                        { response }
                     </TableBody>
                 </Box>
             </TableContainer>

@@ -38,7 +38,7 @@ function LineChart() {
     setChartExample1Data("data" + index);
   };
 
-    console.log("chartExample1Data: "+ chartExample1[chartExample1Data])
+    // console.log("chartExample1Data: "+ chartExample1[chartExample1Data])
     // chart data structure
     /*
       chartExample1Data: function data1() {
