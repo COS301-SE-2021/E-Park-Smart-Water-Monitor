@@ -24,10 +24,7 @@ import DeviceData from "components/Custom/DeviceData"
 import Map from "components/Cards/Map.js"
 import BarChart from "components/Cards/BarChart.js"
 import LineChart from "components/Cards/LineChart.js"
-//import Axios from 'axios';
-// @material-ui/icons components
-// import ArrowDownward from "@material-ui/icons/ArrowDownward";
-// import ArrowUpward from "@material-ui/icons/ArrowUpward";
+
 
 
 
@@ -67,13 +64,13 @@ function Dashboard() {
         classes={{ root: classes.containerRoot }}
       >
         <Grid container>
-          <Grid
-              item
-              xs={12}
-              xl={12}
-              component={Box}
-              marginBottom="3rem!important"
-              classes={{ root: classes.gridItemRoot }}
+            <Grid
+                item
+                xs={12}
+                xl={12}
+                component={Box}
+                marginBottom="3rem!important"
+                classes={{ root: classes.gridItemRoot }}
           >
             <Map></Map>
           </Grid>
