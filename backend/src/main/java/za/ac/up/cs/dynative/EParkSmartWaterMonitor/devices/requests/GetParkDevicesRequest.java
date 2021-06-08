@@ -6,14 +6,14 @@ import java.util.UUID;
 
 public class GetParkDevicesRequest {
 
-    UUID siteId;
-    public GetParkDevicesRequest(@JsonProperty("siteId") UUID siteId)
+    UUID parkId;
+    public GetParkDevicesRequest(@JsonProperty("parkId") UUID parkId)
     {
-        this.siteId=siteId;
+        this.parkId=parkId;
 
     }
 
-    public UUID getSiteId() {
-        return siteId;
+    public UUID getParkId() {
+        return parkId;
     }
 }
