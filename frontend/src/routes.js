@@ -1,10 +1,12 @@
 // core components
 import Dashboard from "views/dashboard/Dashboard.js";
+
 // import Icons from "views/admin/Icons.js";
 import Login from "views/auth/Login.js";
 // import Maps from "views/admin/Maps.js";
 import Profile from "views/dashboard/Profile.js";
 import Device from "views/dashboard/Device.js";
+import Admin from "views/admin/Admin";
 
 // import Register from "views/auth/Register.js";
 // import Tables from "views/admin/Tables.js";
@@ -34,6 +36,14 @@ var routes = [
     iconColor: "Primary",
     component: Dashboard,
     layout: "/dashboard",
+  },
+  {
+    path: "/index",
+    name: "Admin",
+    icon: Tv,
+    iconColor: "Primary",
+    component: Admin,
+    layout: "/admin",
   },
   // {
   //   path: "/icons",
