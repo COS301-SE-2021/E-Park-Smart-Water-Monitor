@@ -7,15 +7,12 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDev
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Repository("ParkRepo")
 public interface ParkRepo extends Neo4jRepository<Park, UUID> {
 
-    Set<Park> findParkByParkName(String parkName);
+    List<Park> findParkByParkName(String parkName);
     Park findParkById(UUID id);
 
 }

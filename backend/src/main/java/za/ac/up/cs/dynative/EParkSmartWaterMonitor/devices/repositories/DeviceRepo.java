@@ -14,11 +14,12 @@ import java.util.UUID;
 @Repository("DeviceRepo")
 public interface DeviceRepo extends Neo4jRepository< WaterSourceDevice, UUID> {
 
-    Collection<WaterSourceDevice> findWaterSourceDeviceByDeviceName(String deviceName);
+    List<WaterSourceDevice> findWaterSourceDeviceByDeviceName(String deviceName);
+
     @Query("MATCH (:Park{id: $id})-->(watersite)-->(w) RETURN w")
-    Collection<WaterSourceDevice> getAllParkDevices(@Param("id") UUID id);
+    List<WaterSourceDevice> getAllParkDevices(@Param("id") UUID id);
 
     @Query("MATCH (:Park{id: $id})-->(watersite)-->(w)-->(d)RETURN w,d")
-    Collection<WaterSourceDevice> getAllParkDevicesById(@Param("id") UUID id);
+    List<WaterSourceDevice> getAllParkDevicesById(@Param("id") UUID id);
 
 }

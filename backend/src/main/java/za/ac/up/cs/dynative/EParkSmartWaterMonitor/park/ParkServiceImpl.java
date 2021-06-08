@@ -9,6 +9,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -43,7 +44,7 @@ public class ParkServiceImpl implements ParkService {
     @Override
     public FindByParkNameResponse findParkByName(FindByParkNameRequest request) {
         if (!request.getParkName().equals("")) {
-            Set<Park> park = parkRepo.findParkByParkName(request.getParkName());
+            List<Park> park = parkRepo.findParkByParkName(request.getParkName());
             return new FindByParkNameResponse((Park)park.toArray()[0]);
         }
         else return new FindByParkNameResponse(null);
@@ -86,6 +87,10 @@ public class ParkServiceImpl implements ParkService {
             }
         }
         return response;
-        
+    }
+
+    @Override
+    public FindByParkIdResponse findParkById(UUID parkId) {
+        return new FindByParkIdResponse(true,parkRepo.findParkById(parkId));
     }
 }
