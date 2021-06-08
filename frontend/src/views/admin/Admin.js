@@ -1,12 +1,12 @@
 import React from "react";
-import AllUsers from "components/Custom/Users"
+import AdminHeader from "../../components/Headers/AdminHeader";
 
 function Admin() {
 
 
     return (
         <>
-            <AllUsers />
+            <AdminHeader/>
         </>
     );
 }

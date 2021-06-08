@@ -21,6 +21,7 @@ import Dns from "@material-ui/icons/Dns";
 import Person from "@material-ui/icons/Person";
 import Tv from "@material-ui/icons/Tv";
 import VpnKey from "@material-ui/icons/VpnKey";
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
 var routes = [
   // {
@@ -40,8 +41,8 @@ var routes = [
   {
     path: "/index",
     name: "Admin",
-    icon: Tv,
-    iconColor: "Primary",
+    icon: SupervisorAccountIcon,
+    iconColor: "Warning",
     component: Admin,
     layout: "/admin",
   },
