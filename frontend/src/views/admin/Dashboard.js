@@ -100,7 +100,7 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            <Map></Map>
+            { devices && <Map devices={ devices }></Map> }
           </Grid>
           <Grid
               item
@@ -110,7 +110,6 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-
             { devices && <DeviceTable devices={ devices }></DeviceTable> }
           </Grid>
         </Grid>
