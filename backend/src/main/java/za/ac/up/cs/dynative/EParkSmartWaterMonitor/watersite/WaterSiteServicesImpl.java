@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.WaterSiteRepo;
@@ -38,15 +40,15 @@ public class WaterSiteServicesImpl implements WaterSiteService
     public AddSiteResponse addSite(AddSiteRequest request) {
         AddSiteResponse response = new AddSiteResponse();
 
-        if (!request.getParkName().equals("")) {
+        if (request.getParkId() != null) {
             WaterSite waterSite = new WaterSite(UUID.randomUUID(),request.getSiteName(),request.getLatitude(), request.getLongitude());
 
-            FindByParkNameResponse findByParkNameResponse = parkService.findParkByName(new FindByParkNameRequest(request.getParkName()));
+            FindByParkIdResponse findByParkIdResponse = parkService.findByParkId(new FindByParkIdRequest(request.getParkId()));
 
-            if (findByParkNameResponse != null) {
-                findByParkNameResponse.getPark().addWaterSite(waterSite);
+            if (findByParkIdResponse != null) {
+                findByParkIdResponse.getPark().addWaterSite(waterSite);
                 waterSiteRepo.save(waterSite);
-                parkService.savePark(new SaveParkRequest(findByParkNameResponse.getPark()));
+                parkService.savePark(new SaveParkRequest(findByParkIdResponse.getPark()));
                 response.setStatus("Successfully added: " + request.getSiteName());
                 response.setSuccess(true);
             }
