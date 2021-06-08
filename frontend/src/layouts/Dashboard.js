@@ -12,17 +12,17 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import Search from "@material-ui/icons/Search";
 
 // core components
-import AdminNavbar from "components/Navbars/AdminNavbar.js";
+import DashboardNavbar from "components/Navbars/DashboardNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import NavbarDropdown from "components/Dropdowns/NavbarDropdown.js";
 
 import routes from "routes.js";
 
-import componentStyles from "assets/theme/layouts/admin.js";
+import componentStyles from "assets/theme/layouts/dashboard.js";
 
 const useStyles = makeStyles(componentStyles);
 
-const Admin = () => {
+const Dashboard = () => {
   const classes = useStyles();
   const location = useLocation();
 
@@ -34,7 +34,7 @@ const Admin = () => {
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
+      if (prop.layout === "/dashboard") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -63,7 +63,7 @@ const Admin = () => {
         <Sidebar
           routes={routes}
           logo={{
-            innerLink: "/admin/index",
+            innerLink: "/dashboard/index",
             imgSrc: require("../assets/img/brand/ERP-logo.png").default,
             imgAlt: "...",
           }}
@@ -91,10 +91,10 @@ const Admin = () => {
           }
         />
         <Box position="relative" className={classes.mainContent}>
-          <AdminNavbar brandText={getBrandText(location.pathname)} />
+          <DashboardNavbar brandText={getBrandText(location.pathname)} />
           <Switch>
             {getRoutes(routes)}
-            <Redirect from="*" to="/admin/index" />
+            <Redirect from="*" to="/dashboard/index" />
           </Switch>
           <Container
             maxWidth={false}
@@ -109,4 +109,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default Dashboard;

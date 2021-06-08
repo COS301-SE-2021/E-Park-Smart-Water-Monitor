@@ -16,7 +16,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 // core components
 import Header from "components/Headers/Header.js";
 
-import componentStyles from "assets/theme/views/admin/icons.js";
+import componentStyles from "assets/theme/views/dashboard/icons.js";
 
 const useStyles = makeStyles(componentStyles);
 

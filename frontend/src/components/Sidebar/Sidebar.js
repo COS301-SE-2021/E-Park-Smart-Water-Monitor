@@ -226,12 +226,12 @@ Sidebar.defaultProps = {
 
 Sidebar.propTypes = {
   // this is the input/component that will be rendered on responsive
-  // in our demo, we add this input component since the AdminNavbar
+  // in our demo, we add this input component since the DashboardNavbar
   // will not be visible on responsive mode
   input: PropTypes.node,
   // this is the dropdown/component that will be rendered on responsive
-  // in our demo, it is the same with the dropdown from the AdminNavbar
-  // since the AdminNavbar will not be visible on responsive mode
+  // in our demo, it is the same with the dropdown from the DashboardNavbar
+  // since the DashboardNavbar will not be visible on responsive mode
   dropdown: PropTypes.node,
   // NOTE: we recommend that your logo has the following dimensions
   // // 135x40 or 487x144 or a resize of these dimensions

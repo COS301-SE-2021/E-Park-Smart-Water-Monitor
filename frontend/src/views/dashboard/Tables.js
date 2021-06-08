@@ -29,7 +29,7 @@ import MoreVert from "@material-ui/icons/MoreVert";
 // core components
 import Header from "components/Headers/Header.js";
 
-import componentStyles from "assets/theme/views/admin/tables.js";
+import componentStyles from "assets/theme/views/dashboard/tables.js";
 
 const useStyles = makeStyles(componentStyles);
 

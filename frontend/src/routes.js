@@ -1,10 +1,10 @@
 // core components
-import Dashboard from "views/admin/Dashboard.js";
+import Dashboard from "views/dashboard/Dashboard.js";
 // import Icons from "views/admin/Icons.js";
 import Login from "views/auth/Login.js";
 // import Maps from "views/admin/Maps.js";
-import Profile from "views/admin/Profile.js";
-import Device from "views/admin/Device.js";
+import Profile from "views/dashboard/Profile.js";
+import Device from "views/dashboard/Device.js";
 
 // import Register from "views/auth/Register.js";
 // import Tables from "views/admin/Tables.js";
@@ -33,7 +33,7 @@ var routes = [
     icon: Tv,
     iconColor: "Primary",
     component: Dashboard,
-    layout: "/admin",
+    layout: "/dashboard",
   },
   // {
   //   path: "/icons",
@@ -73,7 +73,7 @@ var routes = [
     icon: AccountCircle,
     iconColor: "ErrorLight",
     component: Device,
-    layout: "/admin",
+    layout: "/dashboard",
   },
   {
     path: "/login",

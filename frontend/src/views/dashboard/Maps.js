@@ -11,7 +11,7 @@ import Grid from "@material-ui/core/Grid";
 // core components
 import Header from "components/Headers/Header.js";
 
-import componentStyles from "assets/theme/views/admin/maps.js";
+import componentStyles from "assets/theme/views/dashboard/maps.js";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -87,7 +87,7 @@ const MapWrapper = () => {
 
     const contentString =
       '<div class="info-window-content"><h2>Light Bootstrap Dashboard PRO React</h2>' +
-      "<p>A premium Admin for React-Bootstrap, Bootstrap, React, and React Hooks.</p></div>";
+      "<p>A premium Dashboard for React-Bootstrap, Bootstrap, React, and React Hooks.</p></div>";
 
     const infowindow = new google.maps.InfoWindow({
       content: contentString,

@@ -8,7 +8,7 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 
 // core components
-import componentStyles from "assets/theme/components/admin-footer.js";
+import componentStyles from "assets/theme/components/dashboard-footer.js";
 
 const useStyles = makeStyles(componentStyles);
 
