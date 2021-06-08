@@ -15,7 +15,9 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetParkDevi
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
@@ -53,7 +55,7 @@ public class DevicesServicesImpl implements DevicesService {
             device = (WaterSourceDevice) devices.toArray()[0];
         }
 
-        if (device!=null)
+        if (device==null)
         {
 
             AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse= waterSiteService.attachWaterSourceDevice( new AttachWaterSourceDeviceRequest(addWSDRequest.getSiteId(),newDevice));
@@ -131,11 +133,11 @@ public class DevicesServicesImpl implements DevicesService {
     @Override
     public GetNumDevicesResponse getNumDevices(GetNumDevicesRequest request) {
         GetNumDevicesResponse getNumDevicesResponse = new GetNumDevicesResponse();
-        if (!request.getParkName().equals("")) {
-            FindByParkNameResponse parkNameResponse = parkService.findParkByName(new FindByParkNameRequest(request.getParkName()));
-            if (parkNameResponse.getPark() != null) {
+        if (request.getParkId() != null) {
+            FindByParkIdResponse findByParkIdResponse = parkService.findByParkId(new FindByParkIdRequest(request.getParkId()));
+            if (findByParkIdResponse.getPark() != null) {
 
-                getNumDevicesResponse.setNumDevices(deviceRepo.getAllParkDevices(request.getParkName()).size());
+                getNumDevicesResponse.setNumDevices(deviceRepo.getAllParkDevices(request.getParkId()).size());
                 getNumDevicesResponse.setSuccess(true);
             }
         } else getNumDevicesResponse.setSuccess(false);

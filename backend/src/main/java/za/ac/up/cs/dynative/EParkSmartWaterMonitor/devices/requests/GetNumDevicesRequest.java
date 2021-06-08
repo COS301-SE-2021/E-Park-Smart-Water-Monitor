@@ -2,22 +2,24 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.UUID;
+
 public class GetNumDevicesRequest {
 
-    private String parkName;
+    private UUID parkId;
 
-    public GetNumDevicesRequest(@JsonProperty("parkName") String parkName) {
-        this.parkName = parkName;
+    public GetNumDevicesRequest(@JsonProperty("parkId") UUID parkId) {
+        this.parkId = parkId;
     }
 
     public GetNumDevicesRequest() {
     }
 
-    public String getParkName() {
-        return parkName;
+    public UUID getParkId() {
+        return parkId;
     }
 
-    public void setParkName(String parkName) {
-        this.parkName = parkName;
+    public void setParkName(UUID parkId) {
+        this.parkId = parkId;
     }
 }
