@@ -20,14 +20,14 @@ public class WaterSiteUnitTest extends UnitTestBaseClass {
     public void testAddSite() throws JsonProcessingException {
         LOGGER.info("Testing AddSiteRequest construction");
 
-        String parkName = "testPark";
+        UUID parkId = UUID.fromString("190c4aa9-a55f-4118-b26b-dc537e0a6f30");
         String siteName = "testSite";
         double latitude = 98.76;
         double longitude = 54.32;
 
         String jsonData = "{"
-                + "\"parkName\" : \""
-                + parkName
+                + "\"parkId\" : \""
+                + parkId
                 + "\","
                 + "\"siteName\" : \""
                 + siteName

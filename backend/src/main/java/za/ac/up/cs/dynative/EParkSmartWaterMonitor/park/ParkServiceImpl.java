@@ -5,16 +5,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.CreateParkResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetParkSitesResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.SaveParkResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.*;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
 
 @Service("ParkService")
@@ -48,7 +43,7 @@ public class ParkServiceImpl implements ParkService {
     @Override
     public FindByParkNameResponse findParkByName(FindByParkNameRequest request) {
         if (!request.getParkName().equals("")) {
-            Collection<Park> park = parkRepo.findParkByParkName(request.getParkName());
+            Set<Park> park = parkRepo.findParkByParkName(request.getParkName());
             return new FindByParkNameResponse((Park)park.toArray()[0]);
         }
         else return new FindByParkNameResponse(null);
@@ -77,6 +72,18 @@ public class ParkServiceImpl implements ParkService {
         else {
             response.setStatus("Failed to the sites!");
             response.setSuccess(false);
+        }
+        return response;
+    }
+
+    @Override
+    public FindByParkIdResponse findByParkId(FindByParkIdRequest request) {
+        FindByParkIdResponse response = new FindByParkIdResponse();
+        if (request.getParkId() != null) {
+            Park park = parkRepo.findParkById(request.getParkId());
+            if (park != null) {
+                response.setStatus(park);
+            }
         }
         return response;
     }

@@ -115,11 +115,11 @@ public class DevicesUnitTest extends UnitTestBaseClass {
     public void testGetNumDevices() throws JsonProcessingException {
         LOGGER.info("Testing GetNumDevicesRequest construction");
 
-        String parkName = "testPark";
+        UUID parkId = UUID.fromString("190c4aa9-a55f-4118-b26b-dc537e0a6f30");
 
         String jsonData = "{"
-                + "\"parkName\" : \""
-                + parkName
+                + "\"parkId\" : \""
+                + parkId
                 + "\""
                 + "}";
 
