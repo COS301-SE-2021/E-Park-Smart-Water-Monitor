@@ -2,6 +2,10 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.thingsboard.rest.client.RestClient;
+import org.thingsboard.server.common.data.Device;
+import org.thingsboard.server.common.data.User;
+import org.thingsboard.server.common.data.asset.Asset;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Measurement;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
@@ -30,6 +34,8 @@ import java.util.*;
 @Service("DeviceServiceImpl")
 public class DevicesServicesImpl implements DevicesService {
 
+//    private String thingsBoardAddress ;
+    RestClient thingsBoardClient;
     private DeviceRepo deviceRepo;
     private ParkService parkService;
     private WaterSiteService waterSiteService;
@@ -39,14 +45,16 @@ public class DevicesServicesImpl implements DevicesService {
         this.deviceRepo = deviceRepo;
         this.parkService = parkService;
         this.measurementRepo = measurementRepo;
-        this.waterSiteService=waterSiteService;
+        this.waterSiteService = waterSiteService;
+        thingsBoardClient =new RestClient("http://178.62.41.185:8080");
     }
 
     public Collection<WaterSourceDevice> getAll() {
         return deviceRepo.findAll();
     }
 
-    public AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest) {
+    public AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest)
+    {
         WaterSourceDevice newDevice = new WaterSourceDevice(addWSDRequest.getDeviceName(),addWSDRequest.getDeviceModel(),addWSDRequest.getLongitude(),addWSDRequest.getLatitude());
         AddWaterSourceDeviceResponse response = new AddWaterSourceDeviceResponse();
 
@@ -70,6 +78,19 @@ public class DevicesServicesImpl implements DevicesService {
             else
             {
 
+                thingsBoardClient.login("tenant@thingsboard.org","tenant");
+
+                Asset asset = new Asset();
+                asset.setName("TEST");
+                asset.setType("dam");
+                asset = thingsBoardClient.saveAsset(asset);
+
+                Device deviceToAdd = new Device();
+                deviceToAdd.setName(newDevice.getDeviceId().toString());
+                deviceToAdd.setType(newDevice.getDeviceModel());
+                deviceToAdd = thingsBoardClient.saveDevice(deviceToAdd);
+                System.out.println(thingsBoardClient.getDeviceCredentialsByDeviceId(deviceToAdd.getId()));
+//                deviceToAdd.
                 deviceRepo.save(newDevice);
                 response.setSuccess(true);
                 response.setStatus("Device "+addWSDRequest.getDeviceName()+" successfully added");
