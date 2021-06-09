@@ -6,6 +6,7 @@ import Box from "@material-ui/core/Box";
 import componentStyles from "assets/theme/views/dashboard/dashboard.js";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import DeviceTable from "../../components/Custom/AllDevices";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -33,7 +34,9 @@ function Admin() {
                         classes={{ root: classes.gridItemRoot }}
                     >
                         <UserTable/>
+                        <DeviceTable/>
                     </Grid>
+
                 </Grid>
             </Container>
 

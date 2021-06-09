@@ -1,7 +1,7 @@
 import React from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
- import { useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -15,9 +15,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
-import DeviceData from "./DeviceData";
 import Button from "@material-ui/core/Button";
-import {colors} from "@material-ui/core";
+
 
 
 const useStyles = makeStyles(componentStyles);
@@ -161,10 +160,18 @@ const UserTable = () => {
                                                 Riet Vlei
                                             </TableCell>
                                             <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                <a href={"#"}>Edit</a>
+                                                <Button
+                                                    size="small"
+                                                >
+                                                    Edit
+                                                </Button>
                                             </TableCell>
                                             <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                <a href={"#"}>Remove</a>
+                                                <Button
+                                                    size="small"
+                                                >
+                                                    Remove
+                                                </Button>
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
@@ -188,10 +195,18 @@ const UserTable = () => {
                                                 Riet Vlei
                                             </TableCell>
                                             <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                <a href={"#"}>Edit</a>
+                                                <Button
+                                                    size="small"
+                                                >
+                                                    Edit
+                                                </Button>
                                             </TableCell>
                                             <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                <a href={"#"}>Remove</a>
+                                                <Button
+                                                    size="small"
+                                                >
+                                                    Remove
+                                                </Button>
                                             </TableCell>
                                         </TableRow>
                                         <TableRow>
@@ -215,10 +230,18 @@ const UserTable = () => {
                                                 Riet Vlei
                                             </TableCell>
                                             <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                <a href={"#"}>Edit</a>
+                                                <Button
+                                                    size="small"
+                                                >
+                                                    Edit
+                                                </Button>
                                             </TableCell>
                                             <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                <a href={"#"}>Remove</a>
+                                                <Button
+                                                    size="small"
+                                                >
+                                                    Remove
+                                                </Button>
                                             </TableCell>
                                         </TableRow>
 
