@@ -13,6 +13,8 @@ public class User {
     @Id
     private UUID id;
 
+    private String idNumber;
+
     private String email;
 
     private String name;
@@ -26,8 +28,9 @@ public class User {
     @Relationship(type = "WORKS_FOR", direction = Relationship.Direction.OUTGOING)
     private Park park;
 
-    public User(UUID id, String email, String name, String surname, String password, String username, Park park) {
-        this.id = id;
+    public User(String idNumber, String email, String name, String surname, String password, String username, Park park) {
+        this.id = UUID.randomUUID();
+        this.idNumber = idNumber;
         this.email = email;
         this.name = name;
         this.surname = surname;
@@ -36,8 +39,9 @@ public class User {
         this.park = park;
     }
 
-    public User(UUID id, String email, String name, String surname, String password, String username) {
-        this.id = id;
+    public User(String idNumber, String email, String name, String surname, String password, String username) {
+        this.id = UUID.randomUUID();
+        this.idNumber = idNumber;
         this.email = email;
         this.name = name;
         this.surname = surname;
@@ -54,6 +58,14 @@ public class User {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public String getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(String idNumber) {
+        this.idNumber = idNumber;
     }
 
     public String getEmail() {
