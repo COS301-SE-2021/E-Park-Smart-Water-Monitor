@@ -25,10 +25,13 @@ public class User {
 
     private String username;
 
+    private String role;
+
     @Relationship(type = "WORKS_FOR", direction = Relationship.Direction.OUTGOING)
     private Park park;
 
-    public User(String idNumber, String email, String name, String surname, String password, String username, Park park) {
+    public User(String idNumber, String email, String name, String surname, String password, String username, String role, Park park) {
+        this.role = role;
         this.id = UUID.randomUUID();
         this.idNumber = idNumber;
         this.email = email;
@@ -37,9 +40,11 @@ public class User {
         this.password = password;
         this.username = username;
         this.park = park;
+        this.role = role;
     }
 
-    public User(String idNumber, String email, String name, String surname, String password, String username) {
+    public User(String idNumber, String email, String name, String surname, String password, String username, String role) {
+        this.role = role;
         this.id = UUID.randomUUID();
         this.idNumber = idNumber;
         this.email = email;
@@ -47,6 +52,7 @@ public class User {
         this.surname = surname;
         this.password = password;
         this.username = username;
+        this.role = role;
     }
 
     public User() {
@@ -108,6 +114,14 @@ public class User {
         this.username = username;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public Park getPark() {
         return park;
     }
@@ -127,6 +141,23 @@ public class User {
                 ", username='" + username + '\'' +
                 ", park=" + park +
                 '}';
+    }
+
+    private enum Role {
+        SUPERADMIN("ADMIN"),
+        FIELDENGINEER("FIELD_ENGINEER"),
+        RANGER("RANGER");
+
+        private final String name;
+
+        Role(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 }
 

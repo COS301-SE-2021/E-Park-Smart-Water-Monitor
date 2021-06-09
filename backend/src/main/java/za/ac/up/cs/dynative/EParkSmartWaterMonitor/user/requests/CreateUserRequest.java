@@ -12,6 +12,7 @@ public class CreateUserRequest {
     private String name;
     private String surname;
     private String username;
+    private String role;
     private UUID parkId;
 
     public CreateUserRequest( @JsonProperty("parkId")UUID parkId,
@@ -20,14 +21,15 @@ public class CreateUserRequest {
                               @JsonProperty("password")String password,
                               @JsonProperty("name")String name,
                               @JsonProperty("surname")String surname,
-                              @JsonProperty("username")String username
-                              ) {
+                              @JsonProperty("username")String username,
+                              @JsonProperty("role")String role) {
         this.idNumber = idNumber;
         this.email = email;
         this.password = password;
         this.name = name;
         this.surname = surname;
         this.username = username;
+        this.role = role;
         this.parkId = parkId;
     }
 
@@ -86,4 +88,14 @@ public class CreateUserRequest {
     public void setParkId(UUID parkId) {
         this.parkId = parkId;
     }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }
+
+

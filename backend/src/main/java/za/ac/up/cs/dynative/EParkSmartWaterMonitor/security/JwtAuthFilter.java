@@ -30,13 +30,11 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
     }
 
     @Override
-    public Authentication attemptAuthentication(
-            final HttpServletRequest request,
-            final HttpServletResponse response) throws IOException {
-        String param = ofNullable(request.getHeader(AUTHORIZATION))
-                .orElse(request.getParameter("t"));
+    public Authentication attemptAuthentication(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        String param = ofNullable(request.getHeader(AUTHORIZATION)).orElse(request.getParameter("t"));
 
         if (param == null || !param.contains(BEARER)) {
+
             Map<String, Object> errorDetails = new HashMap<>();
             errorDetails.put("message", "Missing or invalid authorization header!");
             errorDetails.put("code", "Missing header");
@@ -51,12 +49,16 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
         String token = param.substring(BEARER.length()).trim();
 
         try {
+
             String userID = String.valueOf(parseJwt(token).getBody().get("UUID"));
             final Authentication auth = new UsernamePasswordAuthenticationToken(userID, userID);
             SecurityContext sc = SecurityContextHolder.getContext();
             sc.setAuthentication(getAuthenticationManager().authenticate(auth));
             return getAuthenticationManager().authenticate(auth);
-        } catch (SignatureException | ExpiredJwtException sigExp) {
+
+        }
+        catch (SignatureException | ExpiredJwtException sigExp) {
+
             Map<String, Object> errorDetails = new HashMap<>();
             errorDetails.put("message", sigExp.getMessage());
             errorDetails.put("code", "Jwt error");
@@ -70,19 +72,12 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
     }
 
     @Override
-    protected void successfulAuthentication(
-            final HttpServletRequest request,
-            final HttpServletResponse response,
-            final FilterChain chain,
-            final Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain, final Authentication authResult) throws IOException, ServletException {
         super.successfulAuthentication(request, response, chain, authResult);
         chain.doFilter(request, response);
     }
 
     private Jws<Claims> parseJwt(String jwtString) throws SignatureException, ExpiredJwtException {
-
-        return Jwts.parser()
-                .setSigningKey(SECRET)
-                .parseClaimsJws(jwtString);
+        return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(jwtString);
     }
 }

@@ -25,8 +25,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
     private final RequestMatcher USER_URLS = new OrRequestMatcher(
             new AntPathRequestMatcher("/api/user/login"),
-            new AntPathRequestMatcher("/api/user/createUser")
-    );
+            new AntPathRequestMatcher("/api/user/createUser"));
 
     private final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(USER_URLS);
 
@@ -45,16 +44,16 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.cors().and().
-                sessionManagement().
-                sessionCreationPolicy(SessionCreationPolicy.STATELESS).
-                and().
-                exceptionHandling().
-                defaultAuthenticationEntryPointFor(new HttpStatusEntryPoint(HttpStatus.FORBIDDEN), PROTECTED_URLS).
-                and().
-                authenticationProvider(provider).
-                addFilterBefore(restAuthenticationFilter(), AnonymousAuthenticationFilter.class).
-                csrf().disable();
+        http
+                .cors().and().csrf().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .exceptionHandling()
+                .defaultAuthenticationEntryPointFor(new HttpStatusEntryPoint(HttpStatus.FORBIDDEN), PROTECTED_URLS)
+                .and()
+                .authenticationProvider(provider)
+                .addFilterBefore(restAuthenticationFilter(), AnonymousAuthenticationFilter.class);
     }
 
     @Bean

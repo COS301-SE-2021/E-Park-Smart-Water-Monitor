@@ -15,18 +15,35 @@ public class PrincipalUserFactory {
     private UserRepo userRepo;
 
     public UserDetails createUser(String uuid) throws UsernameNotFoundException {
-        User userResponse = userRepo.findUserById(UUID.fromString(uuid));
+
+        User theUser = userRepo.findUserById(UUID.fromString(uuid));
+
         UserDetails user = new UserDetails(
-                userResponse.getName(),
-                userResponse.getSurname(),
-                userResponse.getUsername(),
-                userResponse.getEmail(),
+                theUser.getName(),
+                theUser.getSurname(),
+                theUser.getUsername(),
+                theUser.getEmail(),
                 "NONE");
-//        Roles role = Roles.END_USER;
-//        if (userResponse.getAdmin()) {
-//            role = Roles.ADMIN;
-//        }
-        user.setAuthorities(new SimpleGrantedAuthority("ADMIN"));
+
+        String role;
+        switch (theUser.getRole()) {
+            case "ADMIN":
+                role = "ADMIN";
+                user.setAuthorities(new SimpleGrantedAuthority(role));
+                break;
+            case "FIELD_ENGINEER":
+                role = "FIELD_ENGINEER";
+                user.setAuthorities(new SimpleGrantedAuthority(role));
+                break;
+            case "RANGER":
+                role = "RANGER";
+                user.setAuthorities(new SimpleGrantedAuthority(role));
+                break;
+            default:
+                role = "USER";
+                user.setAuthorities(new SimpleGrantedAuthority(role));
+                break;
+        }
         return user;
     }
 }

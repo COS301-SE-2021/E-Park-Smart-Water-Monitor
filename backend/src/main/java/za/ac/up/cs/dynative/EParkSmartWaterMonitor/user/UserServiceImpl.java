@@ -4,13 +4,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
@@ -54,6 +48,7 @@ public class UserServiceImpl implements UserService {
         String email = request.getEmail();
         String password = request.getPassword();
         String username = request.getUsername();
+        String role = request.getRole();
 
         if (parkId != null
                 && !name.equals("")
@@ -70,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
                     Park park = findByParkIdResponse.getPark();
 
-                    User user = new User(idNumber, email,name,surname,passwordEncoder.encode(password),username, park);
+                    User user = new User(idNumber, email,name,surname,passwordEncoder.encode(password),username, role, park);
 
                     userRepo.save(user);
 
@@ -123,7 +118,6 @@ public class UserServiceImpl implements UserService {
             }
             else {
                 Map<String, Object> head = new HashMap<>();
-                System.out.println(head.toString());
                 Map<String, Object> claims = new HashMap<>();
                 claims.put("UUID", user.getId().toString());
                 JWTToken = Jwts.builder()

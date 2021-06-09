@@ -30,15 +30,26 @@ public class UserDetailService implements UserDetailsService {
         User user = users.get(0);
         if (user != null) {
             if (user.getUsername().equals(username)) {
-                /*
-                    if-else
-                    where we check what type of role the user has
-                 */
-                    userDetails = org.springframework.security.core.userdetails
-                            .User.builder().username(user.getUsername()).password(user.getPassword())
-                            .authorities(new ArrayList<>()).build();
-//                            .roles("ADMIN").build();
-                    return userDetails;
+                switch (user.getRole()) {
+                    case "ADMIN":
+                        userDetails = org.springframework.security.core.userdetails
+                                .User.builder().username(user.getUsername()).password(user.getPassword())
+                                .authorities(new ArrayList<>())
+                                .roles("ADMIN").build();
+                        return userDetails;
+                    case "FIELD_ENGINEER":
+                        userDetails = org.springframework.security.core.userdetails
+                                .User.builder().username(user.getUsername()).password(user.getPassword())
+                                .authorities(new ArrayList<>())
+                                .roles("FIELD_ENGINEER").build();
+                        return userDetails;
+                    case "RANGER":
+                        userDetails = org.springframework.security.core.userdetails
+                                .User.builder().username(user.getUsername()).password(user.getPassword())
+                                .authorities(new ArrayList<>())
+                                .roles("RANGER").build();
+                        return userDetails;
+                }
             }
         }
         throw new UsernameNotFoundException("User with the username: " + username + " was not found");
