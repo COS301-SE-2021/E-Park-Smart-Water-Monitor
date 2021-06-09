@@ -93,4 +93,9 @@ public class ParkServiceImpl implements ParkService {
     public FindByParkIdResponse findParkById(UUID parkId) {
         return new FindByParkIdResponse(true,parkRepo.findParkById(parkId));
     }
+
+    @Override
+    public GetAllParksResponse getAllParks() {
+        return new GetAllParksResponse(parkRepo.getAllParks());
+    }
 }

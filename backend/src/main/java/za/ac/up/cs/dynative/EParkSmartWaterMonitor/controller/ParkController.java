@@ -30,4 +30,9 @@ public class ParkController {
     public ResponseEntity<Object> getParkWaterSites(@RequestBody GetParkSitesRequest getParkSitesRequest) {
         return new ResponseEntity<>(parkService.getParkWaterSites(getParkSitesRequest),HttpStatus.OK);
     }
+
+    @GetMapping("/getAllParks")
+    public ResponseEntity<Object> getAllParks() {
+        return new ResponseEntity<>(parkService.getAllParks(),HttpStatus.OK);
+    }
 }

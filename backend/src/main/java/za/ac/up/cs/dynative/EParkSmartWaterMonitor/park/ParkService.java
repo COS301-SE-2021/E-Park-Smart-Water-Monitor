@@ -14,4 +14,5 @@ public interface ParkService {
     GetParkSitesResponse getParkWaterSites(GetParkSitesRequest getParkSitesRequest);
     FindByParkIdResponse findByParkId(FindByParkIdRequest findByParkIdRequest);
     FindByParkIdResponse findParkById(UUID parkId);
+    GetAllParksResponse getAllParks();
 }
