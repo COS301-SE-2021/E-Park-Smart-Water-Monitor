@@ -24,7 +24,6 @@ const mapStyles = {
 function Map(props) {
   const classes = useStyles();
   const theme = useTheme();
-  // const [result, setResult] = useState(null)
   const [response, setResponse] = useState(null)
 
     useEffect(() => {
@@ -92,32 +91,5 @@ function Map(props) {
     </>
   );
 }
-
-// CardStats.defaultProps = {
-//   color: "bgPrimaryLight",
-// };
-
-// CardStats.propTypes = {
-//   subtitle: PropTypes.string,
-//   title: PropTypes.string,
-//   footer: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
-//   icon: PropTypes.oneOfType([
-//     // i.e. an icon name from Nucleo Icons - e.g. ni ni-atom
-//     // // or an icon name from Font Awesome - e.g. fa fa-heart
-//     PropTypes.string,
-//     // i.e. a component from @material-ui/icons
-//     PropTypes.object,
-//   ]),
-//   color: PropTypes.oneOf([
-//     "bgPrimary",
-//     "bgPrimaryLight",
-//     "bgError",
-//     "bgErrorLight",
-//     "bgWarning",
-//     "bgWarningLight",
-//     "bgInfo",
-//     "bgInfoLight",
-//   ]),
-// };
 
 export default Map;

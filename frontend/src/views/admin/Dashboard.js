@@ -2,9 +2,7 @@ import React, {useEffect, useState} from "react";
 // javascript plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-// import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -22,9 +20,7 @@ import Header from "components/Headers/Header.js";
 
 import {
   chartOptions,
-  parseOptions,
-  // chartExample1,
-  // chartExample2,
+  parseOptions
 } from "variables/charts.js";
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
@@ -45,8 +41,6 @@ function Dashboard() {
   }
 
 
-  // const devices = []
-  const sites = []
   // MONOLITH of SITES
 
   useEffect(() => {
@@ -64,15 +58,7 @@ function Dashboard() {
         }
         setDevices(site_devices)
 
-        const m = site_devices.map((device) =>
-            <Marker key={device.deviceName} position={[ device.deviceData.latitude , device.deviceData.longitude ]}>
-              <Popup>
-                { device.deviceName }
-              </Popup>
-            </Marker>
-        );
-        setResponse(m);
-        console.log("dashboard devices: "+ JSON.stringify(devices))
+        // get the device info
       }else{
         console.log('res.data null')
       }
@@ -124,7 +110,9 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            <BarChart></BarChart>
+            <card>
+              Device Details
+            </card>
           </Grid>
           <Grid
               item
@@ -136,6 +124,40 @@ function Dashboard() {
           >
             <LineChart></LineChart>
           </Grid>
+        </Grid>
+
+        <Grid container component={Box} marginTop="3rem!important">
+          <Grid
+              item
+              xs={12}
+              xl={4}
+              component={Box}
+              marginBottom="3rem!important"
+              classes={{ root: classes.gridItemRoot }}
+          >
+            <BarChart></BarChart>
+          </Grid>
+          <Grid
+              item
+              xs={12}
+              xl={4}
+              component={Box}
+              marginBottom="3rem!important"
+              classes={{ root: classes.gridItemRoot }}
+          >
+            <BarChart></BarChart>
+          </Grid>
+          <Grid
+              item
+              xs={12}
+              xl={4}
+              component={Box}
+              marginBottom="3rem!important"
+              classes={{ root: classes.gridItemRoot }}
+          >
+            <BarChart></BarChart>
+          </Grid>
+
         </Grid>
 
       </Container>
