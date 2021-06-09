@@ -39,7 +39,6 @@ const ParkTable = () => {
                         xs={12}
                         xl={12}
                         component={Box}
-                        marginBottom="3rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
                         <Card classes={{
@@ -116,13 +115,30 @@ const ParkTable = () => {
                                 </Box>
                             </TableContainer>
                         </Card>
+                    </Grid>
+                    <Grid
+                        item
+                        xs={10}
+                        xl={10}
+                        component={Box}
+                        marginBottom="3rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                    </Grid>
+                    <Grid
+                        item
+                        justify="end"
+                        xs={2}
+                        xl={2}
+                        component={Box}
+                        marginBottom="3rem!important"
+                        classes={{ root: classes.gridItemRoot }}>
                         <Button
-                          variant="contained"
-                          color="primary"
-                          size="medium"
-
+                            variant="contained"
+                            color="primary"
+                            size="medium"
                         >
-                          Add User
+                            Add Park
                         </Button>
                     </Grid>
                 </Grid>

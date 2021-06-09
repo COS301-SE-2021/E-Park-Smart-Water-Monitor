@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -16,6 +16,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
+import axios from "axios";
 
 
 
@@ -24,6 +25,17 @@ const useStyles = makeStyles(componentStyles);
 const DeviceTable = () => {
     const classes = useStyles();
     const theme = useTheme();
+    const [result, setResult] = useState(null)
+
+
+
+    useEffect(() => {
+        axios.post('http://localhost:8080/api/devices/getNumDevices', {
+            parkID: "2ea5ba27-9d8e-41a4-9628-485f0ae2fb57"
+        }).then((res)=>{
+            setResult(res.data)
+        });
+    }, [])
 
 
     return (
@@ -39,7 +51,7 @@ const DeviceTable = () => {
                         xs={12}
                         xl={12}
                         component={Box}
-                        marginBottom="3rem!important"
+                        //marginBottom="3rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
                         <Card classes={{
@@ -110,19 +122,35 @@ const DeviceTable = () => {
                                                 </Button>
                                             </TableCell>
                                         </TableRow>
-
-
                                     </TableBody>
                                 </Box>
                             </TableContainer>
                         </Card>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="medium"
 
+                    </Grid>
+                    <Grid
+                        item
+                        xs={10}
+                        xl={10}
+                        component={Box}
+                        marginBottom="3rem!important"
+                        classes={{ root: classes.gridItemRoot }}
                         >
-                          Add User
+                    </Grid>
+                    <Grid
+                          item
+                          justify="end"
+                          xs={2}
+                          xl={2}
+                          component={Box}
+                          marginBottom="3rem!important"
+                          classes={{ root: classes.gridItemRoot }}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="medium"
+                        >
+                            Add Device
                         </Button>
                     </Grid>
                 </Grid>
