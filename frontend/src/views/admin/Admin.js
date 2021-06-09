@@ -7,6 +7,7 @@ import componentStyles from "assets/theme/views/dashboard/dashboard.js";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import DeviceTable from "../../components/Custom/AllDevices";
+import ParkTable from "../../components/Custom/AllParks";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -35,6 +36,7 @@ function Admin() {
                     >
                         <UserTable/>
                         <DeviceTable/>
+                        <ParkTable/>
                     </Grid>
 
                 </Grid>

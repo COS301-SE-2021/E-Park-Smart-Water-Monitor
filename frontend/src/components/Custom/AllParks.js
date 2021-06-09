@@ -21,7 +21,7 @@ import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(componentStyles);
 
-const DeviceTable = () => {
+const ParkTable = () => {
     const classes = useStyles();
     const theme = useTheme();
 
@@ -33,7 +33,7 @@ const DeviceTable = () => {
                 component={Box}
                 classes={{ root: classes.containerRoot }}
             >
-                <Grid container component={Box}>
+                <Grid container component={Box} >
                     <Grid
                         item
                         xs={12}
@@ -59,7 +59,7 @@ const DeviceTable = () => {
                                                 variant="h2"
                                                 marginBottom="0!important"
                                             >
-                                                Devices
+                                                Parks
                                             </Box>
                                         </Grid>
                                         <Grid item xs="auto">
@@ -93,7 +93,7 @@ const DeviceTable = () => {
                                                 variant="head"
                                                 scope="row"
                                             >
-                                                WATER5000
+                                                Riet Vlei
                                             </TableCell>
                                             <TableCell classes={{ root: classes.tableCellRoot }}>
                                                 <Button
@@ -132,4 +132,4 @@ const DeviceTable = () => {
     );
 };
 
-export default DeviceTable;
+export default ParkTable;
