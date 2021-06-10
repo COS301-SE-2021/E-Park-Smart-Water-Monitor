@@ -10,9 +10,10 @@ import "../../views/admin/modals/addDevice.css";
 
 const useStyles = makeStyles(componentStyles);
 
-const AddDeviceBody = () => {
+const AddParkBody = () => {
     const classes = useStyles();
     const theme = useTheme();
+
 
     return (
         <>
@@ -24,15 +25,8 @@ const AddDeviceBody = () => {
                 <br/>
             </div>
 
-            <br/><br/>
-            <label id="roleLabel" >Park</label><br/>
-            <select  id="parks" name="Parks"  >
-                <option value="rietvlei">Riet Vlei</option>
-            </select>
-            <br/><br/>
-
             <div>
-                <br/>
+                <br/><br/>
                 <label id="lat" htmlFor="Latitude">Latitude</label>
                 <br/>
                 <input type="text" name="latitude"/>
@@ -46,4 +40,4 @@ const AddDeviceBody = () => {
     );
 };
 
-export default AddDeviceBody;
+export default AddParkBody;

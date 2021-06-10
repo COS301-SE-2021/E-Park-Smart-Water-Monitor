@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -16,6 +16,8 @@ import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
 import Modal from "../../views/admin/modals/Modal";
+import disableScroll from "disable-scroll";
+import AddParkBody from "./AddParkBody";
 
 
 
@@ -25,6 +27,10 @@ const ParkTable = () => {
     const classes = useStyles();
     const theme = useTheme();
     const [show, setShow] = useState(false);
+    useEffect(() => {
+        if (show == true) disableScroll.on()
+        if (show == false) disableScroll.off()
+    }, [show])
 
     return (
         <>
@@ -34,7 +40,7 @@ const ParkTable = () => {
                 classes={{ root: classes.containerRoot }}
             >
                 <Modal title="Add Park" onClose={() => setShow(false)} show={show}>
-
+                    <AddParkBody/>
                 </Modal>
                 <Grid container component={Box} >
                     <Grid
