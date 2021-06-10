@@ -81,7 +81,7 @@ const UserTable = () => {
                                     marginBottom="0!important"
                                 >
                                     <TableHead>
-                                        <TableRow>
+                                        <TableRow style={{background: 'rgb(243 243 243)'}}>
                                             <TableCell
                                                 classes={{
                                                     root:
@@ -146,26 +146,29 @@ const UserTable = () => {
                                                         " " +
                                                         classes.tableCellRootBodyHead,
                                                 }}
-                                                component="th"
-                                                variant="head"
                                                 scope="row"
+                                                style={{verticalAlign:'middle',width:'25%'}}
                                             >
                                                 Jane Doe
                                             </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
+                                            <TableCell classes={{ root: classes.tableCellRoot }}
+                                                       style={{verticalAlign:'middle',width:'20%'}}>
                                                 Ranger
                                             </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
+                                            <TableCell classes={{ root: classes.tableCellRoot }}
+                                                       style={{verticalAlign:'middle',width:'34%'}}>
                                                 Riet Vlei
                                             </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
+                                            <TableCell classes={{ root: classes.tableCellRoot }}
+                                                       style={{verticalAlign:'middle'}}>
                                                 <Button
                                                     size="small"
                                                 >
                                                     Edit
                                                 </Button>
                                             </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
+                                            <TableCell classes={{ root: classes.tableCellRoot }}
+                                                       style={{verticalAlign:'middle'}}>
                                                 <Button
                                                     size="small"
                                                 >
@@ -173,76 +176,7 @@ const UserTable = () => {
                                                 </Button>
                                             </TableCell>
                                         </TableRow>
-                                        <TableRow>
-                                            <TableCell
-                                                classes={{
-                                                    root:
-                                                        classes.tableCellRoot +
-                                                        " " +
-                                                        classes.tableCellRootBodyHead,
-                                                }}
-                                                component="th"
-                                                variant="head"
-                                                scope="row"
-                                            >
-                                                John Doe
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                Field Engineer
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                Riet Vlei
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                <Button
-                                                    size="small"
-                                                >
-                                                    Edit
-                                                </Button>
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                <Button
-                                                    size="small"
-                                                >
-                                                    Remove
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell
-                                                classes={{
-                                                    root:
-                                                        classes.tableCellRoot +
-                                                        " " +
-                                                        classes.tableCellRootBodyHead,
-                                                }}
-                                                component="th"
-                                                variant="head"
-                                                scope="row"
-                                            >
-                                                Matthew Evans
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                Admin
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                Riet Vlei
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                <Button
-                                                    size="small"
-                                                >
-                                                    Edit
-                                                </Button>
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                <Button
-                                                    size="small"
-                                                >
-                                                    Remove
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
+
 
                                     </TableBody>
                                 </Box>
@@ -265,11 +199,13 @@ const UserTable = () => {
                         xl={2}
                         component={Box}
                         marginBottom="3rem!important"
-                        classes={{ root: classes.gridItemRoot }}>
+                        classes={{ root: classes.gridItemRoot }}
+                        style={{ display: "flex", justifyContent: "flex-end", marginTop: "5px"}}>
                         <Button
                             variant="contained"
                             color="primary"
                             size="medium"
+                            style={{width:'200px'}}
                         >
                             Add User
                         </Button>

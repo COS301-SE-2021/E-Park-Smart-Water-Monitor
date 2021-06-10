@@ -73,6 +73,27 @@ const DeviceTable = () => {
                                             >
                                                 Devices
                                             </Box>
+                                            <select name="cars" id="cars">
+                                                <option value="volvo">Volvo</option>
+                                                <option value="saab">Saab</option>
+                                                <option value="mercedes">Mercedes</option>
+                                                <option value="audi">Audi</option>
+                                            </select>
+                                            {/*<DropdownButton*/}
+                                            {/*    as={ButtonGroup}*/}
+                                            {/*    key={variant}*/}
+                                            {/*    id={`dropdown-variants-${variant}`}*/}
+                                            {/*    variant={variant.toLowerCase()}*/}
+                                            {/*    title={variant}*/}
+                                            {/*>*/}
+                                            {/*    <Dropdown.Item eventKey="1">Action</Dropdown.Item>*/}
+                                            {/*    <Dropdown.Item eventKey="2">Another action</Dropdown.Item>*/}
+                                            {/*    <Dropdown.Item eventKey="3" active>*/}
+                                            {/*        Active Item*/}
+                                            {/*    </Dropdown.Item>*/}
+                                            {/*    <Dropdown.Divider />*/}
+                                            {/*    <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>*/}
+                                            {/*</DropdownButton>*/}
                                         </Grid>
                                         <Grid item xs="auto">
                                             <Box
@@ -101,20 +122,21 @@ const DeviceTable = () => {
                                                         " " +
                                                         classes.tableCellRootBodyHead,
                                                 }}
-                                                component="th"
-                                                variant="head"
+                                                style={{verticalAlign:'middle', width: '80%'}}
                                                 scope="row"
                                             >
                                                 WATER5000
                                             </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
+                                            <TableCell classes={{ root: classes.tableCellRoot }}
+                                                       style={{verticalAlign:'middle'}}>
                                                 <Button
                                                     size="small"
                                                 >
                                                     Edit
                                                 </Button>
                                             </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
+                                            <TableCell classes={{ root: classes.tableCellRoot }}
+                                                       style={{verticalAlign:'middle'}}>
                                                 <Button
                                                     size="small"
                                                 >
@@ -144,11 +166,14 @@ const DeviceTable = () => {
                           xl={2}
                           component={Box}
                           marginBottom="3rem!important"
-                          classes={{ root: classes.gridItemRoot }}>
+                          classes={{ root: classes.gridItemRoot }}
+                          style={{ display: "flex", justifyContent: "flex-end", marginTop: "5px" }}>
+
                         <Button
                             variant="contained"
                             color="primary"
                             size="medium"
+                            style={{width:'200px'}}
                         >
                             Add Device
                         </Button>

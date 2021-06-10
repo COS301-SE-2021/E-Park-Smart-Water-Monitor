@@ -88,20 +88,21 @@ const ParkTable = () => {
                                                         " " +
                                                         classes.tableCellRootBodyHead,
                                                 }}
-                                                component="th"
-                                                variant="head"
                                                 scope="row"
+                                                style={{verticalAlign:'middle', width:'80%'}}
                                             >
                                                 Riet Vlei
                                             </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
+                                            <TableCell classes={{ root: classes.tableCellRoot }}
+                                                       style={{verticalAlign:'middle'}}>
                                                 <Button
                                                     size="small"
                                                 >
                                                     Edit
                                                 </Button>
                                             </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}>
+                                            <TableCell classes={{ root: classes.tableCellRoot }}
+                                                       style={{verticalAlign:'middle'}}>
                                                 <Button
                                                     size="small"
                                                 >
@@ -132,11 +133,13 @@ const ParkTable = () => {
                         xl={2}
                         component={Box}
                         marginBottom="3rem!important"
-                        classes={{ root: classes.gridItemRoot }}>
+                        classes={{ root: classes.gridItemRoot }}
+                        style={{ display: "flex", justifyContent: "flex-end", marginTop: "5px" }}>
                         <Button
                             variant="contained"
                             color="primary"
                             size="medium"
+                            style={{width:'200px'}}
                         >
                             Add Park
                         </Button>
