@@ -7,30 +7,30 @@ public class EditUserRequest
 {
     private String idNumber;
     private String email;
-    private String password;
     private String name;
     private String surname;
     private String username;
+    private String newUsername;
     private String role;
     private String cellNumber;
 
     public EditUserRequest(
+                            @JsonProperty("username")String username,
                             @JsonProperty("idNumber")String idNumber,
                             @JsonProperty("email")String email,
-                            @JsonProperty("password")String password,
                             @JsonProperty("name")String name,
                             @JsonProperty("surname")String surname,
-                            @JsonProperty("username")String username,
+                            @JsonProperty("newUsername")String newUsername,
                             @JsonProperty("role")String role,
                             @JsonProperty("cellNumber")String cellNumber
-                          )
+                            )
     {
         this.idNumber = idNumber;
         this.email = email;
-        this.password = password;
         this.name = name;
         this.surname = surname;
         this.username = username;
+        this.newUsername = newUsername;
         this.role = role;
         this.cellNumber = cellNumber;
     }
@@ -49,14 +49,6 @@ public class EditUserRequest
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {
@@ -93,6 +85,15 @@ public class EditUserRequest
 
     public String getCellNumber() {
         return cellNumber;
+    }
+
+    public String getNewUsername() {
+        return newUsername;
+    }
+
+    public void setNewUsername(String newUsername)
+    {
+        this.newUsername = newUsername;
     }
 
     public void setCellNumber(String cellNumber) {

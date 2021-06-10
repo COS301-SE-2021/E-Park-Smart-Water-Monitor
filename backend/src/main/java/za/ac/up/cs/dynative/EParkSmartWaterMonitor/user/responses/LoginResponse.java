@@ -14,6 +14,7 @@ public class LoginResponse {
     private String surname;
     private String username;
     private String cellNumber;
+    private long userIdNumber;
     private UUID parkId;
     private String parkName;
 
@@ -27,8 +28,10 @@ public class LoginResponse {
                          String surname,
                          String username,
                          String cellNumber,
+                         long userIdNumber,
                          UUID parkId,
-                         String parkName) {
+                         String parkName)
+    {
         this.success = success;
         this.jwt = jwt;
         this.userRole = userRole;
@@ -37,6 +40,7 @@ public class LoginResponse {
         this.surname = surname;
         this.username = username;
         this.cellNumber = cellNumber;
+        this.userIdNumber = userIdNumber;
         this.parkId = parkId;
         this.parkName = parkName;
     }
@@ -125,5 +129,13 @@ public class LoginResponse {
 
     public void setCellNumber(String cellNumber) {
         this.cellNumber = cellNumber;
+    }
+
+    public long getUserIdNumber() {
+        return userIdNumber;
+    }
+
+    public void setUserIdNumber(long userIdNumber) {
+        this.userIdNumber = userIdNumber;
     }
 }
