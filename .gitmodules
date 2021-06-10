@@ -1,0 +1,3 @@
+[submodule "microcontroller/lib/micropython_BMP280"]
+	path = microcontroller/lib/micropython_BMP280
+	url = git@github.com:jack-of-blades/micropython_BMP280.git
