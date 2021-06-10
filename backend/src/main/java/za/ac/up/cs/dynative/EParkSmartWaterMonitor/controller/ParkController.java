@@ -7,7 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.EditParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.EditParkResponse;
 
 @CrossOrigin
 @RestController
@@ -30,7 +32,10 @@ public class ParkController {
     public ResponseEntity<Object> getParkWaterSites(@RequestBody GetParkSitesRequest getParkSitesRequest) {
         return new ResponseEntity<>(parkService.getParkWaterSites(getParkSitesRequest),HttpStatus.OK);
     }
-
+    @PostMapping("editPark")
+    public ResponseEntity<Object> editPark(@RequestBody EditParkRequest request) {
+        return new ResponseEntity<>(parkService.editPark(request),HttpStatus.OK);
+    }
     @GetMapping("/getAllParks")
     public ResponseEntity<Object> getAllParks() {
         return new ResponseEntity<>(parkService.getAllParks(),HttpStatus.OK);

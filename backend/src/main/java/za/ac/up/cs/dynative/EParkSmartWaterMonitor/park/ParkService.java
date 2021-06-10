@@ -13,6 +13,7 @@ public interface ParkService {
     SaveParkResponse savePark(SaveParkRequest request);
     GetParkSitesResponse getParkWaterSites(GetParkSitesRequest getParkSitesRequest);
     FindByParkIdResponse findByParkId(FindByParkIdRequest findByParkIdRequest);
+    EditParkResponse editPark(EditParkRequest request);
     FindByParkIdResponse findParkById(UUID parkId);
     GetAllParksResponse getAllParks();
 }

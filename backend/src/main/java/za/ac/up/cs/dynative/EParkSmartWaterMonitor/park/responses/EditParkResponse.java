@@ -12,7 +12,8 @@ public class EditParkResponse {
             this.success = success;
         }
 
-        public EditParkResponse() {
+        public EditParkResponse()
+        {
         }
 
         public String getStatus() {
