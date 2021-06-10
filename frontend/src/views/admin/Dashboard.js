@@ -42,7 +42,6 @@ function Dashboard() {
 
 
   // MONOLITH of SITES
-
   useEffect(() => {
     axios.post('http://localhost:8080/api/park/getParkWaterSites', {
       parkId: "2ea5ba27-9d8e-41a4-9628-485f0ae2fb57"
