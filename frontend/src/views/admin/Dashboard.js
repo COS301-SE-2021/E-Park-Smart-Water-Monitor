@@ -54,6 +54,7 @@ function Dashboard() {
         {
           setDevice(site[0])
         }
+        console.log(JSON.stringify(site))
 
       }else{
         console.log('res.data null')

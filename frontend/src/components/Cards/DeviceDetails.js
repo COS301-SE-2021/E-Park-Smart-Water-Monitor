@@ -145,6 +145,66 @@ function DeviceDetails(props) {
                     >
                         { device && device.deviceData.latitude }
                     </Grid>
+                    <Grid
+                        item
+                        xs={6}
+                        xl={6}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        Longitude
+                    </Grid>
+                    <Grid
+                        item
+                        xs={6}
+                        xl={6}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        { device && device.deviceData.longitude }
+                    </Grid>
+                    <Grid
+                        item
+                        xs={6}
+                        xl={6}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        Uptime
+                    </Grid>
+                    <Grid
+                        item
+                        xs={6}
+                        xl={6}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        { device && device.deviceData.upTime }
+                    </Grid>
+                    <Grid
+                        item
+                        xs={6}
+                        xl={6}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        Lifetime
+                    </Grid>
+                    <Grid
+                        item
+                        xs={6}
+                        xl={6}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        { device && device.deviceData.lifeTime }
+                    </Grid>
                 </Grid>
 
             </CardContent>
