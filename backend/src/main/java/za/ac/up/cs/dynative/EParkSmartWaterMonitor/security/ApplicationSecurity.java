@@ -25,6 +25,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
     private final RequestMatcher USER_URLS = new OrRequestMatcher(
             new AntPathRequestMatcher("/api/user/login"),
+            new AntPathRequestMatcher("/api/**"),
             new AntPathRequestMatcher("/api/user/createUser"));
 
     private final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(USER_URLS);
