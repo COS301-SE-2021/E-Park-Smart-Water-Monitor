@@ -11,6 +11,7 @@ import Map from "components/Cards/Map.js"
 import BarChart from "components/Cards/BarChart.js"
 import LineChart from "components/Cards/LineChart.js"
 import DeviceTable from "../../components/Cards/DeviceTable";
+import DeviceDetails from "../../components/Cards/DeviceDetails";
 
 
 
@@ -31,7 +32,8 @@ const useStyles = makeStyles(componentStyles);
 function Dashboard() {
   const classes = useStyles();
   const [response, setResponse] = useState(null)
-  const [devices, setDevices] = useState()
+  const [devices, setDevices] = useState([])
+  const [device, setDevice] = useState(null)
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
@@ -40,22 +42,34 @@ function Dashboard() {
 
   // MONOLITH of SITES
   useEffect(() => {
-    axios.post('http://localhost:8080/api/park/getParkWaterSites', {
-      parkId: "2ea5ba27-9d8e-41a4-9628-485f0ae2fb57"
+    axios.post('http://localhost:8080/api/devices/getParkDevices', {
+      parkId: "b026bea2-17a4-4939-bbbb-80916d8cf44e"
     }).then((res)=>{
       if(res.data)
       {
         const site = res.data.site; // site array
+        console.log("site: "+JSON.stringify(site))
         const site_devices = []
-        if(site)
+        // if(site)
+        // {
+        //   for (let i = 0; i < site.length ; i++) {
+        //     for (let p = 0; p < site[i].waterSourceDevices.length ; p++) {
+        //       site_devices.push(site[i].waterSourceDevices[p]);
+        //     }
+        //   }
+        // }
+        // if(site)
+        // {
+        //
+        // }
+
+        setDevices(site)
+
+
+        if(site && site[0])
         {
-          for (let i = 0; i < site.length ; i++) {
-            for (let p = 0; p < site[i].waterSourceDevices.length ; p++) {
-              site_devices.push(site[i].waterSourceDevices[p]);
-            }
-          }
+          setDevice(site_devices[0])
         }
-        setDevices(site_devices)
 
         // get the first device info
 
@@ -110,9 +124,7 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            <card>
-              Device Details
-            </card>
+            { device && <DeviceDetails device={ device }></DeviceDetails> }
           </Grid>
           <Grid
               item

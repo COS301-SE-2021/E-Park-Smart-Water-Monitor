@@ -54,7 +54,7 @@ function DeviceTable(props) {
         }else{
             console.log("no device prop added")
         }
-    },[])
+    },[props.devices])
 
   return (
     <>

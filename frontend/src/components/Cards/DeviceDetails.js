@@ -8,53 +8,24 @@ import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import TableContainer from "@material-ui/core/TableContainer";
-import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import TableBody from "@material-ui/core/TableBody";
+import {CardContent} from "@material-ui/core";
 
 
 const useStyles = makeStyles(componentStyles);
 
-function DeviceTable(props) {
+function DeviceDetails(props) {
   const classes = useStyles();
-  const [response, setResponse] = useState(null)
+  const [device, setDevice] = useState(null)
 
 
     useEffect(() => {
-        if(props.devices)
+        if(props.device)
         {
-            const m = props.devices.map((device) =>
-                <TableRow key={device.deviceName}>
-                    <TableCell
-                        classes={{
-                            root:
-                                classes.tableCellRoot +
-                                " " +
-                                classes.tableCellRootBodyHead,
-                        }}
-                        component="th"
-                        variant="head"
-                        scope="row"
-                    >
-                        { device.deviceName }
-                    </TableCell>
-
-                    <TableCell classes={{ root: classes.tableCellRoot }}>
-                        { device.deviceData.deviceStatus }
-                    </TableCell>
-                    <TableCell classes={{ root: classes.tableCellRoot }}>
-                        { device.deviceData.battery }%
-                    </TableCell>
-                </TableRow>
-            );
-            setResponse(m);
+            setDevice(props.device);
         }else{
             console.log("no device prop added")
         }
-    },[])
+    },[props.device])
 
   return (
     <>
@@ -92,55 +63,34 @@ function DeviceTable(props) {
                 }
                 classes={{ root: classes.cardHeaderRoot }}
             ></CardHeader>
+            <CardContent>
+                <Grid container>
+                    <Grid
+                        item
+                        xs={12}
+                        xl={6}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        Name
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        xl={6}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        { device && device.deviceName }
+                    </Grid>
+                </Grid>
 
-            <TableContainer>
-                <Box
-                    component={Table}
-                    alignItems="center"
-                    marginBottom="0!important"
-                >
-                    <TableHead>
-                        <TableRow>
-                            <TableCell
-                                classes={{
-                                    root:
-                                        classes.tableCellRoot +
-                                        " " +
-                                        classes.tableCellRootHead,
-                                }}
-                            >
-                                Device Name
-                            </TableCell>
-                            <TableCell
-                                classes={{
-                                    root:
-                                        classes.tableCellRoot +
-                                        " " +
-                                        classes.tableCellRootHead,
-                                }}
-                            >
-                                Status
-                            </TableCell>
-                            <TableCell
-                                classes={{
-                                    root:
-                                        classes.tableCellRoot +
-                                        " " +
-                                        classes.tableCellRootHead,
-                                }}
-                            >
-                                Battery Level
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        { response }
-                    </TableBody>
-                </Box>
-            </TableContainer>
+            </CardContent>
         </Card>
     </>
   );
 }
 
-export default DeviceTable;
+export default DeviceDetails;
