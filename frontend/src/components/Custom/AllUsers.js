@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState, useEffect} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -18,7 +18,7 @@ import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
 import Modal from "../../views/admin/modals/Modal";
 import AddUserBody from "./AddUserBody";
-
+import disableScroll from 'disable-scroll';
 
 
 
@@ -28,6 +28,11 @@ const UserTable = () => {
     const classes = useStyles();
     const theme = useTheme();
     const [show, setShow] = useState(false);
+
+    useEffect(() => {
+        if (show == true) disableScroll.on()
+        if (show == false) disableScroll.off()
+    }, [show])
 
     return (
         <>

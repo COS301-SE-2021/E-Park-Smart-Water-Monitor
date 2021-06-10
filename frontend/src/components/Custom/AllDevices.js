@@ -16,6 +16,8 @@ import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
 import Modal from "../../views/admin/modals/Modal";
+import AddDeviceBody from "./AddDeviceBody";
+import disableScroll from "disable-scroll";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -35,6 +37,11 @@ const DeviceTable = () => {
         });
     }, [])*/
 
+    useEffect(() => {
+        if (show == true) disableScroll.on()
+        if (show == false) disableScroll.off()
+    }, [show])
+
 
     return (
         <>
@@ -44,7 +51,7 @@ const DeviceTable = () => {
                 classes={{ root: classes.containerRoot }}
             >
                 <Modal title="Add Device" onClose={() => setShow(false)} show={show}>
-
+                    <AddDeviceBody/>
                 </Modal>
                 <Grid container component={Box}>
                     <Grid
