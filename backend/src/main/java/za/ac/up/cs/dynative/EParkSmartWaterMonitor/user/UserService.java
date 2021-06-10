@@ -10,6 +10,6 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.LoginResponse;
 public interface UserService {
     CreateUserResponse createUser(CreateUserRequest request);
     LoginResponse loginUser(LoginRequest request);
-    User findUserByUserName(String username);
     GetAllUsersResponse getAllUsers();
+    User findUserByUserName(String username);
 }

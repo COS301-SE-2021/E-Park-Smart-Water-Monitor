@@ -49,6 +49,7 @@ public class UserServiceImpl implements UserService {
         String password = request.getPassword();
         String username = request.getUsername();
         String role = request.getRole();
+        String cellNumber = request.getCellNumber();
 
         if (parkId != null
                 && !name.equals("")
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
                     Park park = findByParkIdResponse.getPark();
 
-                    User user = new User(idNumber, email,name,surname,passwordEncoder.encode(password),username, role, park);
+                    User user = new User(idNumber, email,name,surname,passwordEncoder.encode(password),username, role, park, cellNumber);
 
                     userRepo.save(user);
 
@@ -114,12 +115,13 @@ public class UserServiceImpl implements UserService {
                 else{
                     System.out.println("Wrong Password");
                 }
-
             }
             else {
+
                 Map<String, Object> head = new HashMap<>();
                 Map<String, Object> claims = new HashMap<>();
                 claims.put("UUID", user.getId().toString());
+
                 JWTToken = Jwts.builder()
                         .setHeader(head)
                         .setSubject(username)
@@ -129,10 +131,18 @@ public class UserServiceImpl implements UserService {
                         .signWith(SignatureAlgorithm.HS512,"secret")
                         .compact();
 
-                return new LoginResponse(JWTToken);
+                return new LoginResponse(true, JWTToken,
+                        user.getRole(),
+                        user.getEmail(),
+                        user.getName(),
+                        user.getSurname(),
+                        user.getUsername(),
+                        user.getCellNumber(),
+                        user.getPark().getId(),
+                        user.getPark().getParkName());
             }
         }
-        return new LoginResponse(JWTToken);
+        return new LoginResponse(JWTToken, false);
     }
 
     @Override

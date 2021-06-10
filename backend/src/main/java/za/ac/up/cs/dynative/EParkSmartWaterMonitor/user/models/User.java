@@ -27,10 +27,12 @@ public class User {
 
     private String role;
 
+    private String cellNumber;
+
     @Relationship(type = "WORKS_FOR", direction = Relationship.Direction.OUTGOING)
     private Park park;
 
-    public User(String idNumber, String email, String name, String surname, String password, String username, String role, Park park) {
+    public User(String idNumber, String email, String name, String surname, String password, String username, String role, Park park, String cellNumber) {
         this.role = role;
         this.id = UUID.randomUUID();
         this.idNumber = idNumber;
@@ -41,6 +43,7 @@ public class User {
         this.username = username;
         this.park = park;
         this.role = role;
+        this.cellNumber = cellNumber;
     }
 
     public User(String idNumber, String email, String name, String surname, String password, String username, String role) {
@@ -122,6 +125,14 @@ public class User {
         this.role = role;
     }
 
+    public String getCellNumber() {
+        return cellNumber;
+    }
+
+    public void setCellNumber(String cellNumber) {
+        this.cellNumber = cellNumber;
+    }
+
     public Park getPark() {
         return park;
     }
@@ -134,11 +145,14 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", idNumber='" + idNumber + '\'' +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", password='" + password + '\'' +
                 ", username='" + username + '\'' +
+                ", role='" + role + '\'' +
+                ", cellNumber='" + cellNumber + '\'' +
                 ", park=" + park +
                 '}';
     }
