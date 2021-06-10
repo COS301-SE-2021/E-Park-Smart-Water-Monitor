@@ -11,13 +11,11 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
-import axios from "axios";
-
+import Modal from "../../views/admin/modals/Modal";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -25,17 +23,17 @@ const useStyles = makeStyles(componentStyles);
 const DeviceTable = () => {
     const classes = useStyles();
     const theme = useTheme();
-    const [result, setResult] = useState(null)
+   // const [result, setResult] = useState(null)
+    const [show, setShow] = useState(false);
 
 
-
-    useEffect(() => {
+   /* useEffect(() => {
         axios.post('http://localhost:8080/api/devices/getNumDevices', {
             parkID: "2ea5ba27-9d8e-41a4-9628-485f0ae2fb57"
         }).then((res)=>{
             setResult(res.data)
         });
-    }, [])
+    }, [])*/
 
 
     return (
@@ -45,6 +43,9 @@ const DeviceTable = () => {
                 component={Box}
                 classes={{ root: classes.containerRoot }}
             >
+                <Modal title="Add Device" onClose={() => setShow(false)} show={show}>
+
+                </Modal>
                 <Grid container component={Box}>
                     <Grid
                         item
@@ -158,6 +159,7 @@ const DeviceTable = () => {
                             color="primary"
                             size="medium"
                             style={{width:'200px'}}
+                            onClick={() => setShow(true)}
                         >
                             Add Device
                         </Button>

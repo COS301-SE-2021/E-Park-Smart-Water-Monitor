@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -11,11 +11,11 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
+import Modal from "../../views/admin/modals/Modal";
 
 
 
@@ -24,7 +24,7 @@ const useStyles = makeStyles(componentStyles);
 const ParkTable = () => {
     const classes = useStyles();
     const theme = useTheme();
-
+    const [show, setShow] = useState(false);
 
     return (
         <>
@@ -33,6 +33,9 @@ const ParkTable = () => {
                 component={Box}
                 classes={{ root: classes.containerRoot }}
             >
+                <Modal title="Add Park" onClose={() => setShow(false)} show={show}>
+
+                </Modal>
                 <Grid container component={Box} >
                     <Grid
                         item
@@ -140,6 +143,7 @@ const ParkTable = () => {
                             color="primary"
                             size="medium"
                             style={{width:'200px'}}
+                            onClick={() => setShow(true)}
                         >
                             Add Park
                         </Button>
