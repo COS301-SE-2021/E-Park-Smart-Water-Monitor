@@ -36,6 +36,7 @@ const Modal = props => {
                                 variant="contained"
                                 color="primary"
                                 size="medium"
+                                style={{textAlign:'center'}}
                                 >
                             Done
                         </Button>

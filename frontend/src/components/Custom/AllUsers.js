@@ -17,6 +17,8 @@ import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
 import Modal from "../../views/admin/modals/Modal";
+import AddUserBody from "./AddUserBody";
+
 
 
 
@@ -35,8 +37,8 @@ const UserTable = () => {
                 marginTop="-6rem"
                 classes={{ root: classes.containerRoot }}
             >
-                <Modal title="Add Users" onClose={() => setShow(false)} show={show}>
-
+                <Modal title="Add User" onClose={() => setShow(false)} show={show}>
+                    <AddUserBody/>
                 </Modal>
                 <Grid container component={Box} marginTop="3rem">
                     <Grid
