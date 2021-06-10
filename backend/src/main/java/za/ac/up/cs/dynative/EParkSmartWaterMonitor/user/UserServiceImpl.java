@@ -240,7 +240,9 @@ public class UserServiceImpl implements UserService {
                 } else {
                     System.out.println("Wrong Password");
                 }
-            } else {
+            }
+            else
+                {
 
                 Map<String, Object> head = new HashMap<>();
                 Map<String, Object> claims = new HashMap<>();
