@@ -48,17 +48,12 @@ function Dashboard() {
       if(res.data)
       {
         const site = res.data.site; // site array
-        console.log("site: "+JSON.stringify(site))
-        const site_devices = []
-
         setDevices(site)
 
         if(site && site[0])
         {
-          setDevice(site_devices[0])
+          setDevice(site[0])
         }
-
-        // get the first device info
 
       }else{
         console.log('res.data null')
