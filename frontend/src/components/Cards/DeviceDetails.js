@@ -67,7 +67,7 @@ function DeviceDetails(props) {
                 <Grid container>
                     <Grid
                         item
-                        xs={12}
+                        xs={6}
                         xl={6}
                         component={Box}
                         marginBottom="1rem!important"
@@ -77,7 +77,7 @@ function DeviceDetails(props) {
                     </Grid>
                     <Grid
                         item
-                        xs={12}
+                        xs={6}
                         xl={6}
                         component={Box}
                         marginBottom="1rem!important"

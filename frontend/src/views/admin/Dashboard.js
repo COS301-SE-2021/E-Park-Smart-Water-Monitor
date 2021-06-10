@@ -50,21 +50,8 @@ function Dashboard() {
         const site = res.data.site; // site array
         console.log("site: "+JSON.stringify(site))
         const site_devices = []
-        // if(site)
-        // {
-        //   for (let i = 0; i < site.length ; i++) {
-        //     for (let p = 0; p < site[i].waterSourceDevices.length ; p++) {
-        //       site_devices.push(site[i].waterSourceDevices[p]);
-        //     }
-        //   }
-        // }
-        // if(site)
-        // {
-        //
-        // }
 
         setDevices(site)
-
 
         if(site && site[0])
         {
