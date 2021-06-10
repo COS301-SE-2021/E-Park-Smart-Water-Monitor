@@ -1,4 +1,5 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.security;
+import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
@@ -27,7 +28,7 @@ public class JwtAuthProvider extends AbstractUserDetailsAuthenticationProvider {
             return userFactory.createUser(uuid);
         } catch (UsernameNotFoundException e) {
             e.printStackTrace();
+            throw e;
         }
-        return null;
     }
 }

@@ -5,7 +5,9 @@ import io.jsonwebtoken.*;
 import org.springframework.http.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.*;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
@@ -57,11 +59,10 @@ public class JwtAuthFilter extends AbstractAuthenticationProcessingFilter {
             return getAuthenticationManager().authenticate(auth);
 
         }
-        catch (SignatureException | ExpiredJwtException sigExp) {
-
+        catch (SignatureException | ExpiredJwtException | AuthenticationException sigExp) {
             Map<String, Object> errorDetails = new HashMap<>();
             errorDetails.put("message", sigExp.getMessage());
-            errorDetails.put("code", "Jwt error");
+            errorDetails.put("code", "Jwt token error.");
 
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
