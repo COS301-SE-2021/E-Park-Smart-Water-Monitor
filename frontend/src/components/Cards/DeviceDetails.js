@@ -85,6 +85,66 @@ function DeviceDetails(props) {
                     >
                         { device && device.deviceName }
                     </Grid>
+                    <Grid
+                        item
+                        xs={6}
+                        xl={6}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        Status
+                    </Grid>
+                    <Grid
+                        item
+                        xs={6}
+                        xl={6}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        { device && device.deviceData.deviceStatus }
+                    </Grid>
+                    <Grid
+                        item
+                        xs={6}
+                        xl={6}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        Battery
+                    </Grid>
+                    <Grid
+                        item
+                        xs={6}
+                        xl={6}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        { device && device.deviceData.battery }
+                    </Grid>
+                    <Grid
+                        item
+                        xs={6}
+                        xl={6}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        Latitude
+                    </Grid>
+                    <Grid
+                        item
+                        xs={6}
+                        xl={6}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        { device && device.deviceData.latitude }
+                    </Grid>
                 </Grid>
 
             </CardContent>
