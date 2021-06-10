@@ -9,6 +9,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import {CardContent} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -16,9 +17,14 @@ const useStyles = makeStyles(componentStyles);
 function DeviceDetails(props) {
   const classes = useStyles();
   const [device, setDevice] = useState(null)
+  const [access, setAccess] = useState(false)
 
 
     useEffect(() => {
+
+        // access will be updated depending on the user priveleges
+        setAccess(true)
+
         if(props.device)
         {
             setDevice(props.device);
@@ -57,6 +63,11 @@ function DeviceDetails(props) {
                                 display="flex"
                                 flexWrap="wrap"
                             >
+                                { access &&
+                                    <Button color="primary" variant="contained">
+                                        Metrics
+                                    </Button>
+                                }
                             </Box>
                         </Grid>
                     </Grid>
@@ -123,7 +134,7 @@ function DeviceDetails(props) {
                         marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        { device && device.deviceData.battery }
+                        { device && device.deviceData.battery }%
                     </Grid>
                     <Grid
                         item
@@ -206,6 +217,7 @@ function DeviceDetails(props) {
                         { device && device.deviceData.lifeTime }
                     </Grid>
                 </Grid>
+
 
             </CardContent>
         </Card>
