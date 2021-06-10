@@ -6,6 +6,7 @@ import org.thingsboard.rest.client.RestClient;
 import org.thingsboard.server.common.data.Device;
 import org.thingsboard.server.common.data.User;
 import org.thingsboard.server.common.data.asset.Asset;
+import org.thingsboard.server.common.data.security.DeviceCredentials;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Measurement;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
@@ -47,6 +48,8 @@ public class DevicesServicesImpl implements DevicesService {
         this.measurementRepo = measurementRepo;
         this.waterSiteService = waterSiteService;
         thingsBoardClient =new RestClient("http://178.62.41.185:8080");
+        thingsBoardClient.login("tenant@thingsboard.org","tenant");
+
     }
 
     public Collection<WaterSourceDevice> getAll() {
@@ -59,14 +62,34 @@ public class DevicesServicesImpl implements DevicesService {
         AddWaterSourceDeviceResponse response = new AddWaterSourceDeviceResponse();
 
         List<WaterSourceDevice> devices = deviceRepo.findWaterSourceDeviceByDeviceName(addWSDRequest.getDeviceName());
-        WaterSourceDevice device = null;
 
-        if (devices == null) {
-            device = (WaterSourceDevice) devices.toArray()[0];
-        }
+//        WaterSourceDevice device = null;
+//
+//        if (devices == null) {
+//            device = (WaterSourceDevice) devices.toArray()[0];
+//        }
 
-        if (device==null)
+        if (devices.size()<1)
         {
+
+//
+//                Asset asset = new Asset();
+//                asset.setName("TEST");
+//                asset.setType("dam");
+//                asset = thingsBoardClient.saveAsset(asset);
+
+            Device deviceToAdd = new Device();
+            deviceToAdd.setName(newDevice.getDeviceName());
+            deviceToAdd.setType(newDevice.getDeviceModel());
+
+            System.out.println(deviceToAdd.getId());
+
+            deviceToAdd = thingsBoardClient.saveDevice(deviceToAdd);
+            deviceToAdd.getId().getId();
+            DeviceCredentials a = thingsBoardClient.getDeviceCredentialsByDeviceId(deviceToAdd.getId()).get();
+
+
+            newDevice.setDeviceId(deviceToAdd.getId().getId());
 
             AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse= waterSiteService.attachWaterSourceDevice( new AttachWaterSourceDeviceRequest(addWSDRequest.getSiteId(),newDevice));
 
@@ -77,20 +100,6 @@ public class DevicesServicesImpl implements DevicesService {
             }
             else
             {
-
-                thingsBoardClient.login("tenant@thingsboard.org","tenant");
-
-                Asset asset = new Asset();
-                asset.setName("TEST");
-                asset.setType("dam");
-                asset = thingsBoardClient.saveAsset(asset);
-
-                Device deviceToAdd = new Device();
-                deviceToAdd.setName(newDevice.getDeviceId().toString());
-                deviceToAdd.setType(newDevice.getDeviceModel());
-                deviceToAdd = thingsBoardClient.saveDevice(deviceToAdd);
-                System.out.println(thingsBoardClient.getDeviceCredentialsByDeviceId(deviceToAdd.getId()));
-//                deviceToAdd.
                 deviceRepo.save(newDevice);
                 response.setSuccess(true);
                 response.setStatus("Device "+addWSDRequest.getDeviceName()+" successfully added");
