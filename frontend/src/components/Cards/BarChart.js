@@ -1,6 +1,4 @@
 import React from "react";
-// import PropTypes from "prop-types";
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
@@ -13,9 +11,6 @@ import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
 
 import {
-    // chartOptions,
-    // parseOptions,
-    // chartExample1,
     chartExample2,
 } from "variables/charts.js";
 
@@ -25,12 +20,6 @@ const useStyles = makeStyles(componentStyles);
 function BarChart() {
   const classes = useStyles();
   const theme = useTheme();
-
-    // CHART 2 - Bar Chart
-    console.log("chartExample2.data")
-    console.log(chartExample2.data)
-    console.log("chartExample2.options")
-    console.log(chartExample2.options)
 
 
   return (
