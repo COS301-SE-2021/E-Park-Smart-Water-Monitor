@@ -25,11 +25,8 @@ import {
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
 import axios from "axios";
-import {Marker, Popup} from "react-leaflet";
 
 const useStyles = makeStyles(componentStyles);
-
-
 
 function Dashboard() {
   const classes = useStyles();
@@ -60,7 +57,8 @@ function Dashboard() {
         }
         setDevices(site_devices)
 
-        // get the device info
+        // get the first device info
+
       }else{
         console.log('res.data null')
       }
