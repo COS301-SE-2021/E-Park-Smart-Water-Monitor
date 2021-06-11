@@ -11,8 +11,10 @@ import "assets/plugins/nucleo/css/nucleo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/argon-dashboard-react.scss";
 
-import AdminLayout from "layouts/Admin.js";
+import DashboardLayout from "layouts/Dashboard.js";
 import AuthLayout from "layouts/Auth.js";
+import AdminLayout from "layouts/Admin.js"
+
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
@@ -20,9 +22,10 @@ ReactDOM.render(
     <CssBaseline />
     <BrowserRouter>
       <Switch>
-        <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-        <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
-        <Redirect from="/" to="/admin/index" />
+        <Route path="/dashboard/index" render={(props) => <DashboardLayout {...props} />} />
+        <Route path="/auth/index" render={(props) => <AuthLayout {...props} />} />
+        <Route path="/admin/index" render={(props) => <AdminLayout {...props} />} />
+        <Redirect from="/" to="/dashboard/index" />
       </Switch>
     </BrowserRouter>
   </ThemeProvider>,

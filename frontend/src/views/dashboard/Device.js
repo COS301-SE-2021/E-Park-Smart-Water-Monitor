@@ -38,7 +38,7 @@ import {
   chartExample2,
 } from "variables/charts.js";
 
-import componentStyles from "assets/theme/views/admin/dashboard.js";
+import componentStyles from "assets/theme/views/dashboard/dashboard.js";
 
 const useStyles = makeStyles(componentStyles);
 

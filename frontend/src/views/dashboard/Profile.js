@@ -22,7 +22,7 @@ import School from "@material-ui/icons/School";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
 
-import componentStyles from "assets/theme/views/admin/profile.js";
+import componentStyles from "assets/theme/views/dashboard/profile.js";
 import boxShadows from "assets/theme/box-shadow.js";
 
 const useStyles = makeStyles(componentStyles);
