@@ -3,9 +3,7 @@ import org.springframework.data.neo4j.core.schema.Id;
         import org.springframework.data.neo4j.core.schema.Node;
         import org.springframework.data.neo4j.core.schema.Relationship;
 
-import java.util.HashSet;
-        import java.util.Set;
-        import java.util.UUID;
+import java.util.*;
 
 
 @Node
@@ -15,6 +13,7 @@ public class WaterSourceDevice
     private UUID    deviceId;
     private String  deviceModel;
     private String  deviceName;
+    private String  deviceType;
     private DeviceData deviceData;
 
     @Relationship(type = "PRODUCES", direction = Relationship.Direction.OUTGOING)
@@ -28,14 +27,16 @@ public class WaterSourceDevice
         this.deviceId    = UUID.randomUUID();
         this.deviceName  = deviceName;
         this.deviceModel = deviceModel;
-        this.deviceData  = new DeviceData();
+        this.deviceType= "WaterSource";
 
-        this.deviceData.setLatitude(latitude);
-        this.deviceData.setLongitude(longitude);
-        this.deviceData.setBattery(100);
-        this.deviceData.setDeviceStatus("FINE");
-        this.deviceData.setUpTime(100);
-        this.deviceData.setLifeTime(10);
+        ArrayList<sensorConfiguration> deviceConfiguration = new ArrayList<>();
+        deviceConfiguration.add(new sensorConfiguration("reportingFrequency",4.0));
+        deviceConfiguration.add(new sensorConfiguration("temperatureSensitivity",1.0));
+        deviceConfiguration.add(new sensorConfiguration("waterDepthSensitivity",1.0));
+        deviceConfiguration.add(new sensorConfiguration("phSensitivity",1.0));
+
+        this.deviceData = new DeviceData(longitude,latitude,100,"FINE",100,1,deviceConfiguration);
+
 
     }
 
