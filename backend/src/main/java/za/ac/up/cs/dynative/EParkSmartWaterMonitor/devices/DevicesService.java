@@ -5,10 +5,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevice
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetParkDevicesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevicesResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetParkDevicesResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.EditParkRequest;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,4 +19,5 @@ public interface DevicesService {
     Optional<WaterSourceDevice> findDevice();
     GetNumDevicesResponse getNumDevices(GetNumDevicesRequest getNumDevicesRequest);
     GetParkDevicesResponse getParkDevices(GetParkDevicesRequest getParkDevicesRequest);
+    EditDeviceResponse editDevice(EditParkRequest editParkRequest);
 }

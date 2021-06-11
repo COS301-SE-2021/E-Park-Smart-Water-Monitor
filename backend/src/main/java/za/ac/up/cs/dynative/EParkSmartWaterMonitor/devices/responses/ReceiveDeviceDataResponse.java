@@ -5,12 +5,14 @@ public class ReceiveDeviceDataResponse {
     private String status;
     private Boolean success;
 
-    public ReceiveDeviceDataResponse(String status, Boolean success) {
+    public ReceiveDeviceDataResponse(String status, Boolean success)
+    {
         this.status = status;
         this.success = success;
     }
 
-    public ReceiveDeviceDataResponse() {
+    public ReceiveDeviceDataResponse()
+    {
     }
 
     public String getStatus() {
