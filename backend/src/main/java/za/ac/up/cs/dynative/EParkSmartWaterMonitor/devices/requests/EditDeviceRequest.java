@@ -7,12 +7,22 @@ public class EditDeviceRequest
     private UUID deviceId;
     private String  deviceModel;
     private String  deviceName;
+    private String deviceType;
 
-    public EditDeviceRequest(UUID deviceId, String deviceModel, String deviceName)
+    public EditDeviceRequest(UUID deviceId, String deviceType, String deviceModel, String deviceName)
     {
         this.deviceId = deviceId;
+        this.deviceType = deviceType;
         this.deviceModel = deviceModel;
         this.deviceName = deviceName;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
     }
 
     public UUID getDeviceId() {

@@ -1,10 +1,7 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices;
 
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetParkDevicesRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.EditParkRequest;
 
@@ -19,5 +16,5 @@ public interface DevicesService {
     Optional<WaterSourceDevice> findDevice();
     GetNumDevicesResponse getNumDevices(GetNumDevicesRequest getNumDevicesRequest);
     GetParkDevicesResponse getParkDevices(GetParkDevicesRequest getParkDevicesRequest);
-    EditDeviceResponse editDevice(EditParkRequest editParkRequest);
+     EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest);
 }
