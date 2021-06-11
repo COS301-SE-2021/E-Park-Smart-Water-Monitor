@@ -1,18 +1,20 @@
-package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses;
+package za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses;
 
-public class ReceiveDeviceDataResponse {
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.UUID;
+
+public class CreateUserResponse {
 
     private String status;
     private Boolean success;
 
-    public ReceiveDeviceDataResponse(String status, Boolean success)
-    {
+    public CreateUserResponse(String status, Boolean success) {
         this.status = status;
         this.success = success;
     }
 
-    public ReceiveDeviceDataResponse()
-    {
+    public CreateUserResponse() {
     }
 
     public String getStatus() {

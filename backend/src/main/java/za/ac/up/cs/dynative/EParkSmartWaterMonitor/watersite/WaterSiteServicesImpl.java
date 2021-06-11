@@ -70,7 +70,6 @@ public class WaterSiteServicesImpl implements WaterSiteService
             siteToAddTo.get().addWaterSourceDevice(request.getWaterSourceDevice());
             waterSiteRepo.save(siteToAddTo.get());
             response= new AttachWaterSourceDeviceResponse("Successfully attached device to site!",true);
-            waterSiteRepo.save(siteToAddTo.get());
         }
         else
         {

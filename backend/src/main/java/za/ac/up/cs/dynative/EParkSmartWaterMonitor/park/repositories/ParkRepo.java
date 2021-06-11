@@ -15,4 +15,7 @@ public interface ParkRepo extends Neo4jRepository<Park, UUID> {
     List<Park> findParkByParkName(String parkName);
     Park findParkById(UUID id);
 
+    @Query("match (n:Park) return n")
+    List<Park> getAllParks();
+
 }
