@@ -19,12 +19,13 @@ public class WaterSourceDevice
     @Relationship(type = "PRODUCES", direction = Relationship.Direction.OUTGOING)
     private Set<Measurement> measurementSet;
 
-    public WaterSourceDevice(String deviceName,
+    public WaterSourceDevice(UUID deviceId,
+                             String deviceName,
                              String deviceModel,
                              double longitude,
                              double latitude)
     {
-        this.deviceId    = UUID.randomUUID();
+        this.deviceId    = deviceId;
         this.deviceName  = deviceName;
         this.deviceModel = deviceModel;
         this.deviceType= "WaterSource";
@@ -36,7 +37,6 @@ public class WaterSourceDevice
         deviceConfiguration.add(new sensorConfiguration("phSensitivity",1.0));
 
         this.deviceData = new DeviceData(longitude,latitude,100,"FINE",100,1,deviceConfiguration);
-
 
     }
 
@@ -91,5 +91,17 @@ public class WaterSourceDevice
 
     public void setMeasurementSet(Set<Measurement> measurementSet) {
         this.measurementSet = measurementSet;
+    }
+
+    @Override
+    public String toString() {
+        return "WaterSourceDevice:{" +
+                "deviceId=" + deviceId +
+                ", deviceModel='" + deviceModel + '\'' +
+                ", deviceName='" + deviceName + '\'' +
+                ", deviceType='" + deviceType + '\'' +
+                ", deviceData=" + deviceData +
+                ", measurementSet=" + measurementSet +
+                '}';
     }
 }

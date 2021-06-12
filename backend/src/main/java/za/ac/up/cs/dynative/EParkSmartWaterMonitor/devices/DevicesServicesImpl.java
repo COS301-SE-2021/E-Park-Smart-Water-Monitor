@@ -2,6 +2,16 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.core.SdkBytes;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.iot.IotClient;
+import software.amazon.awssdk.services.iot.IotClientBuilder;
+import software.amazon.awssdk.services.iot.model.AttributePayload;
+import software.amazon.awssdk.services.iot.model.CreateThingRequest;
+import software.amazon.awssdk.services.iot.model.CreateThingResponse;
+import software.amazon.awssdk.services.iotdataplane.IotDataPlaneClient;
+import software.amazon.awssdk.services.iotdataplane.model.UpdateThingShadowRequest;
+import software.amazon.awssdk.services.iotdataplane.model.UpdateThingShadowResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.InfrastructureDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Measurement;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
@@ -15,7 +25,9 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdReq
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.CanAttachWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWaterSourceDeviceResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.CanAttachWaterSourceDeviceResponse;
 
 import java.util.*;
 
@@ -27,13 +39,21 @@ public class DevicesServicesImpl implements DevicesService {
     private ParkService parkService;
     private WaterSiteService waterSiteService;
     private MeasurementRepo measurementRepo;
+    private IotClient iotClient;
+    private IotDataPlaneClient iotDataPlaneClient;
 
-    public DevicesServicesImpl(@Qualifier("WaterSourceDeviceRepo") WaterSourceDeviceRepo waterSourceDeviceRepo,@Qualifier("InfrastructureDeviceRepo") InfrastructureDeviceRepo infrastructureDeviceRepo, @Qualifier("ParkService") ParkService parkService, @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService, @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo) {
+    public DevicesServicesImpl(@Qualifier("WaterSourceDeviceRepo") WaterSourceDeviceRepo waterSourceDeviceRepo,
+                               @Qualifier("InfrastructureDeviceRepo") InfrastructureDeviceRepo infrastructureDeviceRepo,
+                               @Qualifier("ParkService") ParkService parkService,
+                               @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService,
+                               @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo) {
         this.waterSourceDeviceRepo = waterSourceDeviceRepo;
         this.infrastructureDeviceRepo = infrastructureDeviceRepo;
         this.parkService = parkService;
         this.measurementRepo = measurementRepo;
         this.waterSiteService = waterSiteService;
+        this.iotClient = IotClient.builder().region(Region.US_EAST_2).build();
+        this.iotDataPlaneClient = IotDataPlaneClient.builder().region(Region.US_EAST_2).build();
     }
 
     public Collection<WaterSourceDevice> getAll() {
@@ -41,24 +61,48 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     public AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest) {
-        WaterSourceDevice newDevice = new WaterSourceDevice(addWSDRequest.getDeviceName(), addWSDRequest.getDeviceModel(), addWSDRequest.getLongitude(), addWSDRequest.getLatitude());
         AddWaterSourceDeviceResponse response = new AddWaterSourceDeviceResponse();
-
         List<WaterSourceDevice> devices = waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName(addWSDRequest.getDeviceName());
-        WaterSourceDevice device = null;
 
-        if (devices == null) {
-            device = (WaterSourceDevice) devices.toArray()[0];
-        }
+        if (devices.size() == 0) {
 
-        if (device == null) {
+            CanAttachWaterSourceDeviceResponse canAttachWaterSourceDeviceResponse = waterSiteService.canAttachWaterSourceDevice(new CanAttachWaterSourceDeviceRequest(addWSDRequest.getSiteId()));
 
-            AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse = waterSiteService.attachWaterSourceDevice(new AttachWaterSourceDeviceRequest(addWSDRequest.getSiteId(), newDevice));
-
-            if (!attachWaterSourceDeviceResponse.getSuccess()) {
+            if (!canAttachWaterSourceDeviceResponse.getSuccess()) {
                 response.setSuccess(false);
                 response.setStatus("The water site " + addWSDRequest.getSiteId() + " does not exist.");
             } else {
+
+                Map<String, String> attributes = Map.of("deviceModel",addWSDRequest.getDeviceModel());
+
+                AttributePayload attributePayload = AttributePayload.builder()
+                        .attributes(attributes)
+                        .build();
+
+                CreateThingRequest createThingRequest = CreateThingRequest.builder()
+                        .thingName(addWSDRequest.getDeviceName())
+                        .thingTypeName("WaterSourceDevice")
+                        .attributePayload(attributePayload)
+                        .build();
+
+                CreateThingResponse createThingResponse = iotClient.createThing(createThingRequest);
+
+                WaterSourceDevice newDevice = new WaterSourceDevice(UUID.fromString(createThingResponse.thingId()),addWSDRequest.getDeviceName(), addWSDRequest.getDeviceModel(), addWSDRequest.getLongitude(), addWSDRequest.getLatitude());
+                AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse = waterSiteService.attachWaterSourceDevice(new AttachWaterSourceDeviceRequest(addWSDRequest.getSiteId(), newDevice));
+
+                String payload = "{\"state\": {\"reported\": {";
+                payload += newDevice.getDeviceData().toString();
+                payload += "}}}";
+
+                SdkBytes shadowPayload = SdkBytes.fromUtf8String(payload);
+
+                UpdateThingShadowRequest updateThingShadowRequest = UpdateThingShadowRequest.builder()
+                        .thingName(createThingResponse.thingName())
+                        .shadowName(createThingResponse.thingName()+"_Shadow")
+                        .payload(shadowPayload)
+                        .build();
+
+                UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
 
                 waterSourceDeviceRepo.save(newDevice);
                 response.setSuccess(true);
