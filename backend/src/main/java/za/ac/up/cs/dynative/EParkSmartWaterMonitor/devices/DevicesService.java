@@ -1,24 +1,21 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices;
 
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetParkDevicesRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevicesResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetParkDevicesResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.EditParkRequest;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface DevicesService {
     ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request);
     AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest);
     Collection<WaterSourceDevice> getAll();
-    Optional<WaterSourceDevice> findDevice();
+    FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest);
     GetNumDevicesResponse getNumDevices(GetNumDevicesRequest getNumDevicesRequest);
     GetParkDevicesResponse getParkDevices(GetParkDevicesRequest getParkDevicesRequest);
+     EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest);
 }

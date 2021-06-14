@@ -13,11 +13,11 @@ import Typography from "@material-ui/core/Typography";
 // core components
 // import NavbarDropdown from "components/Dropdowns/NavbarDropdown.js";
 
-import componentStyles from "assets/theme/components/admin-navbar.js";
+import componentStyles from "assets/theme/components/dashboard-navbar.js";
 
 const useStyles = makeStyles(componentStyles);
 
-export default function AdminNavbar({ brandText }) {
+export default function DashboardNavbar({ brandText }) {
   const classes = useStyles();
   return (
     <>

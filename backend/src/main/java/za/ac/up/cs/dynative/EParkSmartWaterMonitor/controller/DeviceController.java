@@ -7,10 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetParkDevicesRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.EditDeviceResponse;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,9 +54,13 @@ public class DeviceController {
     public ResponseEntity<Object> getNumDevices(@RequestBody GetParkDevicesRequest getParkDevicesRequest) {
         return new ResponseEntity<>(devicesService.getParkDevices(getParkDevicesRequest),HttpStatus.OK);
     }
+    @PutMapping("/editDevice")
+    public ResponseEntity<Object> editDevice(@RequestBody EditDeviceRequest editDeviceRequest ) {
+        return new ResponseEntity<>(devicesService.editDevice(editDeviceRequest),HttpStatus.OK);
+    }
 
     @GetMapping("/getById")
-    public Optional<WaterSourceDevice> getDeviceById() {
-        return devicesService.findDevice();
+    public ResponseEntity<Object> getDeviceById(@RequestBody FindDeviceRequest findDeviceRequest) {
+        return new ResponseEntity<>(devicesService.findDevice(findDeviceRequest),HttpStatus.OK);
     }
 }
