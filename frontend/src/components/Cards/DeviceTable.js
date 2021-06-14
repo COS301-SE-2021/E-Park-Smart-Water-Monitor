@@ -15,6 +15,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 
+import "../../index.css"
 
 const useStyles = makeStyles(componentStyles);
 
@@ -51,10 +52,12 @@ function DeviceTable(props) {
                     <TableCell classes={{ root: classes.tableCellRoot }}>
                         { device.deviceData.deviceStatus }
                     </TableCell>
-                    <TableCell classes={{ root: classes.tableCellRoot }}>
+                    <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
                         { device.deviceData.battery }%
                     </TableCell>
                 </TableRow>
+
+
             );
             setResponse(m);
         }else{
@@ -99,51 +102,54 @@ function DeviceTable(props) {
                 classes={{ root: classes.cardHeaderRoot }}
             ></CardHeader>
 
-            <TableContainer>
-                <Box
-                    component={Table}
-                    alignItems="center"
-                    marginBottom="0!important"
-                >
-                    <TableHead>
-                        <TableRow>
-                            <TableCell
-                                classes={{
-                                    root:
-                                        classes.tableCellRoot +
-                                        " " +
-                                        classes.tableCellRootHead,
-                                }}
-                            >
-                                Device Name
-                            </TableCell>
-                            <TableCell
-                                classes={{
-                                    root:
-                                        classes.tableCellRoot +
-                                        " " +
-                                        classes.tableCellRootHead,
-                                }}
-                            >
-                                Status
-                            </TableCell>
-                            <TableCell
-                                classes={{
-                                    root:
-                                        classes.tableCellRoot +
-                                        " " +
-                                        classes.tableCellRootHead,
-                                }}
-                            >
-                                Battery Level
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        { response }
-                    </TableBody>
-                </Box>
-            </TableContainer>
+            <div className="table-container">
+                <TableContainer>
+                    <Box
+                        component={Table}
+                        alignItems="center"
+                        marginBottom="0!important"
+                    >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell
+                                    classes={{
+                                        root:
+                                            classes.tableCellRoot +
+                                            " " +
+                                            classes.tableCellRootHead,
+                                    }}
+                                >
+                                    Device Name
+                                </TableCell>
+                                <TableCell
+                                    classes={{
+                                        root:
+                                            classes.tableCellRoot +
+                                            " " +
+                                            classes.tableCellRootHead,
+                                    }}
+                                >
+                                    Status
+                                </TableCell>
+                                <TableCell
+                                    classes={{
+                                        root:
+                                            classes.tableCellRoot +
+                                            " " +
+                                            classes.tableCellRootHead,
+                                    }}
+                                >
+                                    Battery Level
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            { response }
+                            { response }
+                        </TableBody>
+                    </Box>
+                </TableContainer>
+            </div>
         </Card>
     </>
   );

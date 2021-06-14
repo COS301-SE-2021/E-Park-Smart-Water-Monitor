@@ -129,7 +129,9 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
+
             { devices && <DeviceTable onSelectDevice={load_device} devices={ devices }></DeviceTable> }
+
           </Grid>
 
           <Grid
@@ -144,7 +146,7 @@ function Dashboard() {
           </Grid>
         </Grid>
 
-        <Grid container>
+        <Grid container component={Box} marginTop="3rem!important">
           <Grid
               item
               xs={12}
