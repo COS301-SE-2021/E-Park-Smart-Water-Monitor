@@ -22,12 +22,18 @@ function DeviceTable(props) {
   const classes = useStyles();
   const [response, setResponse] = useState(null)
 
+    const handleDeviceSelection = (device_id) => {
+        // so that it doesn't run on render
+        return function () {
+            props.onSelectDevice(device_id);
+        }
+    }
 
     useEffect(() => {
         if(props.devices)
         {
             const m = props.devices.map((device) =>
-                <TableRow key={device.deviceName}>
+                <TableRow key={device.deviceName} onClick={handleDeviceSelection(device.deviceId)}>
                     <TableCell
                         classes={{
                             root:

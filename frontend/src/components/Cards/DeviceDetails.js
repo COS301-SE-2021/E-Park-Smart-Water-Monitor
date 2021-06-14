@@ -25,7 +25,7 @@ function DeviceDetails(props) {
         // access will be updated depending on the user priveleges
         setAccess(true)
 
-        if(props.device)
+        if(props.device != null)
         {
             setDevice(props.device);
         }else{
@@ -114,7 +114,7 @@ function DeviceDetails(props) {
                         marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        { device && device.deviceData.deviceStatus }
+                        { device && device.deviceData && device.deviceData.deviceStatus }
                     </Grid>
                     <Grid
                         item
@@ -134,7 +134,7 @@ function DeviceDetails(props) {
                         marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        { device && device.deviceData.battery }%
+                        { device && device.deviceData && device.deviceData.battery }%
                     </Grid>
                     <Grid
                         item
@@ -154,7 +154,7 @@ function DeviceDetails(props) {
                         marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        { device && device.deviceData.latitude }
+                        { device && device.deviceData && device.deviceData.latitude }
                     </Grid>
                     <Grid
                         item
@@ -174,7 +174,7 @@ function DeviceDetails(props) {
                         marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        { device && device.deviceData.longitude }
+                        { device && device.deviceData && device.deviceData.longitude }
                     </Grid>
                     <Grid
                         item
@@ -194,7 +194,7 @@ function DeviceDetails(props) {
                         marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        { device && device.deviceData.upTime }
+                        { device && device.deviceData && device.deviceData.upTime }
                     </Grid>
                     <Grid
                         item
@@ -214,7 +214,7 @@ function DeviceDetails(props) {
                         marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        { device && device.deviceData.lifeTime }
+                        { device && device.deviceData && device.deviceData.lifeTime }
                     </Grid>
                 </Grid>
 
