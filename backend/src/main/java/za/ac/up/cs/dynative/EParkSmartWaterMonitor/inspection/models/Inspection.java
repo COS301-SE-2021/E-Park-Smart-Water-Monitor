@@ -1,6 +1,7 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models;
 
 import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Relationship;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 
 import java.util.UUID;
@@ -11,6 +12,7 @@ public class Inspection {
     @Id
     private UUID id;
 
+    @Relationship(type = "PERFORMED_ON", direction = Relationship.Direction.OUTGOING)
     private WaterSourceDevice device;
 
     private Date dateCreated;
@@ -40,7 +42,7 @@ public class Inspection {
         return this.id;
     }
 
-    public void addComments(String comments) {
+    public void setComments(String comments) {
         this.comments = comments;
     }
 
@@ -55,4 +57,10 @@ public class Inspection {
     public String getStatus() {
         return this.status;
     }
+
+    public Date getDateCreated() { return  this.dateCreated; }
+
+    public Date getDateDue() { return this.dateDue; }
+
+    public void setDateDue(Date dateDue) { this.dateDue = dateDue; }
 }
