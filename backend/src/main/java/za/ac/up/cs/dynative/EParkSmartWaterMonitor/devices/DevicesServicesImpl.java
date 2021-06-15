@@ -74,13 +74,17 @@ public class DevicesServicesImpl implements DevicesService {
 
     }
 
-    public Optional<WaterSourceDevice> findDevice() {
+    public FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest)
+    {
 
-        Optional<WaterSourceDevice> device = waterSourceDeviceRepo.findById(UUID.randomUUID());
-        if (device.isPresent()) {
-            device.get().getDeviceName();
+        Optional<WaterSourceDevice> device = waterSourceDeviceRepo.findById(findDeviceRequest.getDeviceID());
+        if (device.isPresent())
+        {
+            return new FindDeviceResponse("Device found",true,device.get());
         }
-        return waterSourceDeviceRepo.findById(UUID.randomUUID());
+        else
+            return new FindDeviceResponse("Device not found",false,null);
+
     }
 
     @Override

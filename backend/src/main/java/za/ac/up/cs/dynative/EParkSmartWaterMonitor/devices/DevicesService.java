@@ -8,12 +8,13 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.EditParkRequest
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface DevicesService {
     ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request);
     AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest);
     Collection<WaterSourceDevice> getAll();
-    Optional<WaterSourceDevice> findDevice();
+    FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest);
     GetNumDevicesResponse getNumDevices(GetNumDevicesRequest getNumDevicesRequest);
     GetParkDevicesResponse getParkDevices(GetParkDevicesRequest getParkDevicesRequest);
      EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest);
