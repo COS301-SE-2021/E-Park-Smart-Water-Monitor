@@ -1,5 +1,6 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
@@ -8,7 +9,10 @@ import java.util.UUID;
 public class AddInspectionRequest {
 
     private UUID deviceId;
+
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Africa/Harare")
     private Date dateDue;
+
     private String description;
 
     public AddInspectionRequest(@JsonProperty("deviceId") UUID deviceId,
