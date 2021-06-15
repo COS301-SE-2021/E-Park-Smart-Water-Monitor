@@ -1,4 +1,5 @@
 import React,{useState} from "react";
+import {Button, Form} from 'react-bootstrap';
 
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -16,32 +17,25 @@ const AddDeviceBody = () => {
 
     return (
         <>
-            <div>
-                <br/>
-                <label id="name" for="Name">Name</label>
-                <br/>
-                <input type="text" name="Name" />
-                <br/>
-            </div>
+            <Form>
+                <Form.Group controlId="formBasicEmail">
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control type="text" placeholder="Enter device name" />
+                    {/*<Form.Text className="text-muted">*/}
+                    {/*    We'll never share your email with anyone else.*/}
+                    {/*</Form.Text>*/}
+                </Form.Group>
 
-            <br/><br/>
-            <label id="roleLabel" >Park</label><br/>
-            <select  id="parks" name="Parks"  >
-                <option value="rietvlei">Riet Vlei</option>
-            </select>
-            <br/><br/>
+                <Form.Group controlId="formBasicPassword">
+                    <Form.Label>Park</Form.Label>
+                    <Form.Control type="text" placeholder="Park" />
+                </Form.Group>
 
-            {/*<div>*/}
-            {/*    <br/>*/}
-            {/*    <label id="lat" htmlFor="Latitude">Latitude</label>*/}
-            {/*    <br/>*/}
-            {/*    <input type="text" name="latitude"/>*/}
-            {/*    <br/><br/><br/>*/}
-            {/*    <label id="long" htmlFor="Longitude">Longitude</label>*/}
-            {/*    <br/>*/}
-            {/*    <input type="text" name="longitude"/>*/}
-            {/*</div>*/}
-            <br/><br/><br/>
+
+                <Button background-color="primary" variant="primary" type="submit">
+                    Submit
+                </Button>
+            </Form>
         </>
     );
 };
