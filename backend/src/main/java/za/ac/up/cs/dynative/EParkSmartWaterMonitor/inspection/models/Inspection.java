@@ -15,6 +15,8 @@ public class Inspection {
     @Relationship(type = "PERFORMED_ON", direction = Relationship.Direction.OUTGOING)
     private WaterSourceDevice device;
 
+    private UUID waterSiteId;
+
     private Date dateCreated;
 
     private Date dateDue;
@@ -27,10 +29,12 @@ public class Inspection {
 
     public Inspection(
             WaterSourceDevice device,
+            UUID waterSiteId,
             Date dateDue,
             String description) {
         this.id = UUID.randomUUID();
         this.device = device;
+        this.waterSiteId = waterSiteId;
         this.dateCreated = new Date();
         this.dateDue = dateDue;
         this.description = description;

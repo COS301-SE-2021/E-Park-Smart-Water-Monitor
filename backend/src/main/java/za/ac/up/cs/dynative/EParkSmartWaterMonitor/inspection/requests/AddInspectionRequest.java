@@ -10,15 +10,19 @@ public class AddInspectionRequest {
 
     private UUID deviceId;
 
+    private UUID waterSiteId;
+
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Africa/Harare")
     private Date dateDue;
 
     private String description;
 
     public AddInspectionRequest(@JsonProperty("deviceId") UUID deviceId,
+                                @JsonProperty("siteId") UUID waterSiteId,
                                 @JsonProperty("dateDue") Date dateDue,
                                 @JsonProperty("description") String description) {
         this.deviceId = deviceId;
+        this.waterSiteId = waterSiteId;
         this.dateDue = dateDue;
         this.description = description;
     }
@@ -26,6 +30,14 @@ public class AddInspectionRequest {
     public UUID getDeviceId() { return deviceId; }
 
     public void setDeviceId(UUID deviceId) { this.deviceId = deviceId; }
+
+    public UUID getWaterSiteId() {
+        return waterSiteId;
+    }
+
+    public void setWaterSiteId(UUID waterSiteId) {
+        this.waterSiteId = waterSiteId;
+    }
 
     public Date getDateDue() { return dateDue; }
 
