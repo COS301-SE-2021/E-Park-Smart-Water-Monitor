@@ -52,7 +52,7 @@ var routes = [
     layout: "/dashboard",
   },
   {
-    path: "/login",
+    path: "/index",
     name: "Login",
     icon: VpnKey,
     iconColor: "Info",

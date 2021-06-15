@@ -53,48 +53,51 @@ export default function NavbarDropdown() {
       >
         Welcome!
       </Typography>
-      <Box
-        display="flex!important"
-        alignItems="center!important"
-        component={MenuItem}
-        onClick={handleMenuClose}
-      >
-        <Box
-          component={Person}
-          width="1.25rem!important"
-          height="1.25rem!important"
-          marginRight="1rem"
-        />
-        <span>My profile</span>
-      </Box>
-      <Box
-        display="flex!important"
-        alignItems="center!important"
-        component={MenuItem}
-        onClick={handleMenuClose}
-      >
-        <Box
-          component={Settings}
-          width="1.25rem!important"
-          height="1.25rem!important"
-          marginRight="1rem"
-        />
-        <span>Settings</span>
-      </Box>
-      <Box
-        display="flex!important"
-        alignItems="center!important"
-        component={MenuItem}
-        onClick={handleMenuClose}
-      >
-        <Box
-          component={EventNote}
-          width="1.25rem!important"
-          height="1.25rem!important"
-          marginRight="1rem"
-        />
-        <span>Activity</span>
-      </Box>
+      {/*<Box*/}
+      {/*  display="flex!important"*/}
+      {/*  alignItems="center!important"*/}
+      {/*  component={MenuItem}*/}
+      {/*  onClick={handleMenuClose}*/}
+      {/*>*/}
+      {/*  <Box*/}
+      {/*    component={Person}*/}
+      {/*    width="1.25rem!important"*/}
+      {/*    height="1.25rem!important"*/}
+      {/*    marginRight="1rem"*/}
+      {/*  />*/}
+      {/*  <span>My profile</span>*/}
+      {/*</Box>*/}
+      {/*<Box*/}
+      {/*  display="flex!important"*/}
+      {/*  alignItems="center!important"*/}
+      {/*  component={MenuItem}*/}
+      {/*  onClick={handleMenuClose}*/}
+      {/*>*/}
+      {/*  <Box*/}
+      {/*    component={Settings}*/}
+      {/*    width="1.25rem!important"*/}
+      {/*    height="1.25rem!important"*/}
+      {/*    marginRight="1rem"*/}
+      {/*  />*/}
+      {/*  <span>Settings</span>*/}
+      {/*</Box>*/}
+      {/*<Box*/}
+      {/*  display="flex!important"*/}
+      {/*  alignItems="center!important"*/}
+      {/*  component={MenuItem}*/}
+      {/*  onClick={handleMenuClose}*/}
+      {/*>*/}
+      {/*  <Box*/}
+      {/*    component={EventNote}*/}
+      {/*    width="1.25rem!important"*/}
+      {/*    height="1.25rem!important"*/}
+      {/*    marginRight="1rem"*/}
+      {/*  />*/}
+      {/*  <span>Activity</span>*/}
+      {/*</Box>*/}
+
+
+      {/*ADMIN*/}
       <Box
         display="flex!important"
         alignItems="center!important"
