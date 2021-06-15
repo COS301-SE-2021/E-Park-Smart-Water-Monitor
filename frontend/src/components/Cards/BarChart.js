@@ -21,6 +21,7 @@ function BarChart() {
   const classes = useStyles();
   const theme = useTheme();
 
+  
 
   return (
     <>

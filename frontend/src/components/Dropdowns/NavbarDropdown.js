@@ -143,7 +143,7 @@ export default function NavbarDropdown() {
       >
         <Avatar
           alt="..."
-          src={require("assets/img/theme/team-4-800x800.jpg").default}
+          src={require("assets/img/icons/common/empty-profile.png").default}
           classes={{
             root: classes.avatarRoot,
           }}

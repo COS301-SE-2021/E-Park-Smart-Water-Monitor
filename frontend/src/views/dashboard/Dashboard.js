@@ -104,7 +104,6 @@ function Dashboard() {
 
   return (
     <>
-
       <Header />
       {/* Page content */}
       <Container
@@ -180,24 +179,13 @@ function Dashboard() {
           <Grid
               item
               xs={12}
-              xl={4}
+              xl={8}
               component={Box}
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
             <BarChart></BarChart>
           </Grid>
-          <Grid
-              item
-              xs={12}
-              xl={4}
-              component={Box}
-              marginBottom="3rem!important"
-              classes={{ root: classes.gridItemRoot }}
-          >
-            <BarChart></BarChart>
-          </Grid>
-
         </Grid>
 
       </Container>
