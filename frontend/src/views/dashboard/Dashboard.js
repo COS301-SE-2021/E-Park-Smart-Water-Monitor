@@ -92,7 +92,13 @@ function Dashboard() {
 
 
     // get the device from the monolith of devices to render the specific details
-    setDevice(null)
+    for(let i =0; i<devices.length;i++)
+    {
+      if(devices[i].deviceId == device_id)
+      {
+        setDevice(devices[i])
+      }
+    }
 
   }
 
