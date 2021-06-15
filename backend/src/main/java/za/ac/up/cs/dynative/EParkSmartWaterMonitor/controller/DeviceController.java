@@ -60,7 +60,7 @@ public class DeviceController {
     }
 
     @GetMapping("/getById")
-    public Optional<WaterSourceDevice> getDeviceById() {
-        return devicesService.findDevice();
+    public ResponseEntity<Object> getDeviceById(@RequestBody FindDeviceRequest findDeviceRequest) {
+        return new ResponseEntity<>(devicesService.findDevice(findDeviceRequest),HttpStatus.OK);
     }
 }
