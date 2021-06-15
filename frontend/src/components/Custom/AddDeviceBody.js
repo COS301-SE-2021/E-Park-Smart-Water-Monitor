@@ -31,16 +31,16 @@ const AddDeviceBody = () => {
             </select>
             <br/><br/>
 
-            <div>
-                <br/>
-                <label id="lat" htmlFor="Latitude">Latitude</label>
-                <br/>
-                <input type="text" name="latitude"/>
-                <br/><br/><br/>
-                <label id="long" htmlFor="Longitude">Longitude</label>
-                <br/>
-                <input type="text" name="longitude"/>
-            </div>
+            {/*<div>*/}
+            {/*    <br/>*/}
+            {/*    <label id="lat" htmlFor="Latitude">Latitude</label>*/}
+            {/*    <br/>*/}
+            {/*    <input type="text" name="latitude"/>*/}
+            {/*    <br/><br/><br/>*/}
+            {/*    <label id="long" htmlFor="Longitude">Longitude</label>*/}
+            {/*    <br/>*/}
+            {/*    <input type="text" name="longitude"/>*/}
+            {/*</div>*/}
             <br/><br/><br/>
         </>
     );
