@@ -3,6 +3,6 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.*;
 
 public interface InspectionService {
-    CreateInspectionResponse createInspection(CreateInspectionRequest request);
-    GetInspectionsResponse getInspections(GetInspectionsRequest request);
+    public AddInspectionResponse addInspection(AddInspectionRequest request);
+    public GetInspectionsResponse getInspections(GetInspectionsRequest request);
 }
