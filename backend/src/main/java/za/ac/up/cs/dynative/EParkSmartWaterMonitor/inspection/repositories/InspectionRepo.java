@@ -10,6 +10,6 @@ import java.util.UUID;
 @Repository("InspectionRepo")
 public interface InspectionRepo extends Neo4jRepository<Inspection, UUID> {
 
-    List<Inspection> findInspectionByDeviceId(UUID id);
+//    List<Inspection> findInspectionByDeviceId(UUID id);
     Inspection findInspectionById(UUID id);
 }
