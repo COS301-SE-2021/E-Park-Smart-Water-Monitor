@@ -9,14 +9,17 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameR
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.SaveParkResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.WaterSiteRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.SaveSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AddSiteResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.SaveSiteResponse;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -101,6 +104,17 @@ public class WaterSiteServicesImpl implements WaterSiteService
 
         }
         return response;
+    }
+
+    @Override
+    public SaveSiteResponse saveSite(SaveSiteRequest request) {
+        if (request.getSite() != null) {
+            waterSiteRepo.save(request.getSite());
+            return new SaveSiteResponse("Saved park successfully",true);
+        }
+        else {
+            return new SaveSiteResponse("Error in saving park!",false);
+        }
     }
 
 }
