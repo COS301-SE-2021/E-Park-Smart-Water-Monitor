@@ -50,25 +50,7 @@ const AddUserBody = () => {
     const logParkChange = () =>{
         "par change"
     }
-
-    // const addUser = () => {
-    //     axios.post('http://localhost:8080/api/park/getParkWaterSites', {
-    //         parkId: "b026bea2-17a4-4939-bbbb-80916d8cf44e",
-    //         idNumber: "9871233577123",
-    //         email: "dynative@gmail.com",
-    //         password: "dynative",
-    //         name: "team",
-    //         surname: "dynative",
-    //         username: "ETOSHA-ENGINEER",
-    //         role: "FIELD_ENGINEER",
-    //         cellNumber: "0125643466"
-    //     }).then((res)=>{
-    //         if(res)
-    //         {
-    //
-    //         }
-    //     });
-    // }
+    
 
     const onFormSubmit = e => {
         e.preventDefault()
@@ -76,7 +58,22 @@ const AddUserBody = () => {
             formDataObj = Object.fromEntries(formData.entries())
         console.log(formDataObj)
 
-        
+            axios.post('http://localhost:8080/api/park/getParkWaterSites', {
+                parkId: "b026bea2-17a4-4939-bbbb-80916d8cf44e",
+                idNumber: "9871233577123",
+                email: "dynative@gmail.com",
+                password: "dynative",
+                name: "team",
+                surname: "dynative",
+                username: "ETOSHA-ENGINEER",
+                role: "FIELD_ENGINEER",
+                cellNumber: "0125643466"
+            }).then((res)=>{
+                if(res)
+                {
+
+                }
+            });
     }
 
     return (
