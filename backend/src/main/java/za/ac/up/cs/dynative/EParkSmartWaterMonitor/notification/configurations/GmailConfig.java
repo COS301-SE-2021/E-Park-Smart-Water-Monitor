@@ -13,7 +13,7 @@ public class GmailConfig {
 
     @Value("${spring.mail.password}")
     String password;
-    @Value("${spring.mail.password}")
+    @Value("${spring.mail.username}")
     String senderUsername;
 
     @Bean("gmail")
@@ -22,7 +22,7 @@ public class GmailConfig {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("epark.communications@gmail.com");
+        mailSender.setUsername(senderUsername);
         mailSender.setPassword(password);
 
         Properties props = mailSender.getJavaMailProperties();

@@ -1,10 +1,11 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
 
 import java.util.ArrayList;
 
-public class EMailRequest
+public class EmailRequest
 {
     private String from ;
     private String subject  ;
@@ -14,12 +15,13 @@ public class EMailRequest
     private String body ;
     private Topic topic;
 
-    public EMailRequest(String from,
-                        String subject,
-                        ArrayList<String> toAddresses,
-                        ArrayList<String> ccAddresses,
-                        ArrayList<String> bccAddresses,
-                        String body, Topic topic)
+    public EmailRequest(@JsonProperty("from") String from,
+                        @JsonProperty("subject")String subject,
+                        @JsonProperty("toAddresses")ArrayList<String> toAddresses,
+                        @JsonProperty("ccAddresses")ArrayList<String> ccAddresses,
+                        @JsonProperty("bccAddresses")ArrayList<String> bccAddresses,
+                        @JsonProperty("body")String body,
+                        @JsonProperty("topic")Topic topic)
     {
         this.from = from;
         this.subject = subject;
