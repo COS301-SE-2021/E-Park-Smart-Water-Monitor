@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import componentStyles from "assets/theme/views/admin/admin";
 import "../../views/admin/modals/addDevice.css";
-
+// import AdminModal from 'admin-modal.js'
 
 
 

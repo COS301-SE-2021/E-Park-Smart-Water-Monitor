@@ -30,17 +30,6 @@ const Modal = props => {
                         <h3 className="modal-title">{props.title}</h3>
                     </div>
                     <div className="modal-body">{props.children}</div>
-                    {/*<div className="modal-footer">*/}
-                    {/*    <Button onClick={props.onClose}*/}
-                    {/*            className="button"*/}
-                    {/*            variant="contained"*/}
-                    {/*            color="primary"*/}
-                    {/*            size="medium"*/}
-                    {/*            style={{textAlign:'center'}}*/}
-                    {/*            >*/}
-                    {/*        Done*/}
-                    {/*    </Button>*/}
-                    {/*</div>*/}
                 </div>
             </div>
         </CSSTransition>,
