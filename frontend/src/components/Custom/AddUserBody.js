@@ -24,6 +24,7 @@ const AddUserBody = () => {
     const classes = useStyles();
     const theme = useTheme();
     const [parks, setParks] = useState([]);
+    const [roles, setRoles] = useState([]);
 
 
     // get park options on load
