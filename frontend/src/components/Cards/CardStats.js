@@ -97,7 +97,6 @@ CardStats.defaultProps = {
 
 CardStats.propTypes = {
   subtitle: PropTypes.string,
-  title: PropTypes.string,
   footer: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   icon: PropTypes.oneOfType([
     // i.e. an icon name from Nucleo Icons - e.g. ni ni-atom
