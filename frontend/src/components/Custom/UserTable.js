@@ -202,7 +202,7 @@ const UserTable = () => {
                     </Grid>
                     <Grid
                         item
-                        xs={10}
+                        xs={6}
                         xl={10}
                         component={Box}
                         marginBottom="3rem!important"
@@ -211,7 +211,7 @@ const UserTable = () => {
                     </Grid>
                     <Grid
                         item
-                        xs={2}
+                        xs={6}
                         xl={2}
                         component={Box}
                         marginBottom="3rem!important"
