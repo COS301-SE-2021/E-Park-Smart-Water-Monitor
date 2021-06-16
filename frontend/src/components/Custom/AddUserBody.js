@@ -143,6 +143,11 @@ const AddUserBody = () => {
                         <Select className="mb-3" name="park" value="one" options={ parks } onChange={logParkChange}/>
                     </Col>
                 </Row>
+                <Row>
+                    <Col>
+                        <Select className="mb-3" name="role" value="one" options={ roles } />
+                    </Col>
+                </Row>
 
                 <Row>
                     <Col>
