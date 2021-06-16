@@ -50,24 +50,24 @@ const AddUserBody = () => {
     const logParkChange = () =>{
         "par change"
     }
-    
+
 
     const onFormSubmit = e => {
         e.preventDefault()
         const formData = new FormData(e.target),
-            formDataObj = Object.fromEntries(formData.entries())
-        console.log(formDataObj)
+            form = Object.fromEntries(formData.entries())
+        console.log(form)
 
             axios.post('http://localhost:8080/api/park/getParkWaterSites', {
                 parkId: "b026bea2-17a4-4939-bbbb-80916d8cf44e",
-                idNumber: "9871233577123",
-                email: "dynative@gmail.com",
-                password: "dynative",
-                name: "team",
-                surname: "dynative",
-                username: "ETOSHA-ENGINEER",
+                idNumber: form.id_number,
+                email: form.email,
+                password: form.password,
+                name: form.first_name,
+                surname: form.surname,
+                username: form.username,
                 role: "FIELD_ENGINEER",
-                cellNumber: "0125643466"
+                cellNumber: form.cell_number
             }).then((res)=>{
                 if(res)
                 {
