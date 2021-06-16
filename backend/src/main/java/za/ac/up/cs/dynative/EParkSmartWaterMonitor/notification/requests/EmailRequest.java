@@ -13,6 +13,8 @@ public class EmailRequest
     private ArrayList<String> ccAddresses   ;
     private ArrayList<String> bccAddresses  ;
     private String body ;
+    private String description ;
+    private String entity ;
     private Topic topic;
 
     public EmailRequest(@JsonProperty("from") String from,
@@ -20,8 +22,13 @@ public class EmailRequest
                         @JsonProperty("toAddresses")ArrayList<String> toAddresses,
                         @JsonProperty("ccAddresses")ArrayList<String> ccAddresses,
                         @JsonProperty("bccAddresses")ArrayList<String> bccAddresses,
+                        @JsonProperty("topic")Topic topic,
+                        @JsonProperty("entity")String entity,
                         @JsonProperty("body")String body,
-                        @JsonProperty("topic")Topic topic)
+                        @JsonProperty("description")String description
+
+
+    )
     {
         this.from = from;
         this.subject = subject;
@@ -29,7 +36,9 @@ public class EmailRequest
         this.ccAddresses = ccAddresses;
         this.bccAddresses = bccAddresses;
         this.body = body;
+        this.description = description;
         this.topic = topic;
+        this.entity=entity;
     }
 
     public String getFrom() {
@@ -86,5 +95,21 @@ public class EmailRequest
 
     public void setTopic(Topic topic) {
         this.topic = topic;
+    }
+
+    public String getEntity() {
+        return entity;
+    }
+
+    public void setEntity(String entity) {
+        this.entity = entity;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
