@@ -19,7 +19,7 @@ import "../../index.css"
 
 const useStyles = makeStyles(componentStyles);
 
-function DeviceTable(props) {
+function InspectionTable(props) {
   const classes = useStyles();
   const [response, setResponse] = useState(null)
 
@@ -155,4 +155,4 @@ function DeviceTable(props) {
   );
 }
 
-export default DeviceTable;
+export default InspectionTable;

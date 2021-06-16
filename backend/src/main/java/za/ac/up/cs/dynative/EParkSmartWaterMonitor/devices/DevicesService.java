@@ -17,5 +17,6 @@ public interface DevicesService {
     FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest);
     GetNumDevicesResponse getNumDevices(GetNumDevicesRequest getNumDevicesRequest);
     GetParkDevicesResponse getParkDevices(GetParkDevicesRequest getParkDevicesRequest);
-     EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest);
+    EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest);
+    GetDeviceDataResponse getDeviceData(GetDeviceDataRequest getDeviceDataRequest);
 }

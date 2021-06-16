@@ -15,14 +15,13 @@ import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
 
 import {
-    chartExample1,
+    // chartExample1,
     // chartOptions,
     // parseOptions,
     // chartExample2,
 } from "variables/charts.js";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -30,13 +29,13 @@ const useStyles = makeStyles(componentStyles);
 function LineChart() {
   const classes = useStyles();
   const theme = useTheme();
-  const [activeNav, setActiveNav] = React.useState(1);
-  const [chartExample1Data, setChartExample1Data] = React.useState("data1");
+  // const [activeNav, setActiveNav] = React.useState(1);
+  // const [chartExample1Data, setChartExample1Data] = React.useState("data1");
 
-  const toggleNavs = (index) => {
-    setActiveNav(index);
-    setChartExample1Data("data" + index);
-  };
+  // const toggleNavs = (index) => {
+  //   setActiveNav(index);
+  //   setChartExample1Data("data" + index);
+  // };
 
     // console.log("chartExample1Data: "+ chartExample1[chartExample1Data])
     // chart data structure

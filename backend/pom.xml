@@ -26,6 +26,32 @@
 		<!--			<artifactId>spring-boot-starter-data-rest</artifactId>-->
 		<!--		</dependency>-->
 		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20210307</version>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>iot</artifactId>
+			<version>2.16.82</version>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>iotdataplane</artifactId>
+			<version>2.16.82</version>
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>aws-sdk-java</artifactId>
+			<version>2.16.82</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-dynamodb</artifactId>
+			<version>1.12.6</version>
+		</dependency>
+		<dependency>
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j-ogm-bolt-driver</artifactId>
 			<version>2.1.1</version>
@@ -96,7 +122,13 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.3.1</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>dynamodb</artifactId>
+            <version>2.16.82</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

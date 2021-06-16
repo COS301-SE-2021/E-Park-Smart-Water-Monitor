@@ -104,7 +104,7 @@ public class WaterSiteUnitTest extends UnitTestBaseClass {
         String deviceModel = "ESP32";
         double longitude = 10.20;
         double latitude = 30.40;
-        WaterSourceDevice waterSourceDevice = new WaterSourceDevice(deviceName, deviceModel, longitude, latitude);
+        WaterSourceDevice waterSourceDevice = new WaterSourceDevice(UUID.randomUUID(), deviceName, deviceModel, longitude, latitude);
 
 
         AttachWaterSourceDeviceRequest request = new AttachWaterSourceDeviceRequest(siteId, waterSourceDevice);

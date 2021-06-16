@@ -103,6 +103,19 @@ public class DeviceData {
         this.lifeTime = lifeTime;
     }
 
+    @Override
+    public String toString() {
+        return "\"DeviceData\":{" +
+                "\"longitude\":" + "\"" +longitude + "\"" +
+                ", \"latitude\":" + "\"" +latitude + "\"" +
+                ", \"battery\":" + "\"" +battery + "\"" +
+                ", \"deviceStatus\":" + "\"" +deviceStatus + "\"" +
+                ", \"upTime\":" + "\"" +upTime + "\"" +
+                ", \"lifeTime\":" + "\"" +lifeTime + "\"" +
+                ", \"deviceConfiguration\":[" + deviceConfiguration.toString().replaceAll("\\[","").replaceAll("]","") + "]}" +
+                '}';
+    }
+
     public enum DeviceStatus {
         FINE, DIRE, NEEDS_ATTENTION
     }

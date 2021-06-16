@@ -54,6 +54,7 @@ public class DeviceController {
     public ResponseEntity<Object> getNumDevices(@RequestBody GetParkDevicesRequest getParkDevicesRequest) {
         return new ResponseEntity<>(devicesService.getParkDevices(getParkDevicesRequest),HttpStatus.OK);
     }
+
     @PutMapping("/editDevice")
     public ResponseEntity<Object> editDevice(@RequestBody EditDeviceRequest editDeviceRequest ) {
         return new ResponseEntity<>(devicesService.editDevice(editDeviceRequest),HttpStatus.OK);
@@ -62,5 +63,10 @@ public class DeviceController {
     @GetMapping("/getById")
     public ResponseEntity<Object> getDeviceById(@RequestBody FindDeviceRequest findDeviceRequest) {
         return new ResponseEntity<>(devicesService.findDevice(findDeviceRequest),HttpStatus.OK);
+    }
+
+    @PostMapping("/getDeviceData")
+    public ResponseEntity<Object> getDeviceData(@RequestBody GetDeviceDataRequest getDeviceDataRequest) {
+        return new ResponseEntity<>(devicesService.getDeviceData(getDeviceDataRequest),HttpStatus.OK);
     }
 }
