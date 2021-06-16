@@ -1,5 +1,12 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.document.*;
+import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
+import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.SdkBytes;
@@ -41,6 +48,8 @@ public class DevicesServicesImpl implements DevicesService {
     private MeasurementRepo measurementRepo;
     private IotClient iotClient;
     private IotDataPlaneClient iotDataPlaneClient;
+    private AmazonDynamoDB dynamoDBClient;
+    private DynamoDB dynamoDB;
 
     public DevicesServicesImpl(@Qualifier("WaterSourceDeviceRepo") WaterSourceDeviceRepo waterSourceDeviceRepo,
                                @Qualifier("InfrastructureDeviceRepo") InfrastructureDeviceRepo infrastructureDeviceRepo,
@@ -54,6 +63,8 @@ public class DevicesServicesImpl implements DevicesService {
         this.waterSiteService = waterSiteService;
         this.iotClient = IotClient.builder().region(Region.US_EAST_2).build();
         this.iotDataPlaneClient = IotDataPlaneClient.builder().region(Region.US_EAST_2).build();
+        this.dynamoDBClient = AmazonDynamoDBClient.builder().withRegion(String.valueOf(Region.US_EAST_2)).build();
+        this.dynamoDB = new DynamoDB(dynamoDBClient);
     }
 
     public Collection<WaterSourceDevice> getAll() {
@@ -287,5 +298,48 @@ public class DevicesServicesImpl implements DevicesService {
             return response;
         }
 
+    }
+
+    @Override
+    public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request) {
+        GetDeviceDataResponse response =  new GetDeviceDataResponse("Failed to load device data for device: " + request.getDeviceName(),false);
+        GetDeviceInnerResponse innerResponse;
+
+        if (waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName()).size() > 0) {
+            Table waterSourceDataTable = dynamoDB.getTable("WaterSourceData");
+
+            QuerySpec spec = new QuerySpec()
+                    .withKeyConditionExpression("deviceName = :id")
+                    .withValueMap(new ValueMap()
+                            .withString(":id",request.getDeviceName()));
+
+            ItemCollection<QueryOutcome> items = waterSourceDataTable.query(spec);
+
+            Iterator<Item> iterator = items.iterator();
+            Item item;
+            int counter = 0;
+
+            while (iterator.hasNext() && counter < request.getNumResults()) {
+                item = iterator.next();
+                counter++;
+
+                ObjectMapper mapper = new ObjectMapper();
+                try {
+                    innerResponse = mapper.readValue(item.getJSONPretty("WaterSourceData"),GetDeviceInnerResponse.class);
+                    innerResponse.setStatus("Success");
+                    innerResponse.setSuccess(true);
+                    response.addInnerResponse(innerResponse);
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (response.getInnerResponses().size() > 0) {
+                response.setSuccess(true);
+                response.setDeviceName(request.getDeviceName());
+                response.setStatus("Successfully retrieved data for device: " + response.getDeviceName());
+            }
+        }
+
+        return response;
     }
 }
