@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -23,17 +23,35 @@ const useStyles = makeStyles(componentStyles);
 const AddUserBody = () => {
     const classes = useStyles();
     const theme = useTheme();
+    const [parks, setParks] = useState([]);
 
-    let parkOptions = [
-        { value: 'one', label: 'One' },
-        { value: 'two', label: 'Two' }
-    ];
 
-    const logChange = () =>{
-        "heyo"
+    // get park options on load
+    useEffect(() => {
+        // axios for getting the parks
+        axios.post('http://localhost:8080/api/park/getAllParks').then((res)=>{
+
+            let parkOptions = [
+                { value: 'one', label: 'One' },
+                { value: 'two', label: 'Two' }
+            ];
+            let parkNames = res.data.map((item)=>{
+                return item.parkName;
+            })
+
+            console.log("park names: "+JSON.stringify(parkNames))
+
+            setParks(res.data)
+        });
+    }, [])
+
+
+
+    const logParkChange = () =>{
+        "par change"
     }
 
-    const handleSubmit = () => {
+    const addUser = () => {
         axios.post('http://localhost:8080/api/park/getParkWaterSites', {
             parkId: "b026bea2-17a4-4939-bbbb-80916d8cf44e",
             idNumber: "9871233577123",
@@ -116,22 +134,17 @@ const AddUserBody = () => {
                 </Row>
                 <Row>
                     <Col>
-                        {/*<div key={`default`} className="mb-3">*/}
-                        {/*    <Form.Label>Park</Form.Label>*/}
-                        {/*    <Form.Check*/}
-                        {/*        type={'radio'}*/}
-                        {/*        id={``}*/}
-                        {/*        label={`default `}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
-                        <Select name="form-field-name" value="one" options={parkOptions} onChange={logChange}/>
+                        <Select className="mb-3" name="select-park" value="one" options={ parks } onChange={logParkChange}/>
                     </Col>
                 </Row>
 
-
-                <Button variant="primary" type="submit"  onClick={handleSubmit}>
-                    Submit
-                </Button>
+                <Row>
+                    <Col>
+                        <Button variant="primary" type="submit"  onClick={addUser}>
+                            Add User
+                        </Button>
+                    </Col>
+                </Row>
             </Form>
         </>
     );

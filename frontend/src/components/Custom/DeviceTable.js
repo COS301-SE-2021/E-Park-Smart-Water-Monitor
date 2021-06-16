@@ -153,7 +153,7 @@ const DeviceTable = () => {
                     </Grid>
                     <Grid
                           item
-                          justify="end"
+                          // justify="end"
                           xs={2}
                           xl={2}
                           component={Box}

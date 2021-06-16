@@ -18,6 +18,7 @@ import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
 import Modal from "../../views/admin/modals/Modal";
 import AddUserBody from "./AddUserBody";
+import axios from "axios";
 // import disableScroll from 'disable-scroll';
 
 // import AdminModal from 'admin-modal'
@@ -29,6 +30,7 @@ const UserTable = () => {
     const classes = useStyles();
     const theme = useTheme();
     const [show, setShow] = useState(false);
+    const [result, setResult] = useState(false);
 
     // useEffect(() => {
     //     if (show == true) disableScroll.on()
@@ -209,7 +211,6 @@ const UserTable = () => {
                     </Grid>
                     <Grid
                         item
-                        justify="end"
                         xs={2}
                         xl={2}
                         component={Box}
