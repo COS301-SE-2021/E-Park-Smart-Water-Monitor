@@ -8,4 +8,5 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.responses.SMSRes
 public interface NotificationService {
     public EmailResponse sendMail(EmailRequest eMailRequest);
     public SMSResponse sendSMS(SMSRequest smsRequest);
+    public void sendSMS();
 }

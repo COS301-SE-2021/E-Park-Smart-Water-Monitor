@@ -1,5 +1,6 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
 
@@ -17,6 +18,7 @@ public class EmailRequest
     private String entity ;
     private Topic topic;
 
+    @JsonCreator
     public EmailRequest(@JsonProperty("from") String from,
                         @JsonProperty("subject")String subject,
                         @JsonProperty("toAddresses")ArrayList<String> toAddresses,

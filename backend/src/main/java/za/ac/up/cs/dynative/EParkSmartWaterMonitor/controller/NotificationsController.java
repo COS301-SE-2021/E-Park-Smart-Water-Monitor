@@ -32,4 +32,12 @@ public class NotificationsController
         return new ResponseEntity<>(notificationService.sendMail(eMailRequest), HttpStatus.OK);
     }
 
+    @GetMapping("/sms")
+    public void sendMail() //TODO
+    {
+//        return userService.findUserByUserName("RotLan");
+        notificationService.sendSMS();
+
+    }
+
 }

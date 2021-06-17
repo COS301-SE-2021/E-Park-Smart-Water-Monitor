@@ -1,5 +1,8 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification;
 
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.rest.api.v2010.account.MessageCreator;
+import com.twilio.type.PhoneNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,16 +12,21 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.configurations.TwilioConfig;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.SMSRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.responses.EmailResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.responses.SMSResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.UserService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service("NotificationServiceImpl")
 public class NotificationServiceImpl implements NotificationService
@@ -29,6 +37,14 @@ public class NotificationServiceImpl implements NotificationService
     @Autowired
     private FreeMarkerConfigurer freemarkerConfig;
     private String templateSelector;
+    private final TwilioConfig twilioConfig;
+    private  UserService userService;
+
+    @Autowired
+    public NotificationServiceImpl(TwilioConfig twilioConfig,@Qualifier("UserService")UserService userService) {
+        this.twilioConfig = twilioConfig;
+        this.userService = userService;
+    }
 
     @Value("${spring.mail.username}")
     String senderUsername;
@@ -93,6 +109,67 @@ public class NotificationServiceImpl implements NotificationService
 
     @Override
     public SMSResponse sendSMS(SMSRequest smsRequest) {
-        return null;
+
+        ArrayList<User> recipients = smsRequest.getRecipients();
+        if (recipients==null)  //TODO waiting on other branch
+        {
+//            userService
+
+
+        }
+
+        ArrayList<String>  smsErrors = new ArrayList<>();
+
+        Pattern pattern = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");
+        Matcher matcher = pattern.matcher("+111 (202) 555-0125");
+
+        for (int i = 0; i < recipients.size(); i++)
+        {
+            matcher = pattern.matcher(recipients.get(i).getCellNumber());
+            if (!matcher.matches())
+            {
+                smsErrors.add(recipients.get(i).getUsername());
+            }
+
+        }
+        if (smsErrors.size()!=0)
+        {
+            String users ="";
+
+            for (int i = 0; i < smsErrors.size(); i++)
+            {
+                users += smsErrors.get(i);
+                if(i!=smsErrors.size()-1)
+                users+=",";
+            }
+            throw new IllegalArgumentException("The following users have invalid phone numbers: " +users +". Please correct and try again.");
+        }
+        else {
+
+            PhoneNumber from = new PhoneNumber(twilioConfig.getNumber());
+            MessageCreator messageCreator;
+            PhoneNumber to;
+
+            for (int i = 0; i < recipients.size(); i++) {
+                to = new PhoneNumber("+270798936963");
+                messageCreator = Message.creator(to, from,"E-Park System: \nHi "+recipients.get(i).getName()+", \n" +smsRequest.getMessage());
+                messageCreator.create();
+            }
+            return new SMSResponse("Messages sent successfully",true);
+        }
+
+    }
+
+
+    @Override
+    public void sendSMS() {
+
+
+        PhoneNumber to = new PhoneNumber("+270798936963");
+        PhoneNumber from = new PhoneNumber(twilioConfig.getNumber());
+        String message = "Hey \nHazit ? :3 ";
+        MessageCreator messageCreator = Message.creator(to,from,message);
+        messageCreator.create();
+
     }
 }
