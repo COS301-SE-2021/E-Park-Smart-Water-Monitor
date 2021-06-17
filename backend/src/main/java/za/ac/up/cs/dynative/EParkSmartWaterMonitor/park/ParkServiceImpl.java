@@ -93,13 +93,17 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public FindByParkIdResponse findByParkId(FindByParkIdRequest request) {
+    public FindByParkIdResponse findByParkId(FindByParkIdRequest request) throws InvalidRequestException {
         FindByParkIdResponse response = new FindByParkIdResponse();
         if (request.getParkId() != null) {
             Park park = parkRepo.findParkById(request.getParkId());
             if (park != null) {
                 response.setStatus(park);
+            }else{
+                throw new InvalidRequestException("Park not present");
             }
+        }else{
+            throw new InvalidRequestException("No park id specified");
         }
         return response;
     }

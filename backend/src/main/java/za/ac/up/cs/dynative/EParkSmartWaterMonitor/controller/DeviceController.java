@@ -9,6 +9,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.EditDeviceResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +47,7 @@ public class DeviceController {
     }
 
     @PostMapping("/getNumDevices")
-    public ResponseEntity<Object> getNumDevices(@RequestBody GetNumDevicesRequest getNumDevicesRequest) {
+    public ResponseEntity<Object> getNumDevices(@RequestBody GetNumDevicesRequest getNumDevicesRequest) throws InvalidRequestException {
         return new ResponseEntity<>(devicesService.getNumDevices(getNumDevicesRequest),HttpStatus.OK);
     }
 

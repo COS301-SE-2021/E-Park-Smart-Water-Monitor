@@ -3,6 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
@@ -39,7 +40,7 @@ public class WaterSiteServicesImpl implements WaterSiteService
     }
 
     @Override
-    public AddSiteResponse addSite(AddSiteRequest request) {
+    public AddSiteResponse addSite(AddSiteRequest request) throws InvalidRequestException {
         AddSiteResponse response = new AddSiteResponse();
 
         if (request.getParkId() != null) {

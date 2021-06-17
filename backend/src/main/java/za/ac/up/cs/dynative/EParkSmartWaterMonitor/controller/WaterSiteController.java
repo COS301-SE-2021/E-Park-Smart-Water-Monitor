@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.Site;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
@@ -25,7 +26,7 @@ public class WaterSiteController {
     }
 
     @PostMapping("/addSite")
-    public ResponseEntity<Object> addSite(@RequestBody AddSiteRequest addSiteRequest) {
+    public ResponseEntity<Object> addSite(@RequestBody AddSiteRequest addSiteRequest) throws InvalidRequestException {
         return new ResponseEntity<>(waterSiteService.addSite(addSiteRequest),HttpStatus.ACCEPTED);
     }
 

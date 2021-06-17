@@ -3,6 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.EditParkRequest;
 
 import java.util.Collection;
@@ -15,7 +16,7 @@ public interface DevicesService {
     AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest);
     Collection<WaterSourceDevice> getAll();
     FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest);
-    GetNumDevicesResponse getNumDevices(GetNumDevicesRequest getNumDevicesRequest);
+    GetNumDevicesResponse getNumDevices(GetNumDevicesRequest getNumDevicesRequest) throws InvalidRequestException;
     GetParkDevicesResponse getParkDevices(GetParkDevicesRequest getParkDevicesRequest);
     EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest);
     GetDeviceDataResponse getDeviceData(GetDeviceDataRequest getDeviceDataRequest);

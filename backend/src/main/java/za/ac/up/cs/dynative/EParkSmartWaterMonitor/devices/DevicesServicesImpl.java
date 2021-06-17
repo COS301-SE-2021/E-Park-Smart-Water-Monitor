@@ -27,6 +27,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.WaterSou
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
@@ -177,7 +178,7 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     @Override
-    public GetNumDevicesResponse getNumDevices(GetNumDevicesRequest request) {
+    public GetNumDevicesResponse getNumDevices(GetNumDevicesRequest request) throws InvalidRequestException {
         GetNumDevicesResponse getNumDevicesResponse = new GetNumDevicesResponse();
         if (request.getParkId() != null) {
             FindByParkIdResponse findByParkIdResponse = parkService.findByParkId(new FindByParkIdRequest(request.getParkId()));

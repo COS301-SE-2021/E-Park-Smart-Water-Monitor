@@ -12,6 +12,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDevic
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +113,7 @@ public class DevicesUnitTest extends UnitTestBaseClass {
 
 
    @Test
-    public void testGetNumDevices() throws JsonProcessingException {
+    public void testGetNumDevices() throws JsonProcessingException, InvalidRequestException {
         LOGGER.info("Testing GetNumDevicesRequest construction");
 
         UUID parkId = UUID.fromString("190c4aa9-a55f-4118-b26b-dc537e0a6f30");

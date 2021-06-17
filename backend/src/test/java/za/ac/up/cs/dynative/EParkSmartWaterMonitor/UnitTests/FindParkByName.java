@@ -36,6 +36,7 @@ public class FindParkByName {
         assertEquals("No park name specified",t.getMessage());
     }
 
+    //TODO: make sure this is 100% correct
     @Test
     @DisplayName("Find a nonexisting park")
     public void findParkDNE(){

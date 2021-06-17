@@ -1,5 +1,6 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite;
 
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
@@ -13,7 +14,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteBy
 import java.util.Collection;
 
 public interface WaterSiteService {
-    AddSiteResponse addSite(AddSiteRequest request);
+    AddSiteResponse addSite(AddSiteRequest request) throws InvalidRequestException;
     Collection<WaterSite> getAll();
     AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request);
     CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request);
