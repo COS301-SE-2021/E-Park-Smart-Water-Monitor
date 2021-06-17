@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import DeviceTable from "../../components/Custom/DeviceTable";
 import ParkTable from "../../components/Custom/ParkTable";
+import InspectionTable from "components/Custom/InspectionTable";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -37,6 +38,7 @@ function Admin() {
                         <UserTable/>
                         <DeviceTable/>
                         <ParkTable/>
+                        <InspectionTable/>
                     </Grid>
 
                 </Grid>
