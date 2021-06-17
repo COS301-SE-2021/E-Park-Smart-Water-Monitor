@@ -199,6 +199,104 @@ function LineChart() {
         }]
     }
 
+    let measurements = {
+        status: "Successfully retrieved data for device: Water1",
+        success: true,
+        deviceName: "Water1",
+        innerResponses: [{
+            status: "Success",
+            success: true,
+            deviceName: "Water1",
+            measurements: [{
+                type: "WATER_LEVEL",
+                value: 4.8,
+                unitOfMeasurement: "METER",
+                deviceDateTime: "newDateTime",
+                dataId: "a7ac79dc-db1e-44af-9790-8c557dc1f87b",
+                dateTime: "2021-06-17T20:15:05.568+00:00",
+                id: "a7ac79dc-db1e-44af-9790-8c557dc1f87b"
+            }]
+        }, {
+            status: "Success",
+            success: true,
+            deviceName: "Water1",
+            measurements: [{
+                type: "WATER_LEVEL",
+                value: 7.55,
+                unitOfMeasurement: "METER",
+                deviceDateTime: "newDateTime",
+                dataId: "527516a3-37a0-4bb5-b44e-12df8812a47e",
+                dateTime: "2021-06-17T20:15:05.570+00:00",
+                id: "527516a3-37a0-4bb5-b44e-12df8812a47e"
+            }]
+        }, {
+            status: "Success",
+            success: true,
+            deviceName: "Water1",
+            measurements: [{
+                type: "WATER_LEVEL",
+                value: 8,
+                unitOfMeasurement: "METER",
+                deviceDateTime: "newDateTime",
+                dataId: "527516a3-37a0-4bb5-b44e-12df8812a47e",
+                dateTime: "2021-06-17T20:15:05.570+00:00",
+                id: "527516a3-37a0-4bb5-b44e-12df8812a47e"
+            }]
+        }, {
+            status: "Success",
+            success: true,
+            deviceName: "Water1",
+            measurements: [{
+                type: "WATER_LEVEL",
+                value: 7.95,
+                unitOfMeasurement: "METER",
+                deviceDateTime: "newDateTime",
+                dataId: "527516a3-37a0-4bb5-b44e-12df8812a47e",
+                dateTime: "2021-06-17T20:15:05.570+00:00",
+                id: "527516a3-37a0-4bb5-b44e-12df8812a47e"
+            }]
+        }, {
+            status: "Success",
+            success: true,
+            deviceName: "Water1",
+            measurements: [{
+                type: "WATER_LEVEL",
+                value: 6,
+                unitOfMeasurement: "METER",
+                deviceDateTime: "newDateTime",
+                dataId: "527516a3-37a0-4bb5-b44e-12df8812a47e",
+                dateTime: "2021-06-17T20:15:05.570+00:00",
+                id: "527516a3-37a0-4bb5-b44e-12df8812a47e"
+            }]
+        }, {
+            status: "Success",
+            success: true,
+            deviceName: "Water1",
+            measurements: [{
+                type: "WATER_LEVEL",
+                value: 3.24,
+                unitOfMeasurement: "METER",
+                deviceDateTime: "newDateTime",
+                dataId: "527516a3-37a0-4bb5-b44e-12df8812a47e",
+                dateTime: "2021-06-17T20:15:05.570+00:00",
+                id: "527516a3-37a0-4bb5-b44e-12df8812a47e"
+            }]
+        }, {
+            status: "Success",
+            success: true,
+            deviceName: "Water1",
+            measurements: [{
+                type: "WATER_LEVEL",
+                value: 2.9,
+                unitOfMeasurement: "METER",
+                deviceDateTime: "newDateTime",
+                dataId: "527516a3-37a0-4bb5-b44e-12df8812a47e",
+                dateTime: "2021-06-17T20:15:05.570+00:00",
+                id: "527516a3-37a0-4bb5-b44e-12df8812a47e"
+            }]
+        }]
+    }
+
     const newChartData = function chartData() {
         return {
             labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
