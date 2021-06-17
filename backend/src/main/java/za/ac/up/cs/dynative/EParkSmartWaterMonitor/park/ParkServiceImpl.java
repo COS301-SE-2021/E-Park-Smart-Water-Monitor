@@ -29,9 +29,10 @@ public class ParkServiceImpl implements ParkService {
 
         CreateParkResponse response = new CreateParkResponse();
         if (!request.getParkName().equals("")) {
-            //TODO: if the latitude and/or the longitude is not set throw an InvalidRequestException("Park location not specified.")
-            // NB the message must be exactly the same as the message currently in the example!
-            // See else for details on how to throw the exception
+
+            //TODO: if the park name is already used throw an InvalidRequestException("Park name specified already exists!")
+            // NB the message must be exactly correct!!!
+            // See the else for details how to throw the Exception
 
             Park park = new Park(request.getParkName(),request.getLatitude(),request.getLongitude());
             parkRepo.save(park);
@@ -39,9 +40,6 @@ public class ParkServiceImpl implements ParkService {
             response.setStatus("Park "+request.getParkName()+" Added!");
             response.setSuccess(true);
 
-            //TODO: if the park name is already used throw an InvalidRequestException("Park name specified already exists!")
-            // NB the message must be exactly correct!!!
-            // See the else for details how to throw the Exception
 
         }
         else {
@@ -53,12 +51,18 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public FindByParkNameResponse findParkByName(FindByParkNameRequest request) {
+    public FindByParkNameResponse findParkByName(FindByParkNameRequest request) throws InvalidRequestException {
         if (!request.getParkName().equals("")) {
             List<Park> park = parkRepo.findParkByParkName(request.getParkName());
-            return new FindByParkNameResponse((Park)park.toArray()[0]);
+            if (park.size()==0){
+                throw new InvalidRequestException("Park not present");
+            }else {
+                return new FindByParkNameResponse((Park) park.toArray()[0]);
+            }
+        }else{
+            throw new InvalidRequestException("No park name specified");
+            //return new FindByParkNameResponse(null);
         }
-        else return new FindByParkNameResponse(null);
     }
 
     @Override

@@ -60,7 +60,7 @@ public class ParkUnitTest extends UnitTestBaseClass {
     }
 
     @Test
-    public void testFindParkByName() throws JsonProcessingException {
+    public void testFindParkByName() throws JsonProcessingException, InvalidRequestException {
         LOGGER.info("Testing FindByParkNameRequest construction");
 
         String testParkName = "testPark";

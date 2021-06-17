@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface ParkService {
     CreateParkResponse createPark(CreateParkRequest request) throws InvalidRequestException;
-    FindByParkNameResponse findParkByName(FindByParkNameRequest request);
+    FindByParkNameResponse findParkByName(FindByParkNameRequest request) throws InvalidRequestException;
     SaveParkResponse savePark(SaveParkRequest request);
     GetParkSitesResponse getParkWaterSites(GetParkSitesRequest getParkSitesRequest);
     FindByParkIdResponse findByParkId(FindByParkIdRequest findByParkIdRequest);

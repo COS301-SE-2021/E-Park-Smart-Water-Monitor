@@ -2,12 +2,10 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests;
 
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.junit.jupiter.MockitoExtension;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
@@ -54,7 +52,7 @@ public class CreatePark {
     /*@Test
     @DisplayName("Creating a park with an existing name")
     public void createParkAE()  {
-        CreateParkRequest request= new CreateParkRequest("Rietvlei Nature Reserve",lat,lon);
+        CreateParkRequest request= new CreateParkRequest("Unit Testing",lat,lon);
         Throwable t= assertThrows(InvalidRequestException.class,()->parkService.createPark(request));
         assertEquals("Park name specified already exists!",t.getMessage());
 
