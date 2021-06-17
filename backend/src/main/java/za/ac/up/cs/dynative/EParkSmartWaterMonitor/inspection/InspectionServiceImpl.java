@@ -8,12 +8,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.FindDeviceRe
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.FindDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models.Inspection;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.InspectionRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.AddInspectionRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetDeviceInspectionsRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetWaterSiteInspectionsRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.AddInspectionResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetDeviceInspectionsResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetWaterSiteInspectionsResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.SaveSiteRequest;
@@ -110,6 +106,67 @@ public class InspectionServiceImpl implements InspectionService {
         response.setInspectionList(inspectionRepo.getInspectionByDeviceId(request.getDeviceId()));
 
         response.setStatus("Inspections retrieved successfully!");
+        response.setSuccess(true);
+
+        return response;
+    }
+
+    @Override
+    public SetInspectionStatusResponse setInspectionStatus(SetInspectionStatusRequest request) {
+        SetInspectionStatusResponse response = new SetInspectionStatusResponse();
+
+        if (request.getInspectionId() == null) {
+            response.setStatus("Failed to set inspection status! Invalid inspectionId!");
+            response.setSuccess(false);
+
+            return response;
+        }
+
+        Inspection inspection = inspectionRepo.findInspectionById(request.getInspectionId());
+
+        if (inspection == null) {
+            response.setStatus("Failed to set inspection status! Inspection not found!");
+            response.setSuccess(false);
+
+            return response;
+        }
+
+        inspection.setStatus(request.getStatus());
+
+        inspectionRepo.save(inspection);
+
+        response.setStatus("Inspection status successfully set!");
+        response.setSuccess(true);
+
+        return response;
+    }
+
+
+    @Override
+    public SetInspectionCommentsResponse setInspectionComments(SetInspectionCommentsRequest request) {
+        SetInspectionCommentsResponse response = new SetInspectionCommentsResponse();
+
+        if (request.getInspectionId() == null) {
+            response.setStatus("Failed to set inspection comments! Invalid inspectionId!");
+            response.setSuccess(false);
+
+            return response;
+        }
+
+        Inspection inspection = inspectionRepo.findInspectionById(request.getInspectionId());
+
+        if (inspection == null) {
+            response.setStatus("Failed to set inspection comments! Inspection not found!");
+            response.setSuccess(false);
+
+            return response;
+        }
+
+        inspection.setComments(request.getComments());
+
+        inspectionRepo.save(inspection);
+
+        response.setStatus("Inspection comments successfully set!");
         response.setSuccess(true);
 
         return response;
