@@ -226,7 +226,7 @@ function LineChart() {
                 unitOfMeasurement: "METER",
                 deviceDateTime: "newDateTime",
                 dataId: "527516a3-37a0-4bb5-b44e-12df8812a47e",
-                dateTime: "2021-06-17T20:15:05.570+00:00",
+                dateTime: "2021-06-18T09:35:22.582+00:00",
                 id: "527516a3-37a0-4bb5-b44e-12df8812a47e"
             }]
         }, {
@@ -239,7 +239,7 @@ function LineChart() {
                 unitOfMeasurement: "METER",
                 deviceDateTime: "newDateTime",
                 dataId: "527516a3-37a0-4bb5-b44e-12df8812a47e",
-                dateTime: "2021-06-17T20:15:05.570+00:00",
+                dateTime: "2021-06-18T20:15:05.570+00:00",
                 id: "527516a3-37a0-4bb5-b44e-12df8812a47e"
             }]
         }, {
@@ -252,7 +252,7 @@ function LineChart() {
                 unitOfMeasurement: "METER",
                 deviceDateTime: "newDateTime",
                 dataId: "527516a3-37a0-4bb5-b44e-12df8812a47e",
-                dateTime: "2021-06-17T20:15:05.570+00:00",
+                dateTime: "2021-06-19T09:35:22.582+00:00",
                 id: "527516a3-37a0-4bb5-b44e-12df8812a47e"
             }]
         }, {
@@ -265,7 +265,7 @@ function LineChart() {
                 unitOfMeasurement: "METER",
                 deviceDateTime: "newDateTime",
                 dataId: "527516a3-37a0-4bb5-b44e-12df8812a47e",
-                dateTime: "2021-06-17T20:15:05.570+00:00",
+                dateTime: "2021-06-19T20:15:05.570+00:00",
                 id: "527516a3-37a0-4bb5-b44e-12df8812a47e"
             }]
         }, {
@@ -278,7 +278,7 @@ function LineChart() {
                 unitOfMeasurement: "METER",
                 deviceDateTime: "newDateTime",
                 dataId: "527516a3-37a0-4bb5-b44e-12df8812a47e",
-                dateTime: "2021-06-17T20:15:05.570+00:00",
+                dateTime: "2021-06-20T09:35:22.582+00:00",
                 id: "527516a3-37a0-4bb5-b44e-12df8812a47e"
             }]
         }, {
@@ -291,7 +291,7 @@ function LineChart() {
                 unitOfMeasurement: "METER",
                 deviceDateTime: "newDateTime",
                 dataId: "527516a3-37a0-4bb5-b44e-12df8812a47e",
-                dateTime: "2021-06-17T20:15:05.570+00:00",
+                dateTime: "2021-06-20T20:15:05.570+00:00",
                 id: "527516a3-37a0-4bb5-b44e-12df8812a47e"
             }]
         }]
@@ -301,25 +301,29 @@ function LineChart() {
         return item.measurements[0].value
     })
 
-    
+    let y_axis = measurements.innerResponses.map((item)=>{
+        let date = item.measurements[0].dateTime
+        return `${date.substring(0,10)} ${date.substring(14,19)}`
+    })
 
     const newChartData = function chartData() {
         return {
-            labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            labels: y_axis,
             datasets: [{
                 type: 'line',
                 label: 'Level',
-                data: [10, 20, 27, 40, 10, 20, 27, 40],
+                data: x_axis,
                 borderColor: "#11CDEF",
                 backgroundColor: "#11CDEF",
-            }, {
-                type: 'line',
-                label: 'Temperature',
-                data: [50, 40, 45, 50, 50, 50, 45, 90],
-                borderColor: "orange",
-                backgroundColor: "orange",
-                fill: false
-            }],
+            // }, {
+            //     type: 'line',
+            //     label: 'Temperature',
+            //     data: [50, 40, 45, 50, 50, 50, 45, 90],
+            //     borderColor: "orange",
+            //     backgroundColor: "orange",
+            //     fill: false
+             }
+            ],
             // labels: ['January', 'February', 'March', 'April']
         }
     }
