@@ -12,10 +12,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdReq
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.repositories.UserRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.DeleteUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.EditUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.LoginRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.*;
 
 import java.time.LocalDate;
@@ -298,6 +295,19 @@ public class UserServiceImpl implements UserService {
         else {
             response.setStatus("Failed to delete user no id specified!");
             response.setSuccess(false);
+        }
+        return response;
+    }
+
+    @Override
+    public FindUserByIdResponse findUserById(FindUserByIdRequest request) {
+        FindUserByIdResponse response = new FindUserByIdResponse(false, null);
+        if (request.getUserId() != null) {
+            User user = userRepo.findSpecificUser(request.getUserId());
+            if (user != null) {
+                response.setStatus(user);
+                response.setSuccess(true);
+            }
         }
         return response;
     }
