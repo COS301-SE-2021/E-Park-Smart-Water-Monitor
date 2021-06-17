@@ -5,4 +5,5 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.*;
 public interface InspectionService {
     public AddInspectionResponse addInspection(AddInspectionRequest request);
     public GetWaterSiteInspectionsResponse getWaterSiteInspections(GetWaterSiteInspectionsRequest request);
+    public GetDeviceInspectionsResponse getDeviceInspections(GetDeviceInspectionsRequest request);
 }

@@ -9,8 +9,10 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.FindDeviceR
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models.Inspection;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.InspectionRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.AddInspectionRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetDeviceInspectionsRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetWaterSiteInspectionsRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.AddInspectionResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetDeviceInspectionsResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetWaterSiteInspectionsResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
@@ -87,6 +89,25 @@ public class InspectionServiceImpl implements InspectionService {
         }
 
         response.setInspectionList(inspectionRepo.findInspectionsByWaterSiteId(request.getWaterSiteId()));
+
+        response.setStatus("Inspections retrieved successfully!");
+        response.setSuccess(true);
+
+        return response;
+    }
+
+    @Override
+    public GetDeviceInspectionsResponse getDeviceInspections(GetDeviceInspectionsRequest request) {
+        GetDeviceInspectionsResponse response = new GetDeviceInspectionsResponse();
+
+        if (request.getDeviceId() == null) {
+            response.setStatus("Failed to get inspection! Invalid deviceId!");
+            response.setSuccess(false);
+
+            return response;
+        }
+
+        response.setInspectionList(inspectionRepo.getInspectionByDeviceId(request.getDeviceId()));
 
         response.setStatus("Inspections retrieved successfully!");
         response.setSuccess(true);

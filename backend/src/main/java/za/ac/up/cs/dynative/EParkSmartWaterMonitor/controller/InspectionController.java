@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.InspectionService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.AddInspectionRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetDeviceInspectionsRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetWaterSiteInspectionsRequest;
 
 @CrossOrigin
@@ -26,8 +27,13 @@ public class InspectionController {
         return new ResponseEntity<>(inspectionService.addInspection(request), HttpStatus.OK);
     }
 
-    @PostMapping("/getInspections")
+    @PostMapping("/getSiteInspections")
     public ResponseEntity<Object> getWaterSiteInspections(@RequestBody GetWaterSiteInspectionsRequest request) {
         return new ResponseEntity<>(inspectionService.getWaterSiteInspections(request), HttpStatus.OK);
+    }
+
+    @PostMapping("/getDeviceInspections")
+    public  ResponseEntity<Object> getDeviceInspections(@RequestBody GetDeviceInspectionsRequest request) {
+        return new ResponseEntity<>(inspectionService.getDeviceInspections(request), HttpStatus.OK);
     }
 }
