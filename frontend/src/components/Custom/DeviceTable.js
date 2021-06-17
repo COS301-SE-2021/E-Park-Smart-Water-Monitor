@@ -144,7 +144,7 @@ const DeviceTable = () => {
                     </Grid>
                     <Grid
                         item
-                        xs={6}
+                        xs={10}
                         xl={10}
                         component={Box}
                         marginBottom="3rem!important"
@@ -153,8 +153,8 @@ const DeviceTable = () => {
                     </Grid>
                     <Grid
                           item
-                          // justify="end"
-                          xs={6}
+                          justify="end"
+                          xs={2}
                           xl={2}
                           component={Box}
                           marginBottom="3rem!important"

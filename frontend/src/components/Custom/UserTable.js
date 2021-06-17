@@ -18,8 +18,6 @@ import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
 import Modal from "../../views/admin/modals/Modal";
 import AddUserBody from "./AddUserBody";
-import axios from "axios";
-import {Marker, Popup} from "react-leaflet";
 // import disableScroll from 'disable-scroll';
 
 // import AdminModal from 'admin-modal'
@@ -31,69 +29,11 @@ const UserTable = () => {
     const classes = useStyles();
     const theme = useTheme();
     const [show, setShow] = useState(false);
-    const [result, setResult] = useState(false);
-    const [users, setUsers] = useState({});
 
     // useEffect(() => {
     //     if (show == true) disableScroll.on()
     //     if (show == false) disableScroll.off()
     // }, [show])
-
-    // get the users from the db to populate the table
-    // initial setup
-    useEffect(() => {
-
-        axios.post('http://localhost:8080/api/park/getParkWaterSites', {
-            parkId: "2ea5ba27-9d8e-41a4-9628-485f0ae2fb57"
-        }).then((res)=> {
-            if (res && res.users) {
-                const m = users.map((user) =>
-                    <TableRow>
-                        <TableCell
-                            classes={{
-                                root:
-                                    classes.tableCellRoot +
-                                    " " +
-                                    classes.tableCellRootBodyHead,
-                            }}
-                            scope="row"
-                            style={{verticalAlign:'middle',width:'25%'}}
-                        >
-                            Jane Doe
-                        </TableCell>
-                        <TableCell classes={{ root: classes.tableCellRoot }}
-                                   style={{verticalAlign:'middle',width:'20%'}}>
-                            Ranger
-                        </TableCell>
-                        <TableCell classes={{ root: classes.tableCellRoot }}
-                                   style={{verticalAlign:'middle',width:'34%'}}>
-                            Riet Vlei
-                        </TableCell>
-                        <TableCell classes={{ root: classes.tableCellRoot }}
-                                   style={{verticalAlign:'middle'}}>
-                            <Button
-                                size="small"
-                            >
-                                Edit
-                            </Button>
-                        </TableCell>
-                        <TableCell classes={{ root: classes.tableCellRoot }}
-                                   style={{verticalAlign:'middle'}}>
-                            <Button
-                                size="small"
-                            >
-                                Remove
-                            </Button>
-                        </TableCell>
-                    </TableRow>
-                );
-                setUsers(m);
-            }
-        })
-
-
-
-    }, [])
 
     return (
         <>
@@ -260,7 +200,7 @@ const UserTable = () => {
                     </Grid>
                     <Grid
                         item
-                        xs={6}
+                        xs={10}
                         xl={10}
                         component={Box}
                         marginBottom="3rem!important"
@@ -269,7 +209,8 @@ const UserTable = () => {
                     </Grid>
                     <Grid
                         item
-                        xs={6}
+                        justify="end"
+                        xs={2}
                         xl={2}
                         component={Box}
                         marginBottom="3rem!important"
