@@ -297,6 +297,12 @@ function LineChart() {
         }]
     }
 
+    let x_axis = measurements.innerResponses.map((item)=>{
+        return item.measurements[0].value
+    })
+
+    
+
     const newChartData = function chartData() {
         return {
             labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
