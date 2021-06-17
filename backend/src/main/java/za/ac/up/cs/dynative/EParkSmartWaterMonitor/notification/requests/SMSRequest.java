@@ -1,6 +1,7 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
 
 import java.util.ArrayList;
@@ -13,7 +14,10 @@ public class SMSRequest
     private List<UUID> userIds;
     private String message;
     @JsonCreator
-    public SMSRequest(List<UUID> userIds , String message)
+    public SMSRequest(
+            @JsonProperty("userIds") List<UUID> userIds ,
+            @JsonProperty("message") String message
+    )
     {
         this.userIds=userIds;
         this.message=message;

@@ -20,6 +20,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.responses.EmailR
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.responses.SMSResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.UserService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.FindUserByIdRequest;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -111,10 +112,16 @@ public class NotificationServiceImpl implements NotificationService
     public SMSResponse sendSMS(SMSRequest smsRequest) {
 
         ArrayList<User> recipients = smsRequest.getRecipients();
-        if (recipients==null)  //TODO waiting on other branch
+        if (recipients==null)  //TODO add if checks
         {
-//            userService
+            recipients= new ArrayList<>();
+            for (int r = 0; r < smsRequest.getUserIds().size() ; r++) {
+                User addThisUser = null;
+                addThisUser =userService.findUserById(new FindUserByIdRequest(smsRequest.getUserIds().get(r))).getUser();
+                if (addThisUser!=null)
+                    recipients.add(addThisUser);
 
+            }
 
         }
 

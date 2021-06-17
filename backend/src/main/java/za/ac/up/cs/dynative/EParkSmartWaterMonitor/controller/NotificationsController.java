@@ -10,6 +10,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.NotificationService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.SMSRequest;
 
 
 @CrossOrigin
@@ -32,11 +33,11 @@ public class NotificationsController
         return new ResponseEntity<>(notificationService.sendMail(eMailRequest), HttpStatus.OK);
     }
 
-    @GetMapping("/sms")
-    public void sendMail() //TODO
+    @PostMapping("/sms")
+    public  ResponseEntity<Object> sendSMS(@RequestBody SMSRequest smsRequest) //TODO
     {
-//        return userService.findUserByUserName("RotLan");
-        notificationService.sendSMS();
+//
+        return new ResponseEntity<>(notificationService.sendSMS(smsRequest), HttpStatus.OK);
 
     }
 
