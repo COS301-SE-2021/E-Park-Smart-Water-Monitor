@@ -18,8 +18,9 @@ import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
 import Modal from "../../views/admin/modals/Modal";
 import AddUserBody from "./AddUserBody";
-import disableScroll from 'disable-scroll';
+// import disableScroll from 'disable-scroll';
 
+// import AdminModal from 'admin-modal'
 
 
 const useStyles = makeStyles(componentStyles);
@@ -29,10 +30,10 @@ const UserTable = () => {
     const theme = useTheme();
     const [show, setShow] = useState(false);
 
-    useEffect(() => {
-        if (show == true) disableScroll.on()
-        if (show == false) disableScroll.off()
-    }, [show])
+    // useEffect(() => {
+    //     if (show == true) disableScroll.on()
+    //     if (show == false) disableScroll.off()
+    // }, [show])
 
     return (
         <>
@@ -45,6 +46,7 @@ const UserTable = () => {
                 <Modal title="Add User" onClose={() => setShow(false)} show={show}>
                     <AddUserBody/>
                 </Modal>
+
                 <Grid container component={Box} marginTop="3rem">
                     <Grid
                         item

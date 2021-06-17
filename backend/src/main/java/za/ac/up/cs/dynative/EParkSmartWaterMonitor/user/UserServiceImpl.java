@@ -12,13 +12,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdReq
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.repositories.UserRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.EditUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.LoginRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.CreateUserResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.EditUserResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.GetAllUsersResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.LoginResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.*;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -281,7 +276,44 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public DeleteUserResponse deleteUser(DeleteUserRequest deleteUserRequest) {
+        DeleteUserResponse response = new DeleteUserResponse();
+
+        if (deleteUserRequest.getId() != null) {
+            User user = userRepo.findUserById(deleteUserRequest.getId());
+
+            if (user != null) {
+                userRepo.delete(user);
+                response.setStatus("Sucessfully deleteD user: " + user.getName() + " " + user.getSurname());
+                response.setSuccess(true);
+            }
+            else {
+                response.setStatus("Failed to delete user: No user with this id exists!");
+                response.setSuccess(false);
+            }
+        }
+        else {
+            response.setStatus("Failed to delete user no id specified!");
+            response.setSuccess(false);
+        }
+        return response;
+    }
+
+    @Override
+    public FindUserByIdResponse findUserById(FindUserByIdRequest request) {
+        FindUserByIdResponse response = new FindUserByIdResponse(false, null);
+        if (request.getUserId() != null) {
+            User user = userRepo.findSpecificUser(request.getUserId());
+            if (user != null) {
+                response.setStatus(user);
+                response.setSuccess(true);
+            }
+        }
+        return response;
+    }
+
+    @Override
     public GetAllUsersResponse getAllUsers() {
-        return new GetAllUsersResponse(userRepo.findAll());
+        return new GetAllUsersResponse(userRepo.getAllUsers());
     }
 }

@@ -13,9 +13,11 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.WaterSiteRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.CanAttachWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AddSiteResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWaterSourceDeviceResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.CanAttachWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
 
 import java.util.Collection;
@@ -61,6 +63,22 @@ public class WaterSiteServicesImpl implements WaterSiteService
         return response;
     }
 
+    public CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request)
+    {
+        Optional<WaterSite> siteToAddTo = waterSiteRepo.findById(request.getSiteId());
+        CanAttachWaterSourceDeviceResponse response;
+        if (siteToAddTo.isPresent())
+        {
+            response= new CanAttachWaterSourceDeviceResponse("Can attach device to site!",true);
+        }
+        else
+        {
+            response = new CanAttachWaterSourceDeviceResponse("Site does not exist", false);
+        }
+
+        return response;
+    }
+
     public AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request)
     {
         Optional<WaterSite> siteToAddTo = waterSiteRepo.findById(request.getSiteId());
@@ -75,8 +93,6 @@ public class WaterSiteServicesImpl implements WaterSiteService
         {
             response = new AttachWaterSourceDeviceResponse("Site does not exist", false);
         }
-
-
 
         return response;
     }

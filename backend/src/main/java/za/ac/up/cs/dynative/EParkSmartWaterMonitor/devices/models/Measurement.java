@@ -15,7 +15,7 @@ public class Measurement {
     private String type;
     private String unitOfMeasurement;
     private double value;
-    String deviceDateTime;
+    private String deviceDateTime;
     private Date dateTime;
 
     public Measurement(

@@ -39,7 +39,7 @@ function Map(props) {
         } else {
             console.log("no device prop added")
         }
-    },[])
+    },[props.devices])
 
   return (
     <>
@@ -77,11 +77,6 @@ function Map(props) {
                   attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-                <Marker position={[  -25.89, 28.27 ]}>
-                    <Popup>
-                        Site Name
-                    </Popup>
-                </Marker>
               { response }
             </MapContainer>
           </div>

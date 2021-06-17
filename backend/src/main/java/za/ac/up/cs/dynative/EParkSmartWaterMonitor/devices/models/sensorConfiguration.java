@@ -37,4 +37,12 @@ public class sensorConfiguration
     public void setValue(double value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "{\"sensorConfiguration\":{" +
+                "\"settingType\": \"" + settingType + "\"" +
+                ", \"value\":" + value +
+                "}}";
+    }
 }
