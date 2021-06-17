@@ -9,6 +9,13 @@ public class GetAllUsersResponse {
     private List<User> allUsers;
     public GetAllUsersResponse(List<User> allUsers) {
         this.allUsers = allUsers;
+        hidePassword();
+    }
+
+    private void hidePassword() {
+        for (User u : allUsers) {
+            u.setPassword("");
+        }
     }
 
     public List<User> getAllUsers() {

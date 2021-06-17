@@ -4,6 +4,9 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDev
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.EditParkRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.DeleteUserRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.DeleteUserResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.GetAllDevicesResponse;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,4 +22,6 @@ public interface DevicesService {
     GetParkDevicesResponse getParkDevices(GetParkDevicesRequest getParkDevicesRequest);
     EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest);
     GetDeviceDataResponse getDeviceData(GetDeviceDataRequest getDeviceDataRequest);
+    DeleteUserResponse deleteUser(DeleteUserRequest deleteUserRequest);
+    GetAllDevicesResponse getAllDevices();
 }
