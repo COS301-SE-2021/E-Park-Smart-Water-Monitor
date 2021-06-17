@@ -9,9 +9,9 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.FindDeviceR
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models.Inspection;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.InspectionRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.AddInspectionRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetInspectionsRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetWaterSiteInspectionsRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.AddInspectionResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetInspectionsResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetWaterSiteInspectionsResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.SaveSiteRequest;
@@ -76,8 +76,20 @@ public class InspectionServiceImpl implements InspectionService {
     }
 
     @Override
-    public GetInspectionsResponse getInspections(GetInspectionsRequest request) {
-        GetInspectionsResponse response = new GetInspectionsResponse();
+    public GetWaterSiteInspectionsResponse getWaterSiteInspections(GetWaterSiteInspectionsRequest request) {
+        GetWaterSiteInspectionsResponse response = new GetWaterSiteInspectionsResponse();
+
+        if (request.getWaterSiteId() == null) {
+            response.setStatus("Failed to get inspection! Invalid waterSiteId!");
+            response.setSuccess(false);
+
+            return response;
+        }
+
+        response.setInspectionList(inspectionRepo.findInspectionsByWaterSiteId(request.getWaterSiteId()));
+
+        response.setStatus("Inspections retrieved successfully!");
+        response.setSuccess(true);
 
         return response;
     }
