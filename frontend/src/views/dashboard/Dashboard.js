@@ -1,15 +1,9 @@
-import React from "react";
-// javascipt plugin for creating charts
+import React, {useEffect, useState} from "react";
+// javascript plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-// import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-
-import Card from "@material-ui/core/Card";
-
-import CardHeader from "@material-ui/core/CardHeader";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Table from "@material-ui/core/Table";
@@ -20,12 +14,11 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 
-import DeviceData from "components/Custom/DeviceData"
 import Map from "components/Cards/Map.js"
 import BarChart from "components/Cards/BarChart.js"
 import LineChart from "components/Cards/LineChart.js"
-
-
+import DeviceTable from "../../components/Cards/DeviceTable";
+import DeviceDetails from "../../components/Cards/DeviceDetails";
 
 
 // core components
@@ -33,28 +26,84 @@ import Header from "components/Headers/Header.js";
 
 import {
   chartOptions,
-  parseOptions,
-  // chartExample1,
-  // chartExample2,
+  parseOptions
 } from "variables/charts.js";
 
+import axios from "axios";
 import componentStyles from "assets/theme/views/dashboard/dashboard.js";
-
 const useStyles = makeStyles(componentStyles);
-
-
 
 function Dashboard() {
   const classes = useStyles();
+  // const [response, setResponse] = useState(null)
+  const [devices, setDevices] = useState([])
+  const [device, setDevice] = useState(null)
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
 
+  //scroll into view on click of device
+
+
+  // MONOLITH of SITES
+  useEffect(() => {
+    axios.post('http://localhost:8080/api/devices/getParkDevices', {
+      parkId: "b026bea2-17a4-4939-bbbb-80916d8cf44e"
+    }).then((res)=>{
+      if(res.data)
+      {
+        const site = res.data.site; // site array
+        setDevices(site)
+
+        if(site && site[0])
+        {
+          setDevice(site[0])
+        }
+        console.log(JSON.stringify(site))
+
+      }else{
+        console.log('res.data null')
+      }
+    });
+  }, []) // second param [] is a list of dependency to watch and run useEffect
+
+  const load_device = (device_id) =>
+  {
+      // get the new device metrics data
+      // axios.post('http://localhost:8080/api/devices/getDevice', {
+      //   deviceID: "b026bea2-17a4-4939-bbbb-80916d8cf44e"
+      // }).then((res)=>{
+      //   if(res.data)
+      //   {
+      //     const site = res.data.site; // site array
+      //     setDevices(site)
+      //
+      //     if(site && site[0])
+      //     {
+      //       setDevice(site[0])
+      //     }
+      //     console.log(JSON.stringify(site))
+      //
+      //   }else{
+      //     console.log('res.data null')
+      //   }
+      // });
+
+
+    // get the device from the monolith of devices to render the specific details
+    for(let i =0; i<devices.length;i++)
+    {
+      if(devices[i].deviceId == device_id)
+      {
+        setDevice(devices[i])
+      }
+    }
+
+  }
 
   return (
     <>
-
       <Header />
       {/* Page content */}
       <Container
@@ -64,18 +113,17 @@ function Dashboard() {
         classes={{ root: classes.containerRoot }}
       >
         <Grid container>
-            <Grid
-                item
-                xs={12}
-                xl={12}
-                component={Box}
-                marginBottom="3rem!important"
-                classes={{ root: classes.gridItemRoot }}
+          <Grid
+              item
+              xs={12}
+              xl={12}
+              component={Box}
+              marginBottom="3rem!important"
+              classes={{ root: classes.gridItemRoot }}
           >
-            <Map></Map>
+            { devices && <Map devices={ devices }></Map> }
           </Grid>
         </Grid>
-
 
         <Grid container component={Box} marginTop="3rem!important">
           <Grid
@@ -86,12 +134,28 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            <BarChart></BarChart>
+
+            { devices && <DeviceTable onSelectDevice={load_device} devices={ devices }></DeviceTable> }
+
           </Grid>
+
           <Grid
               item
               xs={12}
               xl={6}
+              component={Box}
+              marginBottom="3rem!important"
+              classes={{ root: classes.gridItemRoot }}
+          >
+            { device && <DeviceDetails device={ device }></DeviceDetails> }
+          </Grid>
+        </Grid>
+
+        <Grid container component={Box} marginTop="3rem!important">
+          <Grid
+              item
+              xs={12}
+              xl={12}
               component={Box}
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
@@ -101,283 +165,29 @@ function Dashboard() {
         </Grid>
 
 
-        {/*</Grid>*/}
-        <Grid container component={Box} marginTop="3rem">
+        <Grid container component={Box} marginTop="3rem!important">
           <Grid
-            item
-            xs={12}
-            xl={12}
-            component={Box}
-            marginBottom="3rem!important"
-            classes={{ root: classes.gridItemRoot }}
+              item
+              xs={12}
+              xl={4}
+              component={Box}
+              marginBottom="3rem!important"
+              classes={{ root: classes.gridItemRoot }}
           >
-            <Card
-              classes={{
-                root: classes.cardRoot,
-              }}
-            >
-              <CardHeader
-                subheader={
-                  <Grid
-                    container
-                    component={Box}
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <Grid item xs="auto">
-                      <Box
-                        component={Typography}
-                        variant="h3"
-                        marginBottom="0!important"
-                      >
-                        Device Details
-                      </Box>
-                    </Grid>
-                    <Grid item xs="auto">
-                      <Box
-                        justifyContent="flex-end"
-                        display="flex"
-                        flexWrap="wrap"
-                      >
-                        {/*<Button*/}
-                        {/*  variant="contained"*/}
-                        {/*  color="primary"*/}
-                        {/*  size="small"*/}
-                        {/*>*/}
-                        {/*  See all*/}
-                        {/*</Button>*/}
-                      </Box>
-                    </Grid>
-                  </Grid>
-                }
-                classes={{ root: classes.cardHeaderRoot }}
-              ></CardHeader>
-
-              <TableContainer>
-                <Box
-                  component={Table}
-                  alignItems="center"
-                  marginBottom="0!important"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell
-                        classes={{
-                          root:
-                            classes.tableCellRoot +
-                            " " +
-                            classes.tableCellRootHead,
-                        }}
-                      >
-                        Device Name
-                      </TableCell>
-                      <TableCell
-                          classes={{
-                            root:
-                                classes.tableCellRoot +
-                                " " +
-                                classes.tableCellRootHead,
-                          }}
-                      >
-                        Latitude
-                      </TableCell>
-                      <TableCell
-                          classes={{
-                            root:
-                                classes.tableCellRoot +
-                                " " +
-                                classes.tableCellRootHead,
-                          }}
-                      >
-                        Longitude
-                      </TableCell>
-                      <TableCell
-                        classes={{
-                          root:
-                            classes.tableCellRoot +
-                            " " +
-                            classes.tableCellRootHead,
-                        }}
-                      >
-                        Status
-                      </TableCell>
-                      <TableCell
-                        classes={{
-                          root:
-                            classes.tableCellRoot +
-                            " " +
-                            classes.tableCellRootHead,
-                        }}
-                      >
-                        Battery Level
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-
-
-                    <DeviceData />
-
-                    {/*default values:*/}
-                    <TableRow>
-                      <TableCell
-                          classes={{
-                            root:
-                                classes.tableCellRoot +
-                                " " +
-                                classes.tableCellRootBodyHead,
-                          }}
-                          component="th"
-                          variant="head"
-                          scope="row"
-                      >
-                        Water2000
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        -25.812494434
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        28.239765508
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        FINE
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        100%
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                          classes={{
-                            root:
-                                classes.tableCellRoot +
-                                " " +
-                                classes.tableCellRootBodyHead,
-                          }}
-                          component="th"
-                          variant="head"
-                          scope="row"
-                      >
-                        Water5000
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        -25.112494434
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        28.129765508
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        FINE
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        100%
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                          classes={{
-                            root:
-                                classes.tableCellRoot +
-                                " " +
-                                classes.tableCellRootBodyHead,
-                          }}
-                          component="th"
-                          variant="head"
-                          scope="row"
-                      >
-                        Water1000
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        -25.892494434
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        28.289765508
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        FINE
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        100%
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell
-                          classes={{
-                            root:
-                                classes.tableCellRoot +
-                                " " +
-                                classes.tableCellRootBodyHead,
-                          }}
-                          component="th"
-                          variant="head"
-                          scope="row"
-                      >
-                        Water3000
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        -25.112494434
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        28.129765508
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        FINE
-                      </TableCell>
-                      <TableCell classes={{ root: classes.tableCellRoot }}>
-                        100%
-                      </TableCell>
-                    </TableRow>
-
-                    {/*{axios.post('localhost:8080/api/park/getParkWaterSites',{*/}
-                    {/*  parkId: "dda99bb7-4116-4e8a-ac35-9dad7e8c1b3f"}).*/}
-                    {/*    then(function (response) {*/}
-                    {/*      console.log(response);*/}
-                    {/*    })*/}
-                    {/*}*/}
-
-                    {/*{Axios.post('localhost:8080/api/park/getParkWaterSites', {*/}
-                    {/*parkId: "dda99bb7-4116-4e8a-ac35-9dad7e8c1b3f"})*/}
-                    {/*.then(function (response) {*/}
-                    {/*    response.map((values)=>(*/}
-                    {/*      <>*/}
-                    {/*        <TableRow>*/}
-                    {/*        <TableCell*/}
-                    {/*        classes={{*/}
-                    {/*          root:*/}
-                    {/*          classes.tableCellRoot +*/}
-                    {/*          " " +*/}
-                    {/*          classes.tableCellRootBodyHead,*/}
-                    {/*        }}*/}
-                    {/*        component="th"*/}
-                    {/*        variant="head"*/}
-                    {/*        scope="row"*/}
-                    {/*        >*/}
-                    {/*          {values.deviceName}*/}
-                    {/*        </TableCell>*/}
-                    {/*        <TableCell classes={{ root: classes.tableCellRoot }}>*/}
-                    {/*          {values.deviceData.latitude}*/}
-                    {/*        </TableCell>*/}
-                    {/*        <TableCell classes={{ root: classes.tableCellRoot }}>*/}
-                    {/*          {values.deviceData.longitude}*/}
-                    {/*        </TableCell>*/}
-                    {/*        <TableCell classes={{ root: classes.tableCellRoot }}>*/}
-                    {/*          {values.deviceData.deviceStatus}*/}
-                    {/*        </TableCell>*/}
-                    {/*        <TableCell classes={{ root: classes.tableCellRoot }}>*/}
-                    {/*          {values.deviceData.battery}*/}
-                    {/*        </TableCell>*/}
-                    {/*        </TableRow>*/}
-                    {/*      </>*/}
-                    {/*    ))*/}
-
-                    {/*})}*/}
-
-                  </TableBody>
-                </Box>
-              </TableContainer>
-            </Card>
+            <BarChart></BarChart>
+          </Grid>
+          <Grid
+              item
+              xs={12}
+              xl={8}
+              component={Box}
+              marginBottom="3rem!important"
+              classes={{ root: classes.gridItemRoot }}
+          >
+            <BarChart></BarChart>
           </Grid>
         </Grid>
+
       </Container>
       <br/><br/>
     </>

@@ -1,6 +1,4 @@
 import React from "react";
-// import PropTypes from "prop-types";
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
@@ -13,9 +11,6 @@ import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
 
 import {
-    // chartOptions,
-    // parseOptions,
-    // chartExample1,
     chartExample2,
 } from "variables/charts.js";
 
@@ -26,12 +21,27 @@ function BarChart() {
   const classes = useStyles();
   const theme = useTheme();
 
-    // CHART 2 - Bar Chart
-    console.log("chartExample2.data")
-    console.log(chartExample2.data)
-    console.log("chartExample2.options")
+    console.log("data")
+    console.log(JSON.stringify(chartExample2.data))
+    console.log("options")
     console.log(chartExample2.options)
 
+    const mock_data = {
+        labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+        datasets: [
+            {
+                label:"Refills ",
+                data:[25,20,30,22,17,29,0,0,0,0,0,0],
+                maxBarThickness:10,
+                backgroundColor:"#5E72E4",
+            },
+            {
+                label:"Predicted Refills ",
+                "data":[0,0,0,0,0,0,15,20,30,22,17,29],
+                "maxBarThickness":10
+            }
+        ],
+    }
 
   return (
     <>
@@ -63,7 +73,7 @@ function BarChart() {
         <CardContent>
           <Box position="relative" height="350px">
             <Bar
-                data={chartExample2.data}
+                data={mock_data}
                 options={chartExample2.options}
             />
           </Box>

@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Repository("DeviceRepo")
-public interface DeviceRepo extends Neo4jRepository< WaterSourceDevice, UUID> {
+@Repository("WaterSourceDeviceRepo")
+public interface WaterSourceDeviceRepo extends Neo4jRepository< WaterSourceDevice, UUID> {
 
     List<WaterSourceDevice> findWaterSourceDeviceByDeviceName(String deviceName);
 

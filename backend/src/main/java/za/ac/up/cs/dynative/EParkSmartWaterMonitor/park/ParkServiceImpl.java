@@ -84,13 +84,55 @@ public class ParkServiceImpl implements ParkService {
             Park park = parkRepo.findParkById(request.getParkId());
             if (park != null) {
                 response.setStatus(park);
+                response.setSuccess(true);
             }
         }
         return response;
     }
 
     @Override
+    public EditParkResponse editPark(EditParkRequest request)
+    {
+        Park park = parkRepo.findParkById(request.getParkId());
+
+        EditParkResponse response = new EditParkResponse();
+        if (park!=null)
+        {
+            if (!request.getParkName().equals(""))
+            {
+                park.setParkName(request.getParkName());
+            }
+            if (!request.getLatitude().equals(""))
+            {
+                park.setLatitude(Double.parseDouble(request.getLatitude()));
+            }
+            if (!request.getLongitude().equals(""))
+            {
+                park.setLongitude(Double.parseDouble(request.getLongitude()));
+            }
+
+            parkRepo.save(park);
+            response.setStatus("Park details changed.");
+            response.setSuccess(true);
+            return response;
+        }
+        else
+        {
+            response.setStatus("No park with that id exists.");
+            response.setSuccess(false);
+            return response;
+        }
+
+
+    }
+
+    @Override
     public FindByParkIdResponse findParkById(UUID parkId) {
         return new FindByParkIdResponse(true,parkRepo.findParkById(parkId));
+    }
+
+    @Override
+    public GetAllParksResponse getAllParks() {
+        return new GetAllParksResponse(parkRepo.getAllParks());
     }
 }

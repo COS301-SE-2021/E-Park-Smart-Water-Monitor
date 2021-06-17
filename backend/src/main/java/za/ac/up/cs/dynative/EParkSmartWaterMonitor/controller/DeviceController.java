@@ -7,10 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetParkDevicesRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.EditDeviceResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.DeleteUserRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +31,7 @@ public class DeviceController {
     public ResponseEntity<Object> receiveWaterDeviceData(@RequestBody ReceiveDeviceDataRequest request) {
         return new ResponseEntity<>(devicesService.receiveWaterDeviceData(request),HttpStatus.OK);
     }
+
     @GetMapping("/getDevice")
     public java.util.Collection<WaterSourceDevice> getDevice() {
         return devicesService.getAll();
@@ -52,13 +52,24 @@ public class DeviceController {
         return new ResponseEntity<>(devicesService.getNumDevices(getNumDevicesRequest),HttpStatus.OK);
     }
 
-    @PostMapping("/getParkDevices")
-    public ResponseEntity<Object> getNumDevices(@RequestBody GetParkDevicesRequest getParkDevicesRequest) {
-        return new ResponseEntity<>(devicesService.getParkDevices(getParkDevicesRequest),HttpStatus.OK);
+    @GetMapping("/getAllDevices")
+    public ResponseEntity<Object> getNumDevices() {
+        return new ResponseEntity<>(devicesService.getAllDevices(),HttpStatus.OK);
+    }
+
+    @PutMapping("/editDevice")
+    public ResponseEntity<Object> editDevice(@RequestBody EditDeviceRequest editDeviceRequest ) {
+        return new ResponseEntity<>(devicesService.editDevice(editDeviceRequest),HttpStatus.OK);
     }
 
     @GetMapping("/getById")
-    public Optional<WaterSourceDevice> getDeviceById() {
-        return devicesService.findDevice();
+    public ResponseEntity<Object> getDeviceById(@RequestBody FindDeviceRequest findDeviceRequest) {
+        return new ResponseEntity<>(devicesService.findDevice(findDeviceRequest),HttpStatus.OK);
     }
+
+    @PostMapping("/getDeviceData")
+    public ResponseEntity<Object> getDeviceData(@RequestBody GetDeviceDataRequest getDeviceDataRequest) {
+        return new ResponseEntity<>(devicesService.getDeviceData(getDeviceDataRequest),HttpStatus.OK);
+    }
+
 }
