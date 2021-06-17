@@ -11,7 +11,9 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.SMSRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.responses.EmailResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.responses.SMSResponse;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -35,7 +37,6 @@ public class NotificationServiceImpl implements NotificationService
 
         try {
             MimeMessagePreparator preparator = mimeMessage -> {
-
                 MimeMessageHelper message = new MimeMessageHelper(mimeMessage,
                         MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                         StandardCharsets.UTF_8.name());
@@ -88,5 +89,10 @@ public class NotificationServiceImpl implements NotificationService
             return new EmailResponse("Email failed to send successfully Details: "+exception.getMessage(),false);
 
         }
+    }
+
+    @Override
+    public SMSResponse sendSMS(SMSRequest smsRequest) {
+        return null;
     }
 }
