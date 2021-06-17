@@ -3,6 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.park;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.*;
@@ -24,19 +25,29 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public CreateParkResponse createPark(CreateParkRequest request) {
+    public CreateParkResponse createPark(CreateParkRequest request) throws InvalidRequestException {
 
         CreateParkResponse response = new CreateParkResponse();
         if (!request.getParkName().equals("")) {
+            //TODO: if the latitude and/or the longitude is not set throw an InvalidRequestException("Park location not specified.")
+            // NB the message must be exactly the same as the message currently in the example!
+            // See else for details on how to throw the exception
+
             Park park = new Park(request.getParkName(),request.getLatitude(),request.getLongitude());
             parkRepo.save(park);
 
             response.setStatus("Park "+request.getParkName()+" Added!");
             response.setSuccess(true);
+
+            //TODO: if the park name is already used throw an InvalidRequestException("Park name specified already exists!")
+            // NB the message must be exactly correct!!!
+            // See the else for details how to throw the Exception
+
         }
         else {
             response.setStatus("No Park Name specified!");
             response.setSuccess(false);
+            throw new InvalidRequestException("No park name specified!");
         }
         return response;
     }

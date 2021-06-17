@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.EditParkRequest;
@@ -24,7 +25,7 @@ public class ParkController {
     }
 
     @PostMapping("/addPark")
-    public ResponseEntity<Object> addPark(@RequestBody CreateParkRequest createParkRequest) {
+    public ResponseEntity<Object> addPark(@RequestBody CreateParkRequest createParkRequest) throws InvalidRequestException {
         return new ResponseEntity<>(parkService.createPark(createParkRequest), HttpStatus.OK);
     }
 
