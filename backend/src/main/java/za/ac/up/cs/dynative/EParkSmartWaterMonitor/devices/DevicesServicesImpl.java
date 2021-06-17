@@ -347,11 +347,6 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     @Override
-    public DeleteUserResponse deleteUser(DeleteUserRequest deleteUserRequest) {
-        return null;
-    }
-
-    @Override
     public GetAllDevicesResponse getAllDevices() {
         GetAllDevicesResponse response = new GetAllDevicesResponse();
 

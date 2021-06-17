@@ -72,8 +72,4 @@ public class DeviceController {
         return new ResponseEntity<>(devicesService.getDeviceData(getDeviceDataRequest),HttpStatus.OK);
     }
 
-    @PostMapping("/deleteUser")
-    public ResponseEntity<Object> deleteUser(@RequestBody DeleteUserRequest deleteUserRequest) {
-        return new ResponseEntity<>(devicesService.deleteUser(deleteUserRequest),HttpStatus.OK);
-    }
 }
