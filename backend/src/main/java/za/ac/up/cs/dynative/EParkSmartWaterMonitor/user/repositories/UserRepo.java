@@ -1,6 +1,8 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.repositories;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
+import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.stereotype.Repository;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
 
@@ -13,4 +15,7 @@ public interface UserRepo extends Neo4jRepository<User, UUID> {
     List<User> findUserByEmail(String email);
     User findUserById(UUID uuid);
     List<User> findUserByIdNumber(String idNumber);
+
+    @Query("match (u:User) return u")
+    List<User> getAllUsers();
 }
