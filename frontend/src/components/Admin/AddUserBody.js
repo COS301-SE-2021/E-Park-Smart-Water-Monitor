@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import componentStyles from "assets/theme/views/admin/admin";
-import "../../views/admin/modals/addUser.css";
+import "../../assets/css/addUser.css";
 import Select from 'react-select';
 // Be sure to include styles at some point, probably during your bootstrapping
 // import 'react-select/dist/react-select.css';
@@ -44,35 +44,30 @@ const AddUserBody = () => {
         { value: '7cf18c71-a31f-45db-8749-e7583a0beb9b', label: 'Demo Nature Reserve' },
     ];
 
-    let reload = false;
-
     const createUser = (e) => {
         e.preventDefault()
         let obj = {
-            parkId: park,
+            parkId: park.value,
             idNumber: idNumber,
             email: email,
             password: password,
             name: name,
             surname: surname,
             username: username,
-            role: role,
+            role: role.value,
             cellNumber: cellNumber
         }
 
-        axios.post('http://localhost:8080/api/user/createUser',
+        axios.post('http://localhost:8080/api/user/createUser', obj
         ).then((res)=>{
-            if(res)
-            {
-                console.log("added user good")
-                reload = true;
-            }
+
+                console.log("response:"+JSON.stringify(res))
+                window.location.reload()
+            
+        }).catch((res)=>{
+            console.log("response:"+JSON.stringify(res))
         });
     }
-
-    useEffect(() => {
-
-    }, [reload])
 
 
 
