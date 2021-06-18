@@ -65,18 +65,24 @@ public class UserServiceImpl implements UserService {
 
                     Park park = findByParkIdResponse.getPark();
 
-                    User user = new User(Long.parseLong(idNumber), email, name, surname, passwordEncoder.encode(password), username, role, park, cellNumber);
+                    if (park != null) {
+                        User user = new User(Long.parseLong(idNumber), email, name, surname, passwordEncoder.encode(password), username, role, park, cellNumber);
 
-                    userRepo.save(user);
+                        userRepo.save(user);
 
-                    response.setStatus("Successfully create user: "
-                            + name
-                            + " "
-                            + surname
-                            + " and added them to park: "
-                            + park.getParkName());
+                        response.setStatus("Successfully create user: "
+                                + name
+                                + " "
+                                + surname
+                                + " and added them to park: "
+                                + park.getParkName());
 
-                    response.setSuccess(true);
+                        response.setSuccess(true);
+                    }
+                    else {
+                        response.setSuccess(false);
+                        response.setStatus("No park with this id exists.");
+                    }
                 } else {
                     response.setSuccess(false);
                     response.setStatus("A user with this username already exists.");
