@@ -12,7 +12,7 @@ public class AddInspectionRequest {
 
     private UUID waterSiteId;
 
-    @JsonFormat(pattern = "yyyy/MM/dd", timezone = "Africa/Harare")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "Africa/Harare")
     private Date dateDue;
 
     private String description;
