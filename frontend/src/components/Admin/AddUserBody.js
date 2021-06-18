@@ -63,7 +63,7 @@ const AddUserBody = () => {
 
                 console.log("response:"+JSON.stringify(res))
                 window.location.reload()
-            
+
         }).catch((res)=>{
             console.log("response:"+JSON.stringify(res))
         });
