@@ -23,15 +23,15 @@ const useStyles = makeStyles(componentStyles);
 const AddUserBody = () => {
     const classes = useStyles();
     const theme = useTheme();
-    const [park, setPark] = useState('')
-    const [idNumber, setIDNumber] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [name, setName] = useState('')
-    const [surname, setSurname] = useState('')
-    const [username, setUsername] = useState('')
-    const [role, setRole] = useState('')
-    const [cellNumber, setCellNumber] = useState('')
+    const [park, setPark] = useState("")
+    const [idNumber, setIDNumber] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [name, setName] = useState("")
+    const [surname, setSurname] = useState("")
+    const [username, setUsername] = useState("")
+    const [role, setRole] = useState("Admin")
+    const [cellNumber, setCellNumber] = useState("")
 
     let userRoles = [
         { value: 'ADMIN', label: 'Admin' },
@@ -77,12 +77,24 @@ const AddUserBody = () => {
         <>
             <Form onSubmit={ createUser }>
                 <Row>
+                    <Row>
+                        <Col>
+                            <Form.Label>Role</Form.Label>
+                            <Select isClearable={true} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => setRole(e)}/>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Form.Label>Park</Form.Label>
+                            <Select isClearable={true} className="mb-3" name="park" options={ parkOptions } value={park} onChange={e => setPark(e)}/>
+                        </Col>
+                    </Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="email" >
                             <Form.Label>Email address</Form.Label>
                             <Form.Control type="email" placeholder="Enter email" name="email" value={email} onChange={e => setEmail(e.target.value)}/>
                             <Form.Text className="text-muted">
-                                Make sure their email is valid.
+                                An email will be sent to the user informing them of their registration on the system.
                             </Form.Text>
                         </Form.Group>
 
@@ -135,16 +147,7 @@ const AddUserBody = () => {
 
                     </Col>
                 </Row>
-                <Row>
-                    <Col>
-                        <Select className="mb-3" name="role" value="ADMIN" options={ userRoles } value={role} onChange={e => setRole(e.target.value)}/>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Select className="mb-3" name="park" value="2ea5ba27-9d8e-41a4-9628-485f0ae2fb57" options={ parkOptions } value={park} onChange={e => setPark(e.target.value)}/>
-                    </Col>
-                </Row>
+
 
 
                 <Button variant="primary" type="submit" >
