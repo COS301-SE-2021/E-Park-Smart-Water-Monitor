@@ -301,6 +301,7 @@ function LineChart() {
         return item.measurements[0].value
     })
 
+
     let y_axis = measurements.innerResponses.map((item)=>{
         let date = item.measurements[0].dateTime
         return `${date.substring(0,10)} ${date.substring(14,19)}`
@@ -315,6 +316,7 @@ function LineChart() {
                 data: x_axis,
                 borderColor: "#11CDEF",
                 backgroundColor: "#11CDEF",
+                fill:false
             // }, {
             //     type: 'line',
             //     label: 'Temperature',
@@ -324,6 +326,15 @@ function LineChart() {
             //     fill: false
              }
             ],
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }]
+                }
+            }
             // labels: ['January', 'February', 'March', 'April']
         }
     }
