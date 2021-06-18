@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, {useEffect, useState} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -31,7 +31,7 @@ const AddUserBody = () => {
     const [surname, setSurname] = useState('')
     const [username, setUsername] = useState('')
     const [role, setRole] = useState('')
-    const [sellNumber, setCellNumber] = useState('')
+    const [cellNumber, setCellNumber] = useState('')
 
     let userRoles = [
         { value: 'ADMIN', label: 'Admin' },
@@ -44,26 +44,32 @@ const AddUserBody = () => {
         { value: '7cf18c71-a31f-45db-8749-e7583a0beb9b', label: 'Demo Nature Reserve' },
     ];
 
+    let reload = false;
 
     const createUser = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:8080/api/user/createUser', {
-            parkId: park,
-            idNumber: idNumber,
-            email: email,
-            password: password,
-            name: name,
-            surname: surname,
-            username: username,
-            role: role,
-            cellNumber: cellNumber
-        }).then((res)=>{
-            if(res)
-            {
-
-            }
-        });
+        // axios.post('http://localhost:8080/api/user/createUser', {
+        //     parkId: park,
+        //     idNumber: idNumber,
+        //     email: email,
+        //     password: password,
+        //     name: name,
+        //     surname: surname,
+        //     username: username,
+        //     role: role,
+        //     cellNumber: cellNumber
+        // }
+        // ).then((res)=>{
+        //     if(res)
+        //     {
+        //         reload = true;
+        //     }
+        // });
     }
+
+    useEffect(() => {
+
+    }, [reload])
 
 
 
@@ -74,7 +80,7 @@ const AddUserBody = () => {
                     <Col>
                         <Form.Group className="mb-3" controlId="email" >
                             <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email" name="email" onChange={setEmail(e.target.value)}/>
+                            <Form.Control type="email" placeholder="Enter email" name="email" value={email} onChange={e => setEmail(e.target.value)}/>
                             <Form.Text className="text-muted">
                                 Make sure their email is valid.
                             </Form.Text>
@@ -82,7 +88,7 @@ const AddUserBody = () => {
 
                         <Form.Group className="mb-3" controlId="password">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" name="password"/>
+                            <Form.Control type="password" placeholder="Password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -90,14 +96,14 @@ const AddUserBody = () => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Firstname</Form.Label>
-                            <Form.Control type="text" placeholder="Firstname" name="firstname"/>
+                            <Form.Control type="text" placeholder="Firstname" name="name" value={name} onChange={e => setName(e.target.value)}/>
                         </Form.Group>
 
                     </Col>
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Surname</Form.Label>
-                            <Form.Control type="text" placeholder="Surname" name="surname"/>
+                            <Form.Control type="text" placeholder="Surname" name="surname" value={surname} onChange={e => setSurname(e.target.value)}/>
                         </Form.Group>
 
                     </Col>
@@ -106,7 +112,7 @@ const AddUserBody = () => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Nation Identification Number</Form.Label>
-                            <Form.Control type="text" placeholder="ID Number" name="id_number"/>
+                            <Form.Control type="text" placeholder="ID Number" name="id_number" value={idNumber} onChange={e => setIDNumber(e.target.value)}/>
                         </Form.Group>
 
                     </Col>
@@ -116,7 +122,7 @@ const AddUserBody = () => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Cell Number</Form.Label>
-                            <Form.Control type="text" placeholder="Cell Number" name="cell_number"/>
+                            <Form.Control type="text" placeholder="Cell Number" name="cell_number" value={cellNumber} onChange={e => setCellNumber(e.target.value)}/>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -124,19 +130,19 @@ const AddUserBody = () => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Username</Form.Label>
-                            <Form.Control type="text" placeholder="Username" name="username"/>
+                            <Form.Control type="text" placeholder="Username" name="username" value={username} onChange={e => setUsername(e.target.value)}/>
                         </Form.Group>
 
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <Select className="mb-3" name="role" value="ADMIN" options={ userRoles } />
+                        <Select className="mb-3" name="role" value="ADMIN" options={ userRoles } value={role} onChange={e => setRole(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <Select className="mb-3" name="park" value="2ea5ba27-9d8e-41a4-9628-485f0ae2fb57" options={ parkOptions } />
+                        <Select className="mb-3" name="park" value="2ea5ba27-9d8e-41a4-9628-485f0ae2fb57" options={ parkOptions } value={park} onChange={e => setPark(e.target.value)}/>
                     </Col>
                 </Row>
 
