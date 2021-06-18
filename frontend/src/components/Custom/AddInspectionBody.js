@@ -16,7 +16,7 @@ const AddInspectionBody = () => {
     const theme = useTheme();
 
     const [device, setDevice] = useState("")
-    const [site, setSite] = useState("")
+    const [site, setSite] = useState("91d05eb1-2a35-4e44-9726-631d83121edb")
     const [description, setDescription] = useState("")
     const [date, setDate] = useState(null)
 
@@ -63,10 +63,10 @@ const AddInspectionBody = () => {
                     <Form.Control type="text" placeholder="Enter device id" onChange={selectDevice}/>
                 </Form.Group>
 
-                <Form.Group controlId="formBasicPassword">
+                {/* <Form.Group controlId="formBasicPassword">
                     <Form.Label>Site</Form.Label>
                     <Form.Control type="text" placeholder="Enter a site id" onChange={selectSite}/>
-                </Form.Group>
+                </Form.Group> */}
 
                 <Form.Group controlId="formBasicPassword">
                     <Form.Label>Description</Form.Label>

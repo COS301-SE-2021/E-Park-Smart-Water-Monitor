@@ -17,7 +17,7 @@ import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
 import Modal from "../../views/admin/modals/Modal";
-import AddUserBody from "./AddUserBody";
+import axios from "axios";
 import AddInspectionBody from "./AddInspectionBody";
 // import disableScroll from 'disable-scroll';
 
@@ -31,10 +31,17 @@ const InspectionTable = () => {
     const theme = useTheme();
     const [show, setShow] = useState(false);
 
-    // useEffect(() => {
-    //     if (show == true) disableScroll.on()
-    //     if (show == false) disableScroll.off()
-    // }, [show])
+    const [inspections, setInspections] = useState([])
+
+    useEffect(() => {
+        axios.post('http://localhost:8080/api/inspections/getSiteInspections', {
+            siteId: "91d05eb1-2a35-4e44-9726-631d83121edb"
+        }).then((res) => {
+            if (res.data) {
+            setInspections(res.data.inspectionList)
+            }
+        })
+      }, [])
 
     return (
         <>
@@ -106,27 +113,27 @@ const InspectionTable = () => {
                                                         classes.tableCellRootHead,
                                                 }}
                                             >
-                                                Device
-                                            </TableCell>
-                                            <TableCell
-                                                classes={{
-                                                    root:
-                                                        classes.tableCellRoot +
-                                                        " " +
-                                                        classes.tableCellRootHead,
-                                                }}
-                                            >
-                                                Site
-                                            </TableCell>
-                                            <TableCell
-                                                classes={{
-                                                    root:
-                                                        classes.tableCellRoot +
-                                                        " " +
-                                                        classes.tableCellRootHead,
-                                                }}
-                                            >
                                                 Due Date
+                                            </TableCell>
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
+                                                Status
+                                            </TableCell>
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
+                                                Description
                                             </TableCell>
                                             <TableCell
                                                 classes={{
@@ -151,49 +158,29 @@ const InspectionTable = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-
-
-                                        {/*default values:*/}
-                                        <TableRow>
-                                            <TableCell
-                                                classes={{
-                                                    root:
-                                                        classes.tableCellRoot +
-                                                        " " +
-                                                        classes.tableCellRootBodyHead,
-                                                }}
-                                                scope="row"
-                                                style={{verticalAlign:'middle',width:'25%'}}
-                                            >
-                                                Water1000
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}
-                                                       style={{verticalAlign:'middle',width:'20%'}}>
-                                                Rietvlei
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}
-                                                       style={{verticalAlign:'middle',width:'34%'}}>
-                                                02/06/2021
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}
-                                                       style={{verticalAlign:'middle'}}>
-                                                <Button
-                                                    size="small"
+                                        {inspections.map((inspection) => (
+                                            <TableRow key={inspection.id}>
+                                                <TableCell
+                                                    classes={{
+                                                        root:
+                                                            classes.tableCellRoot +
+                                                            " " +
+                                                            classes.tableCellRootBodyHead,
+                                                    }}
+                                                    component="th"
+                                                    variant="head"
+                                                    scope="row"
                                                 >
-                                                    Edit
-                                                </Button>
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}
-                                                       style={{verticalAlign:'middle'}}>
-                                                <Button
-                                                    size="small"
-                                                >
-                                                    Remove
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
-
-
+                                                    { inspection.dateDue }
+                                                </TableCell>
+                                                <TableCell classes={{ root: classes.tableCellRoot }}>
+                                                    { inspection.status }
+                                                </TableCell>
+                                                <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
+                                                    { inspection.description }%
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
                                     </TableBody>
                                 </Box>
                             </TableContainer>
