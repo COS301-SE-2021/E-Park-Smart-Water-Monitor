@@ -67,4 +67,8 @@ public class Inspection {
     public Date getDateDue() { return this.dateDue; }
 
     public void setDateDue(Date dateDue) { this.dateDue = dateDue; }
+
+    public String getDescription() { return description; }
+
+    public void setDescription(String description) { this.description = description; }
 }
