@@ -18,6 +18,7 @@ import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
 import Modal from "../Modals/Modal";
 import AddUserBody from "./AddUserBody";
+import axios from "axios";
 // import disableScroll from 'disable-scroll';
 
 // import AdminModal from 'admin-modal'
@@ -29,11 +30,77 @@ const UserTable = () => {
     const classes = useStyles();
     const theme = useTheme();
     const [show, setShow] = useState(false);
+    const [response, setResponse] = useState([]);
 
     // useEffect(() => {
     //     if (show == true) disableScroll.on()
     //     if (show == false) disableScroll.off()
     // }, [show])
+
+
+    // on delete of a user
+    const removeUser = (id) => {
+        return ()=>{
+            axios.get('http://localhost:8080/api/user/deleteUser', {
+                id: id
+            }).then((res)=> {
+                alert("deleted: "+id)
+            })
+
+            window.location.reload()
+        }
+
+    }
+
+    useEffect(() => {
+        // get all users
+        axios.get('http://localhost:8080/api/user/getAllUsers').then((res)=>{
+            console.log("res: "+JSON.stringify(res))
+            const m = res.data.allUsers.map((user) =>
+                <TableRow>
+                    <TableCell
+                        classes={{
+                            root:
+                                classes.tableCellRoot +
+                                " " +
+                                classes.tableCellRootBodyHead,
+                        }}
+                        scope="row"
+                        style={{verticalAlign:'middle',width:'25%'}}
+                    >
+                        { `${user.name} ${user.surname}` }
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle',width:'20%'}}>
+                        { user.role }
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle',width:'34%'}}>
+                        { user.park }
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle'}}>
+                        <Button
+                            size="small"
+                        >
+                            Edit
+                        </Button>
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle'}}>
+                        <Button
+                            size="small"
+                            onClick={ removeUser(user.id) }
+                        >
+                            Remove
+                        </Button>
+                    </TableCell>
+                </TableRow>
+            );
+            setResponse(m);
+        });
+
+    },[])
 
     return (
         <>
@@ -152,45 +219,7 @@ const UserTable = () => {
                                     <TableBody>
 
 
-                                        {/*default values:*/}
-                                        <TableRow>
-                                            <TableCell
-                                                classes={{
-                                                    root:
-                                                        classes.tableCellRoot +
-                                                        " " +
-                                                        classes.tableCellRootBodyHead,
-                                                }}
-                                                scope="row"
-                                                style={{verticalAlign:'middle',width:'25%'}}
-                                            >
-                                                Jane Doe
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}
-                                                       style={{verticalAlign:'middle',width:'20%'}}>
-                                                Ranger
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}
-                                                       style={{verticalAlign:'middle',width:'34%'}}>
-                                                Riet Vlei
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}
-                                                       style={{verticalAlign:'middle'}}>
-                                                <Button
-                                                    size="small"
-                                                >
-                                                    Edit
-                                                </Button>
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}
-                                                       style={{verticalAlign:'middle'}}>
-                                                <Button
-                                                    size="small"
-                                                >
-                                                    Remove
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
+                                        {response}
 
 
                                     </TableBody>
