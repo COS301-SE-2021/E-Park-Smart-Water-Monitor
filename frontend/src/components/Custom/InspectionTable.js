@@ -18,6 +18,7 @@ import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
 import Modal from "../../views/admin/modals/Modal";
 import AddUserBody from "./AddUserBody";
+import AddInspectionBody from "./AddInspectionBody";
 // import disableScroll from 'disable-scroll';
 
 // import AdminModal from 'admin-modal'
@@ -43,8 +44,8 @@ const InspectionTable = () => {
                 marginTop="-6rem"
                 classes={{ root: classes.containerRoot }}
             >
-                <Modal title="Add User" onClose={() => setShow(false)} show={show}>
-                    <AddUserBody/>
+                <Modal title="Add Inspection" onClose={() => setShow(false)} show={show}>
+                    <AddInspectionBody/>
                 </Modal>
 
                 <Grid container component={Box} marginTop="3rem">
