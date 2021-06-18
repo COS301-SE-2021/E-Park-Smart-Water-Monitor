@@ -48,7 +48,7 @@ const AddUserBody = () => {
 
     const createUser = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:8080/api/user/createUser', {
+        let obj = {
             parkId: park,
             idNumber: idNumber,
             email: email,
@@ -59,9 +59,12 @@ const AddUserBody = () => {
             role: role,
             cellNumber: cellNumber
         }
+
+        axios.post('http://localhost:8080/api/user/createUser',
         ).then((res)=>{
             if(res)
             {
+                console.log("added user good")
                 reload = true;
             }
         });
@@ -77,22 +80,22 @@ const AddUserBody = () => {
         <>
             <Form onSubmit={ createUser }>
                 <Row>
-                    <Row>
-                        <Col>
-                            <Form.Label>Role</Form.Label>
-                            <Select isClearable={true} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => setRole(e)}/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Form.Label>Park</Form.Label>
-                            <Select isClearable={true} className="mb-3" name="park" options={ parkOptions } value={park} onChange={e => setPark(e)}/>
-                        </Col>
-                    </Row>
+                    <Col>
+                        <Form.Label>Role</Form.Label>
+                        <Select required={"required"} isClearable={true} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => setRole(e)}/>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Form.Label>Park</Form.Label>
+                        <Select required={"required"} isClearable={true} className="mb-3" name="park" options={ parkOptions } value={park} onChange={e => setPark(e)}/>
+                    </Col>
+                </Row>
+                <Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="email" >
                             <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email" name="email" value={email} onChange={e => setEmail(e.target.value)}/>
+                            <Form.Control required={"required"} type="email" placeholder="Enter email" name="email" value={email} onChange={e => setEmail(e.target.value)}/>
                             <Form.Text className="text-muted">
                                 An email will be sent to the user informing them of their registration on the system.
                             </Form.Text>
@@ -100,7 +103,7 @@ const AddUserBody = () => {
 
                         <Form.Group className="mb-3" controlId="password">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
+                            <Form.Control required={"required"} type="password" placeholder="Password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -108,14 +111,14 @@ const AddUserBody = () => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Firstname</Form.Label>
-                            <Form.Control type="text" placeholder="Firstname" name="name" value={name} onChange={e => setName(e.target.value)}/>
+                            <Form.Control required={"required"} type="text" placeholder="Firstname" name="name" value={name} onChange={e => setName(e.target.value)}/>
                         </Form.Group>
 
                     </Col>
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Surname</Form.Label>
-                            <Form.Control type="text" placeholder="Surname" name="surname" value={surname} onChange={e => setSurname(e.target.value)}/>
+                            <Form.Control required={"required"} type="text" placeholder="Surname" name="surname" value={surname} onChange={e => setSurname(e.target.value)}/>
                         </Form.Group>
 
                     </Col>
@@ -124,7 +127,7 @@ const AddUserBody = () => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Nation Identification Number</Form.Label>
-                            <Form.Control type="text" placeholder="ID Number" name="id_number" value={idNumber} onChange={e => setIDNumber(e.target.value)}/>
+                            <Form.Control required={"required"} type="text" placeholder="ID Number" name="id_number" value={idNumber} onChange={e => setIDNumber(e.target.value)}/>
                         </Form.Group>
 
                     </Col>
@@ -134,7 +137,7 @@ const AddUserBody = () => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Cell Number</Form.Label>
-                            <Form.Control type="text" placeholder="Cell Number" name="cell_number" value={cellNumber} onChange={e => setCellNumber(e.target.value)}/>
+                            <Form.Control required={"required"} type="text" placeholder="Cell Number" name="cell_number" value={cellNumber} onChange={e => setCellNumber(e.target.value)}/>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -142,7 +145,7 @@ const AddUserBody = () => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Username</Form.Label>
-                            <Form.Control type="text" placeholder="Username" name="username" value={username} onChange={e => setUsername(e.target.value)}/>
+                            <Form.Control required={"required"} type="text" placeholder="Username" name="username" value={username} onChange={e => setUsername(e.target.value)}/>
                         </Form.Group>
 
                     </Col>
