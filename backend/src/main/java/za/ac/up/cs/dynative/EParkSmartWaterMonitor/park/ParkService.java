@@ -12,7 +12,7 @@ public interface ParkService {
     CreateParkResponse createPark(CreateParkRequest request) throws InvalidRequestException;
     FindByParkNameResponse findParkByName(FindByParkNameRequest request) throws InvalidRequestException;
     SaveParkResponse savePark(SaveParkRequest request);
-    GetParkSitesResponse getParkWaterSites(GetParkSitesRequest getParkSitesRequest);
+    GetParkSitesResponse getParkWaterSites(GetParkSitesRequest getParkSitesRequest) throws InvalidRequestException;
     FindByParkIdResponse findByParkId(FindByParkIdRequest findByParkIdRequest) throws InvalidRequestException;
     EditParkResponse editPark(EditParkRequest request);
     FindByParkIdResponse findParkById(UUID parkId);

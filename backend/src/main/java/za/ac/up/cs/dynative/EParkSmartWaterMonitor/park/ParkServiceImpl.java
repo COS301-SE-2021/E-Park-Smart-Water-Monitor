@@ -75,7 +75,7 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public GetParkSitesResponse getParkWaterSites(GetParkSitesRequest request) {
+    public GetParkSitesResponse getParkWaterSites(GetParkSitesRequest request) throws InvalidRequestException {
         GetParkSitesResponse response = new GetParkSitesResponse();
         if (request.getParkId() != null) {
             Park park = parkRepo.findParkById(request.getParkId());
@@ -83,11 +83,14 @@ public class ParkServiceImpl implements ParkService {
                 response.setSite(park.getParkWaterSites());
                 response.setSuccess(true);
                 response.setStatus("Park Sites and their IoT devices");
+            }else{
+                throw new InvalidRequestException("Park not present");
             }
         }
         else {
             response.setStatus("Failed to the sites!");
             response.setSuccess(false);
+            throw new InvalidRequestException("No ID provided");
         }
         return response;
     }

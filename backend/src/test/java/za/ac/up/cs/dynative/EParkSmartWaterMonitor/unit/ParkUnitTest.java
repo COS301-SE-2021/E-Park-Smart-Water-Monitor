@@ -120,7 +120,7 @@ public class ParkUnitTest extends UnitTestBaseClass {
     }
 
     @Test
-    public void testGetParkWaterSites() throws JsonProcessingException {
+    public void testGetParkWaterSites() throws JsonProcessingException, InvalidRequestException {
         LOGGER.info("Testing GetParkSitesRequest construction");
 
         UUID parkId = UUID.randomUUID();
