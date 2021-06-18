@@ -23,27 +23,40 @@ const useStyles = makeStyles(componentStyles);
 const AddUserBody = () => {
     const classes = useStyles();
     const theme = useTheme();
+    const [park, setPark] = useState('')
+    const [idNumber, setIDNumber] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [name, setName] = useState('')
+    const [surname, setSurname] = useState('')
+    const [username, setUsername] = useState('')
+    const [role, setRole] = useState('')
+    const [sellNumber, setCellNumber] = useState('')
 
-    let parkOptions = [
-        { value: 'one', label: 'One' },
-        { value: 'two', label: 'Two' }
+    let userRoles = [
+        { value: 'ADMIN', label: 'Admin' },
+        { value: 'FIELD_ENGINEER', label: 'Field Engineer' },
+        { value: 'RANGER', label: 'Ranger' }
     ];
 
-    const logChange = () =>{
-        "heyo"
-    }
+    let parkOptions = [
+        { value: '2ea5ba27-9d8e-41a4-9628-485f0ae2fb57', label: 'Rietvlei Nature Reserve' },
+        { value: '7cf18c71-a31f-45db-8749-e7583a0beb9b', label: 'Demo Nature Reserve' },
+    ];
 
-    const handleSubmit = () => {
-        axios.post('http://localhost:8080/api/park/getParkWaterSites', {
-            parkId: "b026bea2-17a4-4939-bbbb-80916d8cf44e",
-            idNumber: "9871233577123",
-            email: "dynative@gmail.com",
-            password: "dynative",
-            name: "team",
-            surname: "dynative",
-            username: "ETOSHA-ENGINEER",
-            role: "FIELD_ENGINEER",
-            cellNumber: "0125643466"
+
+    const createUser = (e) => {
+        e.preventDefault()
+        axios.post('http://localhost:8080/api/user/createUser', {
+            parkId: park,
+            idNumber: idNumber,
+            email: email,
+            password: password,
+            name: name,
+            surname: surname,
+            username: username,
+            role: role,
+            cellNumber: cellNumber
         }).then((res)=>{
             if(res)
             {
@@ -52,46 +65,48 @@ const AddUserBody = () => {
         });
     }
 
+
+
     return (
         <>
-            <Form>
+            <Form onSubmit={ createUser }>
                 <Row>
                     <Col>
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Group className="mb-3" controlId="email" >
                             <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" placeholder="Enter email" />
+                            <Form.Control type="email" placeholder="Enter email" name="email" onChange={setEmail(e.target.value)}/>
                             <Form.Text className="text-muted">
                                 Make sure their email is valid.
                             </Form.Text>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Group className="mb-3" controlId="password">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="Password" />
+                            <Form.Control type="password" placeholder="Password" name="password"/>
                         </Form.Group>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <Form.Group className="mb-3" controlId="formBasicName">
+                        <Form.Group className="mb-3" >
                             <Form.Label>Firstname</Form.Label>
-                            <Form.Control type="text" placeholder="Firstname" />
+                            <Form.Control type="text" placeholder="Firstname" name="firstname"/>
                         </Form.Group>
 
                     </Col>
                     <Col>
-                        <Form.Group className="mb-3" controlId="formBasicName">
+                        <Form.Group className="mb-3" >
                             <Form.Label>Surname</Form.Label>
-                            <Form.Control type="text" placeholder="Surname" />
+                            <Form.Control type="text" placeholder="Surname" name="surname"/>
                         </Form.Group>
 
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <Form.Group className="mb-3" controlId="formBasicName">
+                        <Form.Group className="mb-3" >
                             <Form.Label>Nation Identification Number</Form.Label>
-                            <Form.Control type="text" placeholder="ID Number" />
+                            <Form.Control type="text" placeholder="ID Number" name="id_number"/>
                         </Form.Group>
 
                     </Col>
@@ -99,37 +114,34 @@ const AddUserBody = () => {
 
                 <Row>
                     <Col>
-                        <Form.Group className="mb-3" controlId="formBasicName">
+                        <Form.Group className="mb-3" >
                             <Form.Label>Cell Number</Form.Label>
-                            <Form.Control type="text" placeholder="Cell Number" />
+                            <Form.Control type="text" placeholder="Cell Number" name="cell_number"/>
                         </Form.Group>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <Form.Group className="mb-3" controlId="formBasicName">
+                        <Form.Group className="mb-3" >
                             <Form.Label>Username</Form.Label>
-                            <Form.Control type="text" placeholder="Username" />
+                            <Form.Control type="text" placeholder="Username" name="username"/>
                         </Form.Group>
 
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        {/*<div key={`default`} className="mb-3">*/}
-                        {/*    <Form.Label>Park</Form.Label>*/}
-                        {/*    <Form.Check*/}
-                        {/*        type={'radio'}*/}
-                        {/*        id={``}*/}
-                        {/*        label={`default `}*/}
-                        {/*    />*/}
-                        {/*</div>*/}
-                        <Select name="form-field-name" value="one" options={parkOptions} onChange={logChange}/>
+                        <Select className="mb-3" name="role" value="ADMIN" options={ userRoles } />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Select className="mb-3" name="park" value="2ea5ba27-9d8e-41a4-9628-485f0ae2fb57" options={ parkOptions } />
                     </Col>
                 </Row>
 
 
-                <Button variant="primary" type="submit"  onClick={handleSubmit}>
+                <Button variant="primary" type="submit" >
                     Submit
                 </Button>
             </Form>
