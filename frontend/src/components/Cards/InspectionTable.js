@@ -19,51 +19,8 @@ import "../../index.css"
 
 const useStyles = makeStyles(componentStyles);
 
-function InspectionTable(props) {
+function InspectionTable({ inspections }) {
   const classes = useStyles();
-  const [response, setResponse] = useState(null)
-
-    const handleDeviceSelection = (device_id) => {
-        // so that it doesn't run on render
-        return function () {
-            props.onSelectDevice(device_id);
-        }
-    }
-
-    useEffect(() => {
-        if(props.devices)
-        {
-            const m = props.devices.map((device) =>
-                <TableRow key={device.deviceName} onClick={handleDeviceSelection(device.deviceId)}>
-                    <TableCell
-                        classes={{
-                            root:
-                                classes.tableCellRoot +
-                                " " +
-                                classes.tableCellRootBodyHead,
-                        }}
-                        component="th"
-                        variant="head"
-                        scope="row"
-                    >
-                        { device.deviceName }
-                    </TableCell>
-
-                    <TableCell classes={{ root: classes.tableCellRoot }}>
-                        { device.deviceData.deviceStatus }
-                    </TableCell>
-                    <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
-                        { device.deviceData.battery }%
-                    </TableCell>
-                </TableRow>
-
-
-            );
-            setResponse(m);
-        }else{
-            console.log("no device prop added")
-        }
-    },[props.devices])
 
   return (
     <>
@@ -86,7 +43,7 @@ function InspectionTable(props) {
                                 variant="h3"
                                 marginBottom="0!important"
                             >
-                                Device Details
+                                Inspections
                             </Box>
                         </Grid>
                         <Grid item xs="auto">
@@ -119,7 +76,7 @@ function InspectionTable(props) {
                                             classes.tableCellRootHead,
                                     }}
                                 >
-                                    Device Name
+                                    Due Date
                                 </TableCell>
                                 <TableCell
                                     classes={{
@@ -139,13 +96,34 @@ function InspectionTable(props) {
                                             classes.tableCellRootHead,
                                     }}
                                 >
-                                    Battery Level
+                                    Description
                                 </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            { response }
-                            { response }
+                            {inspections.map((inspection) => (
+                                <TableRow key={inspection.id}>
+                                    <TableCell
+                                        classes={{
+                                            root:
+                                                classes.tableCellRoot +
+                                                " " +
+                                                classes.tableCellRootBodyHead,
+                                        }}
+                                        component="th"
+                                        variant="head"
+                                        scope="row"
+                                    >
+                                        { inspection.dateDue }
+                                    </TableCell>
+                                    <TableCell classes={{ root: classes.tableCellRoot }}>
+                                        { inspection.status }
+                                    </TableCell>
+                                    <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
+                                        { inspection.description }%
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                         </TableBody>
                     </Box>
                 </TableContainer>
