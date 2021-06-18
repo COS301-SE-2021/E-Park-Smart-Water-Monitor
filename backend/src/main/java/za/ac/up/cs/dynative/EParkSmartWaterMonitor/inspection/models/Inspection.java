@@ -15,6 +15,8 @@ public class Inspection {
     @Relationship(type = "PERFORMED_ON", direction = Relationship.Direction.OUTGOING)
     private WaterSourceDevice device;
 
+    private UUID deviceId;
+
     private UUID waterSiteId;
 
     private Date dateCreated;
@@ -71,4 +73,20 @@ public class Inspection {
     public String getDescription() { return description; }
 
     public void setDescription(String description) { this.description = description; }
+
+    public UUID getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(UUID deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public UUID getWaterSiteId() {
+        return waterSiteId;
+    }
+
+    public void setWaterSiteId(UUID waterSiteId) {
+        this.waterSiteId = waterSiteId;
+    }
 }
