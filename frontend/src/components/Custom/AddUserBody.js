@@ -48,23 +48,23 @@ const AddUserBody = () => {
 
     const createUser = (e) => {
         e.preventDefault()
-        // axios.post('http://localhost:8080/api/user/createUser', {
-        //     parkId: park,
-        //     idNumber: idNumber,
-        //     email: email,
-        //     password: password,
-        //     name: name,
-        //     surname: surname,
-        //     username: username,
-        //     role: role,
-        //     cellNumber: cellNumber
-        // }
-        // ).then((res)=>{
-        //     if(res)
-        //     {
-        //         reload = true;
-        //     }
-        // });
+        axios.post('http://localhost:8080/api/user/createUser', {
+            parkId: park,
+            idNumber: idNumber,
+            email: email,
+            password: password,
+            name: name,
+            surname: surname,
+            username: username,
+            role: role,
+            cellNumber: cellNumber
+        }
+        ).then((res)=>{
+            if(res)
+            {
+                reload = true;
+            }
+        });
     }
 
     useEffect(() => {
