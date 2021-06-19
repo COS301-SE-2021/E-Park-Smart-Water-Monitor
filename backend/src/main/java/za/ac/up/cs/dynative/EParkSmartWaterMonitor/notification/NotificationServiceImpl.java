@@ -53,7 +53,8 @@ public class NotificationServiceImpl implements NotificationService
     public EmailResponse sendMail(EmailRequest eMailRequest) {
 
         try {
-            MimeMessagePreparator preparator = mimeMessage -> {
+            MimeMessagePreparator preparator = mimeMessage ->
+            {
                 MimeMessageHelper message = new MimeMessageHelper(mimeMessage,
                         MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                         StandardCharsets.UTF_8.name());
@@ -158,7 +159,7 @@ public class NotificationServiceImpl implements NotificationService
             PhoneNumber to;
 
             for (int i = 0; i < recipients.size(); i++) {
-                to = new PhoneNumber("+270798936963");
+                to = new PhoneNumber(recipients.get(i).getCellNumber());
                 messageCreator = Message.creator(to, from,"E-Park System: \nHi "+recipients.get(i).getName()+", \n" +smsRequest.getMessage());
                 messageCreator.create();
             }
@@ -167,16 +168,4 @@ public class NotificationServiceImpl implements NotificationService
 
     }
 
-
-    @Override
-    public void sendSMS() {
-
-
-        PhoneNumber to = new PhoneNumber("+270798936963");
-        PhoneNumber from = new PhoneNumber(twilioConfig.getNumber());
-        String message = "Hey \nHazit ? :3 ";
-        MessageCreator messageCreator = Message.creator(to,from,message);
-        messageCreator.create();
-
-    }
 }

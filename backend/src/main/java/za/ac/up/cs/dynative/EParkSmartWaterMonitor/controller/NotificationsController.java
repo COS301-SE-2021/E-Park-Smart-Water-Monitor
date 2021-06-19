@@ -34,9 +34,8 @@ public class NotificationsController
     }
 
     @PostMapping("/sms")
-    public  ResponseEntity<Object> sendSMS(@RequestBody SMSRequest smsRequest) //TODO
+    public  ResponseEntity<Object> sendSMS(@RequestBody SMSRequest smsRequest)
     {
-//
         return new ResponseEntity<>(notificationService.sendSMS(smsRequest), HttpStatus.OK);
 
     }
