@@ -32,24 +32,15 @@ const UserTable = () => {
     const [show, setShow] = useState(false);
     const [response, setResponse] = useState([]);
 
-    // useEffect(() => {
-    //     if (show == true) disableScroll.on()
-    //     if (show == false) disableScroll.off()
-    // }, [show])
-
-
     // on delete of a user
     const removeUser = (id) => {
         return ()=>{
             axios.get('http://localhost:8080/api/user/deleteUser', {
                 id: id
             }).then((res)=> {
-                alert("deleted: "+id)
+                window.location.reload()
             })
-
-            window.location.reload()
         }
-
     }
 
     useEffect(() => {
@@ -172,7 +163,7 @@ const UserTable = () => {
                                                         classes.tableCellRootHead,
                                                 }}
                                             >
-                                                User Name
+                                                Name
                                             </TableCell>
                                             <TableCell
                                                 classes={{
