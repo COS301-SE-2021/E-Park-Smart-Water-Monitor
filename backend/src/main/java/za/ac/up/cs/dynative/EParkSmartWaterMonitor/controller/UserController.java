@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) throws InvalidRequestException {
         return new ResponseEntity<>(userService.loginUser(loginRequest), HttpStatus.OK);
     }
 

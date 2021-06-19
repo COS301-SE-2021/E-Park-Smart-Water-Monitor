@@ -13,7 +13,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.LoginResponse;
 public interface UserService {
     CreateUserResponse createUser(CreateUserRequest request) throws InvalidRequestException;
     EditUserResponse editUser(EditUserRequest request);
-    LoginResponse loginUser(LoginRequest request);
+    LoginResponse loginUser(LoginRequest request) throws InvalidRequestException;
     GetAllUsersResponse getAllUsers();
     User findUserByUserName(String username);
 }
