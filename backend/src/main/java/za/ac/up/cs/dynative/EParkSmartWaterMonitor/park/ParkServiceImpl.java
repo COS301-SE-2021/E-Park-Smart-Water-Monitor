@@ -30,9 +30,9 @@ public class ParkServiceImpl implements ParkService {
         CreateParkResponse response = new CreateParkResponse();
         if (!request.getParkName().equals("")) {
 
-            //TODO: if the park name is already used throw an InvalidRequestException("Park name specified already exists!")
-            // NB the message must be exactly correct!!!
-            // See the else for details how to throw the Exception
+            if (parkRepo.findParkByParkName(request.getParkName())!=null){
+                throw new InvalidRequestException("Park name specified already exists!");
+            }
 
             Park park = new Park(request.getParkName(),request.getLatitude(),request.getLongitude());
             parkRepo.save(park);
