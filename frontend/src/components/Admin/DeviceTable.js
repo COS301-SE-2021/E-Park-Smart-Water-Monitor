@@ -46,7 +46,7 @@ const DeviceTable = () => {
         // get all users
         axios.get('http://localhost:8080/api/devices/getAllDevices').then((res)=>{
             alert("res: "+JSON.stringify(res))
-            const m = res.data.allDevices.map((device) =>
+            const m = res.data.site.map((device) =>
                 <TableRow>
                     <TableCell
                         classes={{
@@ -58,7 +58,7 @@ const DeviceTable = () => {
                         style={{verticalAlign: 'middle', width: '80%'}}
                         scope="row"
                     >
-                        { device.name }
+                        { device.deviceName }
                     </TableCell>
                     <TableCell classes={{root: classes.tableCellRoot}}
                                style={{verticalAlign: 'middle'}}>
