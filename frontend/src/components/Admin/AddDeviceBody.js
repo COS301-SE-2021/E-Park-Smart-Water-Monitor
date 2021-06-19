@@ -107,7 +107,7 @@ const AddDeviceBody = () => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Latitude</Form.Label>
-                            <Form.Control required={"required"} type="text" placeholder="latitude" name="latitude" value={latitude} onChange={e => setLatitude(e.target.value)}/>
+                            <Form.Control required={"required"} type="number" step={0.001} placeholder="latitude" name="latitude" value={latitude} onChange={e => setLatitude(e.target.value)}/>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -115,10 +115,12 @@ const AddDeviceBody = () => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Longitude</Form.Label>
-                            <Form.Control required={"required"} type="text" placeholder="longitude" name="longitude" value={longitude} onChange={e => setLongitude(e.target.value)}/>
+                            <Form.Control required={"required"} type="number" step={0.001} placeholder="longitude" name="longitude" value={longitude} onChange={e => setLongitude(e.target.value)}/>
                         </Form.Group>
                     </Col>
                 </Row>
+
+                
 
 
                 <Button background-color="primary" variant="primary" type="submit">

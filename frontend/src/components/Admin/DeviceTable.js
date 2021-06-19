@@ -82,10 +82,10 @@ const DeviceTable = () => {
 
     },[])
 
-    useEffect(() => {
-        if (show == true) disableScroll.on()
-        if (show == false) disableScroll.off()
-    }, [show])
+    // useEffect(() => {
+    //     if (show == true) disableScroll.on()
+    //     if (show == false) disableScroll.off()
+    // }, [show])
 
 
     return (

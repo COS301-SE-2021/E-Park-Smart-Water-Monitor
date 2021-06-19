@@ -30,10 +30,10 @@ const ParkTable = () => {
     const [show, setShow] = useState(false);
     const [response, setResponse] = useState(false);
 
-    useEffect(() => {
-        if (show == true) disableScroll.on()
-        if (show == false) disableScroll.off()
-    }, [show])
+    // useEffect(() => {
+    //     if (show == true) disableScroll.on()
+    //     if (show == false) disableScroll.off()
+    // }, [show])
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/park/getAllParks').then((res)=>{
