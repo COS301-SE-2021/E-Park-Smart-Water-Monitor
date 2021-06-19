@@ -55,7 +55,7 @@ const AddUserBody = () => {
             surname: surname,
             username: username,
             role: role.value,
-            cellNumber: cellNumber
+            cellNumber: `+27${cellNumber}`
         }
 
         axios.post('http://localhost:8080/api/user/createUser', obj
