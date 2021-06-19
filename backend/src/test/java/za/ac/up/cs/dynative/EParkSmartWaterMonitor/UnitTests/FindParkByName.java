@@ -12,9 +12,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.WeatherData;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.CreateParkResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 
@@ -85,7 +83,6 @@ public class FindParkByName {
         assertEquals("Park not present",t.getMessage());
     }
 
-    //TODO: complete this implementation for finding an xisting park via the name
     @Test
     @DisplayName("Find an existing park.")
     public void FindParkExisting() throws InvalidRequestException {

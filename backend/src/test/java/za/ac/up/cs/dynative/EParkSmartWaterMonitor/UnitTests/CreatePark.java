@@ -90,7 +90,6 @@ public class CreatePark {
     }
 
 
-    //TODO: uncomment when the createPark function in the ParkServiceImpl is fixed.
     @Test
     @DisplayName("Creating a park with an existing name")
     public void createParkAE()  {
