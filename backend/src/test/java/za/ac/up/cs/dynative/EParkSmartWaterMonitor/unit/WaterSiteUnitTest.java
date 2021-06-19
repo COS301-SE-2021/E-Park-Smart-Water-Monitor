@@ -60,7 +60,7 @@ public class WaterSiteUnitTest extends UnitTestBaseClass {
     }
 
     @Test
-    public void testGetSiteById() throws JsonProcessingException {
+    public void testGetSiteById() throws JsonProcessingException, InvalidRequestException {
         LOGGER.info("Testing GetSiteByIdRequest construction");
 
         UUID siteId = UUID.randomUUID();

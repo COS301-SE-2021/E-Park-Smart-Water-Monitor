@@ -36,7 +36,7 @@ public class WaterSiteController {
     }
 
     @PostMapping("getSite")
-    public ResponseEntity<Object> getSite(@RequestBody GetSiteByIdRequest request) {
+    public ResponseEntity<Object> getSite(@RequestBody GetSiteByIdRequest request) throws InvalidRequestException {
 
       return  new ResponseEntity<>(waterSiteService.getSiteById(request),HttpStatus.ACCEPTED);
     }

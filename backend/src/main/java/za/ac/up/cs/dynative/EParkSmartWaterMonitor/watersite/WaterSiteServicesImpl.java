@@ -104,18 +104,17 @@ public class WaterSiteServicesImpl implements WaterSiteService
 
 
     @Override
-    public GetSiteByIdResponse getSiteById(GetSiteByIdRequest request)
-    {
+    public GetSiteByIdResponse getSiteById(GetSiteByIdRequest request) throws InvalidRequestException {
+        if (request.getSiteId()==null){
+            throw new InvalidRequestException("No Id specified");
+        }
         Optional<WaterSite> foundSite= waterSiteRepo.findById(request.getSiteId());
         GetSiteByIdResponse response;
-        if (foundSite.isEmpty())
-        {
-            response = new GetSiteByIdResponse("Site does not exist.", false, null);
-        }
-        else
-        {
+        if (foundSite.isEmpty()) {
+            throw new InvalidRequestException("Site not found");
+            //response = new GetSiteByIdResponse("Site does not exist.", false, null);
+        }else{
             response = new GetSiteByIdResponse("Successfully found site.", true, foundSite.get());
-
         }
         return response;
     }
