@@ -19,8 +19,11 @@ const AddDeviceBody = () => {
     const classes = useStyles();
     const theme = useTheme();
 
+    // retrieved items from the DB to populate the select components
     const [parkOptions, setParkOptions] = useState("")
+    const [siteOptions, setSiteOptions] = useState("")
 
+    // selected/provided items by the user
     const [name, setName] = useState("")
     const [park, setPark] = useState("")
     const [site, setSite] = useState("")
@@ -38,11 +41,29 @@ const AddDeviceBody = () => {
             alert("options "+JSON.stringify(options))
             setParkOptions(options)
 
+
         }).catch((res)=>{
             alert("get park not working")
             console.log("response:"+JSON.stringify(res))
         });
     },[])
+
+    // get sites for this park when the park selected changes
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/park/getParkWaterSites',
+            {
+                parkId: park.value
+            }
+        ).then((res)=>{
+
+            let options = res.data.allParks.map((p)=>{
+                return {value: p.id, label: p.parkName}
+            })
+            alert("options "+JSON.stringify(options))
+            setParkOptions(options)
+
+        });
+    },[park])
 
 
     // {
