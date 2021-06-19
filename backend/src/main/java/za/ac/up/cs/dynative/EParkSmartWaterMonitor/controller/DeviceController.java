@@ -42,7 +42,7 @@ public class DeviceController {
     }
 
     @PostMapping("/addDevice")
-    public ResponseEntity<Object> addDevice(@RequestBody AddWaterSourceDeviceRequest addWSDRequest) {
+    public ResponseEntity<Object> addDevice(@RequestBody AddWaterSourceDeviceRequest addWSDRequest) throws InvalidRequestException {
         return new ResponseEntity<>(devicesService.addDevice(addWSDRequest),HttpStatus.OK);
     }
 

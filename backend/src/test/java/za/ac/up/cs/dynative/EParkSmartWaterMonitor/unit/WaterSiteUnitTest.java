@@ -97,7 +97,7 @@ public class WaterSiteUnitTest extends UnitTestBaseClass {
     }
 
     @Test
-    public void testAttachWaterSourceDevice() {
+    public void testAttachWaterSourceDevice() throws InvalidRequestException {
         LOGGER.info("Testing AttachWaterSourceDeviceRequest construction");
 
         UUID siteId = UUID.randomUUID();

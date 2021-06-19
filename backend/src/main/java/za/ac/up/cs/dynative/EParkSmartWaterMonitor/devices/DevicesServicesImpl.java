@@ -72,7 +72,7 @@ public class DevicesServicesImpl implements DevicesService {
         return waterSourceDeviceRepo.findAll();
     }
 
-    public AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest) {
+    public AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest) throws InvalidRequestException {
         AddWaterSourceDeviceResponse response = new AddWaterSourceDeviceResponse();
         List<WaterSourceDevice> devices = waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName(addWSDRequest.getDeviceName());
 

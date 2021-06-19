@@ -21,7 +21,7 @@ import java.util.UUID;
 @SpringBootTest
 public class DevicesUnitTest extends UnitTestBaseClass {
     @Test
-    public void testAddDevice() throws JsonProcessingException {
+    public void testAddDevice() throws JsonProcessingException, InvalidRequestException {
         LOGGER.info("Testing AddWaterSourceDeviceRequest construction");
 
         UUID deviceId = UUID.randomUUID();

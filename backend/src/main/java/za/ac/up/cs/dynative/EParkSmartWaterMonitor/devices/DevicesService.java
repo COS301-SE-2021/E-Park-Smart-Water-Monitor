@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public interface DevicesService {
     ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request);
-    AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest);
+    AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest) throws InvalidRequestException;
     Collection<WaterSourceDevice> getAll();
     FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest);
     GetNumDevicesResponse getNumDevices(GetNumDevicesRequest getNumDevicesRequest) throws InvalidRequestException;

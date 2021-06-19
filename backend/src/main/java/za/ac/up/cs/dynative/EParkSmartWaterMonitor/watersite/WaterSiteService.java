@@ -16,7 +16,7 @@ import java.util.Collection;
 public interface WaterSiteService {
     AddSiteResponse addSite(AddSiteRequest request) throws InvalidRequestException;
     Collection<WaterSite> getAll();
-    AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request);
+    AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request) throws InvalidRequestException;
     CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request);
     GetSiteByIdResponse getSiteById(GetSiteByIdRequest request) throws InvalidRequestException;
 }

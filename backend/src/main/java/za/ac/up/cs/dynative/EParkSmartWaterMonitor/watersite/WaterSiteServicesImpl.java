@@ -80,21 +80,27 @@ public class WaterSiteServicesImpl implements WaterSiteService
         return response;
     }
 
-    public AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request)
-    {
+    public AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request) throws InvalidRequestException {
+
+        if (request.getSiteId()==null){
+            throw new InvalidRequestException("No Id specified");
+        }
+        if (request.getWaterSourceDevice()==null){
+            throw new InvalidRequestException("No device specified");
+        }
+        if (request.getWaterSourceDevice().getDeviceId()==null){
+            throw new InvalidRequestException("No device Id specified");
+        }
         Optional<WaterSite> siteToAddTo = waterSiteRepo.findById(request.getSiteId());
         AttachWaterSourceDeviceResponse response;
-        if (siteToAddTo.isPresent())
-        {
+        if (siteToAddTo.isPresent()){
             siteToAddTo.get().addWaterSourceDevice(request.getWaterSourceDevice());
             waterSiteRepo.save(siteToAddTo.get());
             response= new AttachWaterSourceDeviceResponse("Successfully attached device to site!",true);
+        }else{
+            throw new InvalidRequestException("Site not found");
+            //response = new AttachWaterSourceDeviceResponse("Site does not exist", false);
         }
-        else
-        {
-            response = new AttachWaterSourceDeviceResponse("Site does not exist", false);
-        }
-
         return response;
     }
 
