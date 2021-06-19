@@ -17,7 +17,7 @@ public interface WaterSiteService {
     AddSiteResponse addSite(AddSiteRequest request) throws InvalidRequestException;
     Collection<WaterSite> getAll();
     AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request) throws InvalidRequestException;
-    CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request);
+    CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request) throws InvalidRequestException;
     GetSiteByIdResponse getSiteById(GetSiteByIdRequest request) throws InvalidRequestException;
 }
 

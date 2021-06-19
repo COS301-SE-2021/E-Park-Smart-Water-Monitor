@@ -64,8 +64,13 @@ public class WaterSiteServicesImpl implements WaterSiteService
         return response;
     }
 
-    public CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request)
-    {
+    public CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request) throws InvalidRequestException {
+        if (request==null){
+            throw new InvalidRequestException("Request is null");
+        }
+        if (request.getSiteId()==null){
+            throw new InvalidRequestException("No id specified");
+        }
         Optional<WaterSite> siteToAddTo = waterSiteRepo.findById(request.getSiteId());
         CanAttachWaterSourceDeviceResponse response;
         if (siteToAddTo.isPresent())
@@ -74,7 +79,8 @@ public class WaterSiteServicesImpl implements WaterSiteService
         }
         else
         {
-            response = new CanAttachWaterSourceDeviceResponse("Site does not exist", false);
+            throw new InvalidRequestException("Site does not exist");
+            //response = new CanAttachWaterSourceDeviceResponse("Site does not exist", false);
         }
 
         return response;
