@@ -56,10 +56,15 @@ public class UserServiceImpl implements UserService {
         String role = request.getRole();
         String cellNumber = request.getCellNumber();
 
+
         if (parkId != null
                 && !name.equals("")
                 && !surname.equals("")
                 && !email.equals("")
+                && !role.equals("")
+                && !cellNumber.equals("")
+                && !username.equals("")
+                && !idNumber.equals("")
                 && !password.equals("")) {
 
             List<User> users = userRepo.findUserByIdNumber(idNumber);
@@ -84,16 +89,19 @@ public class UserServiceImpl implements UserService {
 
                     response.setSuccess(true);
                 } else {
-                    response.setSuccess(false);
-                    response.setStatus("A user with this username already exists.");
+                    throw new InvalidRequestException("A user with this username already exists.");
+//                    response.setSuccess(false);
+//                    response.setStatus("A user with this username already exists.");
                 }
             } else {
-                response.setSuccess(false);
-                response.setStatus("A user with this id number already exists.");
+                throw new InvalidRequestException("A user with this id number already exists.");
+//                response.setSuccess(false);
+//                response.setStatus("A user with this id number already exists.");
             }
         } else {
-            response.setSuccess(false);
-            response.setStatus("Failed to create user.");
+            throw new InvalidRequestException("Details incomplete");
+//            response.setSuccess(false);
+//            response.setStatus("Failed to create user.");
         }
         return response;
     }
