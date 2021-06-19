@@ -32,6 +32,7 @@ const AddUserBody = () => {
     const [username, setUsername] = useState("")
     const [role, setRole] = useState("Admin")
     const [cellNumber, setCellNumber] = useState("")
+    const [parkOptions, setParkOptions] = useState("")
 
     let userRoles = [
         { value: 'ADMIN', label: 'Admin' },
@@ -39,10 +40,25 @@ const AddUserBody = () => {
         { value: 'RANGER', label: 'Ranger' }
     ];
 
-    let parkOptions = [
-        { value: '2ea5ba27-9d8e-41a4-9628-485f0ae2fb57', label: 'Rietvlei Nature Reserve' },
-        { value: '7cf18c71-a31f-45db-8749-e7583a0beb9b', label: 'Demo Nature Reserve' },
-    ];
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/park/getAllParks'
+        ).then((res)=>{
+
+            let options = res.data.allParks.map((p)=>{
+                return {value: p.id, label: p.parkName}
+            })
+
+            setParkOptions(options)
+
+        }).catch((res)=>{
+            console.log(JSON.stringify(res))
+        });
+    },[])
+
+    // let parkOptions = [
+    //     { value: '2ea5ba27-9d8e-41a4-9628-485f0ae2fb57', label: 'Rietvlei Nature Reserve' },
+    //     { value: '7cf18c71-a31f-45db-8749-e7583a0beb9b', label: 'Demo Nature Reserve' },
+    // ];
 
     const createUser = (e) => {
         e.preventDefault()

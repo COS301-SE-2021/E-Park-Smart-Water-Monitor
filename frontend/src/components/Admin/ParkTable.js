@@ -38,7 +38,7 @@ const ParkTable = () => {
     useEffect(() => {
         axios.get('http://localhost:8080/api/park/getAllParks').then((res)=>{
             const m = res.data.allParks.map((park) =>
-                <TableRow key={ park.parkId } >
+                <TableRow key={ park.id } >
                     <TableCell
                         classes={{
                             root:

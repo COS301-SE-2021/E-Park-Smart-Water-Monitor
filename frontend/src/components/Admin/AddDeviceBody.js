@@ -29,9 +29,11 @@ const AddDeviceBody = () => {
     const [longitude, setLongitude] = useState("")
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/park/getAllParks').then((res)=>{
-            let options = res.data.allParks((p)=>{
-                return {id: p.id, parkName: p.parkName}
+        axios.get('http://localhost:8080/api/park/getAllParks'
+        ).then((res)=>{
+
+            let options = res.data.allParks.map((p)=>{
+                return {value: p.id, label: p.parkName}
             })
             alert("options "+JSON.stringify(options))
             setParkOptions(options)
