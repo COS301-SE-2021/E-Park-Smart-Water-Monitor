@@ -72,9 +72,6 @@ public class GetParkSites {
 
     Park park1;
 
-    public void setup(){
-
-    }
 
     @Test
     @DisplayName("Find all the sites of an existing park.")
