@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Form} from 'react-bootstrap';
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,6 +8,7 @@ import "../../assets/css/addDevice.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Select from "react-select";
+import axios from "axios";
 // import AdminModal from 'admin-modal.js'
 
 
@@ -18,12 +19,29 @@ const AddDeviceBody = () => {
     const classes = useStyles();
     const theme = useTheme();
 
+    const [parkOptions, setParkOptions] = useState("")
+
     const [name, setName] = useState("")
     const [park, setPark] = useState("")
     const [site, setSite] = useState("")
     const [model, setModel] = useState("")
     const [latitude, setLatitude] = useState("")
     const [longitude, setLongitude] = useState("")
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/park/getAllParks').then((res)=>{
+            let options = res.data.allParks((p)=>{
+                return {id: p.id, parkName: p.parkName}
+            })
+            alert("options "+JSON.stringify(options))
+            setParkOptions(options)
+
+        }).catch((res)=>{
+            alert("get park not working")
+            console.log("response:"+JSON.stringify(res))
+        });
+    },[])
+
 
     // {
     //     "parkName": "Rietvlei Nature Reserve",

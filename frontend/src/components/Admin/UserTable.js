@@ -46,9 +46,9 @@ const UserTable = () => {
     useEffect(() => {
         // get all users
         axios.get('http://localhost:8080/api/user/getAllUsers').then((res)=>{
-            console.log("res: "+JSON.stringify(res))
+            // console.log("res: "+JSON.stringify(res))
             const m = res.data.allUsers.map((user) =>
-                <TableRow>
+                <TableRow key={ user.id } >
                     <TableCell
                         classes={{
                             root:
