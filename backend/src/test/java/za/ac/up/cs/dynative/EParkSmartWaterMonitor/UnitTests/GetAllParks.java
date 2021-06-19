@@ -16,8 +16,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GetAllParks {

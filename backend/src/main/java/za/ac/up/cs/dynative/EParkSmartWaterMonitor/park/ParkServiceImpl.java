@@ -112,23 +112,21 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public EditParkResponse editPark(EditParkRequest request)
-    {
+    public EditParkResponse editPark(EditParkRequest request) throws InvalidRequestException {
+        if (request.getParkId()==null){
+            throw new InvalidRequestException("No id specified");
+        }
         Park park = parkRepo.findParkById(request.getParkId());
 
         EditParkResponse response = new EditParkResponse();
-        if (park!=null)
-        {
-            if (!request.getParkName().equals(""))
-            {
+        if (park!=null) {
+            if (!request.getParkName().equals("")) {
                 park.setParkName(request.getParkName());
             }
-            if (!request.getLatitude().equals(""))
-            {
+            if (!request.getLatitude().equals("")) {
                 park.setLatitude(Double.parseDouble(request.getLatitude()));
             }
-            if (!request.getLongitude().equals(""))
-            {
+            if (!request.getLongitude().equals("")) {
                 park.setLongitude(Double.parseDouble(request.getLongitude()));
             }
 
@@ -139,9 +137,10 @@ public class ParkServiceImpl implements ParkService {
         }
         else
         {
-            response.setStatus("No park with that id exists.");
+            throw new InvalidRequestException("No park with that id exists.");
+            /*response.setStatus("No park with that id exists.");
             response.setSuccess(false);
-            return response;
+            return response;*/
         }
 
 

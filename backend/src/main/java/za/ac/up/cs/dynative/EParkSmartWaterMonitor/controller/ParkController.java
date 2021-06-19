@@ -34,7 +34,7 @@ public class ParkController {
         return new ResponseEntity<>(parkService.getParkWaterSites(getParkSitesRequest),HttpStatus.OK);
     }
     @PostMapping("editPark")
-    public ResponseEntity<Object> editPark(@RequestBody EditParkRequest request) {
+    public ResponseEntity<Object> editPark(@RequestBody EditParkRequest request) throws InvalidRequestException {
         return new ResponseEntity<>(parkService.editPark(request),HttpStatus.OK);
     }
     @GetMapping("/getAllParks")
