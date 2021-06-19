@@ -25,11 +25,11 @@ const AddDeviceBody = () => {
 
     // selected/provided items by the user
     const [name, setName] = useState("")
-    const [park, setPark] = useState("")
-    const [site, setSite] = useState("")
-    const [model, setModel] = useState("")
-    const [latitude, setLatitude] = useState("")
-    const [longitude, setLongitude] = useState("")
+    const [park, setPark] = useState("") // id and name stored
+    const [site, setSite] = useState("") // id and name stored
+    const [model, setModel] = useState("ESP32")
+    const [latitude, setLatitude] = useState(-25.899494434)
+    const [longitude, setLongitude] = useState(28.280765508)
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/park/getAllParks'
@@ -38,33 +38,37 @@ const AddDeviceBody = () => {
             let options = res.data.allParks.map((p)=>{
                 return {value: p.id, label: p.parkName}
             })
-            alert("options "+JSON.stringify(options))
             setParkOptions(options)
 
 
         }).catch((res)=>{
-            alert("get park not working")
             console.log("response:"+JSON.stringify(res))
         });
     },[])
 
     // get sites for this park when the park selected changes
     useEffect(() => {
-        axios.get('http://localhost:8080/api/park/getParkWaterSites',
-            {
-                parkId: park.value
-            }
-        ).then((res)=>{
+        if(park && park.value) {
 
-            let options = res.data.allParks.map((p)=>{
-                return {value: p.id, label: p.parkName}
-            })
-            alert("options "+JSON.stringify(options))
-            setParkOptions(options)
+            axios.post('http://localhost:8080/api/park/getParkWaterSites',
+                {
+                    parkId: park.value
+                }
+            ).then((res) => {
 
-        });
+                let options = res.data.site.map((s) => {
+                    return {value: s.id, label: s.waterSiteName}
+                })
+
+                setSiteOptions(options)
+
+
+            }).catch((res) => {
+                console.log("error getting water sites for park "+park.label)
+            });
+
+        }
     },[park])
-
 
     // {
     //     "parkName": "Rietvlei Nature Reserve",
@@ -91,6 +95,28 @@ const AddDeviceBody = () => {
                     <Col>
                         <Form.Label>Park</Form.Label>
                         <Select required={"required"} isClearable={true} className="mb-3" name="park" options={ parkOptions } value={park} onChange={e => setPark(e)}/>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Form.Label>Site</Form.Label>
+                        <Select required={"required"} isClearable={true} className="mb-3" name="site" options={ siteOptions } value={site} onChange={e => setSite(e)}/>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3" >
+                            <Form.Label>Latitude</Form.Label>
+                            <Form.Control required={"required"} type="text" placeholder="latitude" name="latitude" value={latitude} onChange={e => setLatitude(e.target.value)}/>
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3" >
+                            <Form.Label>Longitude</Form.Label>
+                            <Form.Control required={"required"} type="text" placeholder="longitude" name="longitude" value={longitude} onChange={e => setLongitude(e.target.value)}/>
+                        </Form.Group>
                     </Col>
                 </Row>
 
