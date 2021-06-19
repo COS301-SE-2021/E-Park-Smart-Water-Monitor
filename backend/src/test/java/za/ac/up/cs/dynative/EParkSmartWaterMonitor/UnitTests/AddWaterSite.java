@@ -9,10 +9,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.WaterSiteRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AddSiteResponse;
@@ -30,10 +28,6 @@ public class AddWaterSite {
 
     @InjectMocks
     WaterSiteServicesImpl waterSiteServices;
-
-    WaterSite site1;
-    WaterSite site2;
-    UUID id1= UUID.randomUUID();
     UUID id2= UUID.randomUUID();
     double lat1= -27.371767;
     double lat2= -27.991767;

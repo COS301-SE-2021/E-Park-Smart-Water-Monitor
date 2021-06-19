@@ -1,5 +1,4 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests;
-import com.github.dockerjava.api.model.Device;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
@@ -27,7 +26,6 @@ public class AttachWaterSourceDevice {
     @InjectMocks
     WaterSiteServicesImpl waterSiteServices;
 
-    WaterSite site1;
     UUID id1= UUID.randomUUID();
     UUID id2= UUID.randomUUID();
     double lat1= -27.371767;

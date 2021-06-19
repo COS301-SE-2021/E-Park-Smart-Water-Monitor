@@ -27,8 +27,6 @@ public class FindParkByName {
 
     @InjectMocks
     private ParkServiceImpl parkService;
-    Double lat =-27.371767;
-    Double lon =28.737437;
 
     WaterSite site1;
     WaterSite site2;
