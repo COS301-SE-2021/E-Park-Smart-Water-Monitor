@@ -53,6 +53,7 @@ const DeviceTable = () => {
                 <Modal title="Add Device" onClose={() => setShow(false)} show={show}>
                     <AddDeviceBody/>
                 </Modal>
+
                 <Grid container component={Box}>
                     <Grid
                         item

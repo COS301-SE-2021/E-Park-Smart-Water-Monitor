@@ -43,11 +43,6 @@ function Dashboard() {
     parseOptions(Chart, chartOptions());
   }
 
-  // mock token added
-  // const headers = {
-  //   'Access-Control-Allow-Origin': "*",
-  //   // Authorization: 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJVVUlEIjoiZGEyZmEwNzctYmM1YS00MTFjLTk5YzktMzg1ZDQwZWZhYWQxIiwiZXhwIjoxNjIzNzk0NDAwLCJpYXQiOjE2MjMyNjYwMDl9.vZXfug90zYejr-iu3t6o3eiNwJhiN6Rio86a8NOl47ZArzbwXnX5UxyD05EQPfq1RxnVTtP7ID5AvRCQLgySOA'
-  // }
 
   axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
@@ -86,7 +81,9 @@ function Dashboard() {
 
   return (
     <>
+
       <Header />
+
       {/* Page content */}
       <Container
         maxWidth={false}
