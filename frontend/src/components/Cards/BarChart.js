@@ -21,10 +21,10 @@ function BarChart() {
   const classes = useStyles();
   const theme = useTheme();
 
-    console.log("data")
-    console.log(JSON.stringify(chartExample2.data))
-    console.log("options")
-    console.log(chartExample2.options)
+    // console.log("data")
+    // console.log(JSON.stringify(chartExample2.data))
+    // console.log("options")
+    // console.log(chartExample2.options)
 
     const mock_data = {
         labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
