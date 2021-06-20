@@ -12,6 +12,7 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.configurations.TwilioConfig;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
@@ -110,18 +111,24 @@ public class NotificationServiceImpl implements NotificationService
     }
 
     @Override
-    public SMSResponse sendSMS(SMSRequest smsRequest) {
-
+    public SMSResponse sendSMS(SMSRequest smsRequest) throws InvalidRequestException {
+        if (smsRequest==null){
+            throw new InvalidRequestException("Request is null");
+        }
         ArrayList<User> recipients = smsRequest.getRecipients();
-        if (recipients==null)  //TODO add if checks
-        {
+        if (recipients.size()==0){
             recipients= new ArrayList<>();
-            for (int r = 0; r < smsRequest.getUserIds().size() ; r++) {
-                User addThisUser = null;
-                addThisUser =userService.findUserById(new FindUserByIdRequest(smsRequest.getUserIds().get(r))).getUser();
-                if (addThisUser!=null)
-                    recipients.add(addThisUser);
-
+            if (smsRequest.getUserIds()!=null && smsRequest.getUserIds().size()>0) {
+                for (int r = 0; r < smsRequest.getUserIds().size(); r++) {
+                    User addThisUser = null;
+                    addThisUser = userService.findUserById(new FindUserByIdRequest(smsRequest.getUserIds().get(r))).getUser();
+                    if (addThisUser != null) {
+                        recipients.add(addThisUser);
+                    }
+                }
+            }
+            if (recipients.size()==0){
+                throw new InvalidRequestException("No recipients specified");
             }
 
         }

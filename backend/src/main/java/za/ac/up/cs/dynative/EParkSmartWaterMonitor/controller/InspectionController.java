@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.InspectionService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.*;
 
@@ -21,7 +22,7 @@ public class InspectionController {
     }
 
     @PostMapping("/addInspection")
-    public ResponseEntity<Object> addInspection(@RequestBody AddInspectionRequest request) {
+    public ResponseEntity<Object> addInspection(@RequestBody AddInspectionRequest request) throws InvalidRequestException {
         return new ResponseEntity<>(inspectionService.addInspection(request), HttpStatus.OK);
     }
 

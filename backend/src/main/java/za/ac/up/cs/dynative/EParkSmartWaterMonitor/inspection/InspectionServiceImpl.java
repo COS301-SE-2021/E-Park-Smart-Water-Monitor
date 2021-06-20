@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.FindDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.FindDeviceResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models.Inspection;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.InspectionRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.*;
@@ -32,7 +33,7 @@ public class InspectionServiceImpl implements InspectionService {
     }
 
     @Override
-    public AddInspectionResponse addInspection(AddInspectionRequest request) {
+    public AddInspectionResponse addInspection(AddInspectionRequest request) throws InvalidRequestException {
         AddInspectionResponse response = new AddInspectionResponse();
 
         if (request.getDeviceId() == null) {
