@@ -1,11 +1,15 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.NotificationService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
@@ -25,13 +29,16 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepo userRepo;
     private final ParkService parkService;
+    private final NotificationService notificationService;
 
 
     @Autowired
     public UserServiceImpl(@Qualifier("UserRepo") UserRepo userRepo,
-                           @Qualifier("ParkService") ParkService parkService) {
+                           @Qualifier("ParkService") ParkService parkService,
+                            @Qualifier("NotificationServiceImpl") NotificationService notificationService) {
         this.userRepo = userRepo;
         this.parkService = parkService;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -77,6 +84,9 @@ public class UserServiceImpl implements UserService {
                             + park.getParkName());
 
                     response.setSuccess(true);
+                    ArrayList<String> userEmail =new ArrayList<String>();
+                    userEmail.add(email);
+                    notificationService.sendMail(new EmailRequest("E-Park User Servic","Account Creation",userEmail,null,null,Topic.ACCOUNT_CREATION,request.getName(),"Your account has been successfully created!","Welcome!"));
                 } else {
                     response.setSuccess(false);
                     response.setStatus("A user with this username already exists.");
