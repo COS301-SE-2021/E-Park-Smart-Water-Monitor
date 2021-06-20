@@ -20,7 +20,7 @@ const { Form } = require( "react-bootstrap" );
 
 const useStyles = makeStyles(componentStyles);
 
-const AddUserBody = (props) => {
+const EditUserBody = (props) => {
     const classes = useStyles();
     const theme = useTheme();
     const [park, setPark] = useState("")
@@ -39,49 +39,97 @@ const AddUserBody = (props) => {
         { value: 'FIELD_ENGINEER', label: 'Field Engineer' },
         { value: 'RANGER', label: 'Ranger' }
     ];
-    
 
     useEffect(() => {
-        // get the parks for populating the select component
-        axios.get('http://localhost:8080/api/park/getAllParks'
-        ).then((res)=>{
 
-            let options = res.data.allParks.map((p)=>{
-                return {value: p.id, label: p.parkName}
-            })
+        // add the props to the variables so that the user can change the values in the components
+        if(props && props.userDetails)
+        {
+            // set the role to be the same object notation with value and label
+            let oldRole = props.userDetails.role
+            for(let i =0; i< userRoles.length; i++){
+                if(oldRole == userRoles[i].value){
+                    setRole(userRoles[i])
+                }
+            }
 
-            setParkOptions(options)
 
-        }).catch((res)=>{
-            console.log(JSON.stringify(res))
-        });
-    },[])
+            let p = props.userDetails
+            setPark(p.park)
+            setIDNumber(p.idNumber)
+            setEmail(p.email)
+            setPassword(p.password)
+            setName(p.name)
+            setSurname(p.surname)
+            setUsername(p.username)
+            // setRole(p.role)
+            setCellNumber(p.cellNumber)
+        }
+    },[props.userDetails])
+
+    // parks not yet implemented as an editable property
+    // // get the parks to populate the select item
+    // useEffect(() => {
+    //     // get the parks for populating the select component
+    //     axios.get('http://localhost:8080/api/park/getAllParks'
+    //     ).then((res)=>{
+    //
+    //         let options = res.data.allParks.map((p)=>{
+    //             return {value: p.id, label: p.parkName}
+    //         })
+    //
+    //         setParkOptions(options)
+    //
+    //     }).catch((res)=>{
+    //         console.log(JSON.stringify(res))
+    //     });
+    // },[])
 
 
     const submit = (e) => {
         e.preventDefault()
 
-        // add a new user
-        let obj = {
-            parkId: park.value,
-            idNumber: idNumber,
-            email: email,
-            password: password,
-            name: name,
-            surname: surname,
-            username: username,
-            role: role.value,
-            cellNumber: `+27${cellNumber}`
+        if(props && props.userDetails)
+        {
+            // accomodate for provided email is already in use error
+            let temp_email = email
+            if(email === props.userDetails.email)
+            {
+                //clear the value
+                temp_email = ""
+            }
+
+            let temp_username = username
+            if(username === props.userDetails.username)
+            {
+                //clear the value
+                temp_username = ""
+            }
+
+            let obj = {
+                username: props.userDetails.username,
+                idNumber: idNumber,
+                email: temp_email ,
+                name: name,
+                surname: surname,
+                newUsername: temp_username,
+                role: role.value,
+                cellNumber: cellNumber
+            }
+
+
+
+            axios.post('http://localhost:8080/api/user/editUser', obj
+            ).then((res)=>{
+
+
+                window.location.reload(); //need to get the new data from the db to populate the table again
+
+            }).catch((res)=>{
+                console.log("response:"+JSON.stringify(res))
+            });
         }
 
-        axios.post('http://localhost:8080/api/user/createUser', obj
-        ).then((res)=>{
-
-            window.location.reload()
-
-        }).catch((res)=>{
-            console.log("response:"+JSON.stringify(res))
-        });
 
     }
 
@@ -93,15 +141,15 @@ const AddUserBody = (props) => {
                 <Row>
                     <Col>
                         <Form.Label>Role</Form.Label>
-                        <Select required={"required"} isClearable={true} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => {setRole(e); alert("role after set: "+JSON.stringify(role))}}/>
+                        <Select required={"required"} isClearable={true} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => setRole(e)}/>
                     </Col>
                 </Row>
-                <Row>
-                    <Col>
-                        <Form.Label>Park</Form.Label>
-                        <Select required={"required"} isClearable={true} className="mb-3" name="park" options={ parkOptions } value={park} onChange={e => setPark(e)}/>
-                    </Col>
-                </Row>
+                {/*<Row>*/}
+                {/*    <Col>*/}
+                {/*        <Form.Label>Park</Form.Label>*/}
+                {/*        <Select required={"required"} isClearable={true} className="mb-3" name="park" options={ parkOptions } value={park} onChange={e => setPark(e)}/>*/}
+                {/*    </Col>*/}
+                {/*</Row>*/}
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="email" >
@@ -112,10 +160,10 @@ const AddUserBody = (props) => {
                             </Form.Text>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="password">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control required={"required"} type="password" placeholder="Password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
-                        </Form.Group>
+                        {/*<Form.Group className="mb-3" controlId="password">*/}
+                        {/*    <Form.Label>Password</Form.Label>*/}
+                        {/*    <Form.Control required={"required"} type="password" placeholder="Password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>*/}
+                        {/*</Form.Group>*/}
                     </Col>
                 </Row>
                 <Row>
@@ -162,14 +210,12 @@ const AddUserBody = (props) => {
                     </Col>
                 </Row>
 
-
-
                 <Button variant="primary" type="submit" >
-                    Submit
+                    Edit
                 </Button>
             </Form>
         </>
     );
 };
 
-export default AddUserBody;
+export default EditUserBody;

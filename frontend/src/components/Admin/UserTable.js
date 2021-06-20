@@ -19,6 +19,7 @@ import Button from "@material-ui/core/Button";
 import Modal from "../Modals/Modal";
 import AddUserBody from "./AddUserBody";
 import axios from "axios";
+import EditUserBody from "./EditUserBody";
 // import disableScroll from 'disable-scroll';
 
 // import AdminModal from 'admin-modal'
@@ -29,15 +30,15 @@ const useStyles = makeStyles(componentStyles);
 const UserTable = () => {
     const classes = useStyles();
     const theme = useTheme();
-    const [show, setShow] = useState(false);
+    const [showAdd, setShowAdd] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
     const [response, setResponse] = useState([]);
     const [user, setUser] = useState({});
-    const [modal, setModal] = useState("");
 
     // on delete of a user
     const removeUser = (id) => {
         return ()=>{
-            axios.get('http://localhost:8080/api/user/deleteUser', {
+            axios.post('http://localhost:8080/api/user/deleteUser', {
                 id: id
             }).then((res)=> {
                 window.location.reload()
@@ -45,11 +46,6 @@ const UserTable = () => {
         }
     }
 
-    const editUser = (user) => {
-        //send user details to the modal
-        setUser(user)
-        setModal()
-    }
 
     useEffect(() => {
         // get all users
@@ -81,7 +77,7 @@ const UserTable = () => {
                                style={{verticalAlign:'middle'}}>
                         <Button
                             size="small"
-                            onClick={() => { setShow(true); editUser(user) }}
+                            onClick={() => { setShowEdit(true); setUser(user)}}
                         >
                             Edit
                         </Button>
@@ -110,9 +106,13 @@ const UserTable = () => {
                 marginTop="-6rem"
                 classes={{ root: classes.containerRoot }}
             >
-                <Modal  title="User Details" onClose={() => setShow(false)} show={show}>
-                    <AddUserBody userDetails={user}/>
+                <Modal  title="Add User" onClose={() => setShowAdd(false)} show={ showAdd }>
+                    <AddUserBody/>
                 </Modal>
+
+                { user && <Modal title="Edit User" onClose={() => setShowEdit(false)} show={ showEdit }>
+                    <EditUserBody userDetails={ user } closeModal={()=>{ setShowEdit(false) }}/>
+                </Modal> }
 
                 <Grid container component={Box} marginTop="3rem">
                     <Grid
@@ -250,7 +250,7 @@ const UserTable = () => {
                             color="primary"
                             size="medium"
                             style={{width:'200px'}}
-                            onClick={() => setShow(true)}
+                            onClick={() => setShowAdd(true)}
                         >
                             Add User
                         </Button>
