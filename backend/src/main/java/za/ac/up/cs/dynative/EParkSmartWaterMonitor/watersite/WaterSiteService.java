@@ -5,18 +5,21 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteReq
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.CanAttachWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.SaveSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AddSiteResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.CanAttachWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.SaveSiteResponse;
 
 import java.util.Collection;
 
 public interface WaterSiteService {
-    AddSiteResponse addSite(AddSiteRequest request);
-    Collection<WaterSite> getAll();
-    AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request);
+    public AddSiteResponse addSite(AddSiteRequest request);
+    public Collection<WaterSite> getAll();
+    public AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request);
     CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request);
-    GetSiteByIdResponse getSiteById(GetSiteByIdRequest request);
+    public GetSiteByIdResponse getSiteById(GetSiteByIdRequest request);
+    public SaveSiteResponse saveSite(SaveSiteRequest request);
 }
 

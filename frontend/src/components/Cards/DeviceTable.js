@@ -34,7 +34,7 @@ function DeviceTable(props) {
         if(props.devices)
         {
             const m = props.devices.map((device) =>
-                <TableRow key={device.deviceName} onClick={handleDeviceSelection(device.deviceId)}>
+                <TableRow key={device.deviceId} onClick={handleDeviceSelection(device.deviceId)}>
                     <TableCell
                         classes={{
                             root:

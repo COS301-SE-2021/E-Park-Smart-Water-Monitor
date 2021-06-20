@@ -5,6 +5,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.InfrastructureDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models.Inspection;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -28,6 +29,9 @@ public class WaterSite {
     @Relationship(type = "INFRASTRUCTURE_MONITORED_BY", direction = Relationship.Direction.OUTGOING)
     private Set<InfrastructureDevice> infrastructureDevices;
 
+    @Relationship(type = "HAS", direction = Relationship.Direction.OUTGOING)
+    private Set<Inspection> inspections;
+
     public WaterSite(UUID id, String waterSiteName, double latitude, double longitude) {
         this.id = id;
         this.waterSiteName = waterSiteName;
@@ -43,6 +47,13 @@ public class WaterSite {
             waterSourceDevices = new HashSet<>();
         }
         waterSourceDevices.add(waterSourceDevice);
+    }
+
+    public void addInspection(Inspection inspection) {
+        if ( inspections == null) {
+            inspections = new HashSet<>();
+        }
+        inspections.add(inspection);
     }
 
     public UUID getId() {

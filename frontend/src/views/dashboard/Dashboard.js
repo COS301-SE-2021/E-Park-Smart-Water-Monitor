@@ -31,6 +31,7 @@ import {
 
 import axios from "axios";
 import componentStyles from "assets/theme/views/dashboard/dashboard.js";
+import InspectionTable from "components/Cards/InspectionTable.js";
 const useStyles = makeStyles(componentStyles);
 
 function Dashboard() {
@@ -38,6 +39,7 @@ function Dashboard() {
   // const [response, setResponse] = useState(null)
   const [devices, setDevices] = useState([])
   const [device, setDevice] = useState(null)
+  const [inspections, setInspections] = useState([])
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
@@ -60,13 +62,25 @@ function Dashboard() {
         {
           setDevice(site[0])
         }
-        console.log(JSON.stringify(site))
+        // console.log(JSON.stringify(site))
 
       }else{
         console.log('res.data null')
       }
     });
   }, []) // second param [] is a list of dependency to watch and run useEffect
+
+  useEffect(() => {
+    if (device != null) {
+      axios.post('http://localhost:8080/api/inspections/getDeviceInspections', {
+        deviceId: device.deviceId
+      }).then((res) => {
+        if (res.data) {
+          setInspections(res.data.inspectionList)
+        }
+      })
+    }
+  }, [device])
 
   const load_device = (device_id) =>
   {
@@ -169,22 +183,12 @@ function Dashboard() {
           <Grid
               item
               xs={12}
-              xl={4}
+              xl={12}
               component={Box}
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            <BarChart></BarChart>
-          </Grid>
-          <Grid
-              item
-              xs={12}
-              xl={8}
-              component={Box}
-              marginBottom="3rem!important"
-              classes={{ root: classes.gridItemRoot }}
-          >
-            <BarChart></BarChart>
+            <InspectionTable inspections={inspections}></InspectionTable>
           </Grid>
         </Grid>
 
