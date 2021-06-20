@@ -35,7 +35,7 @@ const InspectionTable = () => {
 
     useEffect(() => {
         axios.post('http://localhost:8080/api/inspections/getSiteInspections', {
-            siteId: "91d05eb1-2a35-4e44-9726-631d83121edb"
+            siteId: "10ad3cf6-59c3-4469-b1b0-17a75e93cf7f"
         }).then((res) => {
             if (res.data) {
             setInspections(res.data.inspectionList)
@@ -48,7 +48,7 @@ const InspectionTable = () => {
             <Container
                 maxWidth={false}
                 component={Box}
-                marginTop="-6rem"
+                marginTop="-3rem"
                 classes={{ root: classes.containerRoot }}
             >
                 <Modal title="Add Inspection" onClose={() => setShow(false)} show={show}>
@@ -171,13 +171,13 @@ const InspectionTable = () => {
                                                     variant="head"
                                                     scope="row"
                                                 >
-                                                    { inspection.dateDue }
+                                                    { inspection.dateDue?.split("T")[0] }
                                                 </TableCell>
                                                 <TableCell classes={{ root: classes.tableCellRoot }}>
                                                     { inspection.status }
                                                 </TableCell>
                                                 <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
-                                                    { inspection.description }%
+                                                    { inspection.description }
                                                 </TableCell>
                                             </TableRow>
                                         ))}

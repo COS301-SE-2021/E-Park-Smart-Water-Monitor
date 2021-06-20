@@ -114,13 +114,13 @@ function InspectionTable({ inspections }) {
                                         variant="head"
                                         scope="row"
                                     >
-                                        { inspection.dateDue }
+                                        { inspection.dateDue?.split("T")[0] }
                                     </TableCell>
                                     <TableCell classes={{ root: classes.tableCellRoot }}>
                                         { inspection.status }
                                     </TableCell>
                                     <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
-                                        { inspection.description }%
+                                        { inspection.description }
                                     </TableCell>
                                 </TableRow>
                             ))}
