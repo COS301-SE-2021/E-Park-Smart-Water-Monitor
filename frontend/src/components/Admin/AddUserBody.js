@@ -20,9 +20,7 @@ const { Form } = require( "react-bootstrap" );
 
 const useStyles = makeStyles(componentStyles);
 
-const AddUserBody = (props) => {
-    const classes = useStyles();
-    const theme = useTheme();
+const AddUserBody = () => {
     const [park, setPark] = useState("")
     const [idNumber, setIDNumber] = useState("")
     const [email, setEmail] = useState("")
@@ -39,7 +37,7 @@ const AddUserBody = (props) => {
         { value: 'FIELD_ENGINEER', label: 'Field Engineer' },
         { value: 'RANGER', label: 'Ranger' }
     ];
-    
+
 
     useEffect(() => {
         // get the parks for populating the select component
@@ -93,7 +91,7 @@ const AddUserBody = (props) => {
                 <Row>
                     <Col>
                         <Form.Label>Role</Form.Label>
-                        <Select required={"required"} isClearable={true} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => {setRole(e); alert("role after set: "+JSON.stringify(role))}}/>
+                        <Select required={"required"} isClearable={true} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => setRole(e)}/>
                     </Col>
                 </Row>
                 <Row>
