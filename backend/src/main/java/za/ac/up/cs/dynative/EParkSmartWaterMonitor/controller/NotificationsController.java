@@ -29,8 +29,7 @@ public class NotificationsController
     }
 
     @PostMapping("/mail")
-    public ResponseEntity<Object> sendMail(@RequestBody EmailRequest eMailRequest)
-    {
+    public ResponseEntity<Object> sendMail(@RequestBody EmailRequest eMailRequest) throws InvalidRequestException {
         return new ResponseEntity<>(notificationService.sendMail(eMailRequest), HttpStatus.OK);
     }
 

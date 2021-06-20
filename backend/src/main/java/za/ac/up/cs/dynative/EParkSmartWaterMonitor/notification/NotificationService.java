@@ -7,6 +7,6 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.responses.EmailR
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.responses.SMSResponse;
 
 public interface NotificationService {
-    public EmailResponse sendMail(EmailRequest eMailRequest);
+    public EmailResponse sendMail(EmailRequest eMailRequest) throws InvalidRequestException;
     public SMSResponse sendSMS(SMSRequest smsRequest) throws InvalidRequestException;
 }

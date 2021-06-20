@@ -51,7 +51,17 @@ public class NotificationServiceImpl implements NotificationService
     @Value("${spring.mail.username}")
     String senderUsername;
 
-    public EmailResponse sendMail(EmailRequest eMailRequest) {
+    public EmailResponse sendMail(EmailRequest eMailRequest) throws InvalidRequestException {
+        if (eMailRequest==null){
+            throw new InvalidRequestException("Request is null");
+        }
+        if (eMailRequest.getFrom().equals("")||eMailRequest.getTopic()==null||eMailRequest.getToAddresses()==null||eMailRequest.getBody().equals("")||
+            eMailRequest.getDescription().equals("")||eMailRequest.getSubject().equals("")||eMailRequest.getEntity().equals(""))   {
+            throw new InvalidRequestException("Request not complete");
+        }
+        if (eMailRequest.getToAddresses().size()<1){
+            throw new InvalidRequestException("No recipients specified");
+        }
 
         try {
             MimeMessagePreparator preparator = mimeMessage ->
@@ -59,6 +69,7 @@ public class NotificationServiceImpl implements NotificationService
                 MimeMessageHelper message = new MimeMessageHelper(mimeMessage,
                         MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                         StandardCharsets.UTF_8.name());
+
 
                 message.setTo(eMailRequest.getToAddresses().toArray(new String[eMailRequest.getToAddresses().size()]));
                 message.setFrom(senderUsername, eMailRequest.getFrom());
