@@ -14,6 +14,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.Infrastr
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.WaterSourceDeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
@@ -92,19 +93,19 @@ public class AddWaterSourceDevice {
         assertEquals("The site does not exist",t.getMessage());
     }
 
-    //TODO: fix the application.properties the come back and uncomment
-//    @Test
-//    @DisplayName("Successfully add a device to a site")
-//    public void addDevice() throws InvalidRequestException {
-//        WaterSourceDevice device= new WaterSourceDevice();
-//        List<WaterSourceDevice> devices=new ArrayList<>();
-//        Mockito.when(waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
-//        Mockito.when(waterSiteServices.canAttachWaterSourceDevice(Mockito.any())).thenReturn(new CanAttachWaterSourceDeviceResponse("",true));
-//
-//        AddWaterSourceDeviceRequest request= new AddWaterSourceDeviceRequest("ParkA",UUID.randomUUID(),"XX","test",23,28);
-//        AddWaterSourceDeviceResponse response = devicesServices.addDevice(request);
-//        assertNotNull(response);
-//        assertEquals(true,response.getSuccess());
-//        assertEquals("Device test successfully added",response.getStatus());
-//    }
+
+    @Test
+    @DisplayName("Successfully add a device to a site")
+    public void addDevice() throws InvalidRequestException {
+        WaterSourceDevice device= new WaterSourceDevice();
+        List<WaterSourceDevice> devices=new ArrayList<>();
+        Mockito.when(waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
+        Mockito.when(waterSiteServices.canAttachWaterSourceDevice(Mockito.any())).thenReturn(new CanAttachWaterSourceDeviceResponse("",true));
+
+        AddWaterSourceDeviceRequest request= new AddWaterSourceDeviceRequest("ParkA",UUID.randomUUID(),"XX","test",23,28);
+        AddWaterSourceDeviceResponse response = devicesServices.addDevice(request);
+        assertNotNull(response);
+        assertEquals(true,response.getSuccess());
+        assertEquals("Device test successfully added",response.getStatus());
+    }
 }

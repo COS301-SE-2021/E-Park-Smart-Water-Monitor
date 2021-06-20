@@ -66,19 +66,19 @@ public class GetDeviceData {
         assertEquals("Device does not exist",t.getMessage());
     }
 
-    //TODO: Fix application.properties for AWS credentials and uncomment when done.
-//    @Test
-//    @DisplayName("Device found when searched")
-//    public void getDeviceData() throws InvalidRequestException {
-//        List<WaterSourceDevice> device= new ArrayList<>();
-//        device.add(new WaterSourceDevice());
-//        Mockito.when(waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(device);
-//
-//        GetDeviceDataRequest request= new GetDeviceDataRequest("test",22);
-//        GetDeviceDataResponse response= devicesServices.getDeviceData(request);
-//        assertNotNull(response);
-//        assertEquals(true,response.getSuccess());
-//        assertEquals("test",response.getDeviceName());
-//        assertEquals("Successfully retrieved data for device: test",response.getStatus());
-//    }
+
+    /*@Test
+    @DisplayName("Device found when searched")
+    public void getDeviceData() throws InvalidRequestException {
+        List<WaterSourceDevice> device= new ArrayList<>();
+        device.add(new WaterSourceDevice());
+        Mockito.when(waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName(Mockito.any())).thenReturn(device);
+
+        GetDeviceDataRequest request= new GetDeviceDataRequest("Water12",3);
+        GetDeviceDataResponse response= devicesServices.getDeviceData(request);
+        assertNotNull(response);
+        assertEquals(true,response.getSuccess());
+        assertEquals("test",response.getDeviceName());
+        assertEquals("Successfully retrieved data for device: test",response.getStatus());
+    }*/
 }

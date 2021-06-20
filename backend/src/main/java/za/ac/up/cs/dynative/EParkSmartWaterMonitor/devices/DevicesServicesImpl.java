@@ -367,7 +367,7 @@ public class DevicesServicesImpl implements DevicesService {
                     e.printStackTrace();
                 }
             }
-            if (response.getInnerResponses().size() > 0) {
+            if (response.getInnerResponses()!=null &&response.getInnerResponses().size() > 0) {
                 response.setSuccess(true);
                 response.setDeviceName(request.getDeviceName());
                 response.setStatus("Successfully retrieved data for device: " + response.getDeviceName());
