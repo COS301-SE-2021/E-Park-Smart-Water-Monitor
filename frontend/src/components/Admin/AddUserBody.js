@@ -20,7 +20,7 @@ const { Form } = require( "react-bootstrap" );
 
 const useStyles = makeStyles(componentStyles);
 
-const AddUserBody = () => {
+const AddUserBody = (props) => {
     const classes = useStyles();
     const theme = useTheme();
     const [park, setPark] = useState("")
@@ -30,7 +30,7 @@ const AddUserBody = () => {
     const [name, setName] = useState("")
     const [surname, setSurname] = useState("")
     const [username, setUsername] = useState("")
-    const [role, setRole] = useState("Admin")
+    const [role, setRole] = useState("")
     const [cellNumber, setCellNumber] = useState("")
     const [parkOptions, setParkOptions] = useState("")
 
@@ -41,6 +41,39 @@ const AddUserBody = () => {
     ];
 
     useEffect(() => {
+
+        // add the props to the variables so that the user can change the values
+        if(props && props.userDetails)
+        {
+            // set the parks to be the same object notation with value and label
+            let oldRole = props.userDetails.role
+            alert(oldRole)
+            alert("role: "+JSON.stringify(role))
+            for(let i =0; i< userRoles.length; i++){
+                alert(userRoles[i].value)
+                if(oldRole == userRoles[i].value){
+                    alert("user roles[i]: "+userRoles[i])
+                    setRole(userRoles[i])
+                }
+            }
+
+
+            alert(JSON.stringify(props.userDetails))
+            let p = props.userDetails
+            setPark(p.park)
+            setIDNumber(p.idNumber)
+            setEmail(p.email)
+            setPassword(p.password)
+            setName(p.name)
+            setSurname(p.surname)
+            setUsername(p.username)
+            setRole(p.role)
+            setCellNumber(p.cellNumber)
+        }
+    },[props.userDetails])
+
+    useEffect(() => {
+        // get the parks for populating the select component
         axios.get('http://localhost:8080/api/park/getAllParks'
         ).then((res)=>{
 
@@ -55,45 +88,69 @@ const AddUserBody = () => {
         });
     },[])
 
-    // let parkOptions = [
-    //     { value: '2ea5ba27-9d8e-41a4-9628-485f0ae2fb57', label: 'Rietvlei Nature Reserve' },
-    //     { value: '7cf18c71-a31f-45db-8749-e7583a0beb9b', label: 'Demo Nature Reserve' },
-    // ];
 
-    const createUser = (e) => {
+    const submit = (e) => {
         e.preventDefault()
-        let obj = {
-            parkId: park.value,
-            idNumber: idNumber,
-            email: email,
-            password: password,
-            name: name,
-            surname: surname,
-            username: username,
-            role: role.value,
-            cellNumber: `+27${cellNumber}`
-        }
 
-        axios.post('http://localhost:8080/api/user/createUser', obj
-        ).then((res)=>{
+        if(props && props.userDetails)
+        {
+            let obj = {
+                username: props.userDetails.username,
+                idNumber: idNumber,
+                email: email ,
+                name: name,
+                surname: surname,
+                newUsername: username,
+                role: role,
+                cellNumber: cellNumber
+            }
+
+            axios.post('http://localhost:8080/api/user/editUser', obj
+            ).then((res)=>{
+
+                window.location.reload()
+
+            }).catch((res)=>{
+                console.log("response:"+JSON.stringify(res))
+            });
+        }else
+        {
+            // add a new user
+            let obj = {
+                parkId: park.value,
+                idNumber: idNumber,
+                email: email,
+                password: password,
+                name: name,
+                surname: surname,
+                username: username,
+                role: role.value,
+                cellNumber: `+27${cellNumber}`
+            }
+
+            axios.post('http://localhost:8080/api/user/createUser', obj
+            ).then((res)=>{
 
                 // console.log("response:"+JSON.stringify(res))
                 window.location.reload()
 
-        }).catch((res)=>{
-            console.log("response:"+JSON.stringify(res))
-        });
+            }).catch((res)=>{
+                console.log("response:"+JSON.stringify(res))
+            });
+        }
+
+
     }
 
 
 
     return (
         <>
-            <Form onSubmit={ createUser }>
+            <Form onSubmit={ submit }>
                 <Row>
                     <Col>
                         <Form.Label>Role</Form.Label>
-                        <Select required={"required"} isClearable={true} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => setRole(e)}/>
+                        <Select required={"required"} isClearable={true} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => {setRole(e); alert("role after set: "+JSON.stringify(role))}}/>
                     </Col>
                 </Row>
                 <Row>

@@ -31,6 +31,8 @@ const UserTable = () => {
     const theme = useTheme();
     const [show, setShow] = useState(false);
     const [response, setResponse] = useState([]);
+    const [user, setUser] = useState({});
+    const [modal, setModal] = useState("");
 
     // on delete of a user
     const removeUser = (id) => {
@@ -41,6 +43,12 @@ const UserTable = () => {
                 window.location.reload()
             })
         }
+    }
+
+    const editUser = (user) => {
+        //send user details to the modal
+        setUser(user)
+        setModal()
     }
 
     useEffect(() => {
@@ -73,6 +81,7 @@ const UserTable = () => {
                                style={{verticalAlign:'middle'}}>
                         <Button
                             size="small"
+                            onClick={() => { setShow(true); editUser(user) }}
                         >
                             Edit
                         </Button>
@@ -101,8 +110,8 @@ const UserTable = () => {
                 marginTop="-6rem"
                 classes={{ root: classes.containerRoot }}
             >
-                <Modal title="Add User" onClose={() => setShow(false)} show={show}>
-                    <AddUserBody/>
+                <Modal  title="User Details" onClose={() => setShow(false)} show={show}>
+                    <AddUserBody userDetails={user}/>
                 </Modal>
 
                 <Grid container component={Box} marginTop="3rem">

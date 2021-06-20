@@ -23,6 +23,8 @@ const AddParkBody = () => {
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
 
+
+
     return (
         <>
             <Form>

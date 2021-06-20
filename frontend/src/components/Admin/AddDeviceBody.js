@@ -76,18 +76,31 @@ const AddDeviceBody = () => {
         }
     },[park])
 
-    // {
-    //     "parkName": "Rietvlei Nature Reserve",
-    //     "siteId": "2f9f5bbf-5c81-4996-ab1f-20b196fe0ebb",
-    //     "deviceModel":"ESP32",
-    //     "deviceName":"REEEEEEE4",
-    //     "latitude":-25.899494434,
-    //     "longitude": 28.280765508
-    // }
+
+
+    const createDevice = (e) => {
+        e.preventDefault()
+        axios.post('http://localhost:8080/api/devices/addDevice',
+            {
+                parkName: park.label,
+                siteId: site.value,
+                deviceModel: model,
+                deviceName: name,
+                latitude: latitude,
+                longitude: longitude
+            }
+        ).then((res) => {
+
+            window.location.reload()
+
+        }).catch((res) => {
+            console.log("error adding device: "+JSON.stringify(res))
+        });
+    }
 
     return (
         <>
-            <Form>
+            <Form onSubmit={ createDevice }>
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" >
