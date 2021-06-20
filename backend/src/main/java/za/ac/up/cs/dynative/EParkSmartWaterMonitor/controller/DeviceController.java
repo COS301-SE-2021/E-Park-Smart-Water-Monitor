@@ -67,7 +67,7 @@ public class DeviceController {
     }
 
     @PostMapping("/getDeviceData")
-    public ResponseEntity<Object> getDeviceData(@RequestBody GetDeviceDataRequest getDeviceDataRequest) {
+    public ResponseEntity<Object> getDeviceData(@RequestBody GetDeviceDataRequest getDeviceDataRequest) throws InvalidRequestException {
         return new ResponseEntity<>(devicesService.getDeviceData(getDeviceDataRequest),HttpStatus.OK);
     }
 }

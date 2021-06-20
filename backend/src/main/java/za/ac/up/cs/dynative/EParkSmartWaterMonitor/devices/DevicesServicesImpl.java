@@ -312,7 +312,13 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     @Override
-    public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request) {
+    public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request) throws InvalidRequestException {
+        if (request==null){
+            throw new InvalidRequestException("Request is null");
+        }
+        if (request.getDeviceName().equals("")){
+            throw new InvalidRequestException("Device name not specified");
+        }
         GetDeviceDataResponse response =  new GetDeviceDataResponse("Failed to load device data for device: " + request.getDeviceName(),false);
         GetDeviceInnerResponse innerResponse;
 
@@ -349,8 +355,9 @@ public class DevicesServicesImpl implements DevicesService {
                 response.setDeviceName(request.getDeviceName());
                 response.setStatus("Successfully retrieved data for device: " + response.getDeviceName());
             }
+        }else {
+            throw new InvalidRequestException("Device does not exist");
         }
-
         return response;
     }
 }
