@@ -210,7 +210,10 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     @Override
-    public GetParkDevicesResponse getParkDevices(GetParkDevicesRequest request) {
+    public GetParkDevicesResponse getParkDevices(GetParkDevicesRequest request) throws InvalidRequestException {
+        if (request==null){
+            throw new InvalidRequestException("Request is null");
+        }
         GetParkDevicesResponse getParkDevicesResponse = new GetParkDevicesResponse();
         if (request.getParkId() != null) {
 
@@ -220,10 +223,13 @@ public class DevicesServicesImpl implements DevicesService {
                 getParkDevicesResponse.setSite(devices);
                 getParkDevicesResponse.setSuccess(true);
                 getParkDevicesResponse.setStatus("Successfully got the Park's devices");
+            }else{
+                throw new InvalidRequestException("No devices present");
             }
         } else {
             getParkDevicesResponse.setStatus("Failed to get the park's devices");
             getParkDevicesResponse.setSuccess(false);
+            throw new InvalidRequestException("Park id not specified");
         }
         return getParkDevicesResponse;
     }
