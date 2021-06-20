@@ -20,6 +20,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 @RunWith(MockitoJUnitRunner.class)
 public class CreateUser {
     @Mock

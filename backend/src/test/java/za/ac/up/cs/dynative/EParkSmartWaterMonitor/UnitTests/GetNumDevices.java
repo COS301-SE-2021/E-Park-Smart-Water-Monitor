@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesServicesImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.InfrastructureDeviceRepo;
@@ -23,6 +24,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesIm
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 public class GetNumDevices {
     @Mock

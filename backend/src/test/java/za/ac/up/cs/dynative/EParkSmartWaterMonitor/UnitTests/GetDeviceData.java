@@ -7,7 +7,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesServicesImpl;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.InfrastructureDeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.InfrastructureRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
@@ -20,6 +22,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesIm
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 public class GetDeviceData {
     @Mock
@@ -60,7 +63,7 @@ public class GetDeviceData {
     @Test
     @DisplayName("Device not found when searched")
     public void getDeviceDataDNE(){
-        Mockito.when(waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(new ArrayList<>());
+        Mockito.when(waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName(Mockito.any())).thenReturn(new ArrayList<WaterSourceDevice>());
 
         Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.getDeviceData(new GetDeviceDataRequest("test",23)));
         assertEquals("Device does not exist",t.getMessage());

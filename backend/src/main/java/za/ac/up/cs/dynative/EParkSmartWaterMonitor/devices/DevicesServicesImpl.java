@@ -339,7 +339,7 @@ public class DevicesServicesImpl implements DevicesService {
         GetDeviceDataResponse response =  new GetDeviceDataResponse("Failed to load device data for device: " + request.getDeviceName(),false);
         GetDeviceInnerResponse innerResponse;
 
-        if (waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName()).size() == 0) {
+        if (waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName()).size() != 0) {
             Table waterSourceDataTable = dynamoDB.getTable("WaterSourceData");
 
             QuerySpec spec = new QuerySpec()

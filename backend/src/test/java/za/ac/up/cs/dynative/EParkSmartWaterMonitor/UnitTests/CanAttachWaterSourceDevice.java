@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
@@ -16,6 +17,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.CanAttach
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
 public class CanAttachWaterSourceDevice {
     @Mock

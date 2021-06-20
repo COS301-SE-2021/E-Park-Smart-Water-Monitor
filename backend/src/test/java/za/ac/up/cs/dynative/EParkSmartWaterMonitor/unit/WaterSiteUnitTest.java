@@ -15,7 +15,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteBy
 
 import java.util.UUID;
 
-@SpringBootTest
+//@SpringBootTest
 public class WaterSiteUnitTest extends UnitTestBaseClass {
     @Test
     public void testAddSite() throws JsonProcessingException, InvalidRequestException {

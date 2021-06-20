@@ -17,7 +17,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.SaveParkRespon
 
 import java.util.UUID;
 
-@SpringBootTest
+//@SpringBootTest
 public class ParkUnitTest extends UnitTestBaseClass {
 
     @Test
