@@ -1,6 +1,5 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests;
 
-import com.github.dockerjava.api.model.Device;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
@@ -15,7 +14,6 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.Infrastr
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.WaterSourceDeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
@@ -34,6 +32,7 @@ public class AddWaterSourceDevice {
     private InfrastructureRepo infrastructureRepo;
     @Mock
     private MeasurementRepo measurementRepo;
+
 
     @Mock(name = "parkService")
     private ParkServiceImpl parkService;

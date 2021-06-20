@@ -62,7 +62,7 @@ public class DeviceController {
     }
 
     @GetMapping("/getById")
-    public ResponseEntity<Object> getDeviceById(@RequestBody FindDeviceRequest findDeviceRequest) {
+    public ResponseEntity<Object> getDeviceById(@RequestBody FindDeviceRequest findDeviceRequest) throws InvalidRequestException {
         return new ResponseEntity<>(devicesService.findDevice(findDeviceRequest),HttpStatus.OK);
     }
 

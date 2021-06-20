@@ -15,7 +15,7 @@ public interface DevicesService {
     ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request);
     AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest) throws InvalidRequestException;
     Collection<WaterSourceDevice> getAll();
-    FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest);
+    FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest) throws InvalidRequestException;
     GetNumDevicesResponse getNumDevices(GetNumDevicesRequest getNumDevicesRequest) throws InvalidRequestException;
     GetParkDevicesResponse getParkDevices(GetParkDevicesRequest getParkDevicesRequest);
     EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest);

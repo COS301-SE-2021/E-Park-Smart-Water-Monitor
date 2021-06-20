@@ -135,16 +135,21 @@ public class DevicesServicesImpl implements DevicesService {
 
     }
 
-    public FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest)
-    {
-
+    public FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest) throws InvalidRequestException {
+        if (findDeviceRequest==null){
+            throw new InvalidRequestException("Request is null");
+        }
+        if (findDeviceRequest.getDeviceID()==null){
+            throw new InvalidRequestException("No id specified");
+        }
         Optional<WaterSourceDevice> device = waterSourceDeviceRepo.findById(findDeviceRequest.getDeviceID());
         if (device.isPresent())
         {
             return new FindDeviceResponse("Device found",true,device.get());
         }
         else
-            return new FindDeviceResponse("Device not found",false,null);
+            throw new InvalidRequestException("Device not found");
+            //return new FindDeviceResponse("Device not found",false,null);
 
     }
 
