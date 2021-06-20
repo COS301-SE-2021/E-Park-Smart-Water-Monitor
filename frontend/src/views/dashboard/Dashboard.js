@@ -31,7 +31,7 @@ import {
 
 import axios from "axios";
 import componentStyles from "assets/theme/views/dashboard/dashboard.js";
-import InspectionTable from "components/Cards/InspectionTable.js";
+import InspectionTable from "components/Admin/InspectionTable.js";
 const useStyles = makeStyles(componentStyles);
 
 function Dashboard() {
