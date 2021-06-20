@@ -15,9 +15,10 @@ import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
-import Modal from "../../views/admin/modals/Modal";
+import Modal from "../Modals/Modal";
 import disableScroll from "disable-scroll";
 import AddParkBody from "./AddParkBody";
+import axios from "axios";
 
 
 
@@ -27,10 +28,51 @@ const ParkTable = () => {
     const classes = useStyles();
     const theme = useTheme();
     const [show, setShow] = useState(false);
+    const [response, setResponse] = useState(false);
+
+    // useEffect(() => {
+    //     if (show == true) disableScroll.on()
+    //     if (show == false) disableScroll.off()
+    // }, [show])
+
     useEffect(() => {
-        if (show == true) disableScroll.on()
-        if (show == false) disableScroll.off()
-    }, [show])
+        axios.get('http://localhost:8080/api/park/getAllParks').then((res)=>{
+            const m = res.data.allParks.map((park) =>
+                <TableRow key={ park.id } >
+                    <TableCell
+                        classes={{
+                            root:
+                                classes.tableCellRoot +
+                                " " +
+                                classes.tableCellRootBodyHead,
+                        }}
+                        scope="row"
+                        style={{verticalAlign:'middle', width:'80%'}}
+                    >
+                        {park.parkName}
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle'}}>
+                        <Button
+                            size="small"
+                        >
+                            Edit
+                        </Button>
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle'}}>
+                        <Button
+                            size="small"
+                        >
+                            Remove
+                        </Button>
+                    </TableCell>
+                </TableRow>
+            );
+            setResponse(m);
+        });
+
+    },[])
 
     return (
         <>
@@ -89,37 +131,8 @@ const ParkTable = () => {
                                     marginBottom="0!important"
                                 >
                                     <TableBody>
-                                        <TableRow>
-                                            <TableCell
-                                                classes={{
-                                                    root:
-                                                        classes.tableCellRoot +
-                                                        " " +
-                                                        classes.tableCellRootBodyHead,
-                                                }}
-                                                scope="row"
-                                                style={{verticalAlign:'middle', width:'80%'}}
-                                            >
-                                                Riet Vlei
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}
-                                                       style={{verticalAlign:'middle'}}>
-                                                <Button
-                                                    size="small"
-                                                >
-                                                    Edit
-                                                </Button>
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}
-                                                       style={{verticalAlign:'middle'}}>
-                                                <Button
-                                                    size="small"
-                                                >
-                                                    Remove
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
 
+                                        {response}
 
                                     </TableBody>
                                 </Box>
@@ -128,7 +141,7 @@ const ParkTable = () => {
                     </Grid>
                     <Grid
                         item
-                        xs={10}
+                        xs={6}
                         xl={10}
                         component={Box}
                         marginBottom="3rem!important"
@@ -138,7 +151,7 @@ const ParkTable = () => {
                     <Grid
                         item
                         justify="end"
-                        xs={2}
+                        xs={6}
                         xl={2}
                         component={Box}
                         marginBottom="3rem!important"

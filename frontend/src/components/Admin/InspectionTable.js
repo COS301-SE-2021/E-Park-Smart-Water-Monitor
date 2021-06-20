@@ -16,7 +16,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
-import Modal from "../../views/admin/modals/Modal";
+import Modal from "../../components/Modals/Modal";
 import axios from "axios";
 import AddInspectionBody from "./AddInspectionBody";
 // import disableScroll from 'disable-scroll';

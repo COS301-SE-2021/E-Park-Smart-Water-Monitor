@@ -14,11 +14,11 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 
-import Map from "components/Cards/Map.js"
-import BarChart from "components/Cards/BarChart.js"
-import LineChart from "components/Cards/LineChart.js"
-import DeviceTable from "../../components/Cards/DeviceTable";
-import DeviceDetails from "../../components/Cards/DeviceDetails";
+import Map from "components/Dashboard/Map.js"
+import BarChart from "components/Dashboard/BarChart.js"
+import LineChart from "components/Dashboard/LineChart.js"
+import DeviceTable from "../../components/Dashboard/DeviceTable";
+import DeviceDetails from "../../components/Dashboard/DeviceDetails";
 
 
 // core components
@@ -31,7 +31,7 @@ import {
 
 import axios from "axios";
 import componentStyles from "assets/theme/views/dashboard/dashboard.js";
-import InspectionTable from "components/Cards/InspectionTable.js";
+import InspectionTable from "components/Admin/InspectionTable.js";
 const useStyles = makeStyles(componentStyles);
 
 function Dashboard() {
@@ -45,14 +45,12 @@ function Dashboard() {
     parseOptions(Chart, chartOptions());
   }
 
-  //scroll into view on click of device
 
+  axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
   // MONOLITH of SITES
   useEffect(() => {
-    axios.post('http://localhost:8080/api/devices/getParkDevices', {
-      parkId: "b026bea2-17a4-4939-bbbb-80916d8cf44e"
-    }).then((res)=>{
+    axios.get('http://localhost:8080/api/devices/getAllDevices').then((res)=>{
       if(res.data)
       {
         const site = res.data.site; // site array
@@ -84,27 +82,6 @@ function Dashboard() {
 
   const load_device = (device_id) =>
   {
-      // get the new device metrics data
-      // axios.post('http://localhost:8080/api/devices/getDevice', {
-      //   deviceID: "b026bea2-17a4-4939-bbbb-80916d8cf44e"
-      // }).then((res)=>{
-      //   if(res.data)
-      //   {
-      //     const site = res.data.site; // site array
-      //     setDevices(site)
-      //
-      //     if(site && site[0])
-      //     {
-      //       setDevice(site[0])
-      //     }
-      //     console.log(JSON.stringify(site))
-      //
-      //   }else{
-      //     console.log('res.data null')
-      //   }
-      // });
-
-
     // get the device from the monolith of devices to render the specific details
     for(let i =0; i<devices.length;i++)
     {
@@ -118,7 +95,9 @@ function Dashboard() {
 
   return (
     <>
+
       <Header />
+
       {/* Page content */}
       <Container
         maxWidth={false}

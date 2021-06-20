@@ -14,7 +14,7 @@ import InsertChartOutlined from "@material-ui/icons/InsertChartOutlined";
 import PieChart from "@material-ui/icons/PieChart";
 
 // core components
-import CardStats from "components/Cards/CardStats.js";
+import CardStats from "components/Dashboard/CardStats.js";
 
 import componentStyles from "assets/theme/components/header.js";
 import axios from "axios";
@@ -44,130 +44,130 @@ const Header = () => {
           component={Box}
           classes={{ root: classes.containerRoot }}
         >
-          <div>
-            <Grid container>
-              <Grid item xl={3} lg={6} xs={12}>
-                <CardStats
-                  subtitle="Devices"
-                  title={result === null ? 'loading' : result.numDevices}
-                  icon={InsertChartOutlined}
-                  color="bgError"
-                  footer={
-                    <>
-                      <Box
-                        component="span"
-                        fontSize=".875rem"
-                        color={theme.palette.success.main}
-                        marginRight=".5rem"
-                        display="flex"
-                        alignItems="center"
-                      >
-                        <Box
-                          component={ArrowUpward}
-                          width="1.5rem!important"
-                          height="1.5rem!important"
-                        />{" "}
-                        3.48%
-                      </Box>
-                      <Box component="span" whiteSpace="nowrap">
-                        Since last month
-                      </Box>
-                    </>
-                  }
-                />
-              </Grid>
-              <Grid item xl={3} lg={6} xs={12}>
-                <CardStats
-                  subtitle="Inspections"
-                  title="2,356"
-                  icon={PieChart}
-                  color="bgWarning"
-                  footer={
-                    <>
-                      <Box
-                        component="span"
-                        fontSize=".875rem"
-                        color={theme.palette.error.main}
-                        marginRight=".5rem"
-                        display="flex"
-                        alignItems="center"
-                      >
-                        <Box
-                          component={ArrowDownward}
-                          width="1.5rem!important"
-                          height="1.5rem!important"
-                        />{" "}
-                        3.48%
-                      </Box>
-                      <Box component="span" whiteSpace="nowrap">
-                        Since last week
-                      </Box>
-                    </>
-                  }
-                />
-              </Grid>
-              <Grid item xl={3} lg={6} xs={12}>
-                <CardStats
-                  subtitle="Users"
-                  title="924"
-                  icon={GroupAdd}
-                  color="bgWarningLight"
-                  footer={
-                    <>
-                      <Box
-                        component="span"
-                        fontSize=".875rem"
-                        color={theme.palette.warning.main}
-                        marginRight=".5rem"
-                        display="flex"
-                        alignItems="center"
-                      >
-                        <Box
-                          component={ArrowDownward}
-                          width="1.5rem!important"
-                          height="1.5rem!important"
-                        />{" "}
-                        1.10%
-                      </Box>
-                      <Box component="span" whiteSpace="nowrap">
-                        Since yesterday
-                      </Box>
-                    </>
-                  }
-                />
-              </Grid>
-              <Grid item xl={3} lg={6} xs={12}>
-                <CardStats
-                  subtitle="Predictions"
-                  title="49,65%"
-                  icon={EmojiEvents}
-                  color="bgInfo"
-                  footer={
-                    <>
-                      <Box
-                        component="span"
-                        fontSize=".875rem"
-                        color={theme.palette.success.main}
-                        marginRight=".5rem"
-                        display="flex"
-                        alignItems="center"
-                      >
-                        <Box
-                          component={ArrowUpward}
-                          width="1.5rem!important"
-                          height="1.5rem!important"
-                        />{" "}
-                        10%
-                      </Box>
-                      <Box component="span" whiteSpace="nowrap">
-                        Since last month
-                      </Box>
-                    </>
-                  }
-                />
-              </Grid>
-            </Grid>
-          </div>
+          {/*<div>*/}
+          {/*  <Grid container>*/}
+          {/*    <Grid item xl={3} lg={6} xs={12}>*/}
+          {/*      <CardStats*/}
+          {/*        subtitle="Devices"*/}
+          {/*        title={result === null ? 'loading' : result.numDevices}*/}
+          {/*        icon={InsertChartOutlined}*/}
+          {/*        color="bgError"*/}
+          {/*        footer={*/}
+          {/*          <>*/}
+          {/*            <Box*/}
+          {/*              component="span"*/}
+          {/*              fontSize=".875rem"*/}
+          {/*              color={theme.palette.success.main}*/}
+          {/*              marginRight=".5rem"*/}
+          {/*              display="flex"*/}
+          {/*              alignItems="center"*/}
+          {/*            >*/}
+          {/*              <Box*/}
+          {/*                component={ArrowUpward}*/}
+          {/*                width="1.5rem!important"*/}
+          {/*                height="1.5rem!important"*/}
+          {/*              />{" "}*/}
+          {/*              3.48%*/}
+          {/*            </Box>*/}
+          {/*            <Box component="span" whiteSpace="nowrap">*/}
+          {/*              Since last month*/}
+          {/*            </Box>*/}
+          {/*          </>*/}
+          {/*        }*/}
+          {/*      />*/}
+          {/*    </Grid>*/}
+          {/*    <Grid item xl={3} lg={6} xs={12}>*/}
+          {/*      <CardStats*/}
+          {/*        subtitle="Inspections"*/}
+          {/*        title="2,356"*/}
+          {/*        icon={PieChart}*/}
+          {/*        color="bgWarning"*/}
+          {/*        footer={*/}
+          {/*          <>*/}
+          {/*            <Box*/}
+          {/*              component="span"*/}
+          {/*              fontSize=".875rem"*/}
+          {/*              color={theme.palette.error.main}*/}
+          {/*              marginRight=".5rem"*/}
+          {/*              display="flex"*/}
+          {/*              alignItems="center"*/}
+          {/*            >*/}
+          {/*              <Box*/}
+          {/*                component={ArrowDownward}*/}
+          {/*                width="1.5rem!important"*/}
+          {/*                height="1.5rem!important"*/}
+          {/*              />{" "}*/}
+          {/*              3.48%*/}
+          {/*            </Box>*/}
+          {/*            <Box component="span" whiteSpace="nowrap">*/}
+          {/*              Since last week*/}
+          {/*            </Box>*/}
+          {/*          </>*/}
+          {/*        }*/}
+          {/*      />*/}
+          {/*    </Grid>*/}
+          {/*    <Grid item xl={3} lg={6} xs={12}>*/}
+          {/*      <CardStats*/}
+          {/*        subtitle="Users"*/}
+          {/*        title="924"*/}
+          {/*        icon={GroupAdd}*/}
+          {/*        color="bgWarningLight"*/}
+          {/*        footer={*/}
+          {/*          <>*/}
+          {/*            <Box*/}
+          {/*              component="span"*/}
+          {/*              fontSize=".875rem"*/}
+          {/*              color={theme.palette.warning.main}*/}
+          {/*              marginRight=".5rem"*/}
+          {/*              display="flex"*/}
+          {/*              alignItems="center"*/}
+          {/*            >*/}
+          {/*              <Box*/}
+          {/*                component={ArrowDownward}*/}
+          {/*                width="1.5rem!important"*/}
+          {/*                height="1.5rem!important"*/}
+          {/*              />{" "}*/}
+          {/*              1.10%*/}
+          {/*            </Box>*/}
+          {/*            <Box component="span" whiteSpace="nowrap">*/}
+          {/*              Since yesterday*/}
+          {/*            </Box>*/}
+          {/*          </>*/}
+          {/*        }*/}
+          {/*      />*/}
+          {/*    </Grid>*/}
+          {/*    <Grid item xl={3} lg={6} xs={12}>*/}
+          {/*      <CardStats*/}
+          {/*        subtitle="Predictions"*/}
+          {/*        title="49,65%"*/}
+          {/*        icon={EmojiEvents}*/}
+          {/*        color="bgInfo"*/}
+          {/*        footer={*/}
+          {/*          <>*/}
+          {/*            <Box*/}
+          {/*              component="span"*/}
+          {/*              fontSize=".875rem"*/}
+          {/*              color={theme.palette.success.main}*/}
+          {/*              marginRight=".5rem"*/}
+          {/*              display="flex"*/}
+          {/*              alignItems="center"*/}
+          {/*            >*/}
+          {/*              <Box*/}
+          {/*                component={ArrowUpward}*/}
+          {/*                width="1.5rem!important"*/}
+          {/*                height="1.5rem!important"*/}
+          {/*              />{" "}*/}
+          {/*              10%*/}
+          {/*            </Box>*/}
+          {/*            <Box component="span" whiteSpace="nowrap">*/}
+          {/*              Since last month*/}
+          {/*            </Box>*/}
+          {/*          </>*/}
+          {/*        }*/}
+          {/*      />*/}
+          {/*    </Grid>*/}
+          {/*  </Grid>*/}
+          {/*</div>*/}
         </Container>
       </div>
     </>

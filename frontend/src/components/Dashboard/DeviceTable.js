@@ -22,6 +22,7 @@ const useStyles = makeStyles(componentStyles);
 function DeviceTable(props) {
   const classes = useStyles();
   const [response, setResponse] = useState(null)
+  const [hover, setHover] = useState(true)
 
     const handleDeviceSelection = (device_id) => {
         // so that it doesn't run on render
@@ -30,11 +31,30 @@ function DeviceTable(props) {
         }
     }
 
+    const toggleHover = ()=>{
+      setHover(!hover)
+    }
+
+
+
+
+
     useEffect(() => {
+
+        let hoverStyle;
+        if (hover) {
+            hoverStyle = {cursor: 'pointer'}
+        } else {
+            hoverStyle = {cursor: 'default'}
+        }
+
         if(props.devices)
         {
             const m = props.devices.map((device) =>
-                <TableRow key={device.deviceId} onClick={handleDeviceSelection(device.deviceId)}>
+                <TableRow
+                    key={device.deviceId} onClick={handleDeviceSelection(device.deviceId)}
+                    style={hoverStyle} onMouseEnter={toggleHover} onMouseLeave={toggleHover}
+                >
                     <TableCell
                         classes={{
                             root:

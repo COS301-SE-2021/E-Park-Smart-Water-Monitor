@@ -15,9 +15,10 @@ import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
-import Modal from "../../views/admin/modals/Modal";
+import Modal from "../Modals/Modal";
 import AddDeviceBody from "./AddDeviceBody";
 import disableScroll from "disable-scroll";
+import axios from "axios";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -27,20 +28,64 @@ const DeviceTable = () => {
     const theme = useTheme();
    // const [result, setResult] = useState(null)
     const [show, setShow] = useState(false);
+    const [response, setResponse] = useState([]);
 
 
-   /* useEffect(() => {
-        axios.post('http://localhost:8080/api/devices/getNumDevices', {
-            parkID: "2ea5ba27-9d8e-41a4-9628-485f0ae2fb57"
-        }).then((res)=>{
-            setResult(res.data)
-        });
-    }, [])*/
+    // on delete of a user
+    const removeDevice = (id) => {
+        return ()=>{
+            axios.get('http://localhost:8080/api/device/deleteDevice', {
+                id: id
+            }).then((res)=> {
+                window.location.reload()
+            })
+        }
+    }
 
     useEffect(() => {
-        if (show == true) disableScroll.on()
-        if (show == false) disableScroll.off()
-    }, [show])
+        // get all users
+        axios.get('http://localhost:8080/api/devices/getAllDevices').then((res)=>{
+            const m = res.data.site.map((device) =>
+                <TableRow key={ device.deviceId } >
+                    <TableCell
+                        classes={{
+                            root:
+                                classes.tableCellRoot +
+                                " " +
+                                classes.tableCellRootBodyHead,
+                        }}
+                        style={{verticalAlign: 'middle', width: '80%'}}
+                        scope="row"
+                    >
+                        { device.deviceName }
+                    </TableCell>
+                    <TableCell classes={{root: classes.tableCellRoot}}
+                               style={{verticalAlign: 'middle'}}>
+                        <Button
+                            size="small"
+                        >
+                            Edit
+                        </Button>
+                    </TableCell>
+                    <TableCell classes={{root: classes.tableCellRoot}}
+                               style={{verticalAlign: 'middle'}}>
+                        <Button
+                            size="small"
+                        >
+                            Remove
+                        </Button>
+                    </TableCell>
+                </TableRow>
+            );
+            setResponse(m);
+        });
+
+    },[])
+
+    // useEffect(() => {
+    //     if (show == true) disableScroll.on()
+    //     if (show == false) disableScroll.off()
+    // }, [show])
 
 
     return (
@@ -53,6 +98,7 @@ const DeviceTable = () => {
                 <Modal title="Add Device" onClose={() => setShow(false)} show={show}>
                     <AddDeviceBody/>
                 </Modal>
+
                 <Grid container component={Box}>
                     <Grid
                         item
@@ -106,36 +152,7 @@ const DeviceTable = () => {
                                     marginBottom="0!important"
                                 >
                                     <TableBody>
-                                        <TableRow>
-                                            <TableCell
-                                                classes={{
-                                                    root:
-                                                        classes.tableCellRoot +
-                                                        " " +
-                                                        classes.tableCellRootBodyHead,
-                                                }}
-                                                style={{verticalAlign:'middle', width: '80%'}}
-                                                scope="row"
-                                            >
-                                                WATER5000
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}
-                                                       style={{verticalAlign:'middle'}}>
-                                                <Button
-                                                    size="small"
-                                                >
-                                                    Edit
-                                                </Button>
-                                            </TableCell>
-                                            <TableCell classes={{ root: classes.tableCellRoot }}
-                                                       style={{verticalAlign:'middle'}}>
-                                                <Button
-                                                    size="small"
-                                                >
-                                                    Remove
-                                                </Button>
-                                            </TableCell>
-                                        </TableRow>
+                                        { response }
                                     </TableBody>
                                 </Box>
                             </TableContainer>
@@ -144,7 +161,7 @@ const DeviceTable = () => {
                     </Grid>
                     <Grid
                         item
-                        xs={10}
+                        xs={6}
                         xl={10}
                         component={Box}
                         marginBottom="3rem!important"
@@ -154,7 +171,7 @@ const DeviceTable = () => {
                     <Grid
                           item
                           justify="end"
-                          xs={2}
+                          xs={6}
                           xl={2}
                           component={Box}
                           marginBottom="3rem!important"

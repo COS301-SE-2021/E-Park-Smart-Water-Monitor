@@ -3,7 +3,7 @@ import axios from "axios";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import CardStats from "../Cards/CardStats";
+import CardStats from "../Dashboard/CardStats";
 import InsertChartOutlined from "@material-ui/icons/InsertChartOutlined";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import PieChart from "@material-ui/icons/PieChart";
