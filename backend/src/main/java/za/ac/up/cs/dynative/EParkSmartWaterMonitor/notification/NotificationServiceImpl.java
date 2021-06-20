@@ -113,7 +113,7 @@ public class NotificationServiceImpl implements NotificationService
     public SMSResponse sendSMS(SMSRequest smsRequest) {
 
         ArrayList<User> recipients = smsRequest.getRecipients();
-        if (recipients==null)  //TODO add if checks
+        if (recipients==null)
         {
             recipients= new ArrayList<>();
             for (int r = 0; r < smsRequest.getUserIds().size() ; r++) {
@@ -129,7 +129,7 @@ public class NotificationServiceImpl implements NotificationService
         ArrayList<String>  smsErrors = new ArrayList<>();
 
         Pattern pattern = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");
-        Matcher matcher = pattern.matcher("+111 (202) 555-0125");
+        Matcher matcher ;
 
         for (int i = 0; i < recipients.size(); i++)
         {
