@@ -14,11 +14,11 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 
-import Map from "components/Cards/Map.js"
-import BarChart from "components/Cards/BarChart.js"
-import LineChart from "components/Cards/LineChart.js"
-import DeviceTable from "../../components/Cards/DeviceTable";
-import DeviceDetails from "../../components/Cards/DeviceDetails";
+import Map from "components/Dashboard/Map.js"
+import BarChart from "components/Dashboard/BarChart.js"
+import LineChart from "components/Dashboard/LineChart.js"
+import DeviceTable from "../../components/Dashboard/DeviceTable";
+import DeviceDetails from "../../components/Dashboard/DeviceDetails";
 
 
 // core components
