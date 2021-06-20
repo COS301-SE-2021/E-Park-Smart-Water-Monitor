@@ -29,7 +29,7 @@ function Map(props) {
     useEffect(() => {
         if (props.devices) {
             const m = props.devices.map((device) =>
-                <Marker key={device.deviceName} position={[device.deviceData.latitude, device.deviceData.longitude]}>
+                <Marker key={device.deviceId} position={[device.deviceData.latitude, device.deviceData.longitude]}>
                     <Popup>
                         {device.deviceName}
                     </Popup>

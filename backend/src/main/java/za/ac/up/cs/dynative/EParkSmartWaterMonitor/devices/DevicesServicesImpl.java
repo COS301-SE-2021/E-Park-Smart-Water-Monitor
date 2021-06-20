@@ -31,6 +31,9 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestExce
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.DeleteUserRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.DeleteUserResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.GetAllDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.CanAttachWaterSourceDeviceRequest;
@@ -371,6 +374,23 @@ public class DevicesServicesImpl implements DevicesService {
             }
         }else {
             throw new InvalidRequestException("Device does not exist");
+        }
+        return response;
+    }
+
+    @Override
+    public GetAllDevicesResponse getAllDevices() {
+        GetAllDevicesResponse response = new GetAllDevicesResponse();
+
+        List<WaterSourceDevice> devices = waterSourceDeviceRepo.findAll();
+
+        if (devices.size() > 0) {
+            response.setSite(devices);
+            response.setSuccess(true);
+            response.setStatus("Successfully got all the devices");
+        } else {
+            response.setStatus("Failed to get all the devices");
+            response.setSuccess(false);
         }
         return response;
     }

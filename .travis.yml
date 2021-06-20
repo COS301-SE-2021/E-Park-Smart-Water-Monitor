@@ -15,8 +15,19 @@ jobs:
         - cd backend
         - chmod +x mvnw
       script:
-        - mkdir src/main/resources
         - echo "spring.neo4j.uri=${NEO_URL}" > src/main/resources/application.properties
         - echo "spring.neo4j.authentication.username=${NEO_USERNAME}" >> src/main/resources/application.properties
         - echo "spring.neo4j.authentication.password=${NEO_PASS}" >> src/main/resources/application.properties
+        - echo "spring.mail.host=smtp.gmail.com" >> src/main/resources/application.properties
+        - echo "spring.mail.port=587" >> src/main/resources/application.properties
+        - echo "spring.mail.username=${SMTP_USER}" >> src/main/resources/application.properties
+        - echo "spring.mail.password=${SMTP_PASS}" >> src/main/resources/application.properties
+        - echo "spring.mail.properties.mail.smtp.auth=true" >> src/main/resources/application.properties
+        - echo "spring.mail.properties.mail.smtp.connectiontimeout=5000" >> src/main/resources/application.properties
+        - echo "spring.mail.properties.mail.smtp.timeout=5000" >> src/main/resources/application.properties
+        - echo "spring.mail.properties.mail.smtp.writetimeout=5000" >> src/main/resources/application.properties
+        - echo "spring.mail.properties.mail.smtp.starttls.enable=true" >> src/main/resources/application.properties
+        - echo "twilio.accountId=${TWILIO_ID}" >> src/main/resources/application.properties
+        - echo "twilio.token=${TWILIO_TOKEN}" >> src/main/resources/application.properties
+        - echo "twilio.number=${TWILIO_NUMBER}" >> src/main/resources/application.properties
         - mvn test

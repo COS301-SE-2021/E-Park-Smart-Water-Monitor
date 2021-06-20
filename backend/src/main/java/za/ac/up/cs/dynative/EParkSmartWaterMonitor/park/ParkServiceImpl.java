@@ -102,6 +102,7 @@ public class ParkServiceImpl implements ParkService {
             Park park = parkRepo.findParkById(request.getParkId());
             if (park != null) {
                 response.setStatus(park);
+                response.setSuccess(true);
             }else{
                 throw new InvalidRequestException("Park not present");
             }

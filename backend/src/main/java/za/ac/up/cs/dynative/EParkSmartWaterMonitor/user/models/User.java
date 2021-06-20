@@ -29,6 +29,8 @@ public class User {
 
     private String cellNumber;
 
+    private String parkName;
+
     @Relationship(type = "WORKS_FOR", direction = Relationship.Direction.OUTGOING)
     private Park park;
 
@@ -44,6 +46,7 @@ public class User {
         this.park = park;
         this.role = role;
         this.cellNumber = cellNumber;
+        this.parkName = park.getParkName();
     }
 
     public User(int idNumber, String email, String name, String surname, String password, String username, String role) {
@@ -139,6 +142,14 @@ public class User {
 
     public void setPark(Park park) {
         this.park = park;
+    }
+
+    public String getParkName() {
+        return parkName;
+    }
+
+    public void setParkName(String parkName) {
+        this.parkName = parkName;
     }
 
     @Override

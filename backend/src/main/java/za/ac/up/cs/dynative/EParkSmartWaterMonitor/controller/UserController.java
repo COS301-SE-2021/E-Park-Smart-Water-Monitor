@@ -8,9 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.UserService;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.EditUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.LoginRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.*;
 
 @CrossOrigin
 @RestController
@@ -29,8 +27,18 @@ public class UserController {
         return new ResponseEntity<>(userService.createUser(createUserRequest), HttpStatus.OK);
     }
 
+    @PostMapping("/getUser")
+    public ResponseEntity<Object> getUser(@RequestBody FindUserByIdRequest findUserByIdRequest) {
+        return new ResponseEntity<>(userService.findUserById(findUserByIdRequest), HttpStatus.OK);
+    }
+
+    @PostMapping("/deleteUser")
+    public ResponseEntity<Object> deleteUser(@RequestBody DeleteUserRequest deleteUserRequest) {
+        return new ResponseEntity<>(userService.deleteUser(deleteUserRequest), HttpStatus.OK);
+    }
+
     @PostMapping("/editUser")
-    public ResponseEntity<Object> createUser(@RequestBody EditUserRequest editUserRequest) {
+    public ResponseEntity<Object> editUser(@RequestBody EditUserRequest editUserRequest) {
         return new ResponseEntity<>(userService.editUser(editUserRequest), HttpStatus.OK);
     }
 

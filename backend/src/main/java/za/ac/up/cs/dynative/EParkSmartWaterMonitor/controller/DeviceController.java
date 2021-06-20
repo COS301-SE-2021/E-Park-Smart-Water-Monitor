@@ -10,6 +10,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDev
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.EditDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.DeleteUserRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +32,7 @@ public class DeviceController {
     public ResponseEntity<Object> receiveWaterDeviceData(@RequestBody ReceiveDeviceDataRequest request) {
         return new ResponseEntity<>(devicesService.receiveWaterDeviceData(request),HttpStatus.OK);
     }
+
     @GetMapping("/getDevice")
     public java.util.Collection<WaterSourceDevice> getDevice() {
         return devicesService.getAll();
@@ -51,9 +53,14 @@ public class DeviceController {
         return new ResponseEntity<>(devicesService.getNumDevices(getNumDevicesRequest),HttpStatus.OK);
     }
 
+
     @PostMapping("/getParkDevices")
     public ResponseEntity<Object> getNumDevices(@RequestBody GetParkDevicesRequest getParkDevicesRequest) throws InvalidRequestException {
-        return new ResponseEntity<>(devicesService.getParkDevices(getParkDevicesRequest),HttpStatus.OK);
+        return new ResponseEntity<>(devicesService.getParkDevices(getParkDevicesRequest), HttpStatus.OK);
+    }
+    @GetMapping("/getAllDevices")
+    public ResponseEntity<Object> getNumDevices() {
+        return new ResponseEntity<>(devicesService.getAllDevices(),HttpStatus.OK);
     }
 
     @PutMapping("/editDevice")
@@ -70,4 +77,5 @@ public class DeviceController {
     public ResponseEntity<Object> getDeviceData(@RequestBody GetDeviceDataRequest getDeviceDataRequest) throws InvalidRequestException {
         return new ResponseEntity<>(devicesService.getDeviceData(getDeviceDataRequest),HttpStatus.OK);
     }
+
 }

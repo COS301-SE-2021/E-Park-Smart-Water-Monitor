@@ -13,13 +13,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdReq
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.repositories.UserRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.EditUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.LoginRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.CreateUserResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.EditUserResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.GetAllUsersResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.LoginResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.*;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -76,18 +71,24 @@ public class UserServiceImpl implements UserService {
 
                     Park park = findByParkIdResponse.getPark();
 
-                    User user = new User(Long.parseLong(idNumber), email, name, surname, passwordEncoder.encode(password), username, role, park, cellNumber);
+                    if (park != null) {
+                        User user = new User(Long.parseLong(idNumber), email, name, surname, passwordEncoder.encode(password), username, role, park, cellNumber);
 
-                    userRepo.save(user);
+                        userRepo.save(user);
 
-                    response.setStatus("Successfully create user: "
-                            + name
-                            + " "
-                            + surname
-                            + " and added them to park: "
-                            + park.getParkName());
+                        response.setStatus("Successfully create user: "
+                                + name
+                                + " "
+                                + surname
+                                + " and added them to park: "
+                                + park.getParkName());
 
-                    response.setSuccess(true);
+                        response.setSuccess(true);
+                    }
+                    else {
+                        response.setSuccess(false);
+                        response.setStatus("No park with this id exists.");
+                    }
                 } else {
                     throw new InvalidRequestException("A user with this username already exists.");
 //                    response.setSuccess(false);
@@ -294,7 +295,44 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public DeleteUserResponse deleteUser(DeleteUserRequest deleteUserRequest) {
+        DeleteUserResponse response = new DeleteUserResponse();
+
+        if (deleteUserRequest.getId() != null) {
+            User user = userRepo.findUserById(deleteUserRequest.getId());
+
+            if (user != null) {
+                userRepo.delete(user);
+                response.setStatus("Sucessfully deleteD user: " + user.getName() + " " + user.getSurname());
+                response.setSuccess(true);
+            }
+            else {
+                response.setStatus("Failed to delete user: No user with this id exists!");
+                response.setSuccess(false);
+            }
+        }
+        else {
+            response.setStatus("Failed to delete user no id specified!");
+            response.setSuccess(false);
+        }
+        return response;
+    }
+
+    @Override
+    public FindUserByIdResponse findUserById(FindUserByIdRequest request) {
+        FindUserByIdResponse response = new FindUserByIdResponse(false, null);
+        if (request.getUserId() != null) {
+            User user = userRepo.findSpecificUser(request.getUserId());
+            if (user != null) {
+                response.setStatus(user);
+                response.setSuccess(true);
+            }
+        }
+        return response;
+    }
+
+    @Override
     public GetAllUsersResponse getAllUsers() {
-        return new GetAllUsersResponse(userRepo.findAll());
+        return new GetAllUsersResponse(userRepo.getAllUsers());
     }
 }
