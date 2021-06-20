@@ -13,6 +13,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.configurations.T
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.SMSRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.responses.EmailResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.responses.SMSResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.UserService;
@@ -97,14 +98,38 @@ public class SendEmail {
 
     @Test
     @DisplayName("Send email from invalid email")
-    public void sensSMSInvalidNumber(){
-        User u= new User(23456789,"email@test.com","name", "Surname",
-                "String password", "uT1", "Agent", new Park(), "123");
-        ArrayList<User> list= new ArrayList<>();
-        list.add(u);
-
-        SMSRequest request= new SMSRequest(list,"Hi");
-        Throwable t= assertThrows(IllegalArgumentException.class,()->notificationService.sendSMS(request));
-        assertEquals("The following users have invalid phone numbers: uT1. Please correct and try again.",t.getMessage());
+    public void sendEmailInvalidFrom() throws InvalidRequestException {
+        ArrayList<String> list= new ArrayList<>();
+        list.add("hi@gmail.com");
+        EmailRequest request= new EmailRequest("test@email",
+                "Hello",list,null,null, Topic.ALERT,"E-Park","Testing","problem");
+        EmailResponse response= notificationService.sendMail(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
     }
-}
+
+    @Test
+    @DisplayName("Send email to invalid email")
+    public void sendEmailInvalidTo() throws InvalidRequestException {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("hi@gmail");
+        EmailRequest request = new EmailRequest("test@email.com",
+                "Hello", list, null, null, Topic.ALERT, "E-Park", "Testing", "problem");
+        EmailResponse response = notificationService.sendMail(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+    }
+
+    /*@Test
+    @DisplayName("Send email")
+    public void sendEmail() throws InvalidRequestException {
+        ArrayList<String> list = new ArrayList<>();
+        list.add("dynative301@gmail.com");
+        EmailRequest request = new EmailRequest("epark.communications@gmail.com",
+                "Hello", list, null, null, Topic.ALERT, "E-Park", "Testing", "problem");
+        EmailResponse response = notificationService.sendMail(request);
+        assertNotNull(response);
+        assertEquals(true,response.getSuccess());
+    }*/
+
+    }
