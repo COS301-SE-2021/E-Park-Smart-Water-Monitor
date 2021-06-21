@@ -4,7 +4,6 @@
 [![master tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/master?label=master%20tests&logo=Travis%20CI&style=flat-square&logoColor=white)](https://travis-ci.com/)
 [![development tests](https://img.shields.io/travis/com/COS301-SE-2021/E-Park-Smart-Water-Monitor/development?label=development%20tests&logo=Travis%20CI&style=flat-square&logoColor=white)](https://travis-ci.com/)
 [![Uptime](https://img.shields.io/uptimerobot/ratio/7/m788292405-312287984b9cb9ab81115749?style=flat-square)](https://uptimerobot.com/dashboard.php#788292405)
-[![Dependencies](https://img.shields.io/librariesio/github/COS301-SE-2021/E-Park-Smart-Water-Monitor?style=flat-square&logo=libraries-dot-io&logoColor=white)](https://libraries.io/github/COS301-SE-2021/E-Park-Smart-Water-Monitor)
 [![Coverage](https://img.shields.io/coveralls/github/COS301-SE-2021/E-Park-Smart-Water-Monitor?logo=Coveralls&style=flat-square)](https://coveralls.io/repos/new?name=cos301-se-2021&service=github)
 
 
@@ -34,10 +33,25 @@
 
 <h2 align="center">
   <a href="https://github.com/COS301-SE-2021/E-Park-Smart-Water-Monitor/projects/1">Project</a>
-  <span> · </span>
-  <a href="https://drive.google.com/drive/folders/1JtEAoGzD2fdj7B_4H0G4I81tGimblV0U?usp=sharing">SRS</a>
-  <span> · </span>
-  <a href="https://drive.google.com/drive/folders/1HRHIfULwivVIk_WgBqOFxxoT9gDwKCS2?usp=sharing">Demo Videos</a>
+</h2>
+<h2 align="center">
+  <a href="https://drive.google.com/drive/folders/1JtEAoGzD2fdj7B_4H0G4I81tGimblV0U?usp=sharing">SRS DEMO1</a>
+</h2>
+<h2 align="center">
+  <a href="https://drive.google.com/file/d/1eYDnP1ZH6MrjI-vtNwXcEte5t2FGeRKM/view?usp=sharing">SRS DEMO2</a>
+</h2>
+
+<h2 align="center">
+  <a href="https://drive.google.com/drive/folders/1HRHIfULwivVIk_WgBqOFxxoT9gDwKCS2?usp=sharing">Demo 1 Video</a>
+    </h2>
+    <h2 align="center">
+  <a href="https://drive.google.com/file/d/1Ds8C3er5Sx-DwE-YOBukBnnUfCPg21uE/view?usp=sharing">Demo 2 Video</a>
+    </h2>
+<h2 align="center">
+     <a href="https://drive.google.com/file/d/1U8JDr8H05c1e-gPeMpEPL77sP1rnBMQd/view?usp=sharing">Architectural Requirements</a>
+    </h2>
+<h2 align="center">
+  <a href="https://docs.google.com/document/d/1ikdJGD2mMvUbiWejvXX4rgyWX0MuYbJIvR5ABKEp_s8/edit?usp=sharing">Coding Conventions</a>
 </h2>
 
 ## 📋 Table of Contents
