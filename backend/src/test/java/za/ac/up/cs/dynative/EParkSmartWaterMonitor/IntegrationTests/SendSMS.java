@@ -39,7 +39,7 @@ public class SendSMS {
         ArrayList<User> receivers= new ArrayList<>();
         SMSRequest request = new SMSRequest(receivers,"Not going to work");
         ResponseEntity<SMSResponse> responseEntity = this.restTemplate
-                .postForEntity("http://localhost:" + port + "/api/sms", request, SMSResponse.class);
+                .postForEntity("http://localhost:" + port + "/api/notifications/sms", request, SMSResponse.class);
         assertEquals(401, responseEntity.getStatusCodeValue());
     }
 
@@ -50,11 +50,11 @@ public class SendSMS {
         receivers.add(new User());
         SMSRequest request = new SMSRequest(receivers,"Not going to work");
         ResponseEntity<SMSResponse> responseEntity = this.restTemplate
-                .postForEntity("http://localhost:" + port + "/api/sms", request, SMSResponse.class);
+                .postForEntity("http://localhost:" + port + "/api/notifications/sms", request, SMSResponse.class);
         assertEquals(401, responseEntity.getStatusCodeValue());
     }
 
-    /*@Test
+   /* @Test
     @Order(3)
     public void sendSMS(){
         ArrayList<User> receivers= new ArrayList<>();
@@ -63,7 +63,7 @@ public class SendSMS {
         receivers.add(u);
         SMSRequest request = new SMSRequest(receivers,"This works");
         ResponseEntity<SMSResponse> responseEntity = this.restTemplate
-                .postForEntity("http://localhost:" + port + "/api/sms", request, SMSResponse.class);
+                .postForEntity("http://localhost:" + port + "/api/notifications/sms", request, SMSResponse.class);
         assertEquals(200, responseEntity.getStatusCodeValue());
     }*/
 
