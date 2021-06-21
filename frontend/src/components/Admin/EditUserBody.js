@@ -33,6 +33,7 @@ const EditUserBody = (props) => {
     const [role, setRole] = useState("")
     const [cellNumber, setCellNumber] = useState("")
     const [parkOptions, setParkOptions] = useState("")
+    const [error, setError] = useState("")
 
     let userRoles = [
         { value: 'ADMIN', label: 'Admin' },
@@ -53,8 +54,12 @@ const EditUserBody = (props) => {
                 }
             }
 
-
             let p = props.userDetails
+
+            let cell = p.cellNumber;
+            cell = cell.substr(4)
+            cell = '0'+cell
+
             setPark(p.park)
             setIDNumber(p.idNumber)
             setEmail(p.email)
@@ -63,7 +68,7 @@ const EditUserBody = (props) => {
             setSurname(p.surname)
             setUsername(p.username)
             // setRole(p.role)
-            setCellNumber(p.cellNumber)
+            setCellNumber(cell)
         }
     },[props.userDetails])
 
@@ -118,12 +123,17 @@ const EditUserBody = (props) => {
             }
 
 
-
             axios.post('http://localhost:8080/api/user/editUser', obj
             ).then((res)=>{
 
-
-                window.location.reload(); //need to get the new data from the db to populate the table again
+                console.log("response:"+JSON.stringify(res))
+                if(res.data.success == "false")
+                {
+                    setError(res.data.status)
+                    console.log("error with editing user")
+                }else{
+                    window.location.reload(); //need to get the new data from the db to populate the table again
+                }
 
             }).catch((res)=>{
                 console.log("response:"+JSON.stringify(res))
@@ -209,6 +219,9 @@ const EditUserBody = (props) => {
 
                     </Col>
                 </Row>
+
+
+
 
                 <Button variant="primary" type="submit" >
                     Edit
