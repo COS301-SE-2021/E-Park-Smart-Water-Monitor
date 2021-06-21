@@ -55,7 +55,7 @@ public class SendEmail {
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     public void sendMailFromNotspecified(){
         ArrayList<String> receivers= new ArrayList<>();
         receivers.add("nita.nell92@gmail.com");
@@ -68,7 +68,7 @@ public class SendEmail {
     }
 
     @Test
-    @Order(2)
+    @Order(4)
     public void sendMailTopicNotspecified(){
         ArrayList<String> receivers= new ArrayList<>();
         receivers.add("nita.nell92@gmail.com");
