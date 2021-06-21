@@ -13,12 +13,9 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.EParkSmartWaterMonitorApplication;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.EditUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.CreateUserResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.EditUserResponse;
 
-import java.util.UUID;
 
 @SpringBootTest(classes = EParkSmartWaterMonitorApplication.class,
         webEnvironment = WebEnvironment.RANDOM_PORT)
