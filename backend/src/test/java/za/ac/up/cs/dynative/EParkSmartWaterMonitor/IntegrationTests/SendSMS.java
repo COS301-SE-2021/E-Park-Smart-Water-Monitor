@@ -16,8 +16,6 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.EParkSmartWaterMonitorApplica
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.SMSRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.responses.SMSResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.CreateUserResponse;
 
 import java.util.ArrayList;
 import java.util.List;
