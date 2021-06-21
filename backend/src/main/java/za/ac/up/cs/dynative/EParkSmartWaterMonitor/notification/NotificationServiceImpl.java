@@ -87,8 +87,10 @@ public class NotificationServiceImpl implements NotificationService
                 {
                     templateSelector="/PasswordResetTemplate.ftlh";
                 }
-                else
-
+                if (eMailRequest.getTopic()== Topic.ACCOUNT_CREATION)
+                {
+                templateSelector="/AccountCreationTemplate.ftlh";
+                }
                 templateData.put("entity", eMailRequest.getEntity());
                 templateData.put("shortDisc", eMailRequest.getDescription());
                 templateData.put("longBody", eMailRequest.getBody());
