@@ -86,7 +86,7 @@ function DeviceTable(props) {
                                 variant="h3"
                                 marginBottom="0!important"
                             >
-                                Device Details
+                                All Devices
                             </Box>
                         </Grid>
                         <Grid item xs="auto">
