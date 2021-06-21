@@ -16,7 +16,7 @@ const AddInspectionBody = () => {
     const theme = useTheme();
 
     const [device, setDevice] = useState("")
-    const [site, setSite] = useState("91d05eb1-2a35-4e44-9726-631d83121edb")
+    const [site, setSite] = useState("33de6fd6-5f26-4020-a58f-f41b0de7b839")
     const [description, setDescription] = useState("")
     const [date, setDate] = useState(null)
 

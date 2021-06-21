@@ -165,7 +165,6 @@ function DeviceTable(props) {
                         </TableHead>
                         <TableBody>
                             { response }
-                            { response }
                         </TableBody>
                     </Box>
                 </TableContainer>

@@ -35,7 +35,7 @@ const InspectionTable = () => {
 
     useEffect(() => {
         axios.post('http://localhost:8080/api/inspections/getSiteInspections', {
-            siteId: "10ad3cf6-59c3-4469-b1b0-17a75e93cf7f"
+            siteId: "33de6fd6-5f26-4020-a58f-f41b0de7b839"
         }).then((res) => {
             if (res.data) {
             setInspections(res.data.inspectionList)

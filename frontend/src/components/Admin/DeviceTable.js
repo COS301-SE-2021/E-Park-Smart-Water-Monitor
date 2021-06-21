@@ -59,6 +59,18 @@ const DeviceTable = () => {
                     >
                         { device.deviceName }
                     </TableCell>
+                    <TableCell
+                        classes={{
+                            root:
+                                classes.tableCellRoot +
+                                " " +
+                                classes.tableCellRootBodyHead,
+                        }}
+                        style={{verticalAlign: 'middle', width: '80%'}}
+                        scope="row"
+                    >
+                        { device.deviceId }
+                    </TableCell>
                     <TableCell classes={{root: classes.tableCellRoot}}
                                style={{verticalAlign: 'middle'}}>
                         <Button
