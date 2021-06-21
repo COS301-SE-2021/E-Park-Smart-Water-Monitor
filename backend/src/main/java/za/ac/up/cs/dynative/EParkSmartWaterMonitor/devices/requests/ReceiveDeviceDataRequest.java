@@ -28,30 +28,6 @@ public class ReceiveDeviceDataRequest {
         this.deviceName = deviceName;
     }
 
-//    public double getValue() {
-//        return value;
-//    }
-
-//    public void setValue(double value) {
-//        this.value = value;
-//    }
-
-//    public String getUnitOfMeasurement() {
-//        return unitOfMeasurement;
-//    }
-
-//    public void setUnitOfMeasurement(String unitOfMeasurement) {
-//        this.unitOfMeasurement = unitOfMeasurement;
-//    }
-//
-//    public String getDeviceDateTime() {
-//        return deviceDateTime;
-//    }
-
-//    public void setDeviceDateTime(String deviceDateTime) {
-//        this.deviceDateTime = deviceDateTime;
-//    }
-
     @Override
     public String toString() {
         return "ReceiveDeviceDataRequest{" +
@@ -68,11 +44,4 @@ public class ReceiveDeviceDataRequest {
         this.measurements = measurements;
     }
 
-//    public String getType() {
-//        return type;
-//    }
-
-//    public void setType(String type) {
-//        this.type = type;
-//    }
 }

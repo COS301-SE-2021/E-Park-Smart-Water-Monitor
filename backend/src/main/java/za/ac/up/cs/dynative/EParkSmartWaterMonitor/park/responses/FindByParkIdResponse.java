@@ -30,7 +30,7 @@ public class FindByParkIdResponse {
         return park;
     }
 
-    public void setPark(Park park) {
+    public void setStatus(Park park) {
         this.park = park;
     }
 }

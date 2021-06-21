@@ -5,7 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesServicesImpl;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.InfrastructureDeviceRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.WaterSourceDeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.InfrastructureRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
@@ -17,7 +18,7 @@ import javax.annotation.PostConstruct;
 import java.util.logging.Logger;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+//@SpringBootTest
 class UnitTestBaseClass {
     final static Logger LOGGER = Logger.getLogger("UnitTestLogger");
 
@@ -25,7 +26,7 @@ class UnitTestBaseClass {
     private ParkRepo parkRepo;
 
     @Autowired
-    private DeviceRepo deviceRepo;
+    private WaterSourceDeviceRepo waterSourceDeviceRepo;
 
     @Autowired
     InfrastructureRepo infrastructureRepo;
@@ -35,6 +36,9 @@ class UnitTestBaseClass {
 
     @Autowired
     WaterSiteRepo waterSiteRepo;
+
+    @Autowired
+    InfrastructureDeviceRepo infrastructureDeviceRepo;
 
     DevicesServicesImpl devicesService;
     ParkServiceImpl parkService;
@@ -51,7 +55,7 @@ class UnitTestBaseClass {
         assert (waterSiteService != null);
         LOGGER.info("DONE Testing Constructing waterSiteService");;
         LOGGER.info("Testing Constructing devicesService");
-        devicesService = new DevicesServicesImpl(deviceRepo, parkService, waterSiteService, measurementRepo);
+        devicesService = new DevicesServicesImpl(waterSourceDeviceRepo, infrastructureDeviceRepo, parkService, waterSiteService, measurementRepo);
         assert (devicesService != null);
         LOGGER.info("DONE Testing Constructing devicesService");
     }

@@ -1,0 +1,47 @@
+input{
+    width: 300px;
+    padding: 5px;
+}
+
+#name{
+    margin-left: -252px;
+    color: #111111;
+}
+#surname{
+    margin-left: -232px;
+    color: #111111;
+}
+
+
+#roleLabel{
+    margin-left: -260px;
+    color: #111111;
+}
+
+.radio{
+    margin-right: -140px;
+    padding:0px;
+}
+
+#ranger{
+    margin-left: -370px;
+}
+
+#fe{
+    margin-left: -326px;
+}
+
+#admin{
+    margin-left: -375px;
+}
+
+#parks{
+    width: 300px;
+    padding:5px;
+    borderRadius:5px;
+}
+
+*:focus{
+    outline: none;
+}
+

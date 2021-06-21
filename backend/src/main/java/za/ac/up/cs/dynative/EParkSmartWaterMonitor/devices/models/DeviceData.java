@@ -2,6 +2,8 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models;
 
 import org.springframework.data.neo4j.core.schema.Id;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class DeviceData {
@@ -14,13 +16,19 @@ public class DeviceData {
     private String deviceStatus;
     private double upTime;
     private double lifeTime;
+    private ArrayList<sensorConfiguration> deviceConfiguration;
+
+
 
     public DeviceData(double longitude,
                       double latitude,
                       double battery,
                       String deviceStatus,
                       double upTime,
-                      double lifeTime) {
+                      double lifeTime,
+                      ArrayList<sensorConfiguration> deviceConfiguration
+                      ) {
+
         this.deviceDataId = UUID.randomUUID();
         this.longitude = longitude;
         this.latitude = latitude;
@@ -28,6 +36,19 @@ public class DeviceData {
         this.deviceStatus = deviceStatus;
         this.upTime = upTime;
         this.lifeTime = lifeTime;
+        this.deviceConfiguration=deviceConfiguration;
+    }
+
+    public UUID getDeviceDataId() {
+        return deviceDataId;
+    }
+
+    public ArrayList<sensorConfiguration> getDeviceConfiguration() {
+        return deviceConfiguration;
+    }
+
+    public void setDeviceConfiguration(ArrayList<sensorConfiguration> deviceConfiguration) {
+        this.deviceConfiguration = deviceConfiguration;
     }
 
     public DeviceData() {
@@ -57,15 +78,7 @@ public class DeviceData {
     public void setBattery(double battery) {
         this.battery = battery;
     }
-
-//    public Enum<DeviceStatus> getDeviceStatus() {
-//        return deviceStatus;
-//    }
-
-//    public void setDeviceStatus(Enum<DeviceStatus> deviceStatus) {
-//        this.deviceStatus = deviceStatus;
-//    }
-
+    
     public String getDeviceStatus() {
         return deviceStatus;
     }
@@ -88,6 +101,19 @@ public class DeviceData {
 
     public void setLifeTime(double lifeTime) {
         this.lifeTime = lifeTime;
+    }
+
+    @Override
+    public String toString() {
+        return "\"DeviceData\":{" +
+                "\"longitude\":" + "\"" +longitude + "\"" +
+                ", \"latitude\":" + "\"" +latitude + "\"" +
+                ", \"battery\":" + "\"" +battery + "\"" +
+                ", \"deviceStatus\":" + "\"" +deviceStatus + "\"" +
+                ", \"upTime\":" + "\"" +upTime + "\"" +
+                ", \"lifeTime\":" + "\"" +lifeTime + "\"" +
+                ", \"deviceConfiguration\":[" + deviceConfiguration.toString().replaceAll("\\[","").replaceAll("]","") + "]}" +
+                '}';
     }
 
     public enum DeviceStatus {

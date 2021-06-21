@@ -13,6 +13,8 @@ public class User {
     @Id
     private UUID id;
 
+    private long idNumber;
+
     private String email;
 
     private String name;
@@ -23,26 +25,40 @@ public class User {
 
     private String username;
 
+    private String role;
+
+    private String cellNumber;
+
+    private String parkName;
+
     @Relationship(type = "WORKS_FOR", direction = Relationship.Direction.OUTGOING)
     private Park park;
 
-    public User(UUID id, String email, String name, String surname, String password, String username, Park park) {
-        this.id = id;
+    public User(long idNumber, String email, String name, String surname, String password, String username, String role, Park park, String cellNumber) {
+        this.role = role;
+        this.id = UUID.randomUUID();
+        this.idNumber = idNumber;
         this.email = email;
         this.name = name;
         this.surname = surname;
         this.password = password;
         this.username = username;
         this.park = park;
+        this.role = role;
+        this.cellNumber = cellNumber;
+        this.parkName = park.getParkName();
     }
 
-    public User(UUID id, String email, String name, String surname, String password, String username) {
-        this.id = id;
+    public User(int idNumber, String email, String name, String surname, String password, String username, String role) {
+        this.role = role;
+        this.id = UUID.randomUUID();
+        this.idNumber = idNumber;
         this.email = email;
         this.name = name;
         this.surname = surname;
         this.password = password;
         this.username = username;
+        this.role = role;
     }
 
     public User() {
@@ -54,6 +70,14 @@ public class User {
 
     public void setId(UUID id) {
         this.id = id;
+    }
+
+    public long getIdNumber() {
+        return idNumber;
+    }
+
+    public void setIdNumber(long idNumber) {
+        this.idNumber = idNumber;
     }
 
     public String getEmail() {
@@ -96,6 +120,22 @@ public class User {
         this.username = username;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getCellNumber() {
+        return cellNumber;
+    }
+
+    public void setCellNumber(String cellNumber) {
+        this.cellNumber = cellNumber;
+    }
+
     public Park getPark() {
         return park;
     }
@@ -104,17 +144,45 @@ public class User {
         this.park = park;
     }
 
+    public String getParkName() {
+        return parkName;
+    }
+
+    public void setParkName(String parkName) {
+        this.parkName = parkName;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", idNumber='" + idNumber + '\'' +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", password='" + password + '\'' +
                 ", username='" + username + '\'' +
+                ", role='" + role + '\'' +
+                ", cellNumber='" + cellNumber + '\'' +
                 ", park=" + park +
                 '}';
+    }
+
+    private enum Role {
+        SUPERADMIN("ADMIN"),
+        FIELDENGINEER("FIELD_ENGINEER"),
+        RANGER("RANGER");
+
+        private final String name;
+
+        Role(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 }
 

@@ -12,15 +12,16 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDevic
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@SpringBootTest
+//@SpringBootTest
 public class DevicesUnitTest extends UnitTestBaseClass {
     @Test
-    public void testAddDevice() throws JsonProcessingException {
+    public void testAddDevice() throws JsonProcessingException, InvalidRequestException {
         LOGGER.info("Testing AddWaterSourceDeviceRequest construction");
 
         UUID deviceId = UUID.randomUUID();
@@ -112,14 +113,14 @@ public class DevicesUnitTest extends UnitTestBaseClass {
 
 
    @Test
-    public void testGetNumDevices() throws JsonProcessingException {
+    public void testGetNumDevices() throws JsonProcessingException, InvalidRequestException {
         LOGGER.info("Testing GetNumDevicesRequest construction");
 
-        String parkName = "testPark";
+        UUID parkId = UUID.fromString("190c4aa9-a55f-4118-b26b-dc537e0a6f30");
 
         String jsonData = "{"
-                + "\"parkName\" : \""
-                + parkName
+                + "\"parkId\" : \""
+                + parkId
                 + "\""
                 + "}";
 

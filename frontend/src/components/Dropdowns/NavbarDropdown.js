@@ -53,48 +53,51 @@ export default function NavbarDropdown() {
       >
         Welcome!
       </Typography>
-      <Box
-        display="flex!important"
-        alignItems="center!important"
-        component={MenuItem}
-        onClick={handleMenuClose}
-      >
-        <Box
-          component={Person}
-          width="1.25rem!important"
-          height="1.25rem!important"
-          marginRight="1rem"
-        />
-        <span>My profile</span>
-      </Box>
-      <Box
-        display="flex!important"
-        alignItems="center!important"
-        component={MenuItem}
-        onClick={handleMenuClose}
-      >
-        <Box
-          component={Settings}
-          width="1.25rem!important"
-          height="1.25rem!important"
-          marginRight="1rem"
-        />
-        <span>Settings</span>
-      </Box>
-      <Box
-        display="flex!important"
-        alignItems="center!important"
-        component={MenuItem}
-        onClick={handleMenuClose}
-      >
-        <Box
-          component={EventNote}
-          width="1.25rem!important"
-          height="1.25rem!important"
-          marginRight="1rem"
-        />
-        <span>Activity</span>
-      </Box>
+      {/*<Box*/}
+      {/*  display="flex!important"*/}
+      {/*  alignItems="center!important"*/}
+      {/*  component={MenuItem}*/}
+      {/*  onClick={handleMenuClose}*/}
+      {/*>*/}
+      {/*  <Box*/}
+      {/*    component={Person}*/}
+      {/*    width="1.25rem!important"*/}
+      {/*    height="1.25rem!important"*/}
+      {/*    marginRight="1rem"*/}
+      {/*  />*/}
+      {/*  <span>My profile</span>*/}
+      {/*</Box>*/}
+      {/*<Box*/}
+      {/*  display="flex!important"*/}
+      {/*  alignItems="center!important"*/}
+      {/*  component={MenuItem}*/}
+      {/*  onClick={handleMenuClose}*/}
+      {/*>*/}
+      {/*  <Box*/}
+      {/*    component={Settings}*/}
+      {/*    width="1.25rem!important"*/}
+      {/*    height="1.25rem!important"*/}
+      {/*    marginRight="1rem"*/}
+      {/*  />*/}
+      {/*  <span>Settings</span>*/}
+      {/*</Box>*/}
+      {/*<Box*/}
+      {/*  display="flex!important"*/}
+      {/*  alignItems="center!important"*/}
+      {/*  component={MenuItem}*/}
+      {/*  onClick={handleMenuClose}*/}
+      {/*>*/}
+      {/*  <Box*/}
+      {/*    component={EventNote}*/}
+      {/*    width="1.25rem!important"*/}
+      {/*    height="1.25rem!important"*/}
+      {/*    marginRight="1rem"*/}
+      {/*  />*/}
+      {/*  <span>Activity</span>*/}
+      {/*</Box>*/}
+
+
+      {/*ADMIN*/}
       <Box
         display="flex!important"
         alignItems="center!important"
@@ -143,7 +146,7 @@ export default function NavbarDropdown() {
       >
         <Avatar
           alt="..."
-          src={require("assets/img/theme/team-4-800x800.jpg").default}
+          src={require("assets/img/icons/common/empty-profile.png").default}
           classes={{
             root: classes.avatarRoot,
           }}
