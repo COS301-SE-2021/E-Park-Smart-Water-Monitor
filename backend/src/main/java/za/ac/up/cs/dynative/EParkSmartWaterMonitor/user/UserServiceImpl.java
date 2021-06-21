@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CreateUserResponse createUser(CreateUserRequest request) {
+    public CreateUserResponse createUser(CreateUserRequest request) throws InvalidRequestException {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
         CreateUserResponse response = new CreateUserResponse();
@@ -50,10 +51,15 @@ public class UserServiceImpl implements UserService {
         String role = request.getRole();
         String cellNumber = request.getCellNumber();
 
+
         if (parkId != null
                 && !name.equals("")
                 && !surname.equals("")
                 && !email.equals("")
+                && !role.equals("")
+                && !cellNumber.equals("")
+                && !username.equals("")
+                && !idNumber.equals("")
                 && !password.equals("")) {
 
             List<User> users = userRepo.findUserByIdNumber(idNumber);
@@ -84,16 +90,19 @@ public class UserServiceImpl implements UserService {
                         response.setStatus("No park with this id exists.");
                     }
                 } else {
-                    response.setSuccess(false);
-                    response.setStatus("A user with this username already exists.");
+                    throw new InvalidRequestException("A user with this username already exists.");
+//                    response.setSuccess(false);
+//                    response.setStatus("A user with this username already exists.");
                 }
             } else {
-                response.setSuccess(false);
-                response.setStatus("A user with this id number already exists.");
+                throw new InvalidRequestException("A user with this id number already exists.");
+//                response.setSuccess(false);
+//                response.setStatus("A user with this id number already exists.");
             }
         } else {
-            response.setSuccess(false);
-            response.setStatus("Failed to create user.");
+            throw new InvalidRequestException("Details incomplete");
+//            response.setSuccess(false);
+//            response.setStatus("Failed to create user.");
         }
         return response;
     }
@@ -224,9 +233,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public LoginResponse loginUser(LoginRequest request) {
+    public LoginResponse loginUser(LoginRequest request) throws InvalidRequestException {
         String username = request.getUsername();
         String password = request.getPassword();
+        if (username.equals("")||password.equals("")){
+            throw new InvalidRequestException("Login details not complete");
+        }
         String JWTToken = "";
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
@@ -234,17 +246,17 @@ public class UserServiceImpl implements UserService {
         assert userRepo != null;
         List<User> users = userRepo.findUserByUsername(username);
         if (users.size() <= 1) {
-            User user = users.get(0);
-            if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
-                if (user == null) {
-                    System.out.println("User doesnt exist!");
-                } else {
-                    System.out.println("Wrong Password");
-                }
+                User user=null;
+            if (users.size()==1){
+                user = users.get(0);
             }
-            else
-                {
-
+            if (user == null || !password.equals(user.getPassword())) {
+                if (user == null) {
+                    throw new InvalidRequestException("User doesnt exist!");
+                }else {
+                    throw new InvalidRequestException("Wrong Password");
+                }
+            }else{
                 Map<String, Object> head = new HashMap<>();
                 Map<String, Object> claims = new HashMap<>();
                 claims.put("UUID", user.getId().toString());
@@ -270,7 +282,8 @@ public class UserServiceImpl implements UserService {
                         user.getPark().getParkName());
             }
         }
-        return new LoginResponse(JWTToken, false);
+        throw new InvalidRequestException("To many users with this username");
+        //return new LoginResponse(JWTToken, false);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite;
 
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
@@ -15,11 +16,12 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.SaveSiteR
 import java.util.Collection;
 
 public interface WaterSiteService {
-    public AddSiteResponse addSite(AddSiteRequest request);
-    public Collection<WaterSite> getAll();
-    public AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request);
-    CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request);
-    public GetSiteByIdResponse getSiteById(GetSiteByIdRequest request);
-    public SaveSiteResponse saveSite(SaveSiteRequest request);
+
+    AddSiteResponse addSite(AddSiteRequest request) throws InvalidRequestException;
+    Collection<WaterSite> getAll();
+    AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request) throws InvalidRequestException;
+    CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request) throws InvalidRequestException;
+    GetSiteByIdResponse getSiteById(GetSiteByIdRequest request) throws InvalidRequestException;
+    SaveSiteResponse saveSite(SaveSiteRequest request);
 }
 

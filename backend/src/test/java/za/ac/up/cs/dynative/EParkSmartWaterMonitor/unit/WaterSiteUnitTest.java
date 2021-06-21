@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
@@ -14,10 +15,10 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteBy
 
 import java.util.UUID;
 
-@SpringBootTest
+//@SpringBootTest
 public class WaterSiteUnitTest extends UnitTestBaseClass {
     @Test
-    public void testAddSite() throws JsonProcessingException {
+    public void testAddSite() throws JsonProcessingException, InvalidRequestException {
         LOGGER.info("Testing AddSiteRequest construction");
 
         UUID parkId = UUID.fromString("190c4aa9-a55f-4118-b26b-dc537e0a6f30");
@@ -59,7 +60,7 @@ public class WaterSiteUnitTest extends UnitTestBaseClass {
     }
 
     @Test
-    public void testGetSiteById() throws JsonProcessingException {
+    public void testGetSiteById() throws JsonProcessingException, InvalidRequestException {
         LOGGER.info("Testing GetSiteByIdRequest construction");
 
         UUID siteId = UUID.randomUUID();
@@ -96,7 +97,7 @@ public class WaterSiteUnitTest extends UnitTestBaseClass {
     }
 
     @Test
-    public void testAttachWaterSourceDevice() {
+    public void testAttachWaterSourceDevice() throws InvalidRequestException {
         LOGGER.info("Testing AttachWaterSourceDeviceRequest construction");
 
         UUID siteId = UUID.randomUUID();

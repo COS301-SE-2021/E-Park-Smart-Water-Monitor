@@ -27,13 +27,13 @@ const Header = () => {
   const [result, setResult] = useState(null)
 
 
-  useEffect(() => {
-    axios.post('http://localhost:8080/api/devices/getNumDevices', {
-      parkID: "2ea5ba27-9d8e-41a4-9628-485f0ae2fb57"
-    }).then((res)=>{
-      setResult(res.data)
-    });
-  }, []) // second param [] is a list of dependency to watch and run useEffect
+  // useEffect(() => {
+  //   axios.post('http://localhost:8080/api/devices/getNumDevices', {
+  //     parkID: "2ea5ba27-9d8e-41a4-9628-485f0ae2fb57"
+  //   }).then((res)=>{
+  //     setResult(res.data)
+  //   });
+  // }, []) // second param [] is a list of dependency to watch and run useEffect
 
 
   return (

@@ -3,18 +3,20 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.EditParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.GetAllDevicesResponse;
 
 import java.util.Collection;
 
 public interface DevicesService {
     ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request);
-    AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest);
+    AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest) throws InvalidRequestException;
     Collection<WaterSourceDevice> getAll();
-    FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest);
-    GetNumDevicesResponse getNumDevices(GetNumDevicesRequest getNumDevicesRequest);
-    GetParkDevicesResponse getParkDevices(GetParkDevicesRequest getParkDevicesRequest);
+    FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest) throws InvalidRequestException;
+    GetNumDevicesResponse getNumDevices(GetNumDevicesRequest getNumDevicesRequest) throws InvalidRequestException;
+    GetParkDevicesResponse getParkDevices(GetParkDevicesRequest getParkDevicesRequest) throws InvalidRequestException;
     EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest);
-    GetDeviceDataResponse getDeviceData(GetDeviceDataRequest getDeviceDataRequest);
+    GetDeviceDataResponse getDeviceData(GetDeviceDataRequest getDeviceDataRequest) throws InvalidRequestException;
     GetAllDevicesResponse getAllDevices();
 }

@@ -18,7 +18,7 @@ import javax.annotation.PostConstruct;
 import java.util.logging.Logger;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+//@SpringBootTest
 class UnitTestBaseClass {
     final static Logger LOGGER = Logger.getLogger("UnitTestLogger");
 

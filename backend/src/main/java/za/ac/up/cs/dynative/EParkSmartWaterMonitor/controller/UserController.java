@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.UserService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.*;
 
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/createUser")
-    public ResponseEntity<Object> createUser(@RequestBody CreateUserRequest createUserRequest) {
+    public ResponseEntity<Object> createUser(@RequestBody CreateUserRequest createUserRequest) throws InvalidRequestException {
         return new ResponseEntity<>(userService.createUser(createUserRequest), HttpStatus.OK);
     }
 
@@ -42,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<Object> login(@RequestBody LoginRequest loginRequest) throws InvalidRequestException {
         return new ResponseEntity<>(userService.loginUser(loginRequest), HttpStatus.OK);
     }
 

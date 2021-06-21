@@ -12,6 +12,7 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.configurations.TwilioConfig;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
@@ -50,7 +51,17 @@ public class NotificationServiceImpl implements NotificationService
     @Value("${spring.mail.username}")
     String senderUsername;
 
-    public EmailResponse sendMail(EmailRequest eMailRequest) {
+    public EmailResponse sendMail(EmailRequest eMailRequest) throws InvalidRequestException {
+        if (eMailRequest==null){
+            throw new InvalidRequestException("Request is null");
+        }
+        if (eMailRequest.getFrom().equals("")||eMailRequest.getTopic()==null||eMailRequest.getToAddresses()==null||eMailRequest.getBody().equals("")||
+            eMailRequest.getDescription().equals("")||eMailRequest.getSubject().equals("")||eMailRequest.getEntity().equals(""))   {
+            throw new InvalidRequestException("Request not complete");
+        }
+        if (eMailRequest.getToAddresses().size()<1){
+            throw new InvalidRequestException("No recipients specified");
+        }
 
         try {
             MimeMessagePreparator preparator = mimeMessage ->
@@ -58,6 +69,7 @@ public class NotificationServiceImpl implements NotificationService
                 MimeMessageHelper message = new MimeMessageHelper(mimeMessage,
                         MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                         StandardCharsets.UTF_8.name());
+
 
                 message.setTo(eMailRequest.getToAddresses().toArray(new String[eMailRequest.getToAddresses().size()]));
                 message.setFrom(senderUsername, eMailRequest.getFrom());
@@ -110,18 +122,24 @@ public class NotificationServiceImpl implements NotificationService
     }
 
     @Override
-    public SMSResponse sendSMS(SMSRequest smsRequest) {
-
+    public SMSResponse sendSMS(SMSRequest smsRequest) throws InvalidRequestException {
+        if (smsRequest==null){
+            throw new InvalidRequestException("Request is null");
+        }
         ArrayList<User> recipients = smsRequest.getRecipients();
-        if (recipients==null)  //TODO add if checks
-        {
+        if (recipients.size()==0){
             recipients= new ArrayList<>();
-            for (int r = 0; r < smsRequest.getUserIds().size() ; r++) {
-                User addThisUser = null;
-                addThisUser =userService.findUserById(new FindUserByIdRequest(smsRequest.getUserIds().get(r))).getUser();
-                if (addThisUser!=null)
-                    recipients.add(addThisUser);
-
+            if (smsRequest.getUserIds()!=null && smsRequest.getUserIds().size()>0) {
+                for (int r = 0; r < smsRequest.getUserIds().size(); r++) {
+                    User addThisUser = null;
+                    addThisUser = userService.findUserById(new FindUserByIdRequest(smsRequest.getUserIds().get(r))).getUser();
+                    if (addThisUser != null) {
+                        recipients.add(addThisUser);
+                    }
+                }
+            }
+            if (recipients.size()==0){
+                throw new InvalidRequestException("No recipients specified");
             }
 
         }
@@ -150,6 +168,7 @@ public class NotificationServiceImpl implements NotificationService
                 if(i!=smsErrors.size()-1)
                 users+=",";
             }
+            System.out.println("hierrrr");
             throw new IllegalArgumentException("The following users have invalid phone numbers: " +users +". Please correct and try again.");
         }
         else {

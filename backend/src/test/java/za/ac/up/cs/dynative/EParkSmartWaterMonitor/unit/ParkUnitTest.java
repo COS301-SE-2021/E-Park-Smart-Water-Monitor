@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
@@ -16,11 +17,11 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.SaveParkRespon
 
 import java.util.UUID;
 
-@SpringBootTest
+//@SpringBootTest
 public class ParkUnitTest extends UnitTestBaseClass {
 
     @Test
-    public void testCreatePark() throws JsonProcessingException {
+    public void testCreatePark() throws JsonProcessingException, InvalidRequestException {
         LOGGER.info("Testing CreateParkRequest construction");
 
         String testParkName = "testPark";
@@ -59,7 +60,7 @@ public class ParkUnitTest extends UnitTestBaseClass {
     }
 
     @Test
-    public void testFindParkByName() throws JsonProcessingException {
+    public void testFindParkByName() throws JsonProcessingException, InvalidRequestException {
         LOGGER.info("Testing FindByParkNameRequest construction");
 
         String testParkName = "testPark";
@@ -119,7 +120,7 @@ public class ParkUnitTest extends UnitTestBaseClass {
     }
 
     @Test
-    public void testGetParkWaterSites() throws JsonProcessingException {
+    public void testGetParkWaterSites() throws JsonProcessingException, InvalidRequestException {
         LOGGER.info("Testing GetParkSitesRequest construction");
 
         UUID parkId = UUID.randomUUID();
