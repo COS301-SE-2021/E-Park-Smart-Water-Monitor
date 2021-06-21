@@ -168,6 +168,7 @@ public class NotificationServiceImpl implements NotificationService
                 if(i!=smsErrors.size()-1)
                 users+=",";
             }
+            System.out.println("hierrrr");
             throw new IllegalArgumentException("The following users have invalid phone numbers: " +users +". Please correct and try again.");
         }
         else {
