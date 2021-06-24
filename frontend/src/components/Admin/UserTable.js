@@ -20,7 +20,6 @@ import Modal from "../Modals/Modal";
 import AddUserBody from "./AddUserBody";
 import axios from "axios";
 import EditUserBody from "./EditUserBody";
-import tables from "../../assets/css/tables.css";
 
 // import disableScroll from 'disable-scroll';
 
