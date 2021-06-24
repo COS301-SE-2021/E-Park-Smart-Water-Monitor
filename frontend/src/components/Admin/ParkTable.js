@@ -124,7 +124,8 @@ const ParkTable = () => {
                                 }
                                 classes={{ root: classes.cardHeaderRoot }}
                             ></CardHeader>
-                            <TableContainer>
+                            <TableContainer
+                                style={{maxHeight:"300px",overflowY:"scroll"}}>
                                 <Box
                                     component={Table}
                                     alignItems="center"
