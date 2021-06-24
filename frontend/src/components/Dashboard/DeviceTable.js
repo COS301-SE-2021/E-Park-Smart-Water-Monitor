@@ -93,6 +93,7 @@ function DeviceTable(props) {
             }}
         >
             <CardHeader
+                style={{paddingBottom:"27.4px",paddingTop:"29.4px"}}
                 subheader={
                     <Grid
                         container
