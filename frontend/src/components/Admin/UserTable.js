@@ -20,6 +20,8 @@ import Modal from "../Modals/Modal";
 import AddUserBody from "./AddUserBody";
 import axios from "axios";
 import EditUserBody from "./EditUserBody";
+import tables from "../../assets/css/tables.css";
+
 // import disableScroll from 'disable-scroll';
 
 // import AdminModal from 'admin-modal'
@@ -105,6 +107,7 @@ const UserTable = () => {
                 component={Box}
                 marginTop="-6rem"
                 classes={{ root: classes.containerRoot }}
+
             >
                 <Modal  title="Add User" onClose={() => setShowAdd(false)} show={ showAdd }>
                     <AddUserBody/>
@@ -156,7 +159,8 @@ const UserTable = () => {
 
                             >
                                 </CardHeader>
-                            <TableContainer>
+                            <TableContainer
+                                style={{maxHeight:"300px",overflowY:"scroll"}}>
                                 <Box
                                     component={Table}
                                     alignItems="center"
