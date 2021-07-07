@@ -26,16 +26,11 @@ class UnitTestBaseClass {
     private WaterSourceDeviceRepo waterSourceDeviceRepo;
 
     @Autowired
-    InfrastructureRepo infrastructureRepo;
-
-    @Autowired
     MeasurementRepo measurementRepo;
 
     @Autowired
     WaterSiteRepo waterSiteRepo;
 
-    @Autowired
-    InfrastructureDeviceRepo infrastructureDeviceRepo;
 
     DevicesServicesImpl devicesService;
     ParkServiceImpl parkService;
@@ -52,7 +47,7 @@ class UnitTestBaseClass {
         assert (waterSiteService != null);
         LOGGER.info("DONE Testing Constructing waterSiteService");;
         LOGGER.info("Testing Constructing devicesService");
-        devicesService = new DevicesServicesImpl(waterSourceDeviceRepo, infrastructureDeviceRepo, parkService, waterSiteService, measurementRepo);
+        devicesService = new DevicesServicesImpl(waterSourceDeviceRepo, parkService, waterSiteService, measurementRepo);
         assert (devicesService != null);
         LOGGER.info("DONE Testing Constructing devicesService");
     }

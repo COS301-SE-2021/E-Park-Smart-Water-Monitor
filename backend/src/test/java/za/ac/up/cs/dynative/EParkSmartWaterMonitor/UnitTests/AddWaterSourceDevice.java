@@ -28,10 +28,6 @@ public class AddWaterSourceDevice {
     @Mock
     private WaterSourceDeviceRepo waterSourceDeviceRepo;
     @Mock
-    private InfrastructureDeviceRepo infrastructureDeviceRepo;
-    @Mock
-    private InfrastructureRepo infrastructureRepo;
-    @Mock
     private MeasurementRepo measurementRepo;
 
 

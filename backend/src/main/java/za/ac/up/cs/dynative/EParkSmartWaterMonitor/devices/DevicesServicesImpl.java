@@ -41,7 +41,6 @@ import java.util.*;
 public class DevicesServicesImpl implements DevicesService {
 
     private WaterSourceDeviceRepo waterSourceDeviceRepo;
-    private InfrastructureDeviceRepo infrastructureDeviceRepo;
     private ParkService parkService;
     private WaterSiteService waterSiteService;
     private MeasurementRepo measurementRepo;
@@ -51,12 +50,10 @@ public class DevicesServicesImpl implements DevicesService {
     private DynamoDB dynamoDB;
 
     public DevicesServicesImpl(@Qualifier("WaterSourceDeviceRepo") WaterSourceDeviceRepo waterSourceDeviceRepo,
-                               @Qualifier("InfrastructureDeviceRepo") InfrastructureDeviceRepo infrastructureDeviceRepo,
                                @Qualifier("ParkService") ParkService parkService,
                                @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService,
                                @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo) {
         this.waterSourceDeviceRepo = waterSourceDeviceRepo;
-        this.infrastructureDeviceRepo = infrastructureDeviceRepo;
         this.parkService = parkService;
         this.measurementRepo = measurementRepo;
         this.waterSiteService = waterSiteService;
@@ -235,7 +232,7 @@ public class DevicesServicesImpl implements DevicesService {
     @Override
     public EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest) {
         EditDeviceResponse response = new EditDeviceResponse();
-        if (editDeviceRequest.getDeviceType().equals("WaterSource")) {
+        if (editDeviceRequest.getDeviceType().equals("WaterSource")||editDeviceRequest.getDeviceType().equals("Infrastructure")) {
 
             Optional<WaterSourceDevice> waterSourceDeviceToChange = waterSourceDeviceRepo.findById(editDeviceRequest.getDeviceId());
 
@@ -273,45 +270,6 @@ public class DevicesServicesImpl implements DevicesService {
             }
 
 
-
-        }
-        else if (editDeviceRequest.getDeviceType().equals("Infrastructure"))
-        {
-            Optional<InfrastructureDevice> infrastructureDeviceToChange = infrastructureDeviceRepo.findById(editDeviceRequest.getDeviceId());
-
-
-            if (infrastructureDeviceToChange.isPresent()) {
-                if (!editDeviceRequest.getDeviceModel().equals("")) {
-                    infrastructureDeviceToChange.get().setDeviceModel(editDeviceRequest.getDeviceModel());
-                }
-                if (!editDeviceRequest.getDeviceName().equals("")) {
-
-                    List<InfrastructureDevice> devicesWithSameName = infrastructureDeviceRepo.findInfrastructureDeviceByDeviceName(editDeviceRequest.getDeviceName());
-                    if (devicesWithSameName.size() == 0) {
-                        infrastructureDeviceToChange.get().setDeviceName(editDeviceRequest.getDeviceName());
-
-                    }
-                    else
-                    {
-                        response.setStatus("A device with that name already exists");
-                        response.setSuccess(false);
-                        return response;
-
-                    }
-
-                }
-                response.setStatus("Device successfully edited.");
-                response.setSuccess(true);
-                infrastructureDeviceRepo.save(infrastructureDeviceToChange.get());
-                return response;
-            }
-            else
-            {
-                response.setStatus("That device does not exist.");
-                response.setSuccess(false);
-                return response;
-
-            }
 
         }
         else
