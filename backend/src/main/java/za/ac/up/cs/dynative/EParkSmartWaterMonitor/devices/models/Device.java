@@ -7,7 +7,7 @@ import java.util.*;
 
 
 @Node
-public class WaterSourceDevice
+public class Device
 {
     @Id
     private UUID    deviceId;
@@ -19,11 +19,11 @@ public class WaterSourceDevice
     @Relationship(type = "PRODUCES", direction = Relationship.Direction.OUTGOING)
     private Set<Measurement> measurementSet;
 
-    public WaterSourceDevice(UUID deviceId,
-                             String deviceName,
-                             String deviceModel,
-                             double longitude,
-                             double latitude)
+    public Device(UUID deviceId,
+                  String deviceName,
+                  String deviceModel,
+                  double longitude,
+                  double latitude)
     {
         this.deviceId    = deviceId;
         this.deviceName  = deviceName;
@@ -40,7 +40,7 @@ public class WaterSourceDevice
 
     }
 
-    public WaterSourceDevice()
+    public Device()
     {
 
     }

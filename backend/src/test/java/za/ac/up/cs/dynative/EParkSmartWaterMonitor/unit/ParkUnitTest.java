@@ -98,7 +98,7 @@ public class ParkUnitTest extends UnitTestBaseClass {
     public void testSavePark() {
         LOGGER.info("Testing SaveParkRequest construction");
 
-        String parkName = "testPark";
+        String parkName = "testPark2";
         double latitude = 13.24;
         double longitude = 41.32;
         Park testPark = new Park(parkName, latitude, longitude);

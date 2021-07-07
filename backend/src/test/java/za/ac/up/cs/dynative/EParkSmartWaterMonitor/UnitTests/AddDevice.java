@@ -9,9 +9,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesServicesImpl;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.WaterSourceDeviceRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
@@ -24,9 +24,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
-public class AddWaterSourceDevice {
+public class AddDevice {
     @Mock
-    private WaterSourceDeviceRepo waterSourceDeviceRepo;
+    private DeviceRepo deviceRepo;
     @Mock
     private MeasurementRepo measurementRepo;
 
@@ -42,10 +42,10 @@ public class AddWaterSourceDevice {
     @Test
     @DisplayName("Try to add a device, but it already exists")
     public void addDeviceDup(){
-        WaterSourceDevice device= new WaterSourceDevice();
-        List<WaterSourceDevice> devices=new ArrayList<>();
+        Device device= new Device();
+        List<Device> devices=new ArrayList<>();
         devices.add(device);
-        Mockito.when(waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
+        Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
 
         AddWaterSourceDeviceRequest request= new AddWaterSourceDeviceRequest("Unit",UUID.randomUUID(),"XX","test",23,28);
         Throwable t =assertThrows(InvalidRequestException.class, ()->devicesServices.addDevice(request));
@@ -79,9 +79,9 @@ public class AddWaterSourceDevice {
     @Test
     @DisplayName("Try and add a device but the site does not exists")
     public void addDeviceSiteDNE() throws InvalidRequestException {
-        WaterSourceDevice device= new WaterSourceDevice();
-        List<WaterSourceDevice> devices=new ArrayList<>();
-        Mockito.when(waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
+        Device device= new Device();
+        List<Device> devices=new ArrayList<>();
+        Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
         Mockito.when(waterSiteServices.canAttachWaterSourceDevice(Mockito.any())).thenReturn(new CanAttachWaterSourceDeviceResponse("",false));
 
         AddWaterSourceDeviceRequest request= new AddWaterSourceDeviceRequest("ParkA",UUID.randomUUID(),"XX","test",23,28);
@@ -93,9 +93,9 @@ public class AddWaterSourceDevice {
     @Test
     @DisplayName("Successfully add a device to a site")
     public void addDevice() throws InvalidRequestException {
-        WaterSourceDevice device= new WaterSourceDevice();
-        List<WaterSourceDevice> devices=new ArrayList<>();
-        Mockito.when(waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
+        Device device= new Device();
+        List<Device> devices=new ArrayList<>();
+        Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
         Mockito.when(waterSiteServices.canAttachWaterSourceDevice(Mockito.any())).thenReturn(new CanAttachWaterSourceDeviceResponse("",true));
 
         AddWaterSourceDeviceRequest request= new AddWaterSourceDeviceRequest("ParkA",UUID.randomUUID(),"XX","test",23,28);

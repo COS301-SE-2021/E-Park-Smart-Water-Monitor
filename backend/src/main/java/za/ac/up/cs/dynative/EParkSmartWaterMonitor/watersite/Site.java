@@ -4,7 +4,7 @@ import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +21,7 @@ public class Site
 
 
     @Relationship(type = "WATER_MONITORED_BY", direction = OUTGOING)
-    private Set<WaterSourceDevice> waterSourceDevices = new HashSet<>();
+    private Set<Device> devices = new HashSet<>();
 
 
     public Site(String sName)
@@ -39,11 +39,11 @@ public class Site
         return siteName;
     }
 
-    public void addWaterSourceDevice(WaterSourceDevice newWaterSourceDevice) {
-        if (waterSourceDevices == null) {
-            waterSourceDevices = new HashSet<>();
+    public void addWaterSourceDevice(Device newDevice) {
+        if (devices == null) {
+            devices = new HashSet<>();
         }
-        waterSourceDevices.add(newWaterSourceDevice);
+        devices.add(newDevice);
     }
 
 

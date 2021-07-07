@@ -9,9 +9,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesServicesImpl;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.WaterSourceDeviceRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetParkDevicesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetParkDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(MockitoJUnitRunner.class)
 public class GetParkDevices {
     @Mock
-    private WaterSourceDeviceRepo waterSourceDeviceRepo;
+    private DeviceRepo deviceRepo;
     @Mock
     private MeasurementRepo measurementRepo;
 
@@ -55,7 +55,7 @@ public class GetParkDevices {
     @DisplayName("Try to get the devices but there are no devices")
     public void getDevicesDNE() throws InvalidRequestException {
         UUID id= UUID.randomUUID();
-        Mockito.when(waterSourceDeviceRepo.findAll()).thenReturn(null);
+        Mockito.when(deviceRepo.findAll()).thenReturn(null);
 
         GetParkDevicesRequest request= new GetParkDevicesRequest(id);
         Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.getParkDevices(request));
@@ -66,11 +66,11 @@ public class GetParkDevices {
     @DisplayName("Get the num devices of a park")
     public void getNumDevices() throws InvalidRequestException {
         UUID id= UUID.randomUUID();
-        List<WaterSourceDevice> devices= new ArrayList<>();
-        devices.add(new WaterSourceDevice());
-        devices.add(new WaterSourceDevice());
-        devices.add(new WaterSourceDevice());
-        Mockito.when(waterSourceDeviceRepo.findAll()).thenReturn(devices);
+        List<Device> devices= new ArrayList<>();
+        devices.add(new Device());
+        devices.add(new Device());
+        devices.add(new Device());
+        Mockito.when(deviceRepo.findAll()).thenReturn(devices);
 
         GetParkDevicesRequest request= new GetParkDevicesRequest(id);
         GetParkDevicesResponse response1= devicesServices.getParkDevices(request);

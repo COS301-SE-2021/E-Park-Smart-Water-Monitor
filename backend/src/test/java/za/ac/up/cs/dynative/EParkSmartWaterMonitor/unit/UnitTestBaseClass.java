@@ -4,7 +4,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesServicesImpl;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.WaterSourceDeviceRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
@@ -23,7 +23,7 @@ class UnitTestBaseClass {
     private ParkRepo parkRepo;
 
     @Autowired
-    private WaterSourceDeviceRepo waterSourceDeviceRepo;
+    private DeviceRepo deviceRepo;
 
     @Autowired
     MeasurementRepo measurementRepo;
@@ -47,7 +47,7 @@ class UnitTestBaseClass {
         assert (waterSiteService != null);
         LOGGER.info("DONE Testing Constructing waterSiteService");;
         LOGGER.info("Testing Constructing devicesService");
-        devicesService = new DevicesServicesImpl(waterSourceDeviceRepo, parkService, waterSiteService, measurementRepo);
+        devicesService = new DevicesServicesImpl(deviceRepo, parkService, waterSiteService, measurementRepo);
         assert (devicesService != null);
         LOGGER.info("DONE Testing Constructing devicesService");
     }

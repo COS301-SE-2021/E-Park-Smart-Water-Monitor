@@ -6,11 +6,8 @@ import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.SaveParkResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.WaterSiteRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
@@ -101,16 +98,16 @@ public class WaterSiteServicesImpl implements WaterSiteService
         if (request.getSiteId()==null){
             throw new InvalidRequestException("No Id specified");
         }
-        if (request.getWaterSourceDevice()==null){
+        if (request.getDevice()==null){
             throw new InvalidRequestException("No device specified");
         }
-        if (request.getWaterSourceDevice().getDeviceId()==null){
+        if (request.getDevice().getDeviceId()==null){
             throw new InvalidRequestException("No device Id specified");
         }
         Optional<WaterSite> siteToAddTo = waterSiteRepo.findById(request.getSiteId());
         AttachWaterSourceDeviceResponse response;
         if (siteToAddTo.isPresent()){
-            siteToAddTo.get().addWaterSourceDevice(request.getWaterSourceDevice());
+            siteToAddTo.get().addWaterSourceDevice(request.getDevice());
             waterSiteRepo.save(siteToAddTo.get());
             response= new AttachWaterSourceDeviceResponse("Successfully attached device to site!",true);
         }else{

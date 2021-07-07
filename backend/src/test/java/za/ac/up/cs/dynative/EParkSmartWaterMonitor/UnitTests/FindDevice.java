@@ -9,9 +9,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesServicesImpl;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.WaterSourceDeviceRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.FindDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.FindDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(MockitoJUnitRunner.class)
 public class FindDevice {
     @Mock
-    private WaterSourceDeviceRepo waterSourceDeviceRepo;
+    private DeviceRepo deviceRepo;
     @Mock
     private MeasurementRepo measurementRepo;
 
@@ -56,8 +56,8 @@ public class FindDevice {
     @DisplayName("find Device that does not exist")
     public void findDeviceDNE(){
         UUID test= UUID.randomUUID();
-        Optional<WaterSourceDevice> op= Optional.empty();
-        Mockito.when(waterSourceDeviceRepo.findById(test)).thenReturn(op);
+        Optional<Device> op= Optional.empty();
+        Mockito.when(deviceRepo.findById(test)).thenReturn(op);
 
         FindDeviceRequest request= new FindDeviceRequest(test);
         Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.findDevice(request));
@@ -68,9 +68,9 @@ public class FindDevice {
     @DisplayName("device found")
     public void findDevice() throws InvalidRequestException {
         UUID test= UUID.randomUUID();
-        WaterSourceDevice device= new WaterSourceDevice();
-        Optional<WaterSourceDevice> op= Optional.of(device);
-        Mockito.when(waterSourceDeviceRepo.findById(test)).thenReturn(op);
+        Device device= new Device();
+        Optional<Device> op= Optional.of(device);
+        Mockito.when(deviceRepo.findById(test)).thenReturn(op);
 
         FindDeviceRequest request= new FindDeviceRequest(test);
         FindDeviceResponse response= devicesServices.findDevice(request);

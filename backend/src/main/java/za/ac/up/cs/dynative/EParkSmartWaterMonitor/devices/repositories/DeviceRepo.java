@@ -4,22 +4,20 @@ import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Repository("WaterSourceDeviceRepo")
-public interface WaterSourceDeviceRepo extends Neo4jRepository< WaterSourceDevice, UUID> {
+public interface DeviceRepo extends Neo4jRepository<Device, UUID> {
 
-    List<WaterSourceDevice> findWaterSourceDeviceByDeviceName(String deviceName);
+    List<Device> findWaterSourceDeviceByDeviceName(String deviceName);
 
     @Query("MATCH (:Park{id: $id})-->(watersite)-->(w) RETURN w")
-    List<WaterSourceDevice> getAllParkDevices(@Param("id") UUID id);
+    List<Device> getAllParkDevices(@Param("id") UUID id);
 
     @Query("MATCH (:Park{id: $id})-->(watersite)-->(w)-->(d)RETURN w,d")
-    List<WaterSourceDevice> getAllParkDevicesById(@Param("id") UUID id);
+    List<Device> getAllParkDevicesById(@Param("id") UUID id);
 
 }
