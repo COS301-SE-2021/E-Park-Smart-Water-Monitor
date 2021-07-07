@@ -25,9 +25,6 @@ public class WaterSite {
     @Relationship(type = "WATER_MONITORED_BY", direction = Relationship.Direction.OUTGOING)
     private Set<WaterSourceDevice> waterSourceDevices;
 
-    @Relationship(type = "INFRASTRUCTURE_MONITORED_BY", direction = Relationship.Direction.OUTGOING)
-    private Set<InfrastructureDevice> infrastructureDevices;
-
     @Relationship(type = "HAS", direction = Relationship.Direction.OUTGOING)
     private Set<Inspection> inspections;
 
@@ -95,14 +92,6 @@ public class WaterSite {
         this.waterSourceDevices = waterSourceDevices;
     }
 
-    public Set<InfrastructureDevice> getInfrastructureDevices() {
-        return infrastructureDevices;
-    }
-
-    public void setInfrastructureDevices(Set<InfrastructureDevice> infrastructureDevices) {
-        this.infrastructureDevices = infrastructureDevices;
-    }
-
     @Override
     public String toString() {
         return "WaterSite{" +
@@ -111,7 +100,6 @@ public class WaterSite {
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", waterSourceDevices=" + waterSourceDevices +
-                ", infrastructureDevices=" + infrastructureDevices +
                 '}';
     }
 }
