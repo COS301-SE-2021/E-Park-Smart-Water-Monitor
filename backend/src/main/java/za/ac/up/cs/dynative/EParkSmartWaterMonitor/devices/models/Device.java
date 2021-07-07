@@ -21,6 +21,7 @@ public class Device
 
     public Device(UUID deviceId,
                   String deviceName,
+                  String deviceType,
                   String deviceModel,
                   double longitude,
                   double latitude)
@@ -28,7 +29,7 @@ public class Device
         this.deviceId    = deviceId;
         this.deviceName  = deviceName;
         this.deviceModel = deviceModel;
-        this.deviceType= "WaterSource";
+        this.deviceType= deviceType;
 
         ArrayList<sensorConfiguration> deviceConfiguration = new ArrayList<>();
         deviceConfiguration.add(new sensorConfiguration("reportingFrequency",4.0));

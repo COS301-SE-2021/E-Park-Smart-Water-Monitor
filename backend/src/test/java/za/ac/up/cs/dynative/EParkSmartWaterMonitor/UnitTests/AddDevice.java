@@ -12,7 +12,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesServicesImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddWaterSourceDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.AddDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.AddWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
@@ -47,7 +47,7 @@ public class AddDevice {
         devices.add(device);
         Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
 
-        AddWaterSourceDeviceRequest request= new AddWaterSourceDeviceRequest("Unit",UUID.randomUUID(),"XX","test",23,28);
+        AddDeviceRequest request= new AddDeviceRequest("Unit",UUID.randomUUID(),"XX","test","WaterSource",23,28);
         Throwable t =assertThrows(InvalidRequestException.class, ()->devicesServices.addDevice(request));
         assertEquals("Device already exists",t.getMessage());
     }
@@ -55,23 +55,23 @@ public class AddDevice {
     @Test
     @DisplayName("Try and add a device but the request is not complete")
     public void addDeviceIncomplete(){
-        AddWaterSourceDeviceRequest request1= new AddWaterSourceDeviceRequest("",UUID.randomUUID(),"XX","test",23,28);
+        AddDeviceRequest request1= new AddDeviceRequest("",UUID.randomUUID(),"XX","test","WaterSource",23,28);
         Throwable t1 =assertThrows(InvalidRequestException.class, ()->devicesServices.addDevice(request1));
         assertEquals("Request not complete",t1.getMessage());
 
-        AddWaterSourceDeviceRequest request2= new AddWaterSourceDeviceRequest("Unit",null,"XX","test",23,28);
+        AddDeviceRequest request2= new AddDeviceRequest("Unit",null,"XX","test","WaterSource",23,28);
         Throwable t2 =assertThrows(InvalidRequestException.class, ()->devicesServices.addDevice(request2));
         assertEquals("Request not complete",t2.getMessage());
 
-        AddWaterSourceDeviceRequest request3= new AddWaterSourceDeviceRequest("Unit",UUID.randomUUID(),"","test",23,28);
+        AddDeviceRequest request3= new AddDeviceRequest("Unit",UUID.randomUUID(),"","test","WaterSource",23,28);
         Throwable t3 =assertThrows(InvalidRequestException.class, ()->devicesServices.addDevice(request3));
         assertEquals("Request not complete",t3.getMessage());
 
-        AddWaterSourceDeviceRequest request4= new AddWaterSourceDeviceRequest("Unit",UUID.randomUUID(),"XX","",23,28);
+        AddDeviceRequest request4= new AddDeviceRequest("Unit",UUID.randomUUID(),"XX","","WaterSource",23,28);
         Throwable t4 =assertThrows(InvalidRequestException.class, ()->devicesServices.addDevice(request4));
         assertEquals("Request not complete",t4.getMessage());
 
-        AddWaterSourceDeviceRequest request5= new AddWaterSourceDeviceRequest("",UUID.randomUUID(),"","test",23,28);
+        AddDeviceRequest request5= new AddDeviceRequest("",UUID.randomUUID(),"","test","WaterSource",23,28);
         Throwable t5 =assertThrows(InvalidRequestException.class, ()->devicesServices.addDevice(request5));
         assertEquals("Request not complete",t5.getMessage());
     }
@@ -84,7 +84,7 @@ public class AddDevice {
         Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
         Mockito.when(waterSiteServices.canAttachWaterSourceDevice(Mockito.any())).thenReturn(new CanAttachWaterSourceDeviceResponse("",false));
 
-        AddWaterSourceDeviceRequest request= new AddWaterSourceDeviceRequest("ParkA",UUID.randomUUID(),"XX","test",23,28);
+        AddDeviceRequest request= new AddDeviceRequest("ParkA",UUID.randomUUID(),"XX","test","WaterSource",23,28);
         Throwable t =assertThrows(InvalidRequestException.class, ()->devicesServices.addDevice(request));
         assertEquals("The site does not exist",t.getMessage());
     }
@@ -98,7 +98,7 @@ public class AddDevice {
         Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
         Mockito.when(waterSiteServices.canAttachWaterSourceDevice(Mockito.any())).thenReturn(new CanAttachWaterSourceDeviceResponse("",true));
 
-        AddWaterSourceDeviceRequest request= new AddWaterSourceDeviceRequest("ParkA",UUID.randomUUID(),"XX","test",23,28);
+        AddDeviceRequest request= new AddDeviceRequest("ParkA",UUID.randomUUID(),"XX","test","WaterSource",23,28);
         AddWaterSourceDeviceResponse response = devicesServices.addDevice(request);
         assertNotNull(response);
         assertEquals(true,response.getSuccess());

@@ -39,7 +39,7 @@ public class AttachDevice {
     @Test
     @DisplayName("Try and attach a water source device but the site has a null id")
     public void AttachNull(){
-        Device device = new Device(UUID.randomUUID(),"TEST!!!", "UNIT",3,9);
+        Device device = new Device(UUID.randomUUID(),"TEST!!!","WaterSource", "UNIT",3,9);
         AttachWaterSourceDeviceRequest request= new AttachWaterSourceDeviceRequest(null,device);
         Throwable t =assertThrows(InvalidRequestException.class, ()->waterSiteServices.attachWaterSourceDevice(request));
         assertEquals("No Id specified",t.getMessage());
@@ -51,7 +51,7 @@ public class AttachDevice {
         UUID test= UUID.randomUUID();
         Optional<WaterSite> op= Optional.empty();
         Mockito.when(repo.findById(test)).thenReturn(op);
-        Device device = new Device(UUID.randomUUID(),"TEST!!!", "UNIT",3,9);
+        Device device = new Device(UUID.randomUUID(),"TEST!!!","WaterSource", "UNIT",3,9);
 
         AttachWaterSourceDeviceRequest request= new AttachWaterSourceDeviceRequest(test,device);
         Throwable t =assertThrows(InvalidRequestException.class, ()->waterSiteServices.attachWaterSourceDevice(request));
@@ -62,7 +62,7 @@ public class AttachDevice {
     @DisplayName("Succesfully attach a device")
     public void Attach() throws InvalidRequestException {
         WaterSite site1= new WaterSite(id1,name1,lat1,lon1);
-        Device device = new Device(id2,"TESTING","UNIt",lat2,lon2);
+        Device device = new Device(id2,"TESTING","UNIt","WaterSource",lat2,lon2);
         Optional<WaterSite> op = Optional.of(site1);
         Mockito.when(repo.findById(id1)).thenReturn(op);
 
@@ -76,7 +76,7 @@ public class AttachDevice {
     @Test
     @DisplayName("Try and attach a water source device but the device has a null id")
     public void AttachNullDeviceID(){
-        Device device = new Device(null,"TEST!!!", "UNIT",3,9);
+        Device device = new Device(null,"TEST!!!", "UNIT","WaterSource",3,9);
         AttachWaterSourceDeviceRequest request= new AttachWaterSourceDeviceRequest(id1,device);
         Throwable t =assertThrows(InvalidRequestException.class, ()->waterSiteServices.attachWaterSourceDevice(request));
         assertEquals("No device Id specified",t.getMessage());

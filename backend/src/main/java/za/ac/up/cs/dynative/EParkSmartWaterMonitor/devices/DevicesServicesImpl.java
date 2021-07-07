@@ -67,39 +67,39 @@ public class DevicesServicesImpl implements DevicesService {
         return deviceRepo.findAll();
     }
 
-    public AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest) throws InvalidRequestException {
+    public AddWaterSourceDeviceResponse addDevice(AddDeviceRequest addDeviceRequest) throws InvalidRequestException {
         AddWaterSourceDeviceResponse response = new AddWaterSourceDeviceResponse();
-        if (addWSDRequest.getParkName().equals("")||addWSDRequest.getSiteId()==null||addWSDRequest.getDeviceModel().equals("")||addWSDRequest.getDeviceName().equals("")){
+        if (addDeviceRequest.getParkName().equals("")||addDeviceRequest.getSiteId()==null||addDeviceRequest.getDeviceModel().equals("")||addDeviceRequest.getDeviceName().equals("")){
             throw new InvalidRequestException("Request not complete");
         }
-        List<Device> devices = deviceRepo.findWaterSourceDeviceByDeviceName(addWSDRequest.getDeviceName());
+        List<Device> devices = deviceRepo.findWaterSourceDeviceByDeviceName(addDeviceRequest.getDeviceName());
 
         if (devices.size() == 0) {
 
-            CanAttachWaterSourceDeviceResponse canAttachWaterSourceDeviceResponse = waterSiteService.canAttachWaterSourceDevice(new CanAttachWaterSourceDeviceRequest(addWSDRequest.getSiteId()));
+            CanAttachWaterSourceDeviceResponse canAttachWaterSourceDeviceResponse = waterSiteService.canAttachWaterSourceDevice(new CanAttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId()));
 
             if (!canAttachWaterSourceDeviceResponse.getSuccess()) {
                 response.setSuccess(false);
-                response.setStatus("The water site " + addWSDRequest.getSiteId() + " does not exist.");
+                response.setStatus("The water site " + addDeviceRequest.getSiteId() + " does not exist.");
                 throw new InvalidRequestException("The site does not exist");
             } else {
 
-                Map<String, String> attributes = Map.of("deviceModel",addWSDRequest.getDeviceModel());
+                Map<String, String> attributes = Map.of("deviceModel",addDeviceRequest.getDeviceModel());
 
                 AttributePayload attributePayload = AttributePayload.builder()
                         .attributes(attributes)
                         .build();
 
                 CreateThingRequest createThingRequest = CreateThingRequest.builder()
-                        .thingName(addWSDRequest.getDeviceName())
+                        .thingName(addDeviceRequest.getDeviceName())
                         .thingTypeName("WaterSourceDevice")
                         .attributePayload(attributePayload)
                         .build();
 
                 CreateThingResponse createThingResponse = iotClient.createThing(createThingRequest);
 
-                Device newDevice = new Device(UUID.fromString(createThingResponse.thingId()),addWSDRequest.getDeviceName(), addWSDRequest.getDeviceModel(), addWSDRequest.getLongitude(), addWSDRequest.getLatitude());
-                AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse = waterSiteService.attachWaterSourceDevice(new AttachWaterSourceDeviceRequest(addWSDRequest.getSiteId(), newDevice));
+                Device newDevice = new Device(UUID.fromString(createThingResponse.thingId()),addDeviceRequest.getDeviceName(),addDeviceRequest.getDeviceType(), addDeviceRequest.getDeviceModel(), addDeviceRequest.getLongitude(), addDeviceRequest.getLatitude());
+                AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse = waterSiteService.attachWaterSourceDevice(new AttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId(), newDevice));
 
                 String payload = "{\"state\": {\"reported\": {";
                 payload += newDevice.getDeviceData().toString();
@@ -117,13 +117,13 @@ public class DevicesServicesImpl implements DevicesService {
 
                 deviceRepo.save(newDevice);
                 response.setSuccess(true);
-                response.setStatus("Device " + addWSDRequest.getDeviceName() + " successfully added");
+                response.setStatus("Device " + addDeviceRequest.getDeviceName() + " successfully added");
             }
 
         } else {
             throw new InvalidRequestException("Device already exists");
 //            response.setSuccess(false);
-//            response.setStatus("Device " + addWSDRequest.getDeviceName() + " already exists.");
+//            response.setStatus("Device " + addDeviceRequest.getDeviceName() + " already exists.");
         }
 
         return response;
@@ -234,17 +234,17 @@ public class DevicesServicesImpl implements DevicesService {
         EditDeviceResponse response = new EditDeviceResponse();
         if (editDeviceRequest.getDeviceType().equals("WaterSource")||editDeviceRequest.getDeviceType().equals("Infrastructure")) {
 
-            Optional<Device> waterSourceDeviceToChange = deviceRepo.findById(editDeviceRequest.getDeviceId());
+            Optional<Device> deviceToChange = deviceRepo.findById(editDeviceRequest.getDeviceId());
 
-            if (waterSourceDeviceToChange.isPresent()) {
+            if (deviceToChange.isPresent()) {
                 if (!editDeviceRequest.getDeviceModel().equals("")) {
-                    waterSourceDeviceToChange.get().setDeviceModel(editDeviceRequest.getDeviceModel());
+                    deviceToChange.get().setDeviceModel(editDeviceRequest.getDeviceModel());
                 }
                 if (!editDeviceRequest.getDeviceName().equals("")) {
 
                     List<Device> devicesWithSameName = deviceRepo.findWaterSourceDeviceByDeviceName(editDeviceRequest.getDeviceName());
                     if (devicesWithSameName.size() == 0) {
-                        waterSourceDeviceToChange.get().setDeviceName(editDeviceRequest.getDeviceName());
+                        deviceToChange.get().setDeviceName(editDeviceRequest.getDeviceName());
 
                     }
                     else
@@ -258,7 +258,7 @@ public class DevicesServicesImpl implements DevicesService {
                 }
                 response.setStatus("Device successfully edited.");
                 response.setSuccess(true);
-                deviceRepo.save(waterSourceDeviceToChange.get());
+                deviceRepo.save(deviceToChange.get());
                 return response;
             }
             else
