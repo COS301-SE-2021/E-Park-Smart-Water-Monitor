@@ -151,15 +151,9 @@ const EditUserBody = (props) => {
                 <Row>
                     <Col>
                         <Form.Label>Role</Form.Label>
-                        <Select required={"required"} isClearable={true} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => setRole(e)}/>
+                        <Select required={"required"} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => setRole(e)}/>
                     </Col>
                 </Row>
-                {/*<Row>*/}
-                {/*    <Col>*/}
-                {/*        <Form.Label>Park</Form.Label>*/}
-                {/*        <Select required={"required"} isClearable={true} className="mb-3" name="park" options={ parkOptions } value={park} onChange={e => setPark(e)}/>*/}
-                {/*    </Col>*/}
-                {/*</Row>*/}
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="email" >
@@ -169,11 +163,6 @@ const EditUserBody = (props) => {
                                 An email will be sent to the user informing them of their registration on the system.
                             </Form.Text>
                         </Form.Group>
-
-                        {/*<Form.Group className="mb-3" controlId="password">*/}
-                        {/*    <Form.Label>Password</Form.Label>*/}
-                        {/*    <Form.Control required={"required"} type="password" placeholder="Password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>*/}
-                        {/*</Form.Group>*/}
                     </Col>
                 </Row>
                 <Row>
@@ -196,7 +185,7 @@ const EditUserBody = (props) => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>National Identification Number</Form.Label>
-                            <Form.Control required={"required"} type="text" placeholder="ID Number" name="id_number" value={idNumber} onChange={e => setIDNumber(e.target.value)}/>
+                            <Form.Control required={"required"} type="text" minLength={13} maxLength={13} pattern="[0-9]*" placeholder="ID Number" name="id_number" value={idNumber} onChange={e => setIDNumber(e.target.value)}/>
                         </Form.Group>
 
                     </Col>
@@ -206,7 +195,7 @@ const EditUserBody = (props) => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Cell Number</Form.Label>
-                            <Form.Control required={"required"} type="text" placeholder="Cell Number" name="cell_number" value={cellNumber} onChange={e => setCellNumber(e.target.value)}/>
+                            <Form.Control required={"required"} type="text" minLength={10} maxLength={10} pattern="[0-9]*" placeholder="Cell Number" name="cell_number" value={cellNumber} onChange={e => setCellNumber(e.target.value)}/>
                         </Form.Group>
                     </Col>
                 </Row>

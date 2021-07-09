@@ -20,7 +20,10 @@ import Modal from "../Modals/Modal";
 import AddUserBody from "./AddUserBody";
 import axios from "axios";
 import EditUserBody from "./EditUserBody";
+import IconButton from "@material-ui/core/IconButton";
+import EditIcon from '@material-ui/icons/Edit';
 
+import DeleteIcon from '@material-ui/icons/Delete';
 // import disableScroll from 'disable-scroll';
 
 // import AdminModal from 'admin-modal'
@@ -68,29 +71,39 @@ const UserTable = () => {
                     </TableCell>
                     <TableCell classes={{ root: classes.tableCellRoot }}
                                style={{verticalAlign:'middle',width:'20%'}}>
+                        { user.username }
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle',width:'20%'}}>
                         { user.role }
                     </TableCell>
                     <TableCell classes={{ root: classes.tableCellRoot }}
                                style={{verticalAlign:'middle',width:'34%'}}>
-                        { user.park }
+                        { user.parkName }
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle',width:'34%'}}>
+                        { user.idNumber }
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle',width:'34%'}}>
+                        { user.cellNumber }
                     </TableCell>
                     <TableCell classes={{ root: classes.tableCellRoot }}
                                style={{verticalAlign:'middle'}}>
-                        <Button
-                            size="small"
-                            onClick={() => { setShowEdit(true); setUser(user)}}
+                        <IconButton aria-label="delete"
+                                    onClick={() => { setShowEdit(true); setUser(user)}}
                         >
-                            Edit
-                        </Button>
+                            <EditIcon />
+                        </IconButton>
                     </TableCell>
                     <TableCell classes={{ root: classes.tableCellRoot }}
                                style={{verticalAlign:'middle'}}>
-                        <Button
-                            size="small"
-                            onClick={ removeUser(user.id) }
+                        <IconButton aria-label="delete"
+                                    onClick={ removeUser(user.id) }
                         >
-                            Remove
-                        </Button>
+                            <DeleteIcon />
+                        </IconButton>
                     </TableCell>
                 </TableRow>
             );
@@ -185,7 +198,37 @@ const UserTable = () => {
                                                         classes.tableCellRootHead,
                                                 }}
                                             >
+                                                Username
+                                            </TableCell>
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
                                                 Role
+                                            </TableCell>
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
+                                                Park
+                                            </TableCell>
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
+                                                ID Number
                                             </TableCell>
                                             <TableCell
                                                 classes={{
