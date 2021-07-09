@@ -195,16 +195,6 @@ const UserTable = () => {
                                                         classes.tableCellRootHead,
                                                 }}
                                             >
-                                                Park
-                                            </TableCell>
-                                            <TableCell
-                                                classes={{
-                                                    root:
-                                                        classes.tableCellRoot +
-                                                        " " +
-                                                        classes.tableCellRootHead,
-                                                }}
-                                            >
 
                                             </TableCell>
                                             <TableCell

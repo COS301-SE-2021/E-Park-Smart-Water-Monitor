@@ -49,6 +49,10 @@ const AddUserBody = () => {
 
             setParkOptions(options)
 
+            // set the defualt roles and parks on the model
+            setRole(userRoles[0])
+            setPark(options[0])
+
         }).catch((res)=>{
             console.log(JSON.stringify(res))
         });
@@ -90,13 +94,13 @@ const AddUserBody = () => {
                 <Row>
                     <Col>
                         <Form.Label>Role</Form.Label>
-                        <Select required={"required"} isClearable={true} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => setRole(e)}/>
+                        <Select required={"required"} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => setRole(e)}/>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
                         <Form.Label>Park</Form.Label>
-                        <Select required={"required"} isClearable={true} className="mb-3" name="park" options={ parkOptions } value={park} onChange={e => setPark(e)}/>
+                        <Select required={"required"} className="mb-3" name="park" options={ parkOptions } value={park} onChange={e => setPark(e)}/>
                     </Col>
                 </Row>
                 <Row>
@@ -115,14 +119,14 @@ const AddUserBody = () => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Firstname</Form.Label>
-                            <Form.Control required={"required"} type="text" placeholder="Firstname" name="name" value={name} onChange={e => setName(e.target.value)}/>
+                            <Form.Control required={"required"} type="text" pattern="[a-zA-Z]*" placeholder="Firstname" name="name" value={name} onChange={e => setName(e.target.value)}/>
                         </Form.Group>
 
                     </Col>
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Surname</Form.Label>
-                            <Form.Control required={"required"} type="text" placeholder="Surname" name="surname" value={surname} onChange={e => setSurname(e.target.value)}/>
+                            <Form.Control required={"required"} type="text" pattern="[a-zA-Z]*" placeholder="Surname" name="surname" value={surname} onChange={e => setSurname(e.target.value)}/>
                         </Form.Group>
 
                     </Col>
@@ -131,7 +135,7 @@ const AddUserBody = () => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>National Identification Number</Form.Label>
-                            <Form.Control required={"required"} type="text" placeholder="ID Number" name="id_number" value={idNumber} onChange={e => setIDNumber(e.target.value)}/>
+                            <Form.Control required={"required"} type="text" minLength={13} maxLength={13} pattern="[0-9]*" placeholder="ID Number" name="id_number" value={idNumber} onChange={e => setIDNumber(e.target.value)}/>
                         </Form.Group>
 
                     </Col>
@@ -141,7 +145,7 @@ const AddUserBody = () => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Cell Number</Form.Label>
-                            <Form.Control required={"required"} type="text" placeholder="Cell Number" name="cell_number" value={cellNumber} onChange={e => setCellNumber(e.target.value)}/>
+                            <Form.Control required={"required"} type="text" minLength={10} maxLength={10} pattern="[0-9]*"  placeholder="Cell Number" name="cell_number" value={cellNumber} onChange={e => setCellNumber(e.target.value)}/>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -154,7 +158,6 @@ const AddUserBody = () => {
 
                     </Col>
                 </Row>
-
 
 
                 <Button variant="primary" type="submit" >

@@ -96,7 +96,7 @@ const InspectionTable = () => {
                                 classes={{ root: classes.cardHeaderRoot }}
 
                             >
-                                </CardHeader>
+                            </CardHeader>
                             <TableContainer
                                 style={{maxHeight:"300px",overflowY:"scroll"}}>
                                 <Box
