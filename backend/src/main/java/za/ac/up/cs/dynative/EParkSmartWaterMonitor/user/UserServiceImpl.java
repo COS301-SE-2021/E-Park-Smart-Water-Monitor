@@ -59,8 +59,7 @@ public class UserServiceImpl implements UserService {
                 && !role.equals("")
                 && !cellNumber.equals("")
                 && !username.equals("")
-                && !idNumber.equals("")
-                && !password.equals("")) {
+                && !idNumber.equals("")) {
 
             List<User> users = userRepo.findUserByIdNumber(idNumber);
             List<User> usersByUsername = userRepo.findUserByUsername(username);
