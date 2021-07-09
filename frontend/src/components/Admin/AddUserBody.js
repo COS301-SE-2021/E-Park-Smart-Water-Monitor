@@ -24,7 +24,6 @@ const AddUserBody = () => {
     const [park, setPark] = useState("")
     const [idNumber, setIDNumber] = useState("")
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
     const [name, setName] = useState("")
     const [surname, setSurname] = useState("")
     const [username, setUsername] = useState("")
@@ -64,7 +63,7 @@ const AddUserBody = () => {
             parkId: park.value,
             idNumber: idNumber,
             email: email,
-            password: password,
+            password: '',
             name: name,
             surname: surname,
             username: username,
@@ -106,14 +105,10 @@ const AddUserBody = () => {
                             <Form.Label>Email address</Form.Label>
                             <Form.Control required={"required"} type="email" placeholder="Enter email" name="email" value={email} onChange={e => setEmail(e.target.value)}/>
                             <Form.Text className="text-muted">
-                                An email will be sent to the user informing them of their registration on the system.
+                                An email will be sent to the user informing them of their registration on the system and their password will be automatically generated.
                             </Form.Text>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="password">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control required={"required"} type="password" placeholder="Password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
-                        </Form.Group>
                     </Col>
                 </Row>
                 <Row>
