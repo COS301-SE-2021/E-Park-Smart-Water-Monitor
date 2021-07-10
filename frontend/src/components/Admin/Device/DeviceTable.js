@@ -22,6 +22,8 @@ import axios from "axios";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import AddUserBody from "../User/AddUserBody";
+import EditUserBody from "../User/EditUserBody";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -30,8 +32,11 @@ const DeviceTable = () => {
     const classes = useStyles();
     const theme = useTheme();
    // const [result, setResult] = useState(null)
+    const [showAdd, setShowAdd] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
     const [show, setShow] = useState(false);
     const [response, setResponse] = useState([]);
+    const [device, setDevice] = useState({});
 
 
     // on delete of a device
@@ -102,6 +107,10 @@ const DeviceTable = () => {
                 <Modal title="Add Device" onClose={() => setShow(false)} show={show}>
                     <AddDeviceBody/>
                 </Modal>
+
+                { device && <Modal title="Edit Device" onClose={() => setShowEdit(false)} show={ showEdit }>
+                    <EditDeviceBody deviceDetails={ device } closeModal={()=>{ setShowEdit(false) }}/>
+                </Modal> }
 
                 <Grid container component={Box}>
                     <Grid
