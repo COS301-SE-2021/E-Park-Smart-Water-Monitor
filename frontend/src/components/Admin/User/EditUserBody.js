@@ -72,25 +72,8 @@ const EditUserBody = (props) => {
         }
     },[props.userDetails])
 
-    // parks not yet implemented as an editable property
-    // // get the parks to populate the select item
-    // useEffect(() => {
-    //     // get the parks for populating the select component
-    //     axios.get('http://localhost:8080/api/park/getAllParks'
-    //     ).then((res)=>{
-    //
-    //         let options = res.data.allParks.map((p)=>{
-    //             return {value: p.id, label: p.parkName}
-    //         })
-    //
-    //         setParkOptions(options)
-    //
-    //     }).catch((res)=>{
-    //         console.log(JSON.stringify(res))
-    //     });
-    // },[])
 
-
+    // submit the edit of the user
     const submit = (e) => {
         e.preventDefault()
 
