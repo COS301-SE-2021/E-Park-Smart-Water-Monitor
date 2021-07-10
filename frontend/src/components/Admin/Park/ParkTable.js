@@ -17,7 +17,7 @@ import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
 import Modal from "../../Modals/Modal";
 import disableScroll from "disable-scroll";
-import AddParkBody from "../AddParkBody";
+import AddParkBody from "./AddParkBody";
 import axios from "axios";
 
 

@@ -17,9 +17,9 @@ import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
 import Modal from "../../Modals/Modal";
-import AddUserBody from "../AddUserBody";
+import AddUserBody from "./AddUserBody";
 import axios from "axios";
-import EditUserBody from "../EditUserBody";
+import EditUserBody from "./EditUserBody";
 import IconButton from "@material-ui/core/IconButton";
 import EditIcon from '@material-ui/icons/Edit';
 

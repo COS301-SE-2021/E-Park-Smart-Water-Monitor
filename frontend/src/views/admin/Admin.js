@@ -1,14 +1,14 @@
 import React from "react";
 import AdminHeader from "../../components/Headers/AdminHeader";
-import UserTable from "../../components/Admin/UserTable";
+import UserTable from "../../components/Admin/User/UserTable";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import componentStyles from "assets/theme/views/dashboard/dashboard.js";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import DeviceTable from "../../components/Admin/DeviceTable";
-import ParkTable from "../../components/Admin/ParkTable";
-import InspectionTable from "components/Admin/InspectionTable";
+import DeviceTable from "../../components/Admin/Device/DeviceTable";
+import ParkTable from "../../components/Admin/Park/ParkTable";
+import InspectionTable from "components/Admin/Inspection/InspectionTable";
 
 
 const useStyles = makeStyles(componentStyles);
