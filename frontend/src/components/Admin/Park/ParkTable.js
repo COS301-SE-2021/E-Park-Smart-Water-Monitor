@@ -22,6 +22,8 @@ import axios from "axios";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditDeviceBody from "../Device/EditDeviceBody";
+import EditParkBody from "./EditParkBody";
 
 
 
@@ -94,6 +96,12 @@ const ParkTable = () => {
                 <Modal title="Add Park" onClose={() => setShow(false)} show={show}>
                     <AddParkBody/>
                 </Modal>
+
+                { park && <Modal title="Edit Park" onClose={() => setShowEdit(false)} show={ showEdit }>
+                    <EditParkBody parkDetails={ park } closeModal={()=>{ setShowEdit(false) }}/>
+                </Modal> }
+
+
                 <Grid container component={Box} >
                     <Grid
                         item
