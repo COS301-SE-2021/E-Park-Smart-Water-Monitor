@@ -77,10 +77,10 @@ const UserTable = () => {
                                style={{verticalAlign:'middle',width:'20%'}}>
                         { user.role }
                     </TableCell>
-                    <TableCell classes={{ root: classes.tableCellRoot }}
-                               style={{verticalAlign:'middle',width:'34%'}}>
-                        { user.parkName }
-                    </TableCell>
+                    {/*<TableCell classes={{ root: classes.tableCellRoot }}*/}
+                    {/*           style={{verticalAlign:'middle',width:'34%'}}>*/}
+                    {/*    { user.parkName }*/}
+                    {/*</TableCell>*/}
                     <TableCell classes={{ root: classes.tableCellRoot }}
                                style={{verticalAlign:'middle',width:'34%'}}>
                         { user.idNumber }
@@ -210,16 +210,16 @@ const UserTable = () => {
                                             >
                                                 Role
                                             </TableCell>
-                                            <TableCell
-                                                classes={{
-                                                    root:
-                                                        classes.tableCellRoot +
-                                                        " " +
-                                                        classes.tableCellRootHead,
-                                                }}
-                                            >
-                                                Park
-                                            </TableCell>
+                                            {/*<TableCell*/}
+                                            {/*    classes={{*/}
+                                            {/*        root:*/}
+                                            {/*            classes.tableCellRoot +*/}
+                                            {/*            " " +*/}
+                                            {/*            classes.tableCellRootHead,*/}
+                                            {/*    }}*/}
+                                            {/*>*/}
+                                            {/*    Park*/}
+                                            {/*</TableCell>*/}
                                             <TableCell
                                                 classes={{
                                                     root:
@@ -229,6 +229,16 @@ const UserTable = () => {
                                                 }}
                                             >
                                                 ID Number
+                                            </TableCell>
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
+                                                Cellphone Number
                                             </TableCell>
                                             <TableCell
                                                 classes={{
