@@ -19,6 +19,9 @@ import Modal from "../../Modals/Modal";
 import AddDeviceBody from "./AddDeviceBody";
 import disableScroll from "disable-scroll";
 import axios from "axios";
+import EditIcon from "@material-ui/icons/Edit";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -62,19 +65,19 @@ const DeviceTable = () => {
                     </TableCell>
                     <TableCell classes={{root: classes.tableCellRoot}}
                                style={{verticalAlign: 'middle'}}>
-                        <Button
-                            size="small"
+                        <IconButton aria-label="delete"
+                                    onClick={() => { setShowEdit(true); setDevice(device)}}
                         >
-                            Edit
-                        </Button>
+                            <EditIcon />
+                        </IconButton>
                     </TableCell>
                     <TableCell classes={{root: classes.tableCellRoot}}
                                style={{verticalAlign: 'middle'}}>
-                        <Button
-                            size="small"
+                        <IconButton aria-label="delete"
+                                    onClick={ removeDevice(device.id) }
                         >
-                            Remove
-                        </Button>
+                            <DeleteIcon />
+                        </IconButton>
                     </TableCell>
                 </TableRow>
             );
