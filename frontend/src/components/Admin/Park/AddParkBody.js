@@ -3,7 +3,7 @@ import React,{useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import componentStyles from "assets/theme/views/admin/admin";
-import "../../assets/css/addDevice.css";
+import "../../../assets/css/addDevice.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Button, Form} from "react-bootstrap";

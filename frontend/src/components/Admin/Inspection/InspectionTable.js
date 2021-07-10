@@ -16,14 +16,9 @@ import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
-import Modal from "../Modals/Modal";
-import AddUserBody from "./AddUserBody";
+import Modal from "../../Modals/Modal";
 import axios from "axios";
-import EditUserBody from "./EditUserBody";
-import IconButton from "@material-ui/core/IconButton";
-import EditIcon from '@material-ui/icons/Edit';
-
-import DeleteIcon from '@material-ui/icons/Delete';
+import AddInspectionBody from "./AddInspectionBody";
 // import disableScroll from 'disable-scroll';
 
 // import AdminModal from 'admin-modal'
@@ -31,103 +26,34 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 const useStyles = makeStyles(componentStyles);
 
-const UserTable = () => {
+const InspectionTable = () => {
     const classes = useStyles();
     const theme = useTheme();
-    const [showAdd, setShowAdd] = useState(false);
-    const [showEdit, setShowEdit] = useState(false);
-    const [response, setResponse] = useState([]);
-    const [user, setUser] = useState({});
+    const [show, setShow] = useState(false);
 
-    // on delete of a user
-    const removeUser = (id) => {
-        return ()=>{
-            axios.post('http://localhost:8080/api/user/deleteUser', {
-                id: id
-            }).then((res)=> {
-                window.location.reload()
-            })
-        }
-    }
-
+    const [inspections, setInspections] = useState([])
 
     useEffect(() => {
-        // get all users
-        axios.get('http://localhost:8080/api/user/getAllUsers').then((res)=>{
-            // console.log("res: "+JSON.stringify(res))
-            const m = res.data.allUsers.map((user) =>
-                <TableRow key={ user.id } >
-                    <TableCell
-                        classes={{
-                            root:
-                                classes.tableCellRoot +
-                                " " +
-                                classes.tableCellRootBodyHead,
-                        }}
-                        scope="row"
-                        style={{verticalAlign:'middle',width:'25%'}}
-                    >
-                        { `${user.name} ${user.surname}` }
-                    </TableCell>
-                    <TableCell classes={{ root: classes.tableCellRoot }}
-                               style={{verticalAlign:'middle',width:'20%'}}>
-                        { user.username }
-                    </TableCell>
-                    <TableCell classes={{ root: classes.tableCellRoot }}
-                               style={{verticalAlign:'middle',width:'20%'}}>
-                        { user.role }
-                    </TableCell>
-                    {/*<TableCell classes={{ root: classes.tableCellRoot }}*/}
-                    {/*           style={{verticalAlign:'middle',width:'34%'}}>*/}
-                    {/*    { user.parkName }*/}
-                    {/*</TableCell>*/}
-                    <TableCell classes={{ root: classes.tableCellRoot }}
-                               style={{verticalAlign:'middle',width:'34%'}}>
-                        { user.idNumber }
-                    </TableCell>
-                    <TableCell classes={{ root: classes.tableCellRoot }}
-                               style={{verticalAlign:'middle',width:'34%'}}>
-                        { user.cellNumber }
-                    </TableCell>
-                    <TableCell classes={{ root: classes.tableCellRoot }}
-                               style={{verticalAlign:'middle'}}>
-                        <IconButton aria-label="delete"
-                                    onClick={() => { setShowEdit(true); setUser(user)}}
-                        >
-                            <EditIcon />
-                        </IconButton>
-                    </TableCell>
-                    <TableCell classes={{ root: classes.tableCellRoot }}
-                               style={{verticalAlign:'middle'}}>
-                        <IconButton aria-label="delete"
-                                    onClick={ removeUser(user.id) }
-                        >
-                            <DeleteIcon />
-                        </IconButton>
-                    </TableCell>
-                </TableRow>
-            );
-            setResponse(m);
-        });
-
-    },[])
+        axios.post('http://localhost:8080/api/inspections/getSiteInspections', {
+            siteId: "10ad3cf6-59c3-4469-b1b0-17a75e93cf7f"
+        }).then((res) => {
+            if (res.data) {
+            setInspections(res.data.inspectionList)
+            }
+        })
+      }, [])
 
     return (
         <>
             <Container
                 maxWidth={false}
                 component={Box}
-                marginTop="-6rem"
+                marginTop="-3rem"
                 classes={{ root: classes.containerRoot }}
-
             >
-                <Modal  title="Add User" onClose={() => setShowAdd(false)} show={ showAdd }>
-                    <AddUserBody/>
+                <Modal title="Add Inspection" onClose={() => setShow(false)} show={show}>
+                    <AddInspectionBody/>
                 </Modal>
-
-                { user && <Modal title="Edit User" onClose={() => setShowEdit(false)} show={ showEdit }>
-                    <EditUserBody userDetails={ user } closeModal={()=>{ setShowEdit(false) }}/>
-                </Modal> }
 
                 <Grid container component={Box} marginTop="3rem">
                     <Grid
@@ -154,7 +80,7 @@ const UserTable = () => {
                                                 variant="h2"
                                                 marginBottom="0!important"
                                             >
-                                                Users
+                                                Inspections
                                             </Box>
                                         </Grid>
                                         <Grid item xs="auto">
@@ -170,7 +96,7 @@ const UserTable = () => {
                                 classes={{ root: classes.cardHeaderRoot }}
 
                             >
-                                </CardHeader>
+                            </CardHeader>
                             <TableContainer
                                 style={{maxHeight:"300px",overflowY:"scroll"}}>
                                 <Box
@@ -188,7 +114,7 @@ const UserTable = () => {
                                                         classes.tableCellRootHead,
                                                 }}
                                             >
-                                                Name
+                                                Due Date
                                             </TableCell>
                                             <TableCell
                                                 classes={{
@@ -198,7 +124,7 @@ const UserTable = () => {
                                                         classes.tableCellRootHead,
                                                 }}
                                             >
-                                                Username
+                                                Status
                                             </TableCell>
                                             <TableCell
                                                 classes={{
@@ -208,37 +134,7 @@ const UserTable = () => {
                                                         classes.tableCellRootHead,
                                                 }}
                                             >
-                                                Role
-                                            </TableCell>
-                                            {/*<TableCell*/}
-                                            {/*    classes={{*/}
-                                            {/*        root:*/}
-                                            {/*            classes.tableCellRoot +*/}
-                                            {/*            " " +*/}
-                                            {/*            classes.tableCellRootHead,*/}
-                                            {/*    }}*/}
-                                            {/*>*/}
-                                            {/*    Park*/}
-                                            {/*</TableCell>*/}
-                                            <TableCell
-                                                classes={{
-                                                    root:
-                                                        classes.tableCellRoot +
-                                                        " " +
-                                                        classes.tableCellRootHead,
-                                                }}
-                                            >
-                                                ID Number
-                                            </TableCell>
-                                            <TableCell
-                                                classes={{
-                                                    root:
-                                                        classes.tableCellRoot +
-                                                        " " +
-                                                        classes.tableCellRootHead,
-                                                }}
-                                            >
-                                                Cellphone Number
+                                                Description
                                             </TableCell>
                                             <TableCell
                                                 classes={{
@@ -263,11 +159,29 @@ const UserTable = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-
-
-                                        {response}
-
-
+                                        {inspections.map((inspection) => (
+                                            <TableRow key={inspection.id}>
+                                                <TableCell
+                                                    classes={{
+                                                        root:
+                                                            classes.tableCellRoot +
+                                                            " " +
+                                                            classes.tableCellRootBodyHead,
+                                                    }}
+                                                    component="th"
+                                                    variant="head"
+                                                    scope="row"
+                                                >
+                                                    { inspection.dateDue?.split("T")[0] }
+                                                </TableCell>
+                                                <TableCell classes={{ root: classes.tableCellRoot }}>
+                                                    { inspection.status }
+                                                </TableCell>
+                                                <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
+                                                    { inspection.description }
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
                                     </TableBody>
                                 </Box>
                             </TableContainer>
@@ -275,7 +189,7 @@ const UserTable = () => {
                     </Grid>
                     <Grid
                         item
-                        xs={6}
+                        xs={10}
                         xl={10}
                         component={Box}
                         marginBottom="3rem!important"
@@ -285,7 +199,7 @@ const UserTable = () => {
                     <Grid
                         item
                         justify="end"
-                        xs={6}
+                        xs={2}
                         xl={2}
                         component={Box}
                         marginBottom="3rem!important"
@@ -296,9 +210,9 @@ const UserTable = () => {
                             color="primary"
                             size="medium"
                             style={{width:'200px'}}
-                            onClick={() => setShowAdd(true)}
+                            onClick={() => setShow(true)}
                         >
-                            Add User
+                            Add Inspection
                         </Button>
                     </Grid>
                 </Grid>
@@ -308,4 +222,4 @@ const UserTable = () => {
     );
 };
 
-export default UserTable;
+export default InspectionTable;

@@ -16,9 +16,14 @@ import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
-import Modal from "../../components/Modals/Modal";
+import Modal from "../../Modals/Modal";
+import AddUserBody from "../AddUserBody";
 import axios from "axios";
-import AddInspectionBody from "./AddInspectionBody";
+import EditUserBody from "../EditUserBody";
+import IconButton from "@material-ui/core/IconButton";
+import EditIcon from '@material-ui/icons/Edit';
+
+import DeleteIcon from '@material-ui/icons/Delete';
 // import disableScroll from 'disable-scroll';
 
 // import AdminModal from 'admin-modal'
@@ -26,34 +31,103 @@ import AddInspectionBody from "./AddInspectionBody";
 
 const useStyles = makeStyles(componentStyles);
 
-const InspectionTable = () => {
+const UserTable = () => {
     const classes = useStyles();
     const theme = useTheme();
-    const [show, setShow] = useState(false);
+    const [showAdd, setShowAdd] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
+    const [response, setResponse] = useState([]);
+    const [user, setUser] = useState({});
 
-    const [inspections, setInspections] = useState([])
+    // on delete of a user
+    const removeUser = (id) => {
+        return ()=>{
+            axios.post('http://localhost:8080/api/user/deleteUser', {
+                id: id
+            }).then((res)=> {
+                window.location.reload()
+            })
+        }
+    }
+
 
     useEffect(() => {
-        axios.post('http://localhost:8080/api/inspections/getSiteInspections', {
-            siteId: "10ad3cf6-59c3-4469-b1b0-17a75e93cf7f"
-        }).then((res) => {
-            if (res.data) {
-            setInspections(res.data.inspectionList)
-            }
-        })
-      }, [])
+        // get all users
+        axios.get('http://localhost:8080/api/user/getAllUsers').then((res)=>{
+            // console.log("res: "+JSON.stringify(res))
+            const m = res.data.allUsers.map((user) =>
+                <TableRow key={ user.id } >
+                    <TableCell
+                        classes={{
+                            root:
+                                classes.tableCellRoot +
+                                " " +
+                                classes.tableCellRootBodyHead,
+                        }}
+                        scope="row"
+                        style={{verticalAlign:'middle',width:'25%'}}
+                    >
+                        { `${user.name} ${user.surname}` }
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle',width:'20%'}}>
+                        { user.username }
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle',width:'20%'}}>
+                        { user.role }
+                    </TableCell>
+                    {/*<TableCell classes={{ root: classes.tableCellRoot }}*/}
+                    {/*           style={{verticalAlign:'middle',width:'34%'}}>*/}
+                    {/*    { user.parkName }*/}
+                    {/*</TableCell>*/}
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle',width:'34%'}}>
+                        { user.idNumber }
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle',width:'34%'}}>
+                        { user.cellNumber }
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle'}}>
+                        <IconButton aria-label="delete"
+                                    onClick={() => { setShowEdit(true); setUser(user)}}
+                        >
+                            <EditIcon />
+                        </IconButton>
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle'}}>
+                        <IconButton aria-label="delete"
+                                    onClick={ removeUser(user.id) }
+                        >
+                            <DeleteIcon />
+                        </IconButton>
+                    </TableCell>
+                </TableRow>
+            );
+            setResponse(m);
+        });
+
+    },[])
 
     return (
         <>
             <Container
                 maxWidth={false}
                 component={Box}
-                marginTop="-3rem"
+                marginTop="-6rem"
                 classes={{ root: classes.containerRoot }}
+
             >
-                <Modal title="Add Inspection" onClose={() => setShow(false)} show={show}>
-                    <AddInspectionBody/>
+                <Modal  title="Add User" onClose={() => setShowAdd(false)} show={ showAdd }>
+                    <AddUserBody/>
                 </Modal>
+
+                { user && <Modal title="Edit User" onClose={() => setShowEdit(false)} show={ showEdit }>
+                    <EditUserBody userDetails={ user } closeModal={()=>{ setShowEdit(false) }}/>
+                </Modal> }
 
                 <Grid container component={Box} marginTop="3rem">
                     <Grid
@@ -80,7 +154,7 @@ const InspectionTable = () => {
                                                 variant="h2"
                                                 marginBottom="0!important"
                                             >
-                                                Inspections
+                                                Users
                                             </Box>
                                         </Grid>
                                         <Grid item xs="auto">
@@ -96,7 +170,7 @@ const InspectionTable = () => {
                                 classes={{ root: classes.cardHeaderRoot }}
 
                             >
-                            </CardHeader>
+                                </CardHeader>
                             <TableContainer
                                 style={{maxHeight:"300px",overflowY:"scroll"}}>
                                 <Box
@@ -114,7 +188,7 @@ const InspectionTable = () => {
                                                         classes.tableCellRootHead,
                                                 }}
                                             >
-                                                Due Date
+                                                Name
                                             </TableCell>
                                             <TableCell
                                                 classes={{
@@ -124,7 +198,7 @@ const InspectionTable = () => {
                                                         classes.tableCellRootHead,
                                                 }}
                                             >
-                                                Status
+                                                Username
                                             </TableCell>
                                             <TableCell
                                                 classes={{
@@ -134,7 +208,37 @@ const InspectionTable = () => {
                                                         classes.tableCellRootHead,
                                                 }}
                                             >
-                                                Description
+                                                Role
+                                            </TableCell>
+                                            {/*<TableCell*/}
+                                            {/*    classes={{*/}
+                                            {/*        root:*/}
+                                            {/*            classes.tableCellRoot +*/}
+                                            {/*            " " +*/}
+                                            {/*            classes.tableCellRootHead,*/}
+                                            {/*    }}*/}
+                                            {/*>*/}
+                                            {/*    Park*/}
+                                            {/*</TableCell>*/}
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
+                                                ID Number
+                                            </TableCell>
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
+                                                Cellphone Number
                                             </TableCell>
                                             <TableCell
                                                 classes={{
@@ -159,29 +263,11 @@ const InspectionTable = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {inspections.map((inspection) => (
-                                            <TableRow key={inspection.id}>
-                                                <TableCell
-                                                    classes={{
-                                                        root:
-                                                            classes.tableCellRoot +
-                                                            " " +
-                                                            classes.tableCellRootBodyHead,
-                                                    }}
-                                                    component="th"
-                                                    variant="head"
-                                                    scope="row"
-                                                >
-                                                    { inspection.dateDue?.split("T")[0] }
-                                                </TableCell>
-                                                <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                    { inspection.status }
-                                                </TableCell>
-                                                <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
-                                                    { inspection.description }
-                                                </TableCell>
-                                            </TableRow>
-                                        ))}
+
+
+                                        {response}
+
+
                                     </TableBody>
                                 </Box>
                             </TableContainer>
@@ -189,7 +275,7 @@ const InspectionTable = () => {
                     </Grid>
                     <Grid
                         item
-                        xs={10}
+                        xs={6}
                         xl={10}
                         component={Box}
                         marginBottom="3rem!important"
@@ -199,7 +285,7 @@ const InspectionTable = () => {
                     <Grid
                         item
                         justify="end"
-                        xs={2}
+                        xs={6}
                         xl={2}
                         component={Box}
                         marginBottom="3rem!important"
@@ -210,9 +296,9 @@ const InspectionTable = () => {
                             color="primary"
                             size="medium"
                             style={{width:'200px'}}
-                            onClick={() => setShow(true)}
+                            onClick={() => setShowAdd(true)}
                         >
-                            Add Inspection
+                            Add User
                         </Button>
                     </Grid>
                 </Grid>
@@ -222,4 +308,4 @@ const InspectionTable = () => {
     );
 };
 
-export default InspectionTable;
+export default UserTable;
