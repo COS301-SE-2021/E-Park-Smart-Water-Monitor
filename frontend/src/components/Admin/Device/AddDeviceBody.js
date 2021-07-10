@@ -28,6 +28,8 @@ const AddDeviceBody = () => {
     // retrieved items from the DB to populate the select components
     const [parkOptions, setParkOptions] = useState("")
     const [siteOptions, setSiteOptions] = useState("")
+    const [siteLoading, setSiteLoading] = useState(true)
+    const [parkLoading, setParkLoading] = useState(true)
 
     // selected/provided items by the user
     const [name, setName] = useState("")
@@ -38,13 +40,20 @@ const AddDeviceBody = () => {
     const [longitude, setLongitude] = useState(28.280765508)
 
     useEffect(() => {
+        setParkLoading(true)
         axios.get('http://localhost:8080/api/park/getAllParks'
         ).then((res)=>{
 
             let options = res.data.allParks.map((p)=>{
                 return {value: p.id, label: p.parkName}
             })
+
+            //set all park options in select
             setParkOptions(options)
+            // set the defult park option to the first item
+            setPark(options[0])
+            // stop the loading symbol
+            setParkLoading(false)
 
 
         }).catch((res)=>{
@@ -55,6 +64,10 @@ const AddDeviceBody = () => {
     // get sites for this park when the park selected changes
     useEffect(() => {
         if(park && park.value) {
+            // loading symbol of the select component
+            setSiteLoading(true)
+            //clear the current selection
+            setSite("")
 
             axios.post('http://localhost:8080/api/park/getParkWaterSites',
                 {
@@ -65,8 +78,10 @@ const AddDeviceBody = () => {
                 let options = res.data.site.map((s) => {
                     return {value: s.id, label: s.waterSiteName}
                 })
-
+                
                 setSiteOptions(options)
+                setSite(options[0])
+                setSiteLoading(false)
 
 
             }).catch((res) => {
@@ -113,13 +128,13 @@ const AddDeviceBody = () => {
                 <Row>
                     <Col>
                         <Form.Label>Park</Form.Label>
-                        <Select required={"required"} isClearable={true} className="mb-3" name="park" options={ parkOptions } value={park} onChange={e => setPark(e)}/>
+                        <Select required={"required"} isLoading={parkLoading} className="mb-3" name="park" options={ parkOptions } value={park} onChange={e => setPark(e)}/>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
                         <Form.Label>Site</Form.Label>
-                        <Select required={"required"} isClearable={true} className="mb-3" name="site" options={ siteOptions } value={site} onChange={e => setSite(e)}/>
+                        <Select required={"required"} isLoading={siteLoading} className="mb-3" name="site" options={ siteOptions } value={site} onChange={e => setSite(e)}/>
                     </Col>
                 </Row>
                 <Row>

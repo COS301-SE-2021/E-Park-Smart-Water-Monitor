@@ -24,6 +24,7 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import AddUserBody from "../User/AddUserBody";
 import EditUserBody from "../User/EditUserBody";
+import EditDeviceBody from "./EditDeviceBody";
 
 
 const useStyles = makeStyles(componentStyles);
