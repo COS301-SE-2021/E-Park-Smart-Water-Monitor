@@ -150,11 +150,6 @@ const DeviceTable = () => {
                                             >
                                             </Box>
                                         </Grid>
-                                        <Grid item xs="auto">
-                                            <select name="Parks" id="parks" style={{width:'200px',padding:'5px', borderRadius:'5px'}}>
-                                                <option value="all parks">All Parks</option>
-                                            </select>
-                                        </Grid>
                                     </Grid>
                                 }
                                 classes={{ root: classes.cardHeaderRoot }}

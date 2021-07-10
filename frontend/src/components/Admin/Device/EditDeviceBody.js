@@ -19,6 +19,10 @@ const { Form } = require( "react-bootstrap" );
 
 
 const useStyles = makeStyles(componentStyles);
+const mapStyles = {
+    width: `100%`,
+    height: `100%`
+};
 
 const EditDeviceBody = (props) => {
     const [name, setName] = useState("")
@@ -27,6 +31,7 @@ const EditDeviceBody = (props) => {
     const [model, setModel] = useState("ESP32")
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
+    const [error, setError] = useState("")
 
 
 
