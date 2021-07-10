@@ -19,6 +19,9 @@ import Modal from "../../Modals/Modal";
 import disableScroll from "disable-scroll";
 import AddParkBody from "./AddParkBody";
 import axios from "axios";
+import EditIcon from "@material-ui/icons/Edit";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 
 
@@ -26,14 +29,21 @@ const useStyles = makeStyles(componentStyles);
 
 const ParkTable = () => {
     const classes = useStyles();
-    const theme = useTheme();
     const [show, setShow] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
     const [response, setResponse] = useState(false);
+    const [park, setPark] = useState({});
 
-    // useEffect(() => {
-    //     if (show == true) disableScroll.on()
-    //     if (show == false) disableScroll.off()
-    // }, [show])
+    // on delete of a device
+    const removePark = (id) => {
+        return ()=>{
+            axios.get('http://localhost:8080/api/device/deletePark', {
+                id: id
+            }).then((res)=> {
+                window.location.reload()
+            })
+        }
+    }
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/park/getAllParks').then((res)=>{
@@ -53,19 +63,19 @@ const ParkTable = () => {
                     </TableCell>
                     <TableCell classes={{ root: classes.tableCellRoot }}
                                style={{verticalAlign:'middle'}}>
-                        <Button
-                            size="small"
+                        <IconButton aria-label="delete"
+                                    onClick={() => { setShowEdit(true); setPark(park)}}
                         >
-                            Edit
-                        </Button>
+                            <EditIcon />
+                        </IconButton>
                     </TableCell>
                     <TableCell classes={{ root: classes.tableCellRoot }}
                                style={{verticalAlign:'middle'}}>
-                        <Button
-                            size="small"
+                        <IconButton aria-label="delete"
+                                    onClick={ removePark(park.id) }
                         >
-                            Remove
-                        </Button>
+                            <DeleteIcon />
+                        </IconButton>
                     </TableCell>
                 </TableRow>
             );
