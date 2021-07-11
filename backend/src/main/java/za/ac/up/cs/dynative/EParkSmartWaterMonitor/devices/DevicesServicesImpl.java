@@ -139,12 +139,13 @@ public class DevicesServicesImpl implements DevicesService {
 
     }
 
+    //TODO: fix in postman
     public FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest) throws InvalidRequestException {
         if (findDeviceRequest==null){
-            throw new InvalidRequestException("Request is null");
+            return new FindDeviceResponse("Request is null",false,null);
         }
         if (findDeviceRequest.getDeviceID()==null){
-            throw new InvalidRequestException("No id specified");
+            return new FindDeviceResponse("No device ID specified",false,null);
         }
         Optional<WaterSourceDevice> device = waterSourceDeviceRepo.findById(findDeviceRequest.getDeviceID());
         if (device.isPresent())
@@ -152,8 +153,7 @@ public class DevicesServicesImpl implements DevicesService {
             return new FindDeviceResponse("Device found",true,device.get());
         }
         else
-            throw new InvalidRequestException("Device not found");
-            //return new FindDeviceResponse("Device not found",false,null);
+            return new FindDeviceResponse("Device not found",false,null);
 
     }
 

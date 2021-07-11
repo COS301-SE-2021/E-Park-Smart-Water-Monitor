@@ -1,12 +1,15 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.UUID;
 
 public class FindDeviceRequest
 {
     private UUID deviceID;
 
-    public FindDeviceRequest(UUID deviceID)
+    //TODO: come back to this later
+    public FindDeviceRequest(@JsonProperty("deviceID")UUID deviceID)
     {
         this.deviceID = deviceID;
     }
