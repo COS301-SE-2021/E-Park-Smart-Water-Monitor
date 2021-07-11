@@ -196,10 +196,12 @@ public class DevicesServicesImpl implements DevicesService {
 
     @Override
     public GetNumDevicesResponse getNumDevices(GetNumDevicesRequest request) throws InvalidRequestException {
-        if (request==null){
-            throw new InvalidRequestException("Request is null");
-        }
         GetNumDevicesResponse getNumDevicesResponse = new GetNumDevicesResponse();
+        if (request==null){
+            getNumDevicesResponse.setNumDevices(-1);
+            getNumDevicesResponse.setSuccess(false);
+            return getNumDevicesResponse;
+        }
         if (request.getParkId() != null) {
             FindByParkIdResponse findByParkIdResponse = parkService.findByParkId(new FindByParkIdRequest(request.getParkId()));
             if (findByParkIdResponse.getPark() != null) {
@@ -207,11 +209,14 @@ public class DevicesServicesImpl implements DevicesService {
                 getNumDevicesResponse.setNumDevices(waterSourceDeviceRepo.getAllParkDevices(request.getParkId()).size());
                 getNumDevicesResponse.setSuccess(true);
             }else{
-                throw new InvalidRequestException("Park does not exist");
+                getNumDevicesResponse.setNumDevices(-1);
+                getNumDevicesResponse.setSuccess(false);
+                return getNumDevicesResponse;
             }
         } else{
+            getNumDevicesResponse.setNumDevices(-1);
             getNumDevicesResponse.setSuccess(false);
-            throw new InvalidRequestException("Park id not specified");
+            return getNumDevicesResponse;
         }
         return getNumDevicesResponse;
     }
