@@ -346,14 +346,20 @@ public class DevicesServicesImpl implements DevicesService {
 
     @Override
     public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request) throws InvalidRequestException {
-        if (request==null){
-            throw new InvalidRequestException("Request is null");
-        }
-        if (request.getDeviceName().equals("")){
-            throw new InvalidRequestException("Device name not specified");
-        }
         GetDeviceDataResponse response =  new GetDeviceDataResponse("Failed to load device data for device: " + request.getDeviceName(),false);
         GetDeviceInnerResponse innerResponse;
+
+        if (request==null){
+            response.setSuccess(false);
+            response.setStatus("Request is null");
+            return response;
+        }
+
+        if (request.getDeviceName().equals("")){
+            response.setSuccess(false);
+            response.setStatus("No device name is specified");
+            return response;
+        }
 
         if (waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName()).size() != 0) {
             Table waterSourceDataTable = dynamoDB.getTable("WaterSourceData");
@@ -389,7 +395,8 @@ public class DevicesServicesImpl implements DevicesService {
                 response.setStatus("Successfully retrieved data for device: " + response.getDeviceName());
             }
         }else {
-            throw new InvalidRequestException("Device does not exist");
+            response.setSuccess(false);
+            response.setStatus("Device does not exist");
         }
         return response;
     }
