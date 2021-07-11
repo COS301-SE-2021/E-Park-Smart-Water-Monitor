@@ -139,7 +139,7 @@ public class DevicesServicesImpl implements DevicesService {
 
     }
 
-    public FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest) throws InvalidRequestException {
+    public FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest)  {
         if (findDeviceRequest==null){
             return new FindDeviceResponse("Request is null",false,null);
         }
@@ -222,7 +222,7 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     @Override
-    public GetParkDevicesResponse getParkDevices(GetParkDevicesRequest request) throws InvalidRequestException {
+    public GetParkDevicesResponse getParkDevices(GetParkDevicesRequest request)  {
         GetParkDevicesResponse getParkDevicesResponse = new GetParkDevicesResponse();
         if (request==null){
             getParkDevicesResponse.setSite(null);
@@ -345,7 +345,7 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     @Override
-    public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request) throws InvalidRequestException {
+    public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request)  {
         GetDeviceDataResponse response =  new GetDeviceDataResponse("Failed to load device data for device: " + request.getDeviceName(),false);
         GetDeviceInnerResponse innerResponse;
 
