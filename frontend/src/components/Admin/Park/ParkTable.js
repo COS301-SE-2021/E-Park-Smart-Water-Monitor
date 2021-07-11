@@ -24,6 +24,7 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditDeviceBody from "../Device/EditDeviceBody";
 import EditParkBody from "./EditParkBody";
+import {Tooltip} from "@material-ui/core";
 
 
 
@@ -65,19 +66,23 @@ const ParkTable = () => {
                     </TableCell>
                     <TableCell classes={{ root: classes.tableCellRoot }}
                                style={{verticalAlign:'middle'}}>
-                        <IconButton aria-label="delete"
-                                    onClick={() => { setShowEdit(true); setPark(park)}}
-                        >
-                            <EditIcon />
-                        </IconButton>
+                        <Tooltip title="Edit" arrow>
+                            <IconButton aria-label="edit"
+                                        onClick={() => { setShowEdit(true); setPark(park)}}
+                            >
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
                     </TableCell>
                     <TableCell classes={{ root: classes.tableCellRoot }}
                                style={{verticalAlign:'middle'}}>
-                        <IconButton aria-label="delete"
-                                    onClick={ removePark(park.id) }
-                        >
-                            <DeleteIcon />
-                        </IconButton>
+                        <Tooltip title="Delete" arrow>
+                            <IconButton aria-label="delete"
+                                        onClick={ removePark(park.id) }
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
                     </TableCell>
                 </TableRow>
             );

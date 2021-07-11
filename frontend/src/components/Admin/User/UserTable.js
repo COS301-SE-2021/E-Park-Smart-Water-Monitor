@@ -24,6 +24,7 @@ import IconButton from "@material-ui/core/IconButton";
 import EditIcon from '@material-ui/icons/Edit';
 
 import DeleteIcon from '@material-ui/icons/Delete';
+import {Tooltip} from "@material-ui/core";
 // import disableScroll from 'disable-scroll';
 
 // import AdminModal from 'admin-modal'
@@ -91,19 +92,23 @@ const UserTable = () => {
                     </TableCell>
                     <TableCell classes={{ root: classes.tableCellRoot }}
                                style={{verticalAlign:'middle'}}>
-                        <IconButton aria-label="delete"
-                                    onClick={() => { setShowEdit(true); setUser(user)}}
-                        >
-                            <EditIcon />
-                        </IconButton>
+                        <Tooltip title="Edit" arrow>
+                            <IconButton aria-label="edit"
+                                        onClick={() => { setShowEdit(true); setUser(user)}}
+                            >
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
                     </TableCell>
                     <TableCell classes={{ root: classes.tableCellRoot }}
                                style={{verticalAlign:'middle'}}>
-                        <IconButton aria-label="delete"
-                                    onClick={ removeUser(user.id) }
-                        >
-                            <DeleteIcon />
-                        </IconButton>
+                        <Tooltip title="Delete" arrow>
+                            <IconButton aria-label="delete"
+                                        onClick={ removeUser(user.id) }
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
                     </TableCell>
                 </TableRow>
             );
