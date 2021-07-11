@@ -139,7 +139,6 @@ public class DevicesServicesImpl implements DevicesService {
 
     }
 
-    //TODO: fix in postman
     public FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest) throws InvalidRequestException {
         if (findDeviceRequest==null){
             return new FindDeviceResponse("Request is null",false,null);

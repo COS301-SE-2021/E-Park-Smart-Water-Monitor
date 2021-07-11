@@ -8,7 +8,6 @@ public class FindDeviceRequest
 {
     private UUID deviceID;
 
-    //TODO: come back to this later
     public FindDeviceRequest(@JsonProperty("deviceID")UUID deviceID)
     {
         this.deviceID = deviceID;
