@@ -161,12 +161,16 @@ public class DevicesServicesImpl implements DevicesService {
         List<WaterSourceDevice> devices = waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName());
         ReceiveDeviceDataResponse response = new ReceiveDeviceDataResponse();
 
+        if (devices.size()==0){
+            response.setSuccess(false);
+            response.setStatus("Device with that name does not exist");
+            return response;
+        }
         WaterSourceDevice device = null;
         if (!request.getDeviceName().equals("") && devices.size() > 0) {
             device = devices.get(0);
         }
         if (device != null) {
-
             Measurement data;
             for (int i = 0; i < request.getMeasurements().size(); i++) {
                 data = request.getMeasurements().get(i);
@@ -185,7 +189,7 @@ public class DevicesServicesImpl implements DevicesService {
 
         } else {
             response.setSuccess(false);
-            response.setStatus("Request Failed... fix not appplied!");
+            response.setStatus("Request Failed... fix not applied!");
         }
         return response;
     }
