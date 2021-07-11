@@ -89,8 +89,7 @@ public class WaterSiteServicesImpl implements WaterSiteService
         }
         else
         {
-            throw new InvalidRequestException("Site does not exist");
-            //response = new CanAttachWaterSourceDeviceResponse("Site does not exist", false);
+            response = new CanAttachWaterSourceDeviceResponse("Site does not exist", false);
         }
 
         return response;

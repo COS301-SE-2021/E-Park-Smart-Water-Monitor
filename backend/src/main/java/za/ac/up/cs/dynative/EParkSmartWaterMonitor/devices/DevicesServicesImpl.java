@@ -78,7 +78,9 @@ public class DevicesServicesImpl implements DevicesService {
     public AddWaterSourceDeviceResponse addDevice(AddWaterSourceDeviceRequest addWSDRequest) throws InvalidRequestException {
         AddWaterSourceDeviceResponse response = new AddWaterSourceDeviceResponse();
         if (addWSDRequest.getParkName().equals("")||addWSDRequest.getSiteId()==null||addWSDRequest.getDeviceModel().equals("")||addWSDRequest.getDeviceName().equals("")){
-            throw new InvalidRequestException("Request not complete");
+            response.setSuccess(false);
+            response.setStatus("Request is missing parameters.");
+            return response;
         }
         List<WaterSourceDevice> devices = waterSourceDeviceRepo.findWaterSourceDeviceByDeviceName(addWSDRequest.getDeviceName());
 
@@ -89,7 +91,7 @@ public class DevicesServicesImpl implements DevicesService {
             if (!canAttachWaterSourceDeviceResponse.getSuccess()) {
                 response.setSuccess(false);
                 response.setStatus("The water site " + addWSDRequest.getSiteId() + " does not exist.");
-                throw new InvalidRequestException("The site does not exist");
+                return response;
             } else {
 
                 Map<String, String> attributes = Map.of("deviceModel",addWSDRequest.getDeviceModel());
@@ -129,9 +131,8 @@ public class DevicesServicesImpl implements DevicesService {
             }
 
         } else {
-            throw new InvalidRequestException("Device already exists");
-//            response.setSuccess(false);
-//            response.setStatus("Device " + addWSDRequest.getDeviceName() + " already exists.");
+            response.setSuccess(false);
+            response.setStatus("Device " + addWSDRequest.getDeviceName() + " already exists.");
         }
 
         return response;
