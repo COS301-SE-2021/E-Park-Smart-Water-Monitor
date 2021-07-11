@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles, withStyles} from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
@@ -17,14 +17,15 @@ import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
 import Modal from "../../Modals/Modal";
 import AddDeviceBody from "./AddDeviceBody";
-import disableScroll from "disable-scroll";
 import axios from "axios";
 import EditIcon from "@material-ui/icons/Edit";
-import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import AddUserBody from "../User/AddUserBody";
-import EditUserBody from "../User/EditUserBody";
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 import EditDeviceBody from "./EditDeviceBody";
+import TableHead from "@material-ui/core/TableHead";
+import IconButton from "@material-ui/core/IconButton";
+import {Tooltip} from "@material-ui/core";
+
 
 
 const useStyles = makeStyles(componentStyles);
@@ -71,19 +72,35 @@ const DeviceTable = () => {
                     </TableCell>
                     <TableCell classes={{root: classes.tableCellRoot}}
                                style={{verticalAlign: 'middle'}}>
-                        <IconButton aria-label="delete"
-                                    onClick={() => { setShowEdit(true); setDevice(device)}}
-                        >
-                            <EditIcon />
-                        </IconButton>
+
+                        {/*https://material-ui.com/components/tooltips/*/}
+                        <Tooltip title="Edit" arrow>
+                            <IconButton aria-label="edit"
+                                        onClick={() => { setShowEdit(true); setDevice(device)}}>
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
+
                     </TableCell>
                     <TableCell classes={{root: classes.tableCellRoot}}
                                style={{verticalAlign: 'middle'}}>
-                        <IconButton aria-label="delete"
-                                    onClick={ removeDevice(device.id) }
-                        >
-                            <DeleteIcon />
-                        </IconButton>
+                        <Tooltip title="Delete" arrow>
+                            <IconButton aria-label="delete"
+                                        onClick={ removeDevice(device.id) }>
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
+
+                    </TableCell>
+                    <TableCell classes={{root: classes.tableCellRoot}}
+                               style={{verticalAlign: 'middle'}}>
+                        <Tooltip title="Add Inspection" arrow>
+                            <IconButton aria-label="inspection"
+                                        onClick={ removeDevice(device.id) }>
+                                <AssignmentTurnedInIcon />
+                            </IconButton>
+                        </Tooltip>
+
                     </TableCell>
                 </TableRow>
             );
@@ -156,8 +173,54 @@ const DeviceTable = () => {
                                     alignItems="center"
                                     marginBottom="0!important"
                                 >
+                                    <TableHead>
+                                        <TableRow style={{background: 'rgb(243 243 243)'}}>
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
+                                                Name
+                                            </TableCell>
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
+
+                                            </TableCell>
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
+
+                                            </TableCell>
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
+
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableHead>
                                     <TableBody>
-                                        { response }
+
+                                        {response}
+
                                     </TableBody>
                                 </Box>
                             </TableContainer>

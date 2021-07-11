@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
 import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addUser.css";
-import Select from 'react-select';
 // Be sure to include styles at some point, probably during your bootstrapping
 // import 'react-select/dist/react-select.css';
 

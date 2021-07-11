@@ -1,7 +1,6 @@
 import React,{useState, useEffect} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -19,16 +18,13 @@ import Button from "@material-ui/core/Button";
 import Modal from "../../Modals/Modal";
 import axios from "axios";
 import AddInspectionBody from "./AddInspectionBody";
-// import disableScroll from 'disable-scroll';
 
-// import AdminModal from 'admin-modal'
 
 
 const useStyles = makeStyles(componentStyles);
 
 const InspectionTable = () => {
     const classes = useStyles();
-    const theme = useTheme();
     const [show, setShow] = useState(false);
 
     const [inspections, setInspections] = useState([])
@@ -189,7 +185,7 @@ const InspectionTable = () => {
                     </Grid>
                     <Grid
                         item
-                        xs={10}
+                        xs={4}
                         xl={10}
                         component={Box}
                         marginBottom="3rem!important"
@@ -199,7 +195,7 @@ const InspectionTable = () => {
                     <Grid
                         item
                         justify="end"
-                        xs={2}
+                        xs={8}
                         xl={2}
                         component={Box}
                         marginBottom="3rem!important"
