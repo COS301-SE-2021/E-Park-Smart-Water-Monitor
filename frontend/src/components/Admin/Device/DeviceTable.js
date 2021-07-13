@@ -25,6 +25,7 @@ import EditDeviceBody from "./EditDeviceBody";
 import TableHead from "@material-ui/core/TableHead";
 import IconButton from "@material-ui/core/IconButton";
 import {Tooltip} from "@material-ui/core";
+import AddInspectionBody from "../Inspection/AddInspectionBody";
 
 
 
@@ -36,6 +37,7 @@ const DeviceTable = () => {
    // const [result, setResult] = useState(null)
     const [showAdd, setShowAdd] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
+    const [showInspection, setShowInspection] = useState(false);
     const [show, setShow] = useState(false);
     const [response, setResponse] = useState([]);
     const [device, setDevice] = useState({});
@@ -76,7 +78,7 @@ const DeviceTable = () => {
                         {/*https://material-ui.com/components/tooltips/*/}
                         <Tooltip title="Edit" arrow>
                             <IconButton aria-label="edit"
-                                        onClick={() => { setShowEdit(true); setDevice(device)}}>
+                                        onClick={() => { setShowEdit(true); setDevice(device) }}>
                                 <EditIcon />
                             </IconButton>
                         </Tooltip>
@@ -96,7 +98,7 @@ const DeviceTable = () => {
                                style={{verticalAlign: 'middle'}}>
                         <Tooltip title="Add Inspection" arrow>
                             <IconButton aria-label="inspection"
-                                        onClick={ removeDevice(device.id) }>
+                                        onClick={ () => { setShowInspection(true); setDevice(device)} }>
                                 <AssignmentTurnedInIcon />
                             </IconButton>
                         </Tooltip>
@@ -124,6 +126,10 @@ const DeviceTable = () => {
                 { device && <Modal title="Edit Device" onClose={() => setShowEdit(false)} show={ showEdit }>
                     <EditDeviceBody deviceDetails={ device } closeModal={()=>{ setShowEdit(false) }}/>
                 </Modal> }
+
+                <Modal title="Add Inspection" onClose={() => setShowInspection(false)} show={ showInspection }>
+                    <AddInspectionBody device_id={ device.deviceId }/>
+                </Modal>
 
                 <Grid container component={Box}>
                     <Grid

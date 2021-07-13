@@ -201,15 +201,15 @@ const InspectionTable = () => {
                         marginBottom="3rem!important"
                         classes={{ root: classes.gridItemRoot }}
                         style={{ display: "flex", justifyContent: "flex-end", marginTop: "5px"}}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            size="medium"
-                            style={{width:'200px'}}
-                            onClick={() => setShow(true)}
-                        >
-                            Add Inspection
-                        </Button>
+                        {/*<Button*/}
+                        {/*    variant="contained"*/}
+                        {/*    color="primary"*/}
+                        {/*    size="medium"*/}
+                        {/*    style={{width:'200px'}}*/}
+                        {/*    onClick={() => setShow(true)}*/}
+                        {/*>*/}
+                        {/*    Add Inspection*/}
+                        {/*</Button>*/}
                     </Grid>
                 </Grid>
 

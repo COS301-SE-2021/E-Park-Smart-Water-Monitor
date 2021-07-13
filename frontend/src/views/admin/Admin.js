@@ -37,8 +37,8 @@ function Admin() {
                     >
                         <UserTable/>
                         <DeviceTable/>
-                        <ParkTable/>
                         <InspectionTable/>
+                        <ParkTable/>
                     </Grid>
 
                 </Grid>

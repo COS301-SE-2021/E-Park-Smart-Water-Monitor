@@ -6,11 +6,9 @@ import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addDevice.css";
 import axios from "axios";
 
-
-
 const useStyles = makeStyles(componentStyles);
 
-const AddInspectionBody = () => {
+const AddInspectionBody = (props) => {
 
     const [device, setDevice] = useState("")
     const [site, setSite] = useState("91d05eb1-2a35-4e44-9726-631d83121edb")
