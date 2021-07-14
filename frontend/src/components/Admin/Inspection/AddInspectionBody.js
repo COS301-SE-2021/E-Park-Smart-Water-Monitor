@@ -36,7 +36,7 @@ const AddInspectionBody = (props) => {
       event.preventDefault()
 
       var body = {
-        deviceId: device,
+        deviceId: props.device_id,
         siteId: site,
         dateDue: date,
         description: description,
@@ -53,10 +53,10 @@ const AddInspectionBody = (props) => {
     return (
         <>
             <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Device</Form.Label>
-                    <Form.Control type="text" placeholder="Enter device id" onChange={selectDevice}/>
-                </Form.Group>
+                {/*<Form.Group controlId="formBasicEmail">*/}
+                {/*    <Form.Label>Device</Form.Label>*/}
+                {/*    <Form.Control type="text" placeholder="Enter device id" onChange={selectDevice}/>*/}
+                {/*</Form.Group>*/}
 
                 {/* <Form.Group controlId="formBasicPassword">
                     <Form.Label>Site</Form.Label>
