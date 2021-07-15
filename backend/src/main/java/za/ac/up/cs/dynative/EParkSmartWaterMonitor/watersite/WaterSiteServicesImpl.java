@@ -5,24 +5,18 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.DeleteParkResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.SaveParkResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.WaterSiteRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.CanAttachWaterSourceDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.SaveSiteRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AddSiteResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWaterSourceDeviceResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.CanAttachWaterSourceDeviceResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.SaveSiteResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.*;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -156,5 +150,18 @@ public class WaterSiteServicesImpl implements WaterSiteService
             return new SaveSiteResponse("Error in saving park!",false);
         }
     }
+
+    @Override
+    public DeleteWaterSiteResponse deleteWaterSite(DeleteWaterSiteRequest request) {
+        if (request.getWaterSiteId() == null) {
+            return new DeleteWaterSiteResponse("No watersite id specified.", false);
+        }
+        Optional<WaterSite> waterSite = waterSiteRepo.findById(request.getWaterSiteId());
+
+        if (waterSite.isPresent()) {
+            waterSiteRepo.deletEntireWaterSite(waterSite.get().getId());
+            return new DeleteWaterSiteResponse("Successfully deleted the watersite and all related entities.", true);
+        }
+        return new DeleteWaterSiteResponse("No watersite with this id exists.", false);    }
 
 }
