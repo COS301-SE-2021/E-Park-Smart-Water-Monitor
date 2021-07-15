@@ -84,13 +84,13 @@ public class ParkServiceImpl implements ParkService {
                 response.setSuccess(true);
                 response.setStatus("Park Sites and their IoT devices");
             }else{
-                throw new InvalidRequestException("Park not present");
+                response.setStatus("Park not present");
+                response.setSuccess(false);
             }
         }
         else {
-            response.setStatus("Failed to the sites!");
+            response.setStatus("No park id specified");
             response.setSuccess(false);
-            throw new InvalidRequestException("No ID provided");
         }
         return response;
     }
