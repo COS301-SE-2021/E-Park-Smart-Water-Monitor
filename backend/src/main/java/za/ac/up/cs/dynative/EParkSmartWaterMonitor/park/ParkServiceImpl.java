@@ -56,13 +56,12 @@ public class ParkServiceImpl implements ParkService {
         if (!request.getParkName().equals("")) {
             List<Park> park = parkRepo.findParkByParkName(request.getParkName());
             if (park==null){
-                throw new InvalidRequestException("Park not present");
+                return new FindByParkNameResponse(null);
             }else {
                 return new FindByParkNameResponse((Park) park.toArray()[0]);
             }
         }else{
-            throw new InvalidRequestException("No park name specified");
-            //return new FindByParkNameResponse(null);
+            return new FindByParkNameResponse(null);
         }
     }
 
