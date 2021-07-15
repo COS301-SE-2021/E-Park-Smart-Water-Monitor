@@ -36,6 +36,7 @@ const ParkTable = (props) => {
     const [showEdit, setShowEdit] = useState(false);
     const [response, setResponse] = useState(false);
     const [park, setPark] = useState({});
+    const [hover, setHover] = useState(true)
 
     const handleParkSelection = (park_id) => {
         return function () {
@@ -54,11 +55,26 @@ const ParkTable = (props) => {
         }
     }
 
+    const toggleHover = ()=>{
+        setHover(!hover)
+    }
+
     useEffect(() => {
+
+        let hoverStyle;
+        if (hover) {
+            hoverStyle = {cursor: 'pointer'}
+        } else {
+            hoverStyle = {cursor: 'default'}
+        }
+
         axios.get('http://localhost:8080/api/park/getAllParks').then((res)=>{
             const m = res.data.allParks.map((park) =>
                 <TableRow key={ park.id }
                     onClick={ handleParkSelection(park.id) }
+                    style={hoverStyle}
+                    onMouseEnter={toggleHover}
+                    onMouseLeave={toggleHover}
                 >
                     <TableCell
                         classes={{
