@@ -53,72 +53,63 @@ public class NotificationServiceImpl implements NotificationService
 
     public EmailResponse sendMail(EmailRequest eMailRequest) throws InvalidRequestException {
         if (eMailRequest==null){
-            throw new InvalidRequestException("Request is null");
+            return new EmailResponse("Request is null",false);
         }
         if (eMailRequest.getFrom().equals("")||eMailRequest.getTopic()==null||eMailRequest.getToAddresses()==null||eMailRequest.getBody().equals("")||
             eMailRequest.getDescription().equals("")||eMailRequest.getSubject().equals("")||eMailRequest.getEntity().equals(""))   {
-            throw new InvalidRequestException("Request not complete");
+            return new EmailResponse("Request is missing parameters",false);
         }
         if (eMailRequest.getToAddresses().size()<1){
-            throw new InvalidRequestException("No recipients specified");
+            return new EmailResponse("No recipients specified",false);
         }
-
-        try {
-            MimeMessagePreparator preparator = mimeMessage ->
-            {
-                MimeMessageHelper message = new MimeMessageHelper(mimeMessage,
-                        MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
-                        StandardCharsets.UTF_8.name());
-
-
-                message.setTo(eMailRequest.getToAddresses().toArray(new String[eMailRequest.getToAddresses().size()]));
-                message.setFrom(senderUsername, eMailRequest.getFrom());
-                message.setSubject(eMailRequest.getSubject());
-                if (eMailRequest.getBccAddresses() != null && eMailRequest.getBccAddresses().size() != 0)
-                    message.setBcc(eMailRequest.getBccAddresses().toArray(new String[eMailRequest.getBccAddresses().size()]));
-                if (eMailRequest.getCcAddresses() != null && eMailRequest.getCcAddresses().size() != 0)
-                    message.setCc(eMailRequest.getCcAddresses().toArray(new String[eMailRequest.getCcAddresses().size()]));
-
-                Map<String, Object> templateData = new HashMap<>();
-
-                if (eMailRequest.getTopic()== Topic.ALERT)
-                {
-                    templateSelector="/AlertTemplate.ftlh";
-                }
-                else
-                if (eMailRequest.getTopic()== Topic.INSPECTION_REMINDER)
-                {
-                    templateSelector="/InspectionTemplate.ftlh";
-                }
-                else
-                if (eMailRequest.getTopic()== Topic.REFILL_NOTIFICATION)
-                {
-                    templateSelector="/RefillTemplate.ftlh";
-                }
-                if (eMailRequest.getTopic()== Topic.PASSWORD_RESET)
-                {
-                    templateSelector="/PasswordResetTemplate.ftlh";
-                }
-                else
-
-                templateData.put("entity", eMailRequest.getEntity());
-                templateData.put("shortDisc", eMailRequest.getDescription());
-                templateData.put("longBody", eMailRequest.getBody());
-
-                String templateContent = FreeMarkerTemplateUtils
-                        .processTemplateIntoString(freemarkerConfig.getConfiguration().getTemplate(templateSelector), templateData);
-
-                message.setText(templateContent, true);
-            };
-            mailSender.send(preparator);
-            return new EmailResponse("Email sent successfully",true);
-
-        }
-        catch (Exception exception)
+        MimeMessagePreparator preparator = mimeMessage ->
         {
-            return new EmailResponse("Email failed to send successfully Details: "+exception.getMessage(),false);
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage,
+                    MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+                    StandardCharsets.UTF_8.name());
 
-        }
+
+            message.setTo(eMailRequest.getToAddresses().toArray(new String[eMailRequest.getToAddresses().size()]));
+            message.setFrom(senderUsername, eMailRequest.getFrom());
+            message.setSubject(eMailRequest.getSubject());
+            if (eMailRequest.getBccAddresses() != null && eMailRequest.getBccAddresses().size() != 0)
+                message.setBcc(eMailRequest.getBccAddresses().toArray(new String[eMailRequest.getBccAddresses().size()]));
+            if (eMailRequest.getCcAddresses() != null && eMailRequest.getCcAddresses().size() != 0)
+                message.setCc(eMailRequest.getCcAddresses().toArray(new String[eMailRequest.getCcAddresses().size()]));
+
+            Map<String, Object> templateData = new HashMap<>();
+
+            if (eMailRequest.getTopic()== Topic.ALERT)
+            {
+                templateSelector="/AlertTemplate.ftlh";
+            }
+            else
+            if (eMailRequest.getTopic()== Topic.INSPECTION_REMINDER)
+            {
+                templateSelector="/InspectionTemplate.ftlh";
+            }
+            else
+            if (eMailRequest.getTopic()== Topic.REFILL_NOTIFICATION)
+            {
+                templateSelector="/RefillTemplate.ftlh";
+            }
+            if (eMailRequest.getTopic()== Topic.PASSWORD_RESET)
+            {
+                templateSelector="/PasswordResetTemplate.ftlh";
+            }
+            else
+
+            templateData.put("entity", eMailRequest.getEntity());
+            templateData.put("shortDisc", eMailRequest.getDescription());
+            templateData.put("longBody", eMailRequest.getBody());
+
+            String templateContent = FreeMarkerTemplateUtils
+                    .processTemplateIntoString(freemarkerConfig.getConfiguration().getTemplate(templateSelector), templateData);
+
+            message.setText(templateContent, true);
+        };
+        mailSender.send(preparator);
+        return new EmailResponse("Email sent successfully",true);
     }
 
     @Override
@@ -168,7 +159,6 @@ public class NotificationServiceImpl implements NotificationService
                 if(i!=smsErrors.size()-1)
                 users+=",";
             }
-            System.out.println("hierrrr");
             throw new IllegalArgumentException("The following users have invalid phone numbers: " +users +". Please correct and try again.");
         }
         else {
