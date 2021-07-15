@@ -230,7 +230,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public LoginResponse loginUser(LoginRequest request) throws InvalidRequestException {
+    public LoginResponse loginUser(LoginRequest request) {
         String username = request.getUsername();
         String password = request.getPassword();
         if (username.equals("")||password.equals("")){
