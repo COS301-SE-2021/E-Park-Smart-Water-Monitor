@@ -30,8 +30,10 @@ public class ParkServiceImpl implements ParkService {
         CreateParkResponse response = new CreateParkResponse();
         if (!request.getParkName().equals("")) {
 
-            if (parkRepo.findParkByParkName(request.getParkName())!=null){
-                throw new InvalidRequestException("Park name specified already exists!");
+            if (parkRepo.findParkByParkName(request.getParkName()).size()>0){
+                response.setStatus("Park "+request.getParkName()+" already exists!");
+                response.setSuccess(false);
+                return response;
             }
 
             Park park = new Park(request.getParkName(),request.getLatitude(),request.getLongitude());
@@ -45,7 +47,6 @@ public class ParkServiceImpl implements ParkService {
         else {
             response.setStatus("No Park Name specified!");
             response.setSuccess(false);
-            throw new InvalidRequestException("No park name specified!");
         }
         return response;
     }
