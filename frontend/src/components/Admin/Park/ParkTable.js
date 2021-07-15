@@ -38,9 +38,9 @@ const ParkTable = (props) => {
     const [park, setPark] = useState({});
     const [hover, setHover] = useState(true)
 
-    const handleParkSelection = (park_id) => {
+    const handleParkSelection = (details) => {
         return function () {
-            props.select(park_id);
+            props.select(details);
         }
     }
 
@@ -71,7 +71,7 @@ const ParkTable = (props) => {
         axios.get('http://localhost:8080/api/park/getAllParks').then((res)=>{
             const m = res.data.allParks.map((park) =>
                 <TableRow key={ park.id }
-                    onClick={ handleParkSelection(park.id) }
+                    onClick={ handleParkSelection(park) }
                     style={hoverStyle}
                     onMouseEnter={toggleHover}
                     onMouseLeave={toggleHover}

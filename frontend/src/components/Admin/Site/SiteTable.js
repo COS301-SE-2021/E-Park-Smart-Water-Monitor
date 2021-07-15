@@ -51,7 +51,7 @@ const SiteTable = (props) => {
     useEffect(() => {
 
         let parkID = {
-            parkId: props.parkId // use props park_id instead
+            parkId: props.park.id // use props park_id instead
         }
 
         axios.post('http://localhost:8080/api/park/getParkWaterSites', parkID).then((res)=>{
@@ -94,7 +94,7 @@ const SiteTable = (props) => {
             setResponse(m);
         });
 
-    },[props.parkId])
+    },[props.park])
 
     return (
         <>
@@ -137,7 +137,7 @@ const SiteTable = (props) => {
                                                 variant="h2"
                                                 marginBottom="0!important"
                                             >
-                                                Watersites for - Park
+                                                Watersites for { props.park.parkName }
                                             </Box>
                                         </Grid>
                                         <Grid item xs="auto">

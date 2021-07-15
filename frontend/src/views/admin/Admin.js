@@ -18,22 +18,22 @@ const useStyles = makeStyles(componentStyles);
 
 function Admin() {
     const classes = useStyles();
-    const [parkId, setParkId] = useState("")
+    const [park, setPark] = useState("")
 
-    const selectPark = (id) => {
-        setParkId(id)
+    const selectPark = (details) => {
+        setPark(details)
     }
 
     return (
         <>
             <AdminHeader/>
 
-                <Container
-                    maxWidth={false}
-                    component={Box}
-                    marginTop="-1rem"
-                    classes={{ root: classes.containerRoot }}
-                >
+            <Container
+                maxWidth={false}
+                component={Box}
+                marginTop="-1rem"
+                classes={{ root: classes.containerRoot }}
+            >
                 <Grid container>
                     <Grid
                         item
@@ -66,7 +66,7 @@ function Admin() {
                         marginBottom="3rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        { parkId && <SiteTable parkId={ parkId }/> }
+                        { park && <SiteTable park={ park }/> }
                     </Grid>
 
                 </Grid>
