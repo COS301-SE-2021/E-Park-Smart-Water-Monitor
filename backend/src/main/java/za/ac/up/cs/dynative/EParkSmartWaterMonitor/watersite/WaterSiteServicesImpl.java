@@ -99,25 +99,27 @@ public class WaterSiteServicesImpl implements WaterSiteService
     }
 
     public AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request) throws InvalidRequestException {
+        AttachWaterSourceDeviceResponse response;
 
         if (request.getSiteId()==null){
-            throw new InvalidRequestException("No Id specified");
+            response = new AttachWaterSourceDeviceResponse("No id specified", false);
+            return response;
         }
         if (request.getWaterSourceDevice()==null){
-            throw new InvalidRequestException("No device specified");
+            response = new AttachWaterSourceDeviceResponse("No device specified", false);
+            return response;
         }
         if (request.getWaterSourceDevice().getDeviceId()==null){
-            throw new InvalidRequestException("No device Id specified");
+            response = new AttachWaterSourceDeviceResponse("No device id specified", false);
+            return response;
         }
         Optional<WaterSite> siteToAddTo = waterSiteRepo.findById(request.getSiteId());
-        AttachWaterSourceDeviceResponse response;
         if (siteToAddTo.isPresent()){
             siteToAddTo.get().addWaterSourceDevice(request.getWaterSourceDevice());
             waterSiteRepo.save(siteToAddTo.get());
             response= new AttachWaterSourceDeviceResponse("Successfully attached device to site!",true);
         }else{
-            throw new InvalidRequestException("Site not found");
-            //response = new AttachWaterSourceDeviceResponse("Site does not exist", false);
+            response = new AttachWaterSourceDeviceResponse("Site does not exist", false);
         }
         return response;
     }
@@ -129,14 +131,15 @@ public class WaterSiteServicesImpl implements WaterSiteService
 
     @Override
     public GetSiteByIdResponse getSiteById(GetSiteByIdRequest request) throws InvalidRequestException {
+        GetSiteByIdResponse response;
+
         if (request.getSiteId()==null){
-            throw new InvalidRequestException("No Id specified");
+            response = new GetSiteByIdResponse("No id specified", false, null);
+            return response;
         }
         Optional<WaterSite> foundSite= waterSiteRepo.findById(request.getSiteId());
-        GetSiteByIdResponse response;
         if (foundSite.isEmpty()) {
-            throw new InvalidRequestException("Site not found");
-            //response = new GetSiteByIdResponse("Site does not exist.", false, null);
+            response = new GetSiteByIdResponse("Site does not exist.", false, null);
         }else{
             response = new GetSiteByIdResponse("Successfully found site.", true, foundSite.get());
         }
