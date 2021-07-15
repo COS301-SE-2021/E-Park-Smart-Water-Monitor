@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import AdminHeader from "../../components/Headers/AdminHeader";
 import UserTable from "../../components/Admin/User/UserTable";
 import Grid from "@material-ui/core/Grid";
@@ -18,6 +18,12 @@ const useStyles = makeStyles(componentStyles);
 
 function Admin() {
     const classes = useStyles();
+    const [parkId, setParkId] = useState("")
+
+    const selectPark = (id) => {
+        alert(id)
+        setParkId(id)
+    }
 
     return (
         <>
@@ -50,7 +56,7 @@ function Admin() {
                         marginBottom="3rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        <ParkTable/>
+                        <ParkTable select={ selectPark }/>
                     </Grid>
                     {/* Sites altered on the change of park */}
                     <Grid
@@ -61,7 +67,7 @@ function Admin() {
                         marginBottom="3rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        <SiteTable/>
+                        { parkId && <SiteTable/> }
                     </Grid>
 
                 </Grid>

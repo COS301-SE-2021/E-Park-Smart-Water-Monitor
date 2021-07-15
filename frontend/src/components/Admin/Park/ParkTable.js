@@ -30,12 +30,18 @@ import {Tooltip} from "@material-ui/core";
 
 const useStyles = makeStyles(componentStyles);
 
-const ParkTable = () => {
+const ParkTable = (props) => {
     const classes = useStyles();
     const [show, setShow] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [response, setResponse] = useState(false);
     const [park, setPark] = useState({});
+
+    const handleParkSelection = (park_id) => {
+        return function () {
+            props.select(park_id);
+        }
+    }
 
     // on delete of a device
     const removePark = (id) => {
@@ -51,7 +57,9 @@ const ParkTable = () => {
     useEffect(() => {
         axios.get('http://localhost:8080/api/park/getAllParks').then((res)=>{
             const m = res.data.allParks.map((park) =>
-                <TableRow key={ park.id } >
+                <TableRow key={ park.id }
+                    onClick={ handleParkSelection(park.id) }
+                >
                     <TableCell
                         classes={{
                             root:

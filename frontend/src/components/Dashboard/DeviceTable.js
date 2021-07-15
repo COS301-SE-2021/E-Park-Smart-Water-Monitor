@@ -52,7 +52,7 @@ function DeviceTable(props) {
         {
             const m = props.devices.map((device) =>
                 <TableRow
-                    key={device.deviceId} onClick={handleDeviceSelection(device.deviceId)}
+                    key={device.deviceId} onClick={ handleDeviceSelection(device.deviceId) }
                     style={hoverStyle} onMouseEnter={toggleHover} onMouseLeave={toggleHover}
                 >
                     <TableCell

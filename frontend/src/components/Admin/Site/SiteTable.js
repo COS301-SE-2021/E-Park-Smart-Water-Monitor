@@ -51,11 +51,11 @@ const SiteTable = (props) => {
     useEffect(() => {
 
         let parkID = {
-            parkID: "2ea5ba27-9d8e-41a4-9628-485f0ae2fb57" // use props park_id instead
+            parkId: "2ea5ba27-9d8e-41a4-9628-485f0ae2fb57" // use props park_id instead
         }
 
         axios.post('http://localhost:8080/api/park/getParkWaterSites', parkID).then((res)=>{
-            const m = res.data.allParks.map((site) =>
+            const m = res.data.site.map((site) =>
                 <TableRow key={ site.id } >
                     <TableCell
                         classes={{
@@ -67,7 +67,7 @@ const SiteTable = (props) => {
                         scope="row"
                         style={{verticalAlign:'middle', width:'80%'}}
                     >
-                        {park.parkName}
+                        {site.waterSiteName}
                     </TableCell>
                     <TableCell classes={{ root: classes.tableCellRoot }}
                                style={{verticalAlign:'middle'}}>
@@ -83,7 +83,7 @@ const SiteTable = (props) => {
                                style={{verticalAlign:'middle'}}>
                         <Tooltip title="Delete" arrow>
                             <IconButton aria-label="delete"
-                                        onClick={ removeSite(park.id) }
+                                        onClick={ removeSite(site.id) }
                             >
                                 <DeleteIcon />
                             </IconButton>
