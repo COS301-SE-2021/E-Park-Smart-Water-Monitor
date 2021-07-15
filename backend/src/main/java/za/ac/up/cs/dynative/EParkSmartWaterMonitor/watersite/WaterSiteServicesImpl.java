@@ -76,14 +76,16 @@ public class WaterSiteServicesImpl implements WaterSiteService
     }
 
     public CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request) throws InvalidRequestException {
+        CanAttachWaterSourceDeviceResponse response;
         if (request==null){
-            throw new InvalidRequestException("Request is null");
+            response= new CanAttachWaterSourceDeviceResponse("CRequest is null",false);
+            return response;
         }
         if (request.getSiteId()==null){
-            throw new InvalidRequestException("No id specified");
+            response= new CanAttachWaterSourceDeviceResponse("No id specified",false);
+            return response;
         }
         Optional<WaterSite> siteToAddTo = waterSiteRepo.findById(request.getSiteId());
-        CanAttachWaterSourceDeviceResponse response;
         if (siteToAddTo.isPresent())
         {
             response= new CanAttachWaterSourceDeviceResponse("Can attach device to site!",true);
