@@ -25,7 +25,7 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public CreateParkResponse createPark(CreateParkRequest request) throws InvalidRequestException {
+    public CreateParkResponse createPark(CreateParkRequest request) {
 
         CreateParkResponse response = new CreateParkResponse();
         if (!request.getParkName().equals("")) {
@@ -52,7 +52,7 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public FindByParkNameResponse findParkByName(FindByParkNameRequest request) throws InvalidRequestException {
+    public FindByParkNameResponse findParkByName(FindByParkNameRequest request) {
         if (!request.getParkName().equals("")) {
             List<Park> park = parkRepo.findParkByParkName(request.getParkName());
             if (park==null){
@@ -75,7 +75,7 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public GetParkSitesResponse getParkWaterSites(GetParkSitesRequest request) throws InvalidRequestException {
+    public GetParkSitesResponse getParkWaterSites(GetParkSitesRequest request) {
         GetParkSitesResponse response = new GetParkSitesResponse();
         if (request.getParkId() != null) {
             Park park = parkRepo.findParkById(request.getParkId());
@@ -96,7 +96,7 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public FindByParkIdResponse findByParkId(FindByParkIdRequest request) throws InvalidRequestException {
+    public FindByParkIdResponse findByParkId(FindByParkIdRequest request) {
         FindByParkIdResponse response = new FindByParkIdResponse();
         if (request.getParkId() != null) {
             Park park = parkRepo.findParkById(request.getParkId());
@@ -114,7 +114,7 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public EditParkResponse editPark(EditParkRequest request) throws InvalidRequestException {
+    public EditParkResponse editPark(EditParkRequest request)  {
         EditParkResponse response = new EditParkResponse();
 
         if (request.getParkId()==null){
