@@ -47,7 +47,8 @@ public class WaterSiteServicesImpl implements WaterSiteService
         AddSiteResponse response = new AddSiteResponse();
 
         if (request==null){
-            throw new InvalidRequestException("Request is null");
+            response.setStatus("Request is null");
+            response.setSuccess(false);
         }
 
         if (request.getParkId() != null) {
@@ -62,13 +63,13 @@ public class WaterSiteServicesImpl implements WaterSiteService
                 response.setStatus("Successfully added: " + request.getSiteName());
                 response.setSuccess(true);
             }else {
-                throw new InvalidRequestException("Park not found");
+                response.setStatus("Park not found");
+                response.setSuccess(false);
             }
         }
         else {
-            throw new InvalidRequestException("No park id specified");
-            //response.setStatus("No Park Name specified! No park to add site to!");
-            //response.setSuccess(false);
+            response.setStatus("No park id specified");
+            response.setSuccess(false);
         }
 
         return response;
