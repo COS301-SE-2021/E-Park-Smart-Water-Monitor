@@ -51,7 +51,7 @@ public class NotificationServiceImpl implements NotificationService
     @Value("${spring.mail.username}")
     String senderUsername;
 
-    public EmailResponse sendMail(EmailRequest eMailRequest) throws InvalidRequestException {
+    public EmailResponse sendMail(EmailRequest eMailRequest)  {
         if (eMailRequest==null){
             return new EmailResponse("Request is null",false);
         }
@@ -113,7 +113,7 @@ public class NotificationServiceImpl implements NotificationService
     }
 
     @Override
-    public SMSResponse sendSMS(SMSRequest smsRequest) throws InvalidRequestException {
+    public SMSResponse sendSMS(SMSRequest smsRequest)  {
         if (smsRequest==null){
             return new SMSResponse("Request is null",false);
         }
