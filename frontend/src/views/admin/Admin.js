@@ -21,7 +21,6 @@ function Admin() {
     const [parkId, setParkId] = useState("")
 
     const selectPark = (id) => {
-        alert(id)
         setParkId(id)
     }
 
@@ -67,7 +66,7 @@ function Admin() {
                         marginBottom="3rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        { parkId && <SiteTable/> }
+                        { parkId && <SiteTable parkId={ parkId }/> }
                     </Grid>
 
                 </Grid>

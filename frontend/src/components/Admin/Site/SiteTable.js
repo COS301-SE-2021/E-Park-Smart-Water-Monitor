@@ -51,7 +51,7 @@ const SiteTable = (props) => {
     useEffect(() => {
 
         let parkID = {
-            parkId: "2ea5ba27-9d8e-41a4-9628-485f0ae2fb57" // use props park_id instead
+            parkId: props.parkId // use props park_id instead
         }
 
         axios.post('http://localhost:8080/api/park/getParkWaterSites', parkID).then((res)=>{
@@ -94,7 +94,7 @@ const SiteTable = (props) => {
             setResponse(m);
         });
 
-    },[])
+    },[props.parkId])
 
     return (
         <>
