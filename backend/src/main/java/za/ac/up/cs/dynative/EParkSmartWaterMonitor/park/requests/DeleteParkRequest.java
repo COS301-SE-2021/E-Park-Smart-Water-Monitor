@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
 
-public class RemoveParkRequest {
+public class DeleteParkRequest {
     private UUID parkId;
 
-    public RemoveParkRequest(@JsonProperty("parkId") UUID parkId) {
+    public DeleteParkRequest(@JsonProperty("parkId") UUID parkId) {
         this.parkId = parkId;
     }
 

@@ -2,10 +2,9 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories;
 
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 
 import java.util.*;
 
@@ -18,4 +17,6 @@ public interface ParkRepo extends Neo4jRepository<Park, UUID> {
     @Query("match (n:Park) return n")
     List<Park> getAllParks();
 
+    @Query("MATCH (p:Park {id: $parkId})-[*0..]-(x) DETACH DELETE x")
+    void deleteEntirePark(@Param("parkId") UUID parkId);
 }
