@@ -10,6 +10,7 @@ import DeviceTable from "../../components/Admin/Device/DeviceTable";
 import ParkTable from "../../components/Admin/Park/ParkTable";
 import InspectionTable from "components/Admin/Inspection/InspectionTable";
 import Stats from "../../components/Admin/Stats/Stats";
+import SiteTable from "../../components/Admin/Site/SiteTable";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -40,7 +41,6 @@ function Admin() {
                         <UserTable/>
                         <DeviceTable/>
                         <InspectionTable/>
-                        <ParkTable/>
                     </Grid>
                     <Grid
                         item
@@ -61,7 +61,7 @@ function Admin() {
                         marginBottom="3rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        <ParkTable/>
+                        <SiteTable/>
                     </Grid>
 
                 </Grid>
