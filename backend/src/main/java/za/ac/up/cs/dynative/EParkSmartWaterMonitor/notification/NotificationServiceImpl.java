@@ -115,10 +115,10 @@ public class NotificationServiceImpl implements NotificationService
     @Override
     public SMSResponse sendSMS(SMSRequest smsRequest) throws InvalidRequestException {
         if (smsRequest==null){
-            throw new InvalidRequestException("Request is null");
+            return new SMSResponse("Request is null",false);
         }
         ArrayList<User> recipients = smsRequest.getRecipients();
-        if (recipients.size()==0){
+        if (recipients==null ||(recipients!=null&& recipients.size()==0)){
             recipients= new ArrayList<>();
             if (smsRequest.getUserIds()!=null && smsRequest.getUserIds().size()>0) {
                 for (int r = 0; r < smsRequest.getUserIds().size(); r++) {
@@ -128,11 +128,12 @@ public class NotificationServiceImpl implements NotificationService
                         recipients.add(addThisUser);
                     }
                 }
+            }else{
+                return new SMSResponse("No recipients specified",false);
             }
-            if (recipients.size()==0){
-                throw new InvalidRequestException("No recipients specified");
-            }
-
+        }
+        if (recipients==null){
+            return new SMSResponse("No recipients specified",false);
         }
 
         ArrayList<String>  smsErrors = new ArrayList<>();
@@ -159,10 +160,9 @@ public class NotificationServiceImpl implements NotificationService
                 if(i!=smsErrors.size()-1)
                 users+=",";
             }
-            throw new IllegalArgumentException("The following users have invalid phone numbers: " +users +". Please correct and try again.");
+            return new SMSResponse("The following users have invalid phone numbers: \" +users +\". Please correct and try again.",false);
         }
         else {
-
             PhoneNumber from = new PhoneNumber(twilioConfig.getNumber());
             MessageCreator messageCreator;
             PhoneNumber to;
