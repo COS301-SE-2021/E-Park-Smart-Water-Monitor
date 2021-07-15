@@ -90,19 +90,16 @@ public class UserServiceImpl implements UserService {
                         response.setStatus("No park with this id exists.");
                     }
                 } else {
-                    throw new InvalidRequestException("A user with this username already exists.");
-//                    response.setSuccess(false);
-//                    response.setStatus("A user with this username already exists.");
+                    response.setSuccess(false);
+                    response.setStatus("A user with this username already exists.");
                 }
             } else {
-                throw new InvalidRequestException("A user with this id number already exists.");
-//                response.setSuccess(false);
-//                response.setStatus("A user with this id number already exists.");
+                response.setSuccess(false);
+                response.setStatus("A user with this id number already exists.");
             }
         } else {
-            throw new InvalidRequestException("Details incomplete");
-//            response.setSuccess(false);
-//            response.setStatus("Failed to create user.");
+            response.setSuccess(false);
+            response.setStatus("User's details are incomplete");
         }
         return response;
     }
