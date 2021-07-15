@@ -104,10 +104,11 @@ public class ParkServiceImpl implements ParkService {
                 response.setStatus(park);
                 response.setSuccess(true);
             }else{
-                throw new InvalidRequestException("Park not present");
-            }
+                response.setStatus(null);
+                response.setSuccess(false);            }
         }else{
-            throw new InvalidRequestException("No park id specified");
+            response.setStatus(null);
+            response.setSuccess(false);
         }
         return response;
     }
