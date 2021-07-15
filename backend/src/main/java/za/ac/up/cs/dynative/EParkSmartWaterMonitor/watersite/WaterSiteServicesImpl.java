@@ -43,7 +43,7 @@ public class WaterSiteServicesImpl implements WaterSiteService
     }
 
     @Override
-    public AddSiteResponse addSite(AddSiteRequest request) throws InvalidRequestException {
+    public AddSiteResponse addSite(AddSiteRequest request) {
         AddSiteResponse response = new AddSiteResponse();
 
         if (request==null){
@@ -75,7 +75,7 @@ public class WaterSiteServicesImpl implements WaterSiteService
         return response;
     }
 
-    public CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request) throws InvalidRequestException {
+    public CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request)  {
         CanAttachWaterSourceDeviceResponse response;
         if (request==null){
             response= new CanAttachWaterSourceDeviceResponse("CRequest is null",false);
@@ -98,7 +98,7 @@ public class WaterSiteServicesImpl implements WaterSiteService
         return response;
     }
 
-    public AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request) throws InvalidRequestException {
+    public AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request)  {
         AttachWaterSourceDeviceResponse response;
 
         if (request.getSiteId()==null){
@@ -130,7 +130,7 @@ public class WaterSiteServicesImpl implements WaterSiteService
 
 
     @Override
-    public GetSiteByIdResponse getSiteById(GetSiteByIdRequest request) throws InvalidRequestException {
+    public GetSiteByIdResponse getSiteById(GetSiteByIdRequest request)  {
         GetSiteByIdResponse response;
 
         if (request.getSiteId()==null){
