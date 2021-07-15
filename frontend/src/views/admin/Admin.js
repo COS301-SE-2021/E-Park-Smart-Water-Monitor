@@ -14,6 +14,11 @@ import SiteTable from "../../components/Admin/Site/SiteTable";
 
 
 const useStyles = makeStyles(componentStyles);
+const parkAndSitesStyle = {
+    background: '#F3F3F3',
+    boxShadow: '0 8px 8px -4px lightblue',
+    padding: '3rem'
+}
 
 
 function Admin() {
@@ -47,26 +52,32 @@ function Admin() {
                         <DeviceTable/>
                         <InspectionTable/>
                     </Grid>
-                    <Grid
-                        item
-                        xs={12}
-                        xl={5}
-                        component={Box}
-                        marginBottom="3rem!important"
-                        classes={{ root: classes.gridItemRoot }}
+                    <Grid container
+                       style = { parkAndSitesStyle }
                     >
-                        <ParkTable select={ selectPark }/>
-                    </Grid>
-                    {/* Sites altered on the change of park */}
-                    <Grid
-                        item
-                        xs={12}
-                        xl={7}
-                        component={Box}
-                        marginBottom="3rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        { park && <SiteTable park={ park }/> }
+                        <Grid
+                            item
+                            xs={12}
+                            xl={5}
+                            component={Box}
+                            marginBottom="3rem!important"
+                            classes={{ root: classes.gridItemRoot }}
+
+                        >
+                            <ParkTable select={ selectPark }/>
+                        </Grid>
+
+                        {/* Sites altered on the change of park */}
+                        <Grid
+                            item
+                            xs={12}
+                            xl={7}
+                            component={Box}
+                            marginBottom="3rem!important"
+                            classes={{ root: classes.gridItemRoot }}
+                        >
+                            { park && <SiteTable park={ park }/> }
+                        </Grid>
                     </Grid>
 
                 </Grid>
