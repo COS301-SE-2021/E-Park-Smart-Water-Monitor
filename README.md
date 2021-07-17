@@ -133,7 +133,7 @@
 
 <h3>Joanita Nell</h3>
 
-<img src="https://media-exp3.licdn.com/dms/image/C4D03AQGIQzJGlhDXTA/profile-displayphoto-shrink_800_800/0/1618920364767?e=1631750400&v=beta&t=8nCDdTRw8seXf2rD2kLJD2hQOo8gS_JHrZKuRTCnIv0ß" align="left" width="200px"/> <p>Fullstack Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/JoanitaNell)
+<img src="https://media-exp3.licdn.com/dms/image/C4D03AQGIQzJGlhDXTA/profile-displayphoto-shrink_800_800/0/1618920364767?e=1631750400&v=beta&t=8nCDdTRw8seXf2rD2kLJD2hQOo8gS_JHrZKuRTCnIv0" align="left" width="200px"/> <p>Fullstack Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/JoanitaNell)
 
 [![Linkedin](https://img.shields.io/badge/linkedin-%2361dafb?style=for-the-badge&logoColor=white&color=0A66C2&logo=Linkedin)](https://www.linkedin.com/in/joanita-nell-4b8294197/)
 
