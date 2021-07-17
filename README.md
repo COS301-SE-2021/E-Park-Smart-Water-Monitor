@@ -133,7 +133,7 @@
 
 <h3>Joanita Nell</h3>
 
-<img src="https://camo.githubusercontent.com/764f26fa2cc14f55de66ad8d1f093fb05eb5d120862aa9b414917897ab566c5c/68747470733a2f2f6d656469612d657870312e6c6963646e2e636f6d2f646d732f696d6167652f433444303341514749517a4a476c68445854412f70726f66696c652d646973706c617970686f746f2d736872696e6b5f3830305f3830302f302f313631383932303336343736373f653d3136323434393238303026763d6265746126743d3234395477627a737430575a72314c596537565a70506f595362704d6a3047795146526744534957385351" align="left" width="200px"/> <p>Frontend Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/JoanitaNell)
+<img src="https://media-exp3.licdn.com/dms/image/C4D03AQGIQzJGlhDXTA/profile-displayphoto-shrink_800_800/0/1618920364767?e=1631750400&v=beta&t=8nCDdTRw8seXf2rD2kLJD2hQOo8gS_JHrZKuRTCnIv0ß" align="left" width="200px"/> <p>Fullstack Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/JoanitaNell)
 
 [![Linkedin](https://img.shields.io/badge/linkedin-%2361dafb?style=for-the-badge&logoColor=white&color=0A66C2&logo=Linkedin)](https://www.linkedin.com/in/joanita-nell-4b8294197/)
 
