@@ -15,7 +15,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 
-import "../../index.css"
+import "../../../index.css"
 
 const useStyles = makeStyles(componentStyles);
 
