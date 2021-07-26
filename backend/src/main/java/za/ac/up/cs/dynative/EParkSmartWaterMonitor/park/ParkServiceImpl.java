@@ -159,4 +159,18 @@ public class ParkServiceImpl implements ParkService {
     public GetAllParksResponse getAllParks() {
         return new GetAllParksResponse(parkRepo.getAllParks());
     }
+
+    @Override
+    public DeleteParkResponse deletePark(DeleteParkRequest request) {
+        if (request.getParkId() == null) {
+            return new DeleteParkResponse("No park id specified.", false);
+        }
+        Park park = parkRepo.findParkById(request.getParkId());
+
+        if (park != null) {
+            parkRepo.deleteEntirePark(park.getId());
+            return new DeleteParkResponse("Successfully deleted the park and all related entities.", true);
+        }
+        return new DeleteParkResponse("No park with this id exists.", false);
+    }
 }
