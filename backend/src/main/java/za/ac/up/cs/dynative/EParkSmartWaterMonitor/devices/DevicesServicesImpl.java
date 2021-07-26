@@ -69,8 +69,10 @@ public class DevicesServicesImpl implements DevicesService {
 
     public AddWaterSourceDeviceResponse addDevice(AddDeviceRequest addDeviceRequest) throws InvalidRequestException {
         AddWaterSourceDeviceResponse response = new AddWaterSourceDeviceResponse();
-        if (addDeviceRequest.getParkName().equals("")||addDeviceRequest.getSiteId()==null||addDeviceRequest.getDeviceModel().equals("")||addDeviceRequest.getDeviceName().equals("")){
-            throw new InvalidRequestException("Request not complete");
+        if (addWSDRequest.getParkName().equals("")||addWSDRequest.getSiteId()==null||addWSDRequest.getDeviceModel().equals("")||addWSDRequest.getDeviceName().equals("")){
+            response.setSuccess(false);
+            response.setStatus("Request is missing parameters.");
+            return response;
         }
         List<Device> devices = deviceRepo.findWaterSourceDeviceByDeviceName(addDeviceRequest.getDeviceName());
 
@@ -80,8 +82,8 @@ public class DevicesServicesImpl implements DevicesService {
 
             if (!canAttachWaterSourceDeviceResponse.getSuccess()) {
                 response.setSuccess(false);
-                response.setStatus("The water site " + addDeviceRequest.getSiteId() + " does not exist.");
-                throw new InvalidRequestException("The site does not exist");
+                response.setStatus("The water site " + addWSDRequest.getSiteId() + " does not exist.");
+                return response;
             } else {
 
                 Map<String, String> attributes = Map.of("deviceModel",addDeviceRequest.getDeviceModel());
@@ -121,21 +123,20 @@ public class DevicesServicesImpl implements DevicesService {
             }
 
         } else {
-            throw new InvalidRequestException("Device already exists");
-//            response.setSuccess(false);
-//            response.setStatus("Device " + addDeviceRequest.getDeviceName() + " already exists.");
+            response.setSuccess(false);
+            response.setStatus("Device " + addWSDRequest.getDeviceName() + " already exists.");
         }
 
         return response;
 
     }
 
-    public FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest) throws InvalidRequestException {
+    public FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest)  {
         if (findDeviceRequest==null){
-            throw new InvalidRequestException("Request is null");
+            return new FindDeviceResponse("Request is null",false,null);
         }
         if (findDeviceRequest.getDeviceID()==null){
-            throw new InvalidRequestException("No id specified");
+            return new FindDeviceResponse("No device ID specified",false,null);
         }
         Optional<Device> device = deviceRepo.findById(findDeviceRequest.getDeviceID());
         if (device.isPresent())
@@ -143,8 +144,7 @@ public class DevicesServicesImpl implements DevicesService {
             return new FindDeviceResponse("Device found",true,device.get());
         }
         else
-            throw new InvalidRequestException("Device not found");
-            //return new FindDeviceResponse("Device not found",false,null);
+            return new FindDeviceResponse("Device not found",false,null);
 
     }
 
@@ -153,12 +153,16 @@ public class DevicesServicesImpl implements DevicesService {
         List<Device> devices = deviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName());
         ReceiveDeviceDataResponse response = new ReceiveDeviceDataResponse();
 
-        Device device = null;
+        if (devices.size()==0){
+            response.setSuccess(false);
+            response.setStatus("Device with that name does not exist");
+            return response;
+        }
+        WaterSourceDevice device = null;
         if (!request.getDeviceName().equals("") && devices.size() > 0) {
             device = devices.get(0);
         }
         if (device != null) {
-
             Measurement data;
             for (int i = 0; i < request.getMeasurements().size(); i++) {
                 data = request.getMeasurements().get(i);
@@ -177,17 +181,19 @@ public class DevicesServicesImpl implements DevicesService {
 
         } else {
             response.setSuccess(false);
-            response.setStatus("Request Failed... fix not appplied!");
+            response.setStatus("Request Failed... fix not applied!");
         }
         return response;
     }
 
     @Override
     public GetNumDevicesResponse getNumDevices(GetNumDevicesRequest request) throws InvalidRequestException {
-        if (request==null){
-            throw new InvalidRequestException("Request is null");
-        }
         GetNumDevicesResponse getNumDevicesResponse = new GetNumDevicesResponse();
+        if (request==null){
+            getNumDevicesResponse.setNumDevices(-1);
+            getNumDevicesResponse.setSuccess(false);
+            return getNumDevicesResponse;
+        }
         if (request.getParkId() != null) {
             FindByParkIdResponse findByParkIdResponse = parkService.findByParkId(new FindByParkIdRequest(request.getParkId()));
             if (findByParkIdResponse.getPark() != null) {
@@ -195,21 +201,27 @@ public class DevicesServicesImpl implements DevicesService {
                 getNumDevicesResponse.setNumDevices(deviceRepo.getAllParkDevices(request.getParkId()).size());
                 getNumDevicesResponse.setSuccess(true);
             }else{
-                throw new InvalidRequestException("Park does not exist");
+                getNumDevicesResponse.setNumDevices(-1);
+                getNumDevicesResponse.setSuccess(false);
+                return getNumDevicesResponse;
             }
         } else{
+            getNumDevicesResponse.setNumDevices(-1);
             getNumDevicesResponse.setSuccess(false);
-            throw new InvalidRequestException("Park id not specified");
+            return getNumDevicesResponse;
         }
         return getNumDevicesResponse;
     }
 
     @Override
-    public GetParkDevicesResponse getParkDevices(GetParkDevicesRequest request) throws InvalidRequestException {
-        if (request==null){
-            throw new InvalidRequestException("Request is null");
-        }
+    public GetParkDevicesResponse getParkDevices(GetParkDevicesRequest request)  {
         GetParkDevicesResponse getParkDevicesResponse = new GetParkDevicesResponse();
+        if (request==null){
+            getParkDevicesResponse.setSite(null);
+            getParkDevicesResponse.setSuccess(false);
+            getParkDevicesResponse.setStatus("Request is null");
+            return getParkDevicesResponse;
+        }
         if (request.getParkId() != null) {
 
             List<Device> devices = deviceRepo.findAll();
@@ -219,12 +231,16 @@ public class DevicesServicesImpl implements DevicesService {
                 getParkDevicesResponse.setSuccess(true);
                 getParkDevicesResponse.setStatus("Successfully got the Park's devices");
             }else{
-                throw new InvalidRequestException("No devices present");
+                getParkDevicesResponse.setSite(null);
+                getParkDevicesResponse.setSuccess(false);
+                getParkDevicesResponse.setStatus("No devices present");
+                return getParkDevicesResponse;
             }
         } else {
-            getParkDevicesResponse.setStatus("Failed to get the park's devices");
+            getParkDevicesResponse.setStatus("No Park ID specified");
+            getParkDevicesResponse.setSite(null);
             getParkDevicesResponse.setSuccess(false);
-            throw new InvalidRequestException("Park id not specified");
+            return getParkDevicesResponse;
         }
         return getParkDevicesResponse;
     }
@@ -282,15 +298,21 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     @Override
-    public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request) throws InvalidRequestException {
-        if (request==null){
-            throw new InvalidRequestException("Request is null");
-        }
-        if (request.getDeviceName().equals("")){
-            throw new InvalidRequestException("Device name not specified");
-        }
+    public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request)  {
         GetDeviceDataResponse response =  new GetDeviceDataResponse("Failed to load device data for device: " + request.getDeviceName(),false);
         GetDeviceInnerResponse innerResponse;
+
+        if (request==null){
+            response.setSuccess(false);
+            response.setStatus("Request is null");
+            return response;
+        }
+
+        if (request.getDeviceName().equals("")){
+            response.setSuccess(false);
+            response.setStatus("No device name is specified");
+            return response;
+        }
 
         if (deviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName()).size() != 0) {
             Table waterSourceDataTable = dynamoDB.getTable("WaterSourceData");
@@ -326,7 +348,8 @@ public class DevicesServicesImpl implements DevicesService {
                 response.setStatus("Successfully retrieved data for device: " + response.getDeviceName());
             }
         }else {
-            throw new InvalidRequestException("Device does not exist");
+            response.setSuccess(false);
+            response.setStatus("Device does not exist");
         }
         return response;
     }

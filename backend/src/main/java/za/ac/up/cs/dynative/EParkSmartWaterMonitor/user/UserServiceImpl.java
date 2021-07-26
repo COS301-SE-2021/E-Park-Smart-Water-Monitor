@@ -90,19 +90,16 @@ public class UserServiceImpl implements UserService {
                         response.setStatus("No park with this id exists.");
                     }
                 } else {
-                    throw new InvalidRequestException("A user with this username already exists.");
-//                    response.setSuccess(false);
-//                    response.setStatus("A user with this username already exists.");
+                    response.setSuccess(false);
+                    response.setStatus("A user with this username already exists.");
                 }
             } else {
-                throw new InvalidRequestException("A user with this id number already exists.");
-//                response.setSuccess(false);
-//                response.setStatus("A user with this id number already exists.");
+                response.setSuccess(false);
+                response.setStatus("A user with this id number already exists.");
             }
         } else {
-            throw new InvalidRequestException("Details incomplete");
-//            response.setSuccess(false);
-//            response.setStatus("Failed to create user.");
+            response.setSuccess(false);
+            response.setStatus("User's details are incomplete");
         }
         return response;
     }
@@ -233,11 +230,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public LoginResponse loginUser(LoginRequest request) throws InvalidRequestException {
+    public LoginResponse loginUser(LoginRequest request) {
         String username = request.getUsername();
         String password = request.getPassword();
         if (username.equals("")||password.equals("")){
-            throw new InvalidRequestException("Login details not complete");
+            return new LoginResponse("", false);
         }
         String JWTToken = "";
 
@@ -252,9 +249,9 @@ public class UserServiceImpl implements UserService {
             }
             if (user == null || !password.equals(user.getPassword())) {
                 if (user == null) {
-                    throw new InvalidRequestException("User doesnt exist!");
+                    return new LoginResponse(JWTToken, false);
                 }else {
-                    throw new InvalidRequestException("Wrong Password");
+                    return new LoginResponse(JWTToken, false);
                 }
             }else{
                 Map<String, Object> head = new HashMap<>();
@@ -282,8 +279,7 @@ public class UserServiceImpl implements UserService {
                         user.getPark().getParkName());
             }
         }
-        throw new InvalidRequestException("To many users with this username");
-        //return new LoginResponse(JWTToken, false);
+        return new LoginResponse(JWTToken, false);
     }
 
     @Override
