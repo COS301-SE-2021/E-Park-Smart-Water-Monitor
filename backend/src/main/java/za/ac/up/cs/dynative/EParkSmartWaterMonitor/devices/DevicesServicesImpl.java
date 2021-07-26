@@ -69,7 +69,7 @@ public class DevicesServicesImpl implements DevicesService {
 
     public AddWaterSourceDeviceResponse addDevice(AddDeviceRequest addDeviceRequest) throws InvalidRequestException {
         AddWaterSourceDeviceResponse response = new AddWaterSourceDeviceResponse();
-        if (addWSDRequest.getParkName().equals("")||addWSDRequest.getSiteId()==null||addWSDRequest.getDeviceModel().equals("")||addWSDRequest.getDeviceName().equals("")){
+        if (addDeviceRequest.getParkName().equals("")||addDeviceRequest.getSiteId()==null||addDeviceRequest.getDeviceModel().equals("")||addDeviceRequest.getDeviceName().equals("")){
             response.setSuccess(false);
             response.setStatus("Request is missing parameters.");
             return response;
@@ -82,7 +82,7 @@ public class DevicesServicesImpl implements DevicesService {
 
             if (!canAttachWaterSourceDeviceResponse.getSuccess()) {
                 response.setSuccess(false);
-                response.setStatus("The water site " + addWSDRequest.getSiteId() + " does not exist.");
+                response.setStatus("The water site " + addDeviceRequest.getSiteId() + " does not exist.");
                 return response;
             } else {
 
@@ -124,7 +124,7 @@ public class DevicesServicesImpl implements DevicesService {
 
         } else {
             response.setSuccess(false);
-            response.setStatus("Device " + addWSDRequest.getDeviceName() + " already exists.");
+            response.setStatus("Device " + addDeviceRequest.getDeviceName() + " already exists.");
         }
 
         return response;
@@ -158,7 +158,7 @@ public class DevicesServicesImpl implements DevicesService {
             response.setStatus("Device with that name does not exist");
             return response;
         }
-        WaterSourceDevice device = null;
+        Device device = null;
         if (!request.getDeviceName().equals("") && devices.size() > 0) {
             device = devices.get(0);
         }

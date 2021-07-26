@@ -102,11 +102,11 @@ public class WaterSiteServicesImpl implements WaterSiteService
             response = new AttachWaterSourceDeviceResponse("No id specified", false);
             return response;
         }
-        if (request.getWaterSourceDevice()==null){
+        if (request.getDevice()==null){
             response = new AttachWaterSourceDeviceResponse("No device specified", false);
             return response;
         }
-        if (request.getWaterSourceDevice().getDeviceId()==null){
+        if (request.getDevice().getDeviceId()==null){
             response = new AttachWaterSourceDeviceResponse("No device id specified", false);
             return response;
         }
