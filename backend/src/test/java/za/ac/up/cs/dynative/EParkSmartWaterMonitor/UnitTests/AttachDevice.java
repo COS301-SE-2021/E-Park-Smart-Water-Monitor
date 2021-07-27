@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
-public class AttachWaterSourceDevice {
+public class AttachDevice {
 
     @Mock
     WaterSiteRepo repo;
@@ -39,7 +39,7 @@ public class AttachWaterSourceDevice {
     @Test
     @DisplayName("Try and attach a water source device but the site has a null id")
     public void AttachNull(){
-        WaterSourceDevice device = new WaterSourceDevice(UUID.randomUUID(),"TEST!!!", "UNIT",3,9);
+        Device device = new Device(UUID.randomUUID(),"TEST!!!","WaterSource", "UNIT",3,9);
         AttachWaterSourceDeviceRequest request= new AttachWaterSourceDeviceRequest(null,device);
         Throwable t =assertThrows(InvalidRequestException.class, ()->waterSiteServices.attachWaterSourceDevice(request));
         assertEquals("No Id specified",t.getMessage());
@@ -51,7 +51,7 @@ public class AttachWaterSourceDevice {
         UUID test= UUID.randomUUID();
         Optional<WaterSite> op= Optional.empty();
         Mockito.when(repo.findById(test)).thenReturn(op);
-        WaterSourceDevice device = new WaterSourceDevice(UUID.randomUUID(),"TEST!!!", "UNIT",3,9);
+        Device device = new Device(UUID.randomUUID(),"TEST!!!","WaterSource", "UNIT",3,9);
 
         AttachWaterSourceDeviceRequest request= new AttachWaterSourceDeviceRequest(test,device);
         Throwable t =assertThrows(InvalidRequestException.class, ()->waterSiteServices.attachWaterSourceDevice(request));
@@ -62,7 +62,7 @@ public class AttachWaterSourceDevice {
     @DisplayName("Succesfully attach a device")
     public void Attach() throws InvalidRequestException {
         WaterSite site1= new WaterSite(id1,name1,lat1,lon1);
-        WaterSourceDevice device = new WaterSourceDevice(id2,"TESTING","UNIt",lat2,lon2);
+        Device device = new Device(id2,"TESTING","UNIt","WaterSource",lat2,lon2);
         Optional<WaterSite> op = Optional.of(site1);
         Mockito.when(repo.findById(id1)).thenReturn(op);
 
@@ -76,7 +76,7 @@ public class AttachWaterSourceDevice {
     @Test
     @DisplayName("Try and attach a water source device but the device has a null id")
     public void AttachNullDeviceID(){
-        WaterSourceDevice device = new WaterSourceDevice(null,"TEST!!!", "UNIT",3,9);
+        Device device = new Device(null,"TEST!!!", "UNIT","WaterSource",3,9);
         AttachWaterSourceDeviceRequest request= new AttachWaterSourceDeviceRequest(id1,device);
         Throwable t =assertThrows(InvalidRequestException.class, ()->waterSiteServices.attachWaterSourceDevice(request));
         assertEquals("No device Id specified",t.getMessage());

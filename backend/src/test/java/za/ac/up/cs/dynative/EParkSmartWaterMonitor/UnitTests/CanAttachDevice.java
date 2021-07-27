@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
-public class CanAttachWaterSourceDevice {
+public class CanAttachDevice {
     @Mock
     WaterSiteRepo repo;
 

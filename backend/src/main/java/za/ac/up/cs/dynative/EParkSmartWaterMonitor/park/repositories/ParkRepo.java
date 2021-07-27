@@ -19,4 +19,9 @@ public interface ParkRepo extends Neo4jRepository<Park, UUID> {
 
     @Query("MATCH (p:Park {id: $parkId})-[*0..]-(x) DETACH DELETE x")
     void deleteEntirePark(@Param("parkId") UUID parkId);
+
+    @Query("match (n:Park)-[*0..1]->(p) return p")
+    List<Park> getAllParksAndSites();
+
+    List<Park> findAll();
 }

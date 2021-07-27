@@ -6,14 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.EditDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.DeleteUserRequest;
-
-import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -34,7 +29,7 @@ public class DeviceController {
     }
 
     @GetMapping("/getDevice")
-    public java.util.Collection<WaterSourceDevice> getDevice() {
+    public java.util.Collection<Device> getDevice() {
         return devicesService.getAll();
     }
 
@@ -44,7 +39,7 @@ public class DeviceController {
     }
 
     @PostMapping("/addDevice")
-    public ResponseEntity<Object> addDevice(@RequestBody AddWaterSourceDeviceRequest addWSDRequest) throws InvalidRequestException {
+    public ResponseEntity<Object> addDevice(@RequestBody AddDeviceRequest addWSDRequest) throws InvalidRequestException {
         return new ResponseEntity<>(devicesService.addDevice(addWSDRequest),HttpStatus.OK);
     }
 
@@ -78,4 +73,13 @@ public class DeviceController {
         return new ResponseEntity<>(devicesService.getDeviceData(getDeviceDataRequest),HttpStatus.OK);
     }
 
+    @PostMapping("/setMetricFrequency")
+    public ResponseEntity<Object> setMetricFrequency(@RequestBody SetMetricFrequencyRequest setMetricFrequencyRequest) {
+        return new ResponseEntity<>(devicesService.setMetricFrequency(setMetricFrequencyRequest), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteDevice")
+    public ResponseEntity<Object> deleteDevice(@RequestBody DeleteDeviceRequest deleteDeviceRequest) throws InvalidRequestException {
+        return new ResponseEntity<>(devicesService.deleteDevice(deleteDeviceRequest),HttpStatus.OK);
+    }
 }

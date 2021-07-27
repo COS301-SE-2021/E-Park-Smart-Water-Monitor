@@ -7,7 +7,7 @@ import java.util.*;
 
 
 @Node
-public class WaterSourceDevice
+public class Device
 {
     @Id
     private UUID    deviceId;
@@ -19,16 +19,17 @@ public class WaterSourceDevice
     @Relationship(type = "PRODUCES", direction = Relationship.Direction.OUTGOING)
     private Set<Measurement> measurementSet;
 
-    public WaterSourceDevice(UUID deviceId,
-                             String deviceName,
-                             String deviceModel,
-                             double longitude,
-                             double latitude)
+    public Device(UUID deviceId,
+                  String deviceName,
+                  String deviceType,
+                  String deviceModel,
+                  double longitude,
+                  double latitude)
     {
         this.deviceId    = deviceId;
         this.deviceName  = deviceName;
         this.deviceModel = deviceModel;
-        this.deviceType= "WaterSource";
+        this.deviceType= deviceType;
 
         ArrayList<sensorConfiguration> deviceConfiguration = new ArrayList<>();
         deviceConfiguration.add(new sensorConfiguration("reportingFrequency",4.0));
@@ -40,7 +41,7 @@ public class WaterSourceDevice
 
     }
 
-    public WaterSourceDevice()
+    public Device()
     {
 
     }

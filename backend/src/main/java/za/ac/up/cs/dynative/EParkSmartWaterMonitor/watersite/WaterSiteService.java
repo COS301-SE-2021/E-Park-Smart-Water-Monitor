@@ -16,5 +16,6 @@ public interface WaterSiteService {
     GetSiteByIdResponse getSiteById(GetSiteByIdRequest request) throws InvalidRequestException;
     SaveSiteResponse saveSite(SaveSiteRequest request);
     DeleteWaterSiteResponse deleteWaterSite(DeleteWaterSiteRequest deleteWaterSiteRequest);
+    EditWaterSiteResponse editWaterSite(EditWaterSiteRequest editWaterSiteRequest);
 }
 

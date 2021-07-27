@@ -8,6 +8,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 
 import java.util.Collection;
 import java.util.List;
@@ -172,5 +173,27 @@ public class ParkServiceImpl implements ParkService {
             return new DeleteParkResponse("Successfully deleted the park and all related entities.", true);
         }
         return new DeleteParkResponse("No park with this id exists.", false);
+    }
+
+    @Override
+    public GetAllParksAndSitesResponse getAllParksAndSites()
+    {
+        List<Park> tempParks = parkRepo.findAll();
+        for (int i = 0; i < tempParks.size(); i++) {
+            Set<WaterSite> tempSites =tempParks.get(i).getParkWaterSites();
+            WaterSite[] siteArray = new WaterSite[tempSites.size()];
+            tempSites.toArray(siteArray);
+
+
+            for (int j = 0; j < tempSites.size() ; j++)
+            {
+                siteArray[j].setDevices(null);
+            }
+
+            tempSites= Set.of(siteArray);
+            tempParks.get(i).setParkWaterSites(tempSites);
+        }
+        return new GetAllParksAndSitesResponse(tempParks);
+//        return new GetAllParksAndSitesResponse(parkRepo.getAllParksAndSites());
     }
 }

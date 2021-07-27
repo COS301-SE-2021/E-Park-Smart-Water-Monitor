@@ -3,8 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.InfrastructureDevice;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models.Inspection;
 
 import java.util.HashSet;
@@ -24,10 +23,7 @@ public class WaterSite {
     private double longitude;
 
     @Relationship(type = "WATER_MONITORED_BY", direction = Relationship.Direction.OUTGOING)
-    private Set<WaterSourceDevice> waterSourceDevices;
-
-    @Relationship(type = "INFRASTRUCTURE_MONITORED_BY", direction = Relationship.Direction.OUTGOING)
-    private Set<InfrastructureDevice> infrastructureDevices;
+    private Set<Device> devices;
 
     @Relationship(type = "HAS", direction = Relationship.Direction.OUTGOING)
     private Set<Inspection> inspections;
@@ -42,11 +38,11 @@ public class WaterSite {
     public WaterSite() {
     }
 
-    public void addWaterSourceDevice(WaterSourceDevice waterSourceDevice) {
-        if ( waterSourceDevices== null) {
-            waterSourceDevices = new HashSet<>();
+    public void addWaterSourceDevice(Device device) {
+        if ( devices == null) {
+            devices = new HashSet<>();
         }
-        waterSourceDevices.add(waterSourceDevice);
+        devices.add(device);
     }
 
     public void addInspection(Inspection inspection) {
@@ -88,20 +84,12 @@ public class WaterSite {
         this.waterSiteName = waterSiteName;
     }
 
-    public Set<WaterSourceDevice> getWaterSourceDevices() {
-        return waterSourceDevices;
+    public Set<Device> getDevices() {
+        return devices;
     }
 
-    public void setWaterSourceDevices(Set<WaterSourceDevice> waterSourceDevices) {
-        this.waterSourceDevices = waterSourceDevices;
-    }
-
-    public Set<InfrastructureDevice> getInfrastructureDevices() {
-        return infrastructureDevices;
-    }
-
-    public void setInfrastructureDevices(Set<InfrastructureDevice> infrastructureDevices) {
-        this.infrastructureDevices = infrastructureDevices;
+    public void setDevices(Set<Device> devices) {
+        this.devices = devices;
     }
 
     @Override
@@ -111,8 +99,7 @@ public class WaterSite {
                 ", waterSiteName='" + waterSiteName + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
-                ", waterSourceDevices=" + waterSourceDevices +
-                ", infrastructureDevices=" + infrastructureDevices +
+                ", waterSourceDevices=" + devices +
                 '}';
     }
 }
