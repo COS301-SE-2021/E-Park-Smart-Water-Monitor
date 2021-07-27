@@ -20,6 +20,7 @@ import software.amazon.awssdk.services.iotdataplane.model.UpdateThingShadowReque
 import software.amazon.awssdk.services.iotdataplane.model.UpdateThingShadowResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Measurement;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.sensorConfiguration;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
@@ -392,4 +393,30 @@ public class DevicesServicesImpl implements DevicesService {
             return new DeleteDeviceResponse("Successfully deleted the device and all related entities.", true);
         }
         return new DeleteDeviceResponse("No device with this id exists.", false);    }
+
+    @Override
+    public SetMetricFrequencyResponse setMetricFrequency(SetMetricFrequencyRequest request) {
+        if (request.getId() == null) {
+            return new SetMetricFrequencyResponse("No device id specified.", false);
+        }
+        Optional<Device> device = deviceRepo.findById(request.getId());
+
+        if (device.isPresent()) {
+            if (device.get().getDeviceData().getDeviceConfiguration() != null) {
+                for (sensorConfiguration config : device.get().getDeviceData().getDeviceConfiguration()) {
+                    if (config.getSettingType().equals("reportingFrequency")) {
+                        config.setValue(request.getValue());
+                        deviceRepo.save(device.get());
+                        return new SetMetricFrequencyResponse("Successfully changed metric frequency to: " +
+                                request.getValue() + " hours.", true);
+                    }
+                }
+            }
+            else {
+                return new SetMetricFrequencyResponse("No device configurations to set.", false);
+            }
+        }
+        return new SetMetricFrequencyResponse("No device configurations set.", false);
+    }
+
 }

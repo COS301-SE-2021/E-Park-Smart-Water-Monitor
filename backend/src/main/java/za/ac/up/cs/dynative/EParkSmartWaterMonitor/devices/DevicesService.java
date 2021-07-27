@@ -19,4 +19,5 @@ public interface DevicesService {
     DeleteDeviceResponse deleteDevice(DeleteDeviceRequest deleteDeviceRequest);
     GetDeviceDataResponse getDeviceData(GetDeviceDataRequest getDeviceDataRequest) throws InvalidRequestException;
     GetAllDevicesResponse getAllDevices();
+    SetMetricFrequencyResponse setMetricFrequency(SetMetricFrequencyRequest setMetricFrequencyRequest);
 }
