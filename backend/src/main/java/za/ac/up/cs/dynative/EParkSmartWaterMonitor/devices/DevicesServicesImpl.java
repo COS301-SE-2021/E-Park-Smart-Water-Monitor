@@ -30,10 +30,13 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdReq
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.GetAllDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.CanAttachWaterSourceDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.DeleteWaterSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.CanAttachWaterSourceDeviceResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.DeleteWaterSiteResponse;
 
 import java.util.*;
 
@@ -248,58 +251,6 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     @Override
-    public EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest) {
-        EditDeviceResponse response = new EditDeviceResponse();
-        if (editDeviceRequest.getDeviceType().equals("WaterSource")||editDeviceRequest.getDeviceType().equals("Infrastructure")) {
-
-            Optional<Device> deviceToChange = deviceRepo.findById(editDeviceRequest.getDeviceId());
-
-            if (deviceToChange.isPresent()) {
-                if (!editDeviceRequest.getDeviceModel().equals("")) {
-                    deviceToChange.get().setDeviceModel(editDeviceRequest.getDeviceModel());
-                }
-                if (!editDeviceRequest.getDeviceName().equals("")) {
-
-                    List<Device> devicesWithSameName = deviceRepo.findDeviceByDeviceName(editDeviceRequest.getDeviceName());
-                    if (devicesWithSameName.size() == 0) {
-                        deviceToChange.get().setDeviceName(editDeviceRequest.getDeviceName());
-
-                    }
-                    else
-                    {
-                        response.setStatus("A device with that name already exists");
-                        response.setSuccess(false);
-                        return response;
-
-                    }
-
-                }
-                response.setStatus("Device successfully edited.");
-                response.setSuccess(true);
-                deviceRepo.save(deviceToChange.get());
-                return response;
-            }
-            else
-            {
-                response.setStatus("That device does not exist.");
-                response.setSuccess(false);
-                return response;
-
-            }
-
-
-
-        }
-        else
-        {
-            response.setStatus("The specified device type "+editDeviceRequest.getDeviceType()+" does not exist.");
-            response.setSuccess(false);
-            return response;
-        }
-
-    }
-
-    @Override
     public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request)  {
         GetDeviceDataResponse response =  new GetDeviceDataResponse("Failed to load device data for device: " + request.getDeviceName(),false);
         GetDeviceInnerResponse innerResponse;
@@ -372,4 +323,62 @@ public class DevicesServicesImpl implements DevicesService {
         }
         return response;
     }
+
+    @Override
+    public EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest) {
+        EditDeviceResponse response = new EditDeviceResponse();
+        if (editDeviceRequest.getDeviceType().equals("WaterSource")||editDeviceRequest.getDeviceType().equals("Infrastructure")) {
+
+            Optional<Device> deviceToChange = deviceRepo.findById(editDeviceRequest.getDeviceId());
+
+            if (deviceToChange.isPresent()) {
+                if (!editDeviceRequest.getDeviceModel().equals("")) {
+                    deviceToChange.get().setDeviceModel(editDeviceRequest.getDeviceModel());
+                }
+                if (!editDeviceRequest.getDeviceName().equals("")) {
+
+                    List<Device> devicesWithSameName = deviceRepo.findDeviceByDeviceName(editDeviceRequest.getDeviceName());
+                    if (devicesWithSameName.size() == 0) {
+                        deviceToChange.get().setDeviceName(editDeviceRequest.getDeviceName());
+
+                    }
+                    else
+                    {
+                        response.setStatus("A device with that name already exists");
+                        response.setSuccess(false);
+                        return response;
+
+                    }
+
+                }
+                response.setStatus("Device successfully edited.");
+                response.setSuccess(true);
+                deviceRepo.save(deviceToChange.get());
+                return response;
+            }
+            else
+            {
+                response.setStatus("That device does not exist.");
+                response.setSuccess(false);
+                return response;
+
+            }
+
+
+
+        }
+        else
+        {
+            response.setStatus("The specified device type "+editDeviceRequest.getDeviceType()+" does not exist.");
+            response.setSuccess(false);
+            return response;
+        }
+
+    }
+
+
+
+    @Override
+    public DeleteDeviceResponse deleteDevice(DeleteDeviceRequest request) {
+        return new DeleteDeviceResponse("No device with this id exists.", false);    }
 }
