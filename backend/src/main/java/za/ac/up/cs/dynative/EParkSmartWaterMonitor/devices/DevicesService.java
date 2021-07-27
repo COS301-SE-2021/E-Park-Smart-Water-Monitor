@@ -10,7 +10,7 @@ import java.util.Collection;
 
 public interface DevicesService {
     ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request);
-    AddWaterSourceDeviceResponse addDevice(AddDeviceRequest addWSDRequest) throws InvalidRequestException;
+    AddDeviceResponse addDevice(AddDeviceRequest addWSDRequest) throws InvalidRequestException;
     Collection<Device> getAll();
     FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest) throws InvalidRequestException;
     GetNumDevicesResponse getNumDevices(GetNumDevicesRequest getNumDevicesRequest) throws InvalidRequestException;

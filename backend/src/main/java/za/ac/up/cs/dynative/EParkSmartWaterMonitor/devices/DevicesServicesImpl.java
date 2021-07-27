@@ -52,7 +52,8 @@ public class DevicesServicesImpl implements DevicesService {
     public DevicesServicesImpl(@Qualifier("WaterSourceDeviceRepo") DeviceRepo deviceRepo,
                                @Qualifier("ParkService") ParkService parkService,
                                @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService,
-                               @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo) {
+                               @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo)
+    {
         this.deviceRepo = deviceRepo;
         this.parkService = parkService;
         this.measurementRepo = measurementRepo;
@@ -67,8 +68,8 @@ public class DevicesServicesImpl implements DevicesService {
         return deviceRepo.findAll();
     }
 
-    public AddWaterSourceDeviceResponse addDevice(AddDeviceRequest addDeviceRequest) throws InvalidRequestException {
-        AddWaterSourceDeviceResponse response = new AddWaterSourceDeviceResponse();
+    public AddDeviceResponse addDevice(AddDeviceRequest addDeviceRequest) throws InvalidRequestException {
+        AddDeviceResponse response = new AddDeviceResponse();
         if (addDeviceRequest.getParkName().equals("")||addDeviceRequest.getSiteId()==null||addDeviceRequest.getDeviceModel().equals("")||addDeviceRequest.getDeviceType().equals("")||addDeviceRequest.getDeviceName().equals("")){
             response.setSuccess(false);
             response.setStatus("Request is missing parameters.");
