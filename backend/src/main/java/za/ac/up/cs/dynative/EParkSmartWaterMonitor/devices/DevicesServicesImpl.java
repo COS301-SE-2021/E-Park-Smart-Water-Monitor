@@ -52,7 +52,8 @@ public class DevicesServicesImpl implements DevicesService {
     public DevicesServicesImpl(@Qualifier("WaterSourceDeviceRepo") DeviceRepo deviceRepo,
                                @Qualifier("ParkService") ParkService parkService,
                                @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService,
-                               @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo) {
+                               @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo)
+    {
         this.deviceRepo = deviceRepo;
         this.parkService = parkService;
         this.measurementRepo = measurementRepo;
@@ -67,14 +68,15 @@ public class DevicesServicesImpl implements DevicesService {
         return deviceRepo.findAll();
     }
 
-    public AddWaterSourceDeviceResponse addDevice(AddDeviceRequest addDeviceRequest) throws InvalidRequestException {
-        AddWaterSourceDeviceResponse response = new AddWaterSourceDeviceResponse();
-        if (addDeviceRequest.getParkName().equals("")||addDeviceRequest.getSiteId()==null||addDeviceRequest.getDeviceModel().equals("")||addDeviceRequest.getDeviceName().equals("")){
+    public AddDeviceResponse addDevice(AddDeviceRequest addDeviceRequest) throws InvalidRequestException {
+        AddDeviceResponse response = new AddDeviceResponse();
+        if (addDeviceRequest.getParkName().equals("")||addDeviceRequest.getSiteId()==null||addDeviceRequest.getDeviceModel().equals("")||addDeviceRequest.getDeviceType().equals("")||addDeviceRequest.getDeviceName().equals(""))
+        {
             response.setSuccess(false);
             response.setStatus("Request is missing parameters.");
             return response;
         }
-        List<Device> devices = deviceRepo.findWaterSourceDeviceByDeviceName(addDeviceRequest.getDeviceName());
+        List<Device> devices = deviceRepo.findDeviceByDeviceName(addDeviceRequest.getDeviceName());
 
         if (devices.size() == 0) {
 
@@ -150,7 +152,7 @@ public class DevicesServicesImpl implements DevicesService {
 
     @Override
     public ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request) {
-        List<Device> devices = deviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName());
+        List<Device> devices = deviceRepo.findDeviceByDeviceName(request.getDeviceName());
         ReceiveDeviceDataResponse response = new ReceiveDeviceDataResponse();
 
         if (devices.size()==0){
@@ -258,7 +260,7 @@ public class DevicesServicesImpl implements DevicesService {
                 }
                 if (!editDeviceRequest.getDeviceName().equals("")) {
 
-                    List<Device> devicesWithSameName = deviceRepo.findWaterSourceDeviceByDeviceName(editDeviceRequest.getDeviceName());
+                    List<Device> devicesWithSameName = deviceRepo.findDeviceByDeviceName(editDeviceRequest.getDeviceName());
                     if (devicesWithSameName.size() == 0) {
                         deviceToChange.get().setDeviceName(editDeviceRequest.getDeviceName());
 
@@ -314,7 +316,7 @@ public class DevicesServicesImpl implements DevicesService {
             return response;
         }
 
-        if (deviceRepo.findWaterSourceDeviceByDeviceName(request.getDeviceName()).size() != 0) {
+        if (deviceRepo.findDeviceByDeviceName(request.getDeviceName()).size() != 0) {
             Table waterSourceDataTable = dynamoDB.getTable("WaterSourceData");
 
             QuerySpec spec = new QuerySpec()

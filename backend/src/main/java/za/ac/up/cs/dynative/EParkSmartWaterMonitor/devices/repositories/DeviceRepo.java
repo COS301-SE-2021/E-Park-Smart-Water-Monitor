@@ -13,6 +13,7 @@ import java.util.UUID;
 public interface DeviceRepo extends Neo4jRepository<Device, UUID> {
 
     List<Device> findWaterSourceDeviceByDeviceName(String deviceName);
+    List<Device> findDeviceByDeviceName(String deviceName);
 
     @Query("MATCH (:Park{id: $id})-->(watersite)-->(w) RETURN w")
     List<Device> getAllParkDevices(@Param("id") UUID id);
