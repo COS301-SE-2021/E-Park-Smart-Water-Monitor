@@ -42,7 +42,7 @@ public class ParkController {
         return new ResponseEntity<>(parkService.getAllParks(),HttpStatus.OK);
     }
 
-    @PostMapping("/deletePark")
+    @DeleteMapping("/deletePark")
     public ResponseEntity<Object> deletePark(@RequestBody DeleteParkRequest request) {
         return new ResponseEntity<>(parkService.deletePark(request),HttpStatus.OK);
     }
