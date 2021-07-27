@@ -69,7 +69,7 @@ public class DevicesServicesImpl implements DevicesService {
 
     public AddWaterSourceDeviceResponse addDevice(AddDeviceRequest addDeviceRequest) throws InvalidRequestException {
         AddWaterSourceDeviceResponse response = new AddWaterSourceDeviceResponse();
-        if (addDeviceRequest.getParkName().equals("")||addDeviceRequest.getSiteId()==null||addDeviceRequest.getDeviceModel().equals("")||addDeviceRequest.getDeviceName().equals("")){
+        if (addDeviceRequest.getParkName().equals("")||addDeviceRequest.getSiteId()==null||addDeviceRequest.getDeviceModel().equals("")||addDeviceRequest.getDeviceType().equals("")||addDeviceRequest.getDeviceName().equals("")){
             response.setSuccess(false);
             response.setStatus("Request is missing parameters.");
             return response;
