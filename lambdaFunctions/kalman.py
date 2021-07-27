@@ -34,3 +34,12 @@ def kalmanAlg(measurements, initialEstimate, initialEstimateError):
     measurement_Result_Matrix.append(tableEntry)
 
   return measurement_Result_Matrix
+
+def printA(a, dataDescription):
+  print()
+  print(dataDescription)
+  print("Measurement Estimate KalmanGain Est_Error")
+  for row in a:
+      for col in row:
+          print("{:9.3f}".format(col), end=" ")
+      print("")
