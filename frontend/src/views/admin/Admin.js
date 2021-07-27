@@ -52,33 +52,31 @@ function Admin() {
                         <DeviceTable/>
                         <InspectionTable/>
                     </Grid>
-                    <Grid container
-                       style = { parkAndSitesStyle }
+
+                    <Grid
+                        item
+                        xs={12}
+                        xl={5}
+                        component={Box}
+                        marginBottom="3rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+
                     >
-                        <Grid
-                            item
-                            xs={12}
-                            xl={5}
-                            component={Box}
-                            marginBottom="3rem!important"
-                            classes={{ root: classes.gridItemRoot }}
-
-                        >
-                            <ParkTable select={ selectPark }/>
-                        </Grid>
-
-                        {/* Sites altered on the change of park */}
-                        <Grid
-                            item
-                            xs={12}
-                            xl={7}
-                            component={Box}
-                            marginBottom="3rem!important"
-                            classes={{ root: classes.gridItemRoot }}
-                        >
-                            { park && <SiteTable park={ park }/> }
-                        </Grid>
+                        <ParkTable select={ selectPark }/>
                     </Grid>
+
+                    {/* Sites altered on the change of park */}
+                    <Grid
+                        item
+                        xs={12}
+                        xl={7}
+                        component={Box}
+                        marginBottom="3rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        <SiteTable park={ park }/>
+                    </Grid>
+
 
                 </Grid>
             </Container>
