@@ -190,7 +190,7 @@ const ParkTable = (props) => {
                     <Grid
                         item
                         xs={6}
-                        xl={10}
+                        xl={7}
                         component={Box}
                         marginBottom="3rem!important"
                         classes={{ root: classes.gridItemRoot }}
@@ -200,7 +200,7 @@ const ParkTable = (props) => {
                         item
                         justify="end"
                         xs={6}
-                        xl={2}
+                        xl={5}
                         component={Box}
                         marginBottom="3rem!important"
                         classes={{ root: classes.gridItemRoot }}
