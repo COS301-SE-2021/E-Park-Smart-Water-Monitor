@@ -380,5 +380,16 @@ public class DevicesServicesImpl implements DevicesService {
 
     @Override
     public DeleteDeviceResponse deleteDevice(DeleteDeviceRequest request) {
+        if (request.getDeviceId() == null)
+        {
+            return new DeleteDeviceResponse("No device id specified.", false);
+        }
+        Optional<Device> device = deviceRepo.findById(request.getDeviceId());
+
+        if (device.isPresent())
+        {
+            deviceRepo.deleteDevice(device.get().getDeviceId());
+            return new DeleteDeviceResponse("Successfully deleted the device and all related entities.", true);
+        }
         return new DeleteDeviceResponse("No device with this id exists.", false);    }
 }
