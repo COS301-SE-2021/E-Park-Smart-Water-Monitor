@@ -173,4 +173,11 @@ public class ParkServiceImpl implements ParkService {
         }
         return new DeleteParkResponse("No park with this id exists.", false);
     }
+
+    @Override
+    public GetAllParksAndSitesResponse getAllParksAndSites()
+    {
+        return new GetAllParksAndSitesResponse(parkRepo.findAll());
+//        return new GetAllParksAndSitesResponse(parkRepo.getAllParksAndSites());
+    }
 }
