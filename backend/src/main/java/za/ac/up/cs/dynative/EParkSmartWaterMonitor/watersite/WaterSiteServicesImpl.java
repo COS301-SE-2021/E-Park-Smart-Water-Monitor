@@ -3,6 +3,9 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.EditDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.EditDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
@@ -16,6 +19,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -159,6 +163,38 @@ public class WaterSiteServicesImpl implements WaterSiteService
             waterSiteRepo.deletEntireWaterSite(waterSite.get().getId());
             return new DeleteWaterSiteResponse("Successfully deleted the watersite and all related entities.", true);
         }
-        return new DeleteWaterSiteResponse("No watersite with this id exists.", false);    }
+        return new DeleteWaterSiteResponse("No watersite with this id exists.", false);
+    }
 
+    @Override
+    public EditWaterSiteResponse editWaterSite(EditWaterSiteRequest request) {
+
+        EditWaterSiteResponse response = new EditWaterSiteResponse();
+        if (request.getId() != null) {
+            Optional<WaterSite> waterSiteToEdit = waterSiteRepo.findById(request.getId());
+            if (waterSiteToEdit.isPresent()) {
+                if (!request.getSiteName().equals("")) {
+                    waterSiteToEdit.get().setWaterSiteName(request.getSiteName());
+                }
+                if (request.getLatitude() != 0) {
+                    waterSiteToEdit.get().setLatitude(request.getLatitude());
+                }
+                if (request.getLongitude() != 0) {
+                    waterSiteToEdit.get().setLongitude(request.getLongitude());
+                }
+                response.setStatus("Watersite successfully edited.");
+                response.setSuccess(true);
+                waterSiteRepo.save(waterSiteToEdit.get());
+            }
+            else {
+                response.setStatus("Watersite does not exist.");
+                response.setSuccess(false);
+            }
+        }
+        else {
+            response.setStatus("No watersite id specified");
+            response.setSuccess(false);
+        }
+        return response;
+    }
 }
