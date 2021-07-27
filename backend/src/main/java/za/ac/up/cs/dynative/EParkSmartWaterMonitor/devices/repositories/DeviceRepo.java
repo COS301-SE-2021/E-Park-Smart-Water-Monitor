@@ -21,4 +21,7 @@ public interface DeviceRepo extends Neo4jRepository<Device, UUID> {
     @Query("MATCH (:Park{id: $id})-->(watersite)-->(w)-->(d)RETURN w,d")
     List<Device> getAllParkDevicesById(@Param("id") UUID id);
 
+    @Query("MATCH (n:Device {deviceId:$id})-[*0..]->(deviceToDelete) detach delete deviceToDelete")
+    void deleteDevice(@Param("id") UUID id);
+
 }
