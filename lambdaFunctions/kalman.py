@@ -1,3 +1,7 @@
+import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+import numpy as np
+
 # kalman filter test implementation
 def kalmanGain(errorEstimate, errorMeasurement):
   return errorEstimate/(errorEstimate + errorMeasurement)
@@ -43,3 +47,28 @@ def printA(a, dataDescription):
       for col in row:
           print("{:9.3f}".format(col), end=" ")
       print("")
+
+def drawScatter(measurements):
+  xVals = range(0,20)
+  model = np.polyfit(np.array(xVals), np.array(measurements), 5)
+  print(model)
+  predict = np.poly1d(model)
+  x_lin_reg = range(0, 20)
+  y_lin_reg = predict(x_lin_reg)
+  plt.scatter(xVals, measurements)
+  plt.plot(x_lin_reg, y_lin_reg, c = 'r')
+  plt.show()
+
+def drawGraph(xVals, measurement, estimate, title):
+  fig = go.Figure()
+  fig.add_trace(go.Scatter(x=xVals, y=measurement, name='Mesurement',
+                         line=dict(color='firebrick', width=4)))
+  fig.add_trace(go.Scatter(x=xVals, y=estimate, name = 'Estimate',
+                         line=dict(color='royalblue', width=4)))
+
+  fig.update_layout(title='Measurement vs Estimate: ' + title,
+                   xaxis_title='Data point',
+                   yaxis_title='Temperature (degrees F)')
+
+
+  fig.show()
