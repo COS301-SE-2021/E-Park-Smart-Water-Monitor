@@ -16,6 +16,7 @@ public interface DevicesService {
     GetNumDevicesResponse getNumDevices(GetNumDevicesRequest getNumDevicesRequest) throws InvalidRequestException;
     GetParkDevicesResponse getParkDevices(GetParkDevicesRequest getParkDevicesRequest) throws InvalidRequestException;
     EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest);
+    DeleteDeviceResponse deleteDevice(DeleteDeviceRequest deleteDeviceRequest);
     GetDeviceDataResponse getDeviceData(GetDeviceDataRequest getDeviceDataRequest) throws InvalidRequestException;
     GetAllDevicesResponse getAllDevices();
 }
