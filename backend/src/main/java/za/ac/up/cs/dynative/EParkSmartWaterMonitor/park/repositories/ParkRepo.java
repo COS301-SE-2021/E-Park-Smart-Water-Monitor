@@ -23,4 +23,5 @@ public interface ParkRepo extends Neo4jRepository<Park, UUID> {
     @Query("match (n:Park)-[*0..1]->(p) return p")
     List<Park> getAllParksAndSites();
 
+    List<Park> findAll();
 }
