@@ -63,7 +63,7 @@ def lambda_handler(event, context):
     print("TEST ",exists)
 
 
-    newMeasuments=[]
+    newMeasurements=[]
     for x in range(len(measurements)):
 
         val=measurements[x]['value']
@@ -93,7 +93,7 @@ def lambda_handler(event, context):
 
 
         helper=Decimal(measurements[x]['value'])
-        newMeasuments.append(
+        newMeasurements.append(
             {'type':measurements[x]['type'],
         'value':helper,
         'unitOfMeasurement':measurements[x]['unitOfMeasurement'],
@@ -106,7 +106,7 @@ def lambda_handler(event, context):
     print("+++ADDING+++")
 
     # newMeasuments = json.loads(json.dumps(newMeasuments), parse_float=Decimal)
-    print(newMeasuments)
+    print(newMeasurements)
     date=str(int(time.time()))
     print(date)
     response = table.put_item(
@@ -114,7 +114,7 @@ def lambda_handler(event, context):
             'timestamp':date,
             'WaterSourceData':{
                 'deviceName':deviceName,
-                'measurements':newMeasuments
+                'measurements':newMeasurements
             }
 
     })
