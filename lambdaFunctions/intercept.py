@@ -9,6 +9,9 @@ print('Loading function')
 
 
 def lambda_handler(event, context):
+
+
+
     print("Dump")
     print("Received event: " + json.dumps(event, indent=0))
     print("------> device: = " + event["deviceName"])
@@ -28,20 +31,35 @@ def lambda_handler(event, context):
     measurements=data["measurements"]
     print("ALL MEASUREMENTS ",measurements)
 
-
     print("before ",measurements[0]['value'])
     # measurements[0]['value']=12.9
     print("ALL MEASUREMENTS ",measurements)
 
-    # newMeasuments=[]
-    # for x in range(len(measurements)):
-    #     helper=Decimal(measurements[x]['value'])
-    #     newMeasuments.append(
-    #         {'type':measurements[x]['type'],
-    #     'value':helper,
-    #     'unitOfMeasurement':measurements[x]['unitOfMeasurement'],
-    #     'deviceDateTime':measurements[x]['deviceDateTime']
-    #     })
+    #GETTING PREVIOUS ITEM FOR KALMAN
+    print("GETTING ITEM")
+    gettem = table.query(KeyConditionExpression=Key('deviceName').eq(deviceName),Limit=1,ScanIndexForward=False)
+    print(gettem['Items'])
+
+
+    exists = ("Estimate" in gettem['Items'][0]["WaterSourceData"]["measurements"][0] or 'Estimate' in gettem['Items'][0]["WaterSourceData"]["measurements"][0])
+    print("TEST ",exists)
+
+
+    estimate=0
+    kalmanGain=0
+    estimateError=0
+    newMeasuments=[]
+    for x in range(len(measurements)):
+        helper=Decimal(measurements[x]['value'])
+        newMeasuments.append(
+            {'type':measurements[x]['type'],
+        'value':helper,
+        'unitOfMeasurement':measurements[x]['unitOfMeasurement'],
+        'deviceDateTime':measurements[x]['deviceDateTime'],
+        'Estimate': Decimal(estimate),
+        'KalmanGain': Decimal(kalmanGain),
+        'EstimateError': Decimal(estimateError)
+        })
 
 
     print("+++ADDING+++")
@@ -60,9 +78,4 @@ def lambda_handler(event, context):
 
     })
     print(response)
-    print("GETTING ITEM")
 
-    gettem = table.query(KeyConditionExpression=Key('deviceName').eq('D1'),Limit=1,ScanIndexForward=False)
-
-    # gettem = table.get_item(Key={'deviceName': 'D1'})
-    print(gettem['Items'])
