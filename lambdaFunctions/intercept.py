@@ -8,6 +8,17 @@ from decimal import Decimal
 print('Loading function')
 
 
+# kalman filter test implementation
+def kalmanGain(errorEstimate, errorMeasurement):
+  return errorEstimate/(errorEstimate + errorMeasurement)
+
+def estimate(prevEst, kalmanGain, currMeasurement):
+  return prevEst + kalmanGain*(currMeasurement - prevEst)
+
+def estError(kalmanGain, prevEstError):
+  return (1 - kalmanGain)*(prevEstError)
+
+
 def lambda_handler(event, context):
 
 
@@ -37,35 +48,65 @@ def lambda_handler(event, context):
 
     #GETTING PREVIOUS ITEM FOR KALMAN
     print("GETTING ITEM")
-    gettem = table.query(KeyConditionExpression=Key('deviceName').eq(deviceName),Limit=1,ScanIndexForward=False)
-    print(gettem['Items'])
+    prevItem = table.query(KeyConditionExpression=Key('deviceName').eq(deviceName),Limit=1,ScanIndexForward=False)
+    print("LEEEENGTH: ",len(prevItem['Items']))
 
+    # print(prevItem['Items'][0])
 
-    exists = ("Estimate" in gettem['Items'][0]["WaterSourceData"]["measurements"][0] or 'Estimate' in gettem['Items'][0]["WaterSourceData"]["measurements"][0])
+    prevMeasurements=None
+    exists=False
+    if not table.item_count == 0 and not len(prevItem['Items'])==0:
+        prevItem=prevItem['Items'][0]
+        exists = ("EstimateValue" in prevItem["WaterSourceData"]["measurements"][0] or 'EstimateValue' in prevItem["WaterSourceData"]["measurements"][0])
+        prevMeasurements = prevItem["WaterSourceData"]["measurements"]
+
     print("TEST ",exists)
 
 
-    estimate=0
-    kalmanGain=0
-    estimateError=0
-    newMeasuments=[]
+    newMeasurements=[]
     for x in range(len(measurements)):
+
+        val=measurements[x]['value']
+
+        #KALMAN ALG
+
+        currMeasurementError = 4
+        initialEstimateError = 2
+        initialEstimate = val + 4
+
+        EST=0
+        EST_ERR=0
+
+        if not exists:
+            KG = kalmanGain(initialEstimateError, currMeasurementError)
+            EST = estimate(initialEstimate, KG, val)
+            EST_ERR = estError(KG, initialEstimateError)
+        else:
+            prevMeasurementSet=prevMeasurements[x]
+            prevErrorEstimate=prevMeasurementSet['EstimateError']
+            prevEstimate=prevMeasurementSet['EstimateValue']
+
+            KG = kalmanGain(prevErrorEstimate, currMeasurementError)
+            EST = estimate(prevEstimate, KG, val)
+            EST_ERR = estError(KG, prevErrorEstimate)
+
+
+
         helper=Decimal(measurements[x]['value'])
-        newMeasuments.append(
+        newMeasurements.append(
             {'type':measurements[x]['type'],
         'value':helper,
         'unitOfMeasurement':measurements[x]['unitOfMeasurement'],
         'deviceDateTime':measurements[x]['deviceDateTime'],
-        'Estimate': Decimal(estimate),
-        'KalmanGain': Decimal(kalmanGain),
-        'EstimateError': Decimal(estimateError)
+        'EstimateValue': Decimal(str(EST)),
+        'EstimateError': Decimal(str(EST_ERR))
         })
 
 
     print("+++ADDING+++")
 
     # newMeasuments = json.loads(json.dumps(newMeasuments), parse_float=Decimal)
-    print(measurements)
+    print(newMeasurements)
     date=str(int(time.time()))
     print(date)
     response = table.put_item(
@@ -73,7 +114,7 @@ def lambda_handler(event, context):
             'timestamp':date,
             'WaterSourceData':{
                 'deviceName':deviceName,
-                'measurements':measurements
+                'measurements':newMeasurements
             }
 
     })
