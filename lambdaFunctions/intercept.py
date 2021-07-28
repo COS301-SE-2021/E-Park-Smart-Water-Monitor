@@ -79,3 +79,32 @@ def lambda_handler(event, context):
     })
     print(response)
 
+
+# # kalman filter test implementation
+# def kalmanGain(errorEstimate, errorMeasurement):
+#   return errorEstimate/(errorEstimate + errorMeasurement)
+#
+# def estimate(prevEst, kalmanGain, currMeasurement):
+#   return prevEst + kalmanGain*(currMeasurement - prevEst)
+#
+# def estError(kalmanGain, prevEstError):
+#   return (1 - kalmanGain)*(prevEstError)
+#
+#
+# def kalmanAlg(measurement):
+#   currMeasurementError = 4
+#   initialEstimateError = 2
+#   initialEstimate = measurement + 4
+#
+#   if previousEntryVals == -1:
+#     KG = kalmanGain(initialEstimateError, currMeasurementError)
+#     EST = estimate(initialEstimate, KG, measurement)
+#     EST_ERR = estError(KG, initialEstimateError)
+#   else:
+#     KG = kalmanGain(prevErrorEstimate, currMeasurementError)
+#     EST = estimate(prevEstimate, KG, measurement)
+#     EST_ERR = estError(KG, prevEstimateError)
+#
+#   #add calculated values to json object
+#
+# kalmanAlg(measurements)
