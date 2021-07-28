@@ -98,8 +98,8 @@ def lambda_handler(event, context):
         'value':helper,
         'unitOfMeasurement':measurements[x]['unitOfMeasurement'],
         'deviceDateTime':measurements[x]['deviceDateTime'],
-        'EstimateValue': Decimal(EST),
-        'EstimateError': Decimal(EST_ERR)
+        'EstimateValue': Decimal(str(EST)),
+        'EstimateError': Decimal(str(EST_ERR))
         })
 
 
