@@ -68,10 +68,10 @@ const ParkTable = (props) => {
             hoverStyle = {cursor: 'default'}
         }
 
-        axios.get('http://localhost:8080/api/park/getAllParks').then((res)=>{
-            const m = res.data.allParks.map((park) =>
+        axios.get('http://localhost:8080/api/park/getAllParksAndSites').then((res)=>{
+            const m = res.data.parks.map((park) =>
                 <TableRow key={ park.id }
-                    onClick={ handleParkSelection(park) }
+                    onClick={ handleParkSelection(park) } // send through the whole park object
                     style={hoverStyle}
                     onMouseEnter={toggleHover}
                     onMouseLeave={toggleHover}

@@ -50,53 +50,47 @@ const SiteTable = (props) => {
 
     useEffect(() => {
 
+        // get all sites from the park object
 
-
-        if(props.park.id)
+        if(props.park)
         {
-            let parkID = {
-                parkId: props.park.id // use props park_id instead
-            }
-
-            axios.post('http://localhost:8080/api/park/getParkWaterSites', parkID).then((res)=>{
-                const m = res.data.site.map((site) =>
-                    <TableRow key={ site.id } >
-                        <TableCell
-                            classes={{
-                                root:
-                                    classes.tableCellRoot +
-                                    " " +
-                                    classes.tableCellRootBodyHead,
-                            }}
-                            scope="row"
-                            style={{verticalAlign:'middle', width:'80%'}}
-                        >
-                            {site.waterSiteName}
-                        </TableCell>
-                        <TableCell classes={{ root: classes.tableCellRoot }}
-                                   style={{verticalAlign:'middle'}}>
-                            <Tooltip title="Edit" arrow>
-                                <IconButton aria-label="edit"
-                                            onClick={() => { setShowEdit(true); setSite(site)}}
-                                >
-                                    <EditIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </TableCell>
-                        <TableCell classes={{ root: classes.tableCellRoot }}
-                                   style={{verticalAlign:'middle'}}>
-                            <Tooltip title="Delete" arrow>
-                                <IconButton aria-label="delete"
-                                            onClick={ removeSite(site.id) }
-                                >
-                                    <DeleteIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </TableCell>
-                    </TableRow>
-                );
-                setResponse(m);
-            });
+            const m = props.park.parkWaterSites.map((site) =>
+                <TableRow key={ site.id } >
+                    <TableCell
+                        classes={{
+                            root:
+                                classes.tableCellRoot +
+                                " " +
+                                classes.tableCellRootBodyHead,
+                        }}
+                        scope="row"
+                        style={{verticalAlign:'middle', width:'80%'}}
+                    >
+                        {site.waterSiteName}
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle'}}>
+                        <Tooltip title="Edit" arrow>
+                            <IconButton aria-label="edit"
+                                        onClick={() => { setShowEdit(true); setSite(site)}}
+                            >
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </TableCell>
+                    <TableCell classes={{ root: classes.tableCellRoot }}
+                               style={{verticalAlign:'middle'}}>
+                        <Tooltip title="Delete" arrow>
+                            <IconButton aria-label="delete"
+                                        onClick={ removeSite(site.id) }
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </TableCell>
+                </TableRow>
+            );
+            setResponse(m);
         }
 
     },[props.park])
