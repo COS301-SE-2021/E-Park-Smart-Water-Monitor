@@ -9,9 +9,8 @@ import Container from "@material-ui/core/Container";
 import DeviceTable from "../../components/Admin/Device/DeviceTable";
 import ParkTable from "../../components/Admin/Park/ParkTable";
 import InspectionTable from "components/Admin/Inspection/InspectionTable";
-import Stats from "../../components/Admin/Stats/Stats";
 import SiteTable from "../../components/Admin/Site/SiteTable";
-
+import { AdminProvider } from '../../components/Admin/AdminContext'
 
 const useStyles = makeStyles(componentStyles);
 const parkAndSitesStyle = {
@@ -31,56 +30,56 @@ function Admin() {
 
     return (
         <>
-            <AdminHeader/>
+            <AdminProvider value={ objects }>
+                <AdminHeader/>
 
-            <Container
-                maxWidth={false}
-                component={Box}
-                marginTop="-1rem"
-                classes={{ root: classes.containerRoot }}
-            >
-                <Grid container>
-                    <Grid
-                        item
-                        xs={12}
-                        xl={12}
-                        component={Box}
-                        marginBottom="3rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        <UserTable/>
-                        <DeviceTable/>
-                        <InspectionTable/>
+                <Container
+                    maxWidth={false}
+                    component={Box}
+                    marginTop="-1rem"
+                    classes={{ root: classes.containerRoot }}
+                >
+                    <Grid container>
+                        <Grid
+                            item
+                            xs={12}
+                            xl={12}
+                            component={Box}
+                            marginBottom="3rem!important"
+                            classes={{ root: classes.gridItemRoot }}
+                        >
+                            <UserTable/>
+                            <DeviceTable/>
+                            <InspectionTable/>
+                        </Grid>
+
+                        <Grid
+                            item
+                            xs={12}
+                            xl={5}
+                            component={Box}
+                            marginBottom="3rem!important"
+                            classes={{ root: classes.gridItemRoot }}
+
+                        >
+                            <ParkTable select={ selectPark }/>
+                        </Grid>
+
+                        {/* Sites altered on the change of park */}
+                        <Grid
+                            item
+                            xs={12}
+                            xl={7}
+                            component={Box}
+                            marginBottom="3rem!important"
+                            classes={{ root: classes.gridItemRoot }}
+                        >
+                            <SiteTable park={ park }/>
+                        </Grid>
+
                     </Grid>
-
-                    <Grid
-                        item
-                        xs={12}
-                        xl={5}
-                        component={Box}
-                        marginBottom="3rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-
-                    >
-                        <ParkTable select={ selectPark }/>
-                    </Grid>
-
-                    {/* Sites altered on the change of park */}
-                    <Grid
-                        item
-                        xs={12}
-                        xl={7}
-                        component={Box}
-                        marginBottom="3rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        <SiteTable park={ park }/>
-                    </Grid>
-
-
-                </Grid>
-            </Container>
-
+                </Container>
+            </AdminProvider>
         </>
     );
 }

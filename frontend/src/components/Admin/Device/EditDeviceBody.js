@@ -23,6 +23,15 @@ const mapStyles = {
 };
 
 const EditDeviceBody = (props) => {
+
+    // retrieved items from the DB to populate the select components
+    const [parkOptions, setParkOptions] = useState("")
+    const [siteOptions, setSiteOptions] = useState("")
+    const [siteLoading, setSiteLoading] = useState(true)
+    const [parkLoading, setParkLoading] = useState(true)
+
+    // park must be selected before the site can be selected to maintain validity
+
     const [name, setName] = useState("")
     const [park, setPark] = useState("") // id and name stored
     const [site, setSite] = useState("") // id and name stored
@@ -50,7 +59,12 @@ const EditDeviceBody = (props) => {
         {
             // device edit request
             let obj = {
-
+                parkName: park,
+                siteId: site,
+                deviceModel: model,
+                deviceName: name,
+                latitude: latitude,
+                longitude: longitude
             }
 
 

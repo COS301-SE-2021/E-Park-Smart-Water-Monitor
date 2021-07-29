@@ -39,6 +39,7 @@ const AddDeviceBody = () => {
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
 
+    // get the parks to populate the select
     useEffect(() => {
         setParkLoading(true)
         axios.get('http://localhost:8080/api/park/getAllParks'
