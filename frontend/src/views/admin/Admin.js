@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import AdminHeader from "../../components/Headers/AdminHeader";
 import UserTable from "../../components/Admin/User/UserTable";
 import Grid from "@material-ui/core/Grid";
@@ -11,6 +11,7 @@ import ParkTable from "../../components/Admin/Park/ParkTable";
 import InspectionTable from "components/Admin/Inspection/InspectionTable";
 import SiteTable from "../../components/Admin/Site/SiteTable";
 import { AdminProvider } from '../../components/Admin/AdminContext'
+import axios from "axios";
 
 const useStyles = makeStyles(componentStyles);
 const parkAndSitesStyle = {
@@ -22,15 +23,32 @@ const parkAndSitesStyle = {
 
 function Admin() {
     const classes = useStyles();
-    const [park, setPark] = useState("")
+    const [park, setPark] = useState("") // for passing from park table to site table
+    const [parks, setParks] = useState({}) // for initialising the context provider
 
     const selectPark = (details) => {
         setPark(details)
     }
 
+    // get all the park and site data to populate the park and site tables
+    // as well as the modals which require you select a park and a site
+    // context will be passed down to all the children which require it
+    // making load time faster and removes a lot of different API calls
+
+    // You can get more than just parks and populate the context with may API
+    // calls as they become necessary
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/park/getAllParksAndSites').then((res)=>{
+            if(res)
+            {
+                setParks(res.data)
+            }
+        });
+    },[])
+
     return (
         <>
-            <AdminProvider value={ objects }>
+            <AdminProvider value={ parks }>
                 <AdminHeader/>
 
                 <Container
