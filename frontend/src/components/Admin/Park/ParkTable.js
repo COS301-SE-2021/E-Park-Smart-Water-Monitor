@@ -105,7 +105,7 @@ const ParkTable = (props) => {
 
 
     }, [])
-    
+
 
     const handleParkSelection = (details) => {
         return function () {

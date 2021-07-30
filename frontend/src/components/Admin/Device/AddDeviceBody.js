@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Button, Form} from 'react-bootstrap';
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,6 +10,7 @@ import Col from "react-bootstrap/Col";
 import Select from "react-select";
 import axios from "axios";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
+import AdminContext from "../AdminContext";
 // import AdminModal from 'admin-modal.js'
 
 
@@ -39,8 +40,18 @@ const AddDeviceBody = () => {
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
 
+    // use the context supplied from the admin component to get the parks and sites
+    const parksAndSites = useContext(AdminContext)
+
     // get the parks to populate the select
     useEffect(() => {
+
+        if(parksAndSites)
+        {
+            alert(parksAndSites)
+        }
+
+
         setParkLoading(true)
         axios.get('http://localhost:8080/api/park/getAllParks'
         ).then((res)=>{

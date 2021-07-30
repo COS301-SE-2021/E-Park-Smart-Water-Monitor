@@ -25,10 +25,6 @@ function Admin() {
     const classes = useStyles();
     const [park, setPark] = useState("") // for passing from park table to site table
     const [parksAndSites, setParksAndSites] = useState(null) // all the parks and sites
-    // const [contextObj, setContextObj] = useState({
-    //     parks: [] // assign parks asn empty array
-    //     // can assign other elements later on
-    // }) // for initialising the context provider
 
     const selectPark = (details) => {
         setPark(details)
@@ -46,9 +42,7 @@ function Admin() {
     // to child components easily in future
 
     useEffect(() => {
-        alert("whoo")
         axios.get('http://localhost:8080/api/park/getAllParksAndSites').then((res)=>{
-            alert("now "+JSON.stringify(res))
             if(res)
             {
                 setParksAndSites(res.data)
@@ -60,76 +54,85 @@ function Admin() {
     // https://medium.com/nerd-for-tech/using-context-api-in-react-with-functional-components-dbc653c7d485
     // https://medium.com/@danfyfe/using-react-context-with-functional-components-153cbd9ba214
 
-    return (
-        <>
-            <AdminProvider value={ parksAndSites }>
+    if(parksAndSites === null){
+        return (
+            <>
                 <AdminHeader/>
+            </>
+        )
+    }
+    else {
+        return (
+            <>
+                <AdminProvider value={parksAndSites}>
+                    <AdminHeader/>
 
-                <Container
-                    maxWidth={false}
-                    component={Box}
-                    marginTop="-1rem"
-                    classes={{ root: classes.containerRoot }}
-                >
-                    <Grid container>
-                        <Grid
-                            item
-                            xs={12}
-                            xl={12}
-                            component={Box}
-                            marginBottom="3rem!important"
-                            classes={{ root: classes.gridItemRoot }}
-                        >
-                            <UserTable/>
-                            <DeviceTable/>
-                            <InspectionTable/>
-                        </Grid>
-
-                        { parksAndSites &&
-                        <Grid
-                            item
-                            xs={12}
-                            xl={5}
-                            component={Box}
-                            marginBottom="3rem!important"
-                            classes={{root: classes.gridItemRoot}}
-
-                        >
-                            <ParkTable select={selectPark}/>
-                        </Grid> }
-
-                        {/* Sites altered on the change of park */}
-                        { parksAndSites &&
-                        <Grid
-                            item
-                            xs={12}
-                            xl={7}
-                            component={Box}
-                            marginBottom="3rem!important"
-                            classes={{root: classes.gridItemRoot}}
+                    <Container
+                        maxWidth={false}
+                        component={Box}
+                        marginTop="-1rem"
+                        classes={{root: classes.containerRoot}}
+                    >
+                        <Grid container>
+                            <Grid
+                                item
+                                xs={12}
+                                xl={12}
+                                component={Box}
+                                marginBottom="3rem!important"
+                                classes={{root: classes.gridItemRoot}}
                             >
-                            <SiteTable park={park}/>
-                        </Grid>
-                        }
+                                <UserTable/>
+                                <DeviceTable/>
+                                <InspectionTable/>
+                            </Grid>
 
-                        { !parksAndSites &&
-                        <Grid
-                            item
-                            xs={12}
-                            xl={12}
-                            component={Box}
-                            marginBottom="3rem!important"
-                            classes={{root: classes.gridItemRoot}}
-                        >
-                            Loading Parks...
-                        </Grid>
-                        }
+                            {parksAndSites &&
+                            <Grid
+                                item
+                                xs={12}
+                                xl={5}
+                                component={Box}
+                                marginBottom="3rem!important"
+                                classes={{root: classes.gridItemRoot}}
 
-                    </Grid>
-                </Container>
-            </AdminProvider>
-        </>
-    );
+                            >
+                                <ParkTable select={selectPark}/>
+                            </Grid>}
+
+                            {/* Sites altered on the change of park */}
+                            {parksAndSites &&
+                            <Grid
+                                item
+                                xs={12}
+                                xl={7}
+                                component={Box}
+                                marginBottom="3rem!important"
+                                classes={{root: classes.gridItemRoot}}
+                            >
+                                <SiteTable park={park}/>
+                            </Grid>
+                            }
+
+                            {!parksAndSites &&
+                            <Grid
+                                item
+                                xs={12}
+                                xl={12}
+                                component={Box}
+                                marginBottom="3rem!important"
+                                classes={{root: classes.gridItemRoot}}
+                            >
+                                Loading Parks...
+                            </Grid>
+                            }
+
+                        </Grid>
+                    </Container>
+                </AdminProvider>
+            </>
+        );
+    }
 }
 
 export default Admin;
