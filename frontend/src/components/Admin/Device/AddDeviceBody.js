@@ -69,29 +69,7 @@ const AddDeviceBody = () => {
     // get sites for this park when the park selected changes
     useEffect(() => {
         if(park && park.value) {
-            // loading symbol of the select component
-            setSiteLoading(true)
-            //clear the current selection
-            setSite("")
-
-            axios.post('http://localhost:8080/api/park/getParkWaterSites',
-                {
-                    parkId: park.value
-                }
-            ).then((res) => {
-
-                let options = res.data.site.map((s) => {
-                    return {value: s.id, label: s.waterSiteName}
-                })
-                
-                setSiteOptions(options)
-                setSite(options[0])
-                setSiteLoading(false)
-
-
-            }).catch((res) => {
-                console.log("error getting water sites for park "+park.label)
-            });
+            
 
         }
     },[park])
