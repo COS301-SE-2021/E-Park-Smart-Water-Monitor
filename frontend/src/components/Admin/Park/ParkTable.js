@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -16,16 +15,14 @@ import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
 import Modal from "../../Modals/Modal";
-import disableScroll from "disable-scroll";
 import AddParkBody from "./AddParkBody";
 import axios from "axios";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditDeviceBody from "../Device/EditDeviceBody";
 import EditParkBody from "./EditParkBody";
 import {Tooltip} from "@material-ui/core";
-
+import AdminContext from '../AdminContext'
 
 
 const useStyles = makeStyles(componentStyles);
@@ -37,6 +34,78 @@ const ParkTable = (props) => {
     const [response, setResponse] = useState(false);
     const [park, setPark] = useState({});
     const [hover, setHover] = useState(true)
+    // const [parksAndSites, setParksAndSites] = useState({})
+
+    // get the parks context with the sites from the Admin parent component
+    // if you make this a state then the parent will rerender
+    const parksAndSites = (useContext( AdminContext ));
+
+    useEffect( () => {
+
+        let hoverStyle;
+        if (hover) {
+            hoverStyle = {cursor: 'pointer'}
+        } else {
+            hoverStyle = {cursor: 'default'}
+        }
+
+
+        let obj = null;
+
+        if (parksAndSites && parksAndSites.parks) {
+            obj = parksAndSites.parks.map((park) =>
+                <TableRow key={park.id}
+                          onClick={handleParkSelection(park)} // send through the whole park object
+                          style={hoverStyle}
+                          onMouseEnter={toggleHover}
+                          onMouseLeave={toggleHover}
+                >
+                    <TableCell
+                        classes={{
+                            root:
+                                classes.tableCellRoot +
+                                " " +
+                                classes.tableCellRootBodyHead,
+                        }}
+                        scope="row"
+                        style={{verticalAlign: 'middle', width: '80%'}}
+                    >
+                        {park.parkName}
+                    </TableCell>
+                    <TableCell classes={{root: classes.tableCellRoot}}
+                               style={{verticalAlign: 'middle'}}>
+                        <Tooltip title="Edit" arrow>
+                            <IconButton aria-label="edit"
+                                        onClick={() => {
+                                            setShowEdit(true);
+                                            setPark(park)
+                                        }}
+                            >
+                                <EditIcon/>
+                            </IconButton>
+                        </Tooltip>
+                    </TableCell>
+                    <TableCell classes={{root: classes.tableCellRoot}}
+                               style={{verticalAlign: 'middle'}}>
+                        <Tooltip title="Delete" arrow>
+                            <IconButton aria-label="delete"
+                                        onClick={removePark(park.id)}
+                            >
+                                <DeleteIcon/>
+                            </IconButton>
+                        </Tooltip>
+                    </TableCell>
+                </TableRow>
+            )
+
+            setResponse(obj)
+        }else{
+            alert("error the parks table")
+        }
+
+
+    }, [])
+    
 
     const handleParkSelection = (details) => {
         return function () {
@@ -59,61 +128,6 @@ const ParkTable = (props) => {
         setHover(!hover)
     }
 
-    useEffect(() => {
-
-        let hoverStyle;
-        if (hover) {
-            hoverStyle = {cursor: 'pointer'}
-        } else {
-            hoverStyle = {cursor: 'default'}
-        }
-
-        axios.get('http://localhost:8080/api/park/getAllParksAndSites').then((res)=>{
-            const m = res.data.parks.map((park) =>
-                <TableRow key={ park.id }
-                    onClick={ handleParkSelection(park) } // send through the whole park object
-                    style={hoverStyle}
-                    onMouseEnter={toggleHover}
-                    onMouseLeave={toggleHover}
-                >
-                    <TableCell
-                        classes={{
-                            root:
-                                classes.tableCellRoot +
-                                " " +
-                                classes.tableCellRootBodyHead,
-                        }}
-                        scope="row"
-                        style={{verticalAlign:'middle', width:'80%'}}
-                    >
-                        {park.parkName}
-                    </TableCell>
-                    <TableCell classes={{ root: classes.tableCellRoot }}
-                               style={{verticalAlign:'middle'}}>
-                        <Tooltip title="Edit" arrow>
-                            <IconButton aria-label="edit"
-                                        onClick={() => { setShowEdit(true); setPark(park)}}
-                            >
-                                <EditIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </TableCell>
-                    <TableCell classes={{ root: classes.tableCellRoot }}
-                               style={{verticalAlign:'middle'}}>
-                        <Tooltip title="Delete" arrow>
-                            <IconButton aria-label="delete"
-                                        onClick={ removePark(park.id) }
-                            >
-                                <DeleteIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </TableCell>
-                </TableRow>
-            );
-            setResponse(m);
-        });
-
-    },[])
 
     return (
         <>
@@ -180,7 +194,8 @@ const ParkTable = (props) => {
                                 >
                                     <TableBody>
 
-                                        {response}
+                                        {/*{ renderParks(parksAndSites) }*/}
+                                        { response }
 
                                     </TableBody>
                                 </Box>
