@@ -52,11 +52,11 @@ const AddDeviceBody = () => {
         }
 
 
-        setParkLoading(true)
-        axios.get('http://localhost:8080/api/park/getAllParks'
-        ).then((res)=>{
+        // setParkLoading(true)
+        // axios.get('http://localhost:8080/api/park/getAllParks'
+        // ).then((res)=>{
 
-            let options = res.data.allParks.map((p)=>{
+            let options = parksAndSites.parks.map((p)=>{
                 return {value: p.id, label: p.parkName}
             })
 
@@ -65,12 +65,12 @@ const AddDeviceBody = () => {
             // set the defult park option to the first item
             setPark(options[0])
             // stop the loading symbol
-            setParkLoading(false)
+            // setParkLoading(false)
 
 
-        }).catch((res)=>{
-            console.log("response:"+JSON.stringify(res))
-        });
+        // }).catch((res)=>{
+        //     console.log("response:"+JSON.stringify(res))
+        // });
     },[])
 
     // get sites for this park when the park selected changes
