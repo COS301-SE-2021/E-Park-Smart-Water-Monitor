@@ -46,31 +46,24 @@ const AddDeviceBody = () => {
     // get the parks to populate the select
     useEffect(() => {
 
-        if(parksAndSites)
-        {
-            alert(parksAndSites)
-        }
+        let options = parksAndSites.parks.map((p)=>{
+            return {value: p.id, label: p.parkName}
+        })
 
+        //set all park options in select
+        setParkOptions(options)
+        // set the defult park option to the first item
+        setPark(options[0])
 
-        // setParkLoading(true)
-        // axios.get('http://localhost:8080/api/park/getAllParks'
-        // ).then((res)=>{
+        // get the first park which is displayed to populate the site options
+        options = parksAndSites.parks[0].parkWaterSites.map((s) => {
+            return {value: s.id, label: s.waterSiteName}
+        })
 
-            let options = parksAndSites.parks.map((p)=>{
-                return {value: p.id, label: p.parkName}
-            })
+        // set site to the topmost park
+        setSiteOptions(options)
+        setSite(options[0])
 
-            //set all park options in select
-            setParkOptions(options)
-            // set the defult park option to the first item
-            setPark(options[0])
-            // stop the loading symbol
-            // setParkLoading(false)
-
-
-        // }).catch((res)=>{
-        //     console.log("response:"+JSON.stringify(res))
-        // });
     },[])
 
     // get sites for this park when the park selected changes
