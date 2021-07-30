@@ -29,8 +29,6 @@ const AddDeviceBody = () => {
     // retrieved items from the DB to populate the select components
     const [parkOptions, setParkOptions] = useState("")
     const [siteOptions, setSiteOptions] = useState("")
-    const [siteLoading, setSiteLoading] = useState(true)
-    const [parkLoading, setParkLoading] = useState(true)
 
     // selected/provided items by the user
     const [name, setName] = useState("")
@@ -43,6 +41,25 @@ const AddDeviceBody = () => {
     // use the context supplied from the admin component to get the parks and sites
     const parksAndSites = useContext(AdminContext)
 
+    const assignSiteOptions = (selectedPark) => {
+
+        alert(JSON.stringify(selectedPark))
+
+        if(selectedPark && selectedPark.parkWaterSites)
+        {
+            let options = selectedPark.parkWaterSites.map((s) => {
+                return {value: s.id, label: s.waterSiteName}
+            })
+
+            // set site to the topmost park
+            setSiteOptions(options)
+            setSite(options[0])
+        }else{
+            console.log("park watersites cannot be obtained")
+        }
+
+    }
+
     // get the parks to populate the select
     useEffect(() => {
 
@@ -52,24 +69,21 @@ const AddDeviceBody = () => {
 
         //set all park options in select
         setParkOptions(options)
-        // set the defult park option to the first item
+        // set the defult park option to the first item, will cause other useEffect to be sparked
         setPark(options[0])
 
-        // get the first park which is displayed to populate the site options
-        options = parksAndSites.parks[0].parkWaterSites.map((s) => {
-            return {value: s.id, label: s.waterSiteName}
-        })
-
-        // set site to the topmost park
-        setSiteOptions(options)
-        setSite(options[0])
 
     },[])
 
     // get sites for this park when the park selected changes
     useEffect(() => {
         if(park && park.value) {
-            
+
+            // find the park object in the parksAndSites
+            // object using the park ID to retreive the
+            // relevant sites to display
+            let selectedPark = parksAndSites.parks.filter( p => p.id === park.value )
+            assignSiteOptions(selectedPark[0])
 
         }
     },[park])
@@ -111,13 +125,13 @@ const AddDeviceBody = () => {
                 <Row>
                     <Col>
                         <Form.Label>Park</Form.Label>
-                        <Select required={"required"} isLoading={parkLoading} className="mb-3" name="park" options={ parkOptions } value={park} onChange={e => setPark(e)}/>
+                        <Select required={"required"} className="mb-3" name="park" options={ parkOptions } value={park} onChange={e => setPark(e)}/>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
                         <Form.Label>Site</Form.Label>
-                        <Select required={"required"} isLoading={siteLoading} className="mb-3" name="site" options={ siteOptions } value={site} onChange={e => setSite(e)}/>
+                        <Select required={"required"}  className="mb-3" name="site" options={ siteOptions } value={site} onChange={e => setSite(e)}/>
                     </Col>
                 </Row>
                 <Row>
