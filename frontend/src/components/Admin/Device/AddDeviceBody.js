@@ -1,9 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Button, Form} from 'react-bootstrap';
-
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
-import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addDevice.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -11,11 +7,7 @@ import Select from "react-select";
 import axios from "axios";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import AdminContext from "../AdminContext";
-// import AdminModal from 'admin-modal.js'
 
-
-
-const useStyles = makeStyles(componentStyles);
 
 const mapStyles = {
     width: `100%`,
@@ -23,8 +15,6 @@ const mapStyles = {
 };
 
 const AddDeviceBody = () => {
-    const classes = useStyles();
-    const theme = useTheme();
 
     // retrieved items from the DB to populate the select components
     const [parkOptions, setParkOptions] = useState("")
@@ -42,8 +32,6 @@ const AddDeviceBody = () => {
     const parksAndSites = useContext(AdminContext)
 
     const assignSiteOptions = (selectedPark) => {
-
-        alert(JSON.stringify(selectedPark))
 
         if(selectedPark && selectedPark.parkWaterSites)
         {
@@ -71,7 +59,6 @@ const AddDeviceBody = () => {
         setParkOptions(options)
         // set the defult park option to the first item, will cause other useEffect to be sparked
         setPark(options[0])
-
 
     },[])
 

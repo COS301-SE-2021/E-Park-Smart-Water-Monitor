@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -14,6 +14,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
 import {Marker, Popup} from "react-leaflet";
+import AdminContext from "../AdminContext";
 const { Form } = require( "react-bootstrap" );
 
 
@@ -37,25 +38,19 @@ const AddUserBody = () => {
         { value: 'RANGER', label: 'Ranger' }
     ];
 
+    const parksAndSites = useContext(AdminContext)
+    
 
     useEffect(() => {
-        // get the parks for populating the select component
-        axios.get('http://localhost:8080/api/park/getAllParks'
-        ).then((res)=>{
+        let options = parksAndSites.parks.map((p)=>{
+            return {value: p.id, label: p.parkName}
+        })
 
-            let options = res.data.allParks.map((p)=>{
-                return {value: p.id, label: p.parkName}
-            })
+        setParkOptions(options)
 
-            setParkOptions(options)
-
-            // set the defualt roles and parks on the model
-            setRole(userRoles[0])
-            setPark(options[0])
-
-        }).catch((res)=>{
-            console.log(JSON.stringify(res))
-        });
+        // set the defualt roles and parks on the model
+        setRole(userRoles[0])
+        setPark(options[0])
     },[])
 
 
