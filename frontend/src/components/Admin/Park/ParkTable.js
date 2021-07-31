@@ -34,7 +34,7 @@ const ParkTable = (props) => {
     const [response, setResponse] = useState(false);
     const [park, setPark] = useState({});
     const [hover, setHover] = useState(true)
-    // const [parksAndSites, setParksAndSites] = useState({})
+    const [value, setValue] = useState(0);
 
     // get the parks context with the sites from the Admin parent component
     // if you make this a state then the parent will rerender
@@ -104,7 +104,7 @@ const ParkTable = (props) => {
         }
 
 
-    }, [])
+    }, [parksAndSites])
 
 
     const handleParkSelection = (details) => {
@@ -113,13 +113,21 @@ const ParkTable = (props) => {
         }
     }
 
-    // on delete of a device
+    // on delete of a park
     const removePark = (id) => {
         return ()=>{
-            axios.get('http://localhost:8080/api/device/deletePark', {
-                id: id
+            alert("removing "+id)
+            axios.delete('http://localhost:8080/api/park/deletePark', {
+                data: {
+                    parkId: id
+                }
             }).then((res)=> {
-                window.location.reload()
+                // window.location.reload()
+                alert("forcing update")
+                setValue(value => value+1 ) // returns an updated value
+            }).catch((res)=>{
+                alert("didn't work")
+                console.log(JSON.stringify(res))
             })
         }
     }

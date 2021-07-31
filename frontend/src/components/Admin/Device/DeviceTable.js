@@ -41,15 +41,22 @@ const DeviceTable = () => {
     const [show, setShow] = useState(false);
     const [response, setResponse] = useState([]);
     const [device, setDevice] = useState({});
-
+    const [value, setValue] = useState(0);
 
     // on delete of a device
     const removeDevice = (id) => {
         return ()=>{
-            axios.get('http://localhost:8080/api/device/deleteDevice', {
-                id: id
+            alert("removing "+id)
+            axios.delete('http://localhost:8080/api/devices/deleteDevice', {
+                data: {
+                         id: id
+                      }
             }).then((res)=> {
-                window.location.reload()
+                // window.location.reload()
+                alert("forcing update")
+                setValue(value => value+1 ) // returns an updated value
+            }).catch((res)=>{
+                JSON.stringify(res)
             })
         }
     }
@@ -88,7 +95,7 @@ const DeviceTable = () => {
                                style={{verticalAlign: 'middle'}}>
                         <Tooltip title="Delete" arrow>
                             <IconButton aria-label="delete"
-                                        onClick={ removeDevice(device.id) }>
+                                        onClick={ removeDevice(device.deviceId) }>
                                 <DeleteIcon />
                             </IconButton>
                         </Tooltip>
@@ -109,7 +116,7 @@ const DeviceTable = () => {
             setResponse(m);
         });
 
-    },[])
+    },[value])
 
 
     return (
