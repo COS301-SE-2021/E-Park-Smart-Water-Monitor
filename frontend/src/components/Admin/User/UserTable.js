@@ -39,6 +39,12 @@ const UserTable = () => {
     const [showEdit, setShowEdit] = useState(false);
     const [response, setResponse] = useState([]);
     const [user, setUser] = useState({});
+    // for reloads of the component values
+    const [value, setValue] = useState(0);
+
+    const reloadUserTable = () => {
+        setValue(value => value+1)
+    }
 
     // on delete of a user
     const removeUser = (id) => {
@@ -46,7 +52,7 @@ const UserTable = () => {
             axios.post('http://localhost:8080/api/user/deleteUser', {
                 id: id
             }).then((res)=> {
-                window.location.reload()
+                reloadUserTable()
             })
         }
     }

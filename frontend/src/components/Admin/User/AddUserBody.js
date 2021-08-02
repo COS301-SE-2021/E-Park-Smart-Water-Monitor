@@ -73,7 +73,9 @@ const AddUserBody = () => {
         axios.post('http://localhost:8080/api/user/createUser', obj
         ).then((res)=>{
 
-            window.location.reload()
+            //window.location.reload()
+
+
 
         }).catch((res)=>{
             console.log("response:"+JSON.stringify(res))

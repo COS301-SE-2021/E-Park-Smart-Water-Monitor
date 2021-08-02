@@ -64,7 +64,7 @@ const DeviceTable = () => {
     useEffect(() => {
         // get all users
         axios.get('http://localhost:8080/api/devices/getAllDevices').then((res)=>{
-            console.log(res.data.site[0])
+            // console.log(res.data.site[0])
             const m = res.data.site.map((device) =>
                 <TableRow key={ device.deviceId } >
                     <TableCell

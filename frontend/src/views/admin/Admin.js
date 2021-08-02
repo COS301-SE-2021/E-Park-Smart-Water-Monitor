@@ -47,7 +47,7 @@ function Admin() {
             {
                 setParksAndSites(res.data)
             }
-        });
+        });  
     },[])
 
     // Context explained

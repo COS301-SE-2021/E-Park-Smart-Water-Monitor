@@ -100,11 +100,12 @@ const ParkTable = (props) => {
 
             setResponse(obj)
         }else{
-            alert("error the parks table")
+            alert("error parksAndSites not loaded, it contains: "+ JSON.stringify(parksAndSites))
         }
 
 
-    }, [parksAndSites])
+    }, [])
+
 
 
     const handleParkSelection = (details) => {
