@@ -3,28 +3,23 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.EditDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.EditDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.DeleteParkResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.SaveParkResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.WaterSiteRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.CanAttachWaterSourceDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.SaveSiteRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AddSiteResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWaterSourceDeviceResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.CanAttachWaterSourceDeviceResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.SaveSiteResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -105,17 +100,17 @@ public class WaterSiteServicesImpl implements WaterSiteService
             response = new AttachWaterSourceDeviceResponse("No id specified", false);
             return response;
         }
-        if (request.getWaterSourceDevice()==null){
+        if (request.getDevice()==null){
             response = new AttachWaterSourceDeviceResponse("No device specified", false);
             return response;
         }
-        if (request.getWaterSourceDevice().getDeviceId()==null){
+        if (request.getDevice().getDeviceId()==null){
             response = new AttachWaterSourceDeviceResponse("No device id specified", false);
             return response;
         }
         Optional<WaterSite> siteToAddTo = waterSiteRepo.findById(request.getSiteId());
         if (siteToAddTo.isPresent()){
-            siteToAddTo.get().addWaterSourceDevice(request.getWaterSourceDevice());
+            siteToAddTo.get().addWaterSourceDevice(request.getDevice());
             waterSiteRepo.save(siteToAddTo.get());
             response= new AttachWaterSourceDeviceResponse("Successfully attached device to site!",true);
         }else{
@@ -157,4 +152,49 @@ public class WaterSiteServicesImpl implements WaterSiteService
         }
     }
 
+    @Override
+    public DeleteWaterSiteResponse deleteWaterSite(DeleteWaterSiteRequest request) {
+        if (request.getWaterSiteId() == null) {
+            return new DeleteWaterSiteResponse("No watersite id specified.", false);
+        }
+        Optional<WaterSite> waterSite = waterSiteRepo.findById(request.getWaterSiteId());
+
+        if (waterSite.isPresent()) {
+            waterSiteRepo.deletEntireWaterSite(waterSite.get().getId());
+            return new DeleteWaterSiteResponse("Successfully deleted the watersite and all related entities.", true);
+        }
+        return new DeleteWaterSiteResponse("No watersite with this id exists.", false);
+    }
+
+    @Override
+    public EditWaterSiteResponse editWaterSite(EditWaterSiteRequest request) {
+
+        EditWaterSiteResponse response = new EditWaterSiteResponse();
+        if (request.getId() != null) {
+            Optional<WaterSite> waterSiteToEdit = waterSiteRepo.findById(request.getId());
+            if (waterSiteToEdit.isPresent()) {
+                if (!request.getSiteName().equals("")) {
+                    waterSiteToEdit.get().setWaterSiteName(request.getSiteName());
+                }
+                if (request.getLatitude() != 0) {
+                    waterSiteToEdit.get().setLatitude(request.getLatitude());
+                }
+                if (request.getLongitude() != 0) {
+                    waterSiteToEdit.get().setLongitude(request.getLongitude());
+                }
+                response.setStatus("Watersite successfully edited.");
+                response.setSuccess(true);
+                waterSiteRepo.save(waterSiteToEdit.get());
+            }
+            else {
+                response.setStatus("Watersite does not exist.");
+                response.setSuccess(false);
+            }
+        }
+        else {
+            response.setStatus("No watersite id specified");
+            response.setSuccess(false);
+        }
+        return response;
+    }
 }

@@ -1,16 +1,15 @@
-package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses;
+package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses;
 
-public class AddWaterSourceDeviceResponse {
-
+public class EditWaterSiteResponse {
     private String status;
     private Boolean success;
 
-    public AddWaterSourceDeviceResponse(String status, Boolean success) {
+    public EditWaterSiteResponse(String status, Boolean success) {
         this.status = status;
         this.success = success;
     }
 
-    public AddWaterSourceDeviceResponse() {
+    public EditWaterSiteResponse() {
     }
 
     public String getStatus() {

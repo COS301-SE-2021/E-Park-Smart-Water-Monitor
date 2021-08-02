@@ -1,31 +1,15 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses;
 
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
-
-public class FindDeviceResponse
-{
-
+public class SetMetricFrequencyResponse {
     private String status;
     private Boolean success;
-    private Device device;
 
-    public FindDeviceResponse(String status, Boolean success, Device device)
-    {
+    public SetMetricFrequencyResponse(String status, Boolean success) {
         this.status = status;
         this.success = success;
-        this.device = device;
     }
 
-    public FindDeviceResponse()
-    {
-    }
-
-    public Device getDevice() {
-        return device;
-    }
-
-    public void setDevice(Device device) {
-        this.device = device;
+    public SetMetricFrequencyResponse() {
     }
 
     public String getStatus() {
@@ -43,5 +27,4 @@ public class FindDeviceResponse
     public void setSuccess(Boolean success) {
         this.success = success;
     }
-
 }

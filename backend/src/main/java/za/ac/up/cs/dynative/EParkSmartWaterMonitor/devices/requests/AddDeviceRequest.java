@@ -4,28 +4,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
 
-public class AddWaterSourceDeviceRequest {
+public class AddDeviceRequest {
 
 
     private UUID deviceId;
     private UUID siteId;
     private String  deviceModel;
     private String  deviceName;
+    private String  deviceType;
     private double  longitude;
     private double  latitude;
     private String parkName;
 
 
 
-    public AddWaterSourceDeviceRequest(@JsonProperty("parkName") String parkName,
-                                       @JsonProperty("siteId") UUID siteId,
-                                       @JsonProperty("deviceModel") String deviceModel,
-                                       @JsonProperty("deviceName") String deviceName,
-                                       @JsonProperty("longitude") double longitude,
-                                       @JsonProperty("latitude") double latitude) {
+    public AddDeviceRequest(@JsonProperty("parkName") String parkName,
+                            @JsonProperty("siteId") UUID siteId,
+                            @JsonProperty("deviceModel") String deviceModel,
+                            @JsonProperty("deviceName") String deviceName,
+                            @JsonProperty("deviceType") String deviceType,
+                            @JsonProperty("longitude") double longitude,
+                            @JsonProperty("latitude") double latitude) {
         this.deviceId       =   UUID.randomUUID();
         this.deviceModel    =   deviceModel;
         this.deviceName     =   deviceName;
+        this.deviceType     =   deviceType;
         this.longitude      =   longitude;
         this.latitude       =   latitude;
         this.parkName       =   parkName;
@@ -34,6 +37,14 @@ public class AddWaterSourceDeviceRequest {
 
     public UUID getSiteId() {
         return siteId;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
     }
 
     public void setSiteId(UUID siteId) {
