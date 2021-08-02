@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -14,6 +14,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
 import {Marker, Popup} from "react-leaflet";
+import AdminContext from "../AdminContext";
 const { Form } = require( "react-bootstrap" );
 
 
@@ -34,6 +35,9 @@ const EditUserBody = (props) => {
     const [cellNumber, setCellNumber] = useState("")
     const [parkOptions, setParkOptions] = useState("")
     const [error, setError] = useState("")
+
+    const context = useContext(AdminContext)
+    const toggleLoading = context.toggleLoading
 
     let userRoles = [
         { value: 'ADMIN', label: 'Admin' },
@@ -77,6 +81,8 @@ const EditUserBody = (props) => {
     const submit = (e) => {
         e.preventDefault()
 
+        toggleLoading()
+
         if(props && props.userDetails)
         {
             // accomodate for provided email is already in use error
@@ -115,7 +121,7 @@ const EditUserBody = (props) => {
                     setError(res.data.status)
                     console.log("error with editing user")
                 }else{
-                    window.location.reload(); //need to get the new data from the db to populate the table again
+                    toggleLoading()
                 }
 
             }).catch((res)=>{
