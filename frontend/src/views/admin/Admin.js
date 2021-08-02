@@ -14,6 +14,8 @@ import { AdminProvider } from '../../components/Admin/AdminContext'
 import axios from "axios";
 import {DotLoader} from "react-spinners";
 import {css} from "@emotion/react";
+import AddParkBody from "../../components/Admin/Park/AddParkBody";
+import Modal from "../../components/Modals/Modal";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -37,6 +39,7 @@ function Admin() {
     const [park, setPark] = useState("") // for passing from park table to site table
     const [parksAndSites, setParksAndSites] = useState(null) // all the parks and sites
     const [loading, setLoading] = useState(false)
+    const [show, setShow] = useState(false)
 
     const selectPark = (details) => {
         setPark(details)
@@ -44,6 +47,7 @@ function Admin() {
 
     const toggleLoading = ()=>{
         alert("toggle")
+        setShow(!show)
         setLoading(loading=>!loading)
     }
 
@@ -83,6 +87,11 @@ function Admin() {
             <>
                 <AdminProvider value={ { parksAndSites: parksAndSites, toggleLoading: toggleLoading} } >
                     <AdminHeader/>
+                    <Modal title={"Loading"} onClose={() => setShow(false)} show={show}>
+                        <div className="sweet-loading" style={ overlay }>
+                            <DotLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
+                        </div>
+                    </Modal>
                     <Container
                         maxWidth={false}
                         component={Box}
@@ -145,9 +154,7 @@ function Admin() {
 
                         </Grid>
                     </Container>
-                    <div className="sweet-loading" style={ overlay }>
-                        <DotLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
-                    </div>
+
                 </AdminProvider>
             </>
         );
