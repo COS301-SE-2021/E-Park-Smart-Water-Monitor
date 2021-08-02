@@ -116,12 +116,14 @@ const EditUserBody = (props) => {
             ).then((res)=>{
 
                 console.log("response:"+JSON.stringify(res))
-                if(res.data.success == "false")
+                if(res.data.success === "false")
                 {
                     setError(res.data.status)
                     console.log("error with editing user")
                 }else{
                     toggleLoading()
+                    props.closeModal()
+                    props.reloadUserTable()
                 }
 
             }).catch((res)=>{
