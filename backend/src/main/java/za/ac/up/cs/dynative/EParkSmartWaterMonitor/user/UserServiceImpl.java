@@ -247,11 +247,8 @@ public class UserServiceImpl implements UserService {
                 User user=null;
             if (users.size()==1){
                 user = users.get(0);
-                System.out.println(user);
             }
-            password=passwordEncoder.encode(password);
-            System.out.println(password);
-            if (user == null || !password.equals(user.getPassword())) {
+            if (user == null || !passwordEncoder.matches(password,user.getPassword())) {
                 if (user == null) {
                     return new LoginResponse(JWTToken, false);
                 }else {
