@@ -97,6 +97,17 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
+    @Bean
+    public WebMvcConfigurer corsConfigurer()
+    {
+        return new WebMvcConfigurer() {
+        @Override
+            public void addCorsMappings(CorsRegistry registry){
+            registry.addMapping("/**").allowedOrigins("*").allowedMethods("*");
+        }
+        };
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
