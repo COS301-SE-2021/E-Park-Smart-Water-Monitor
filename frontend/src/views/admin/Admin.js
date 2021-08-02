@@ -12,7 +12,7 @@ import InspectionTable from "components/Admin/Inspection/InspectionTable";
 import SiteTable from "../../components/Admin/Site/SiteTable";
 import { AdminProvider } from '../../components/Admin/AdminContext'
 import axios from "axios";
-import {DotLoader} from "react-spinners";
+import {BeatLoader, DotLoader, PuffLoader} from "react-spinners";
 import {css} from "@emotion/react";
 import AddParkBody from "../../components/Admin/Park/AddParkBody";
 import Modal from "../../components/Modals/Modal";
@@ -88,7 +88,7 @@ function Admin() {
                     <AdminHeader/>
                     <Modal onClose={() => setShow(false)} show={show}>
                         <div className="sweet-loading" style={ overlay }>
-                            <DotLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
+                            <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
                         </div>
                     </Modal>
                     <Container

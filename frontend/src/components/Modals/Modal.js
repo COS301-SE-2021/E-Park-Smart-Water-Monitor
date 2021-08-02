@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { CSSTransition } from "react-transition-group";
 import "../../assets/css/modal.css";
 import Button from "@material-ui/core/Button";
+import {css} from "@emotion/react";
 
 const Modal = props => {
     const closeOnEscapeKeyDown = e => {
@@ -17,6 +18,7 @@ const Modal = props => {
             document.body.removeEventListener("keydown", closeOnEscapeKeyDown);
         };
     }, []);
+
 
     return ReactDOM.createPortal(
         <CSSTransition
