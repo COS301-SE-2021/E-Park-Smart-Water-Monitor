@@ -152,7 +152,7 @@ const SiteTable = (props) => {
                                 classes={{ root: classes.cardHeaderRoot }}
                             ></CardHeader>
                             <TableContainer
-                                style={{maxHeight:"300px",overflowY:"scroll"}}>
+                                style={{maxHeight:"300px",overflowY:"auto"}}>
                                 <Box
                                     component={Table}
                                     alignItems="center"
