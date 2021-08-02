@@ -22,6 +22,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.repositories.UserRepo;
 
 
@@ -47,6 +49,9 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserRepo repo;
+
+    @Autowired
+    private UserDetailService userDetailsService;
 
    /* @Override
     public void configure(WebSecurity web) {
@@ -89,28 +94,28 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider());
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").hasAnyAuthority("ADMIN", "FIELD_ENGINEER", "RANGER")
-                .antMatchers("/api/devices/addDevice").hasAnyAuthority("ADMIN", "FIELD_ENGINEER")
-                .antMatchers("/api/devices/editDevice").hasAnyAuthority("ADMIN", "FIELD_ENGINEER")
-                .antMatchers("addInspection/addInspection").hasAnyAuthority("ADMIN", "FIELD_ENGINEER")
-                .antMatchers("/api/park/addPark").hasAnyAuthority("ADMIN")
-                .antMatchers("/api/park/editPark").hasAnyAuthority("ADMIN")
-                .antMatchers("/api/user/createUser").hasAnyAuthority("ADMIN")
-                .antMatchers("/api/user/deleteUser").hasAnyAuthority("ADMIN")
-                .antMatchers("/api/user/editUser").hasAnyAuthority("ADMIN")
-                .antMatchers("/api/sites/addSite").hasAnyAuthority("ADMIN")
+                .antMatchers("/").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/devices/addDevice").hasAnyRole("ADMIN", "FIELD_ENGINEER")
+                .antMatchers("/api/devices/editDevice").hasAnyRole("ADMIN", "FIELD_ENGINEER")
+                .antMatchers("addInspection/addInspection").hasAnyRole("ADMIN", "FIELD_ENGINEER")
+                .antMatchers("/api/park/addPark").hasAnyRole("ADMIN")
+                .antMatchers("/api/park/editPark").hasAnyRole("ADMIN")
+                .antMatchers("/api/user/createUser").hasAnyRole("ADMIN")
+                .antMatchers("/api/user/deleteUser").hasAnyRole("ADMIN")
+                .antMatchers("/api/user/editUser").hasAnyRole("ADMIN")
+                .antMatchers("/api/sites/addSite").hasAnyRole("ADMIN")
                 .antMatchers("/api/user/login").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().fullyAuthenticated()
                 .and()
-                .formLogin().permitAll()
+                .httpBasic()
                 .and()
-                .logout().permitAll();
+                .csrf().disable();
     }
 
     /*@Bean
