@@ -38,7 +38,8 @@ const ParkTable = (props) => {
 
     // get the parks context with the sites from the Admin parent component
     // if you make this a state then the parent will rerender
-    const parksAndSites = (useContext( AdminContext ));
+    const context = useContext(AdminContext)
+    const parksAndSites = context.parksAndSites
 
     useEffect( () => {
 
