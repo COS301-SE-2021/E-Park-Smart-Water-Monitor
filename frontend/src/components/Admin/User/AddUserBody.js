@@ -21,7 +21,7 @@ const { Form } = require( "react-bootstrap" );
 
 const useStyles = makeStyles(componentStyles);
 
-const AddUserBody = () => {
+const AddUserBody = (props) => {
     const [park, setPark] = useState("")
     const [idNumber, setIDNumber] = useState("")
     const [email, setEmail] = useState("")
@@ -73,8 +73,10 @@ const AddUserBody = () => {
         axios.post('http://localhost:8080/api/user/createUser', obj
         ).then((res)=>{
 
-            //window.location.reload()
-
+            // reload the parent to refetch the data with out reloading the whole page
+            alert("created")
+            props.closeModal()
+            props.reloadUserTable();
 
 
         }).catch((res)=>{
@@ -123,7 +125,7 @@ const AddUserBody = () => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Surname</Form.Label>
-                            <Form.Control required={"required"} type="text" pattern="[a-zA-Z]*" placeholder="Surname" name="surname" value={surname} onChange={e => setSurname(e.target.value)}/>
+                            <Form.Control required={"required"} type="text" pattern="[a-zA-Z ]*" placeholder="Surname" name="surname" value={surname} onChange={e => setSurname(e.target.value)}/>
                         </Form.Group>
 
                     </Col>

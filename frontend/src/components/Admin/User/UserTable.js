@@ -121,7 +121,7 @@ const UserTable = () => {
             setResponse(m);
         });
 
-    },[])
+    },[value])
 
     return (
         <>
@@ -133,11 +133,11 @@ const UserTable = () => {
 
             >
                 <Modal  title="Add User" onClose={() => setShowAdd(false)} show={ showAdd }>
-                    <AddUserBody/>
+                    <AddUserBody reloadUserTable={ reloadUserTable } closeModal={() => setShowAdd(false)} />
                 </Modal>
 
                 { user && <Modal title="Edit User" onClose={() => setShowEdit(false)} show={ showEdit }>
-                    <EditUserBody userDetails={ user } closeModal={()=>{ setShowEdit(false) }}/>
+                    <EditUserBody userDetails={ user } reloadUserTable={ reloadUserTable } closeModal={()=>{ setShowEdit(false) }}/>
                 </Modal> }
 
                 <Grid container component={Box} marginTop="3rem">
