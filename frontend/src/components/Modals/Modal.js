@@ -26,9 +26,9 @@ const Modal = props => {
         >
             <div className="modal" onClick={props.onClose}>
                 <div className="modal-content" onClick={e => e.stopPropagation()}>
-                    <div className="modal-header">
+                    { props.title && <div className="modal-header">
                         <h3 className="modal-title">{props.title}</h3>
-                    </div>
+                    </div> }
                     <div className="modal-body">{props.children}</div>
                 </div>
             </div>

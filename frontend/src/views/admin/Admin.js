@@ -46,8 +46,7 @@ function Admin() {
     }
 
     const toggleLoading = ()=>{
-        alert("toggle")
-        setShow(!show)
+        setShow(show=>!show)
         setLoading(loading=>!loading)
     }
 
@@ -87,7 +86,7 @@ function Admin() {
             <>
                 <AdminProvider value={ { parksAndSites: parksAndSites, toggleLoading: toggleLoading} } >
                     <AdminHeader/>
-                    <Modal title={"Loading"} onClose={() => setShow(false)} show={show}>
+                    <Modal onClose={() => setShow(false)} show={show}>
                         <div className="sweet-loading" style={ overlay }>
                             <DotLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
                         </div>
