@@ -1,25 +1,30 @@
 import React, {useContext, useEffect, useState} from "react";
-
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
-import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addUser.css";
 import Select from 'react-select';
-// Be sure to include styles at some point, probably during your bootstrapping
-// import 'react-select/dist/react-select.css';
-
-//import {Form} from "react-bootstrap";
+import { css } from "@emotion/react";
+import ClipLoader from "react-spinners/ClipLoader";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
-import {Marker, Popup} from "react-leaflet";
 import AdminContext from "../AdminContext";
+import {DotLoader} from "react-spinners";
 const { Form } = require( "react-bootstrap" );
 
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
 
-
-const useStyles = makeStyles(componentStyles);
+const overlay = css`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+`;
 
 const AddUserBody = (props) => {
     const [park, setPark] = useState("")
@@ -31,6 +36,7 @@ const AddUserBody = (props) => {
     const [role, setRole] = useState("")
     const [cellNumber, setCellNumber] = useState("")
     const [parkOptions, setParkOptions] = useState("")
+    const [loading, setLoading] = useState(false)
 
     let userRoles = [
         { value: 'ADMIN', label: 'Admin' },
@@ -55,6 +61,8 @@ const AddUserBody = (props) => {
 
 
     const submit = (e) => {
+        setLoading(true)
+
         e.preventDefault()
 
         // add a new user
@@ -75,6 +83,7 @@ const AddUserBody = (props) => {
 
             // reload the parent to refetch the data with out reloading the whole page
             alert("created")
+            setLoading(false)
             props.closeModal()
             props.reloadUserTable();
 
@@ -162,7 +171,11 @@ const AddUserBody = (props) => {
                 <Button variant="primary" type="submit" >
                     Submit
                 </Button>
+                <div className="sweet-loading" style={ overlay }>
+                    <DotLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
+                </div>
             </Form>
+
         </>
     );
 };

@@ -12,14 +12,9 @@ import InspectionTable from "components/Admin/Inspection/InspectionTable";
 import SiteTable from "../../components/Admin/Site/SiteTable";
 import { AdminProvider } from '../../components/Admin/AdminContext'
 import axios from "axios";
+import {DotLoader} from "react-spinners";
 
 const useStyles = makeStyles(componentStyles);
-const parkAndSitesStyle = {
-    background: '#F3F3F3',
-    boxShadow: '0 8px 8px -4px lightblue',
-    padding: '3rem'
-}
-
 
 function Admin() {
     const classes = useStyles();
@@ -66,7 +61,6 @@ function Admin() {
             <>
                 <AdminProvider value={parksAndSites}>
                     <AdminHeader/>
-
                     <Container
                         maxWidth={false}
                         component={Box}
@@ -129,6 +123,7 @@ function Admin() {
 
                         </Grid>
                     </Container>
+
                 </AdminProvider>
             </>
         );
