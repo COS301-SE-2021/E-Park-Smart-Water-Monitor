@@ -11,20 +11,7 @@ import AdminContext from "../AdminContext";
 import {DotLoader} from "react-spinners";
 const { Form } = require( "react-bootstrap" );
 
-const override = css`
-  display: block;
-  margin: 0 auto;
-  border-color: red;
-`;
 
-const overlay = css`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
-`;
 
 const AddUserBody = (props) => {
     const [park, setPark] = useState("")
@@ -36,7 +23,7 @@ const AddUserBody = (props) => {
     const [role, setRole] = useState("")
     const [cellNumber, setCellNumber] = useState("")
     const [parkOptions, setParkOptions] = useState("")
-    const [loading, setLoading] = useState(false)
+
 
     let userRoles = [
         { value: 'ADMIN', label: 'Admin' },
@@ -44,7 +31,9 @@ const AddUserBody = (props) => {
         { value: 'RANGER', label: 'Ranger' }
     ];
 
-    const parksAndSites = useContext(AdminContext)
+    const context = useContext(AdminContext)
+    const parksAndSites = context.parksAndSites
+    const toggleLoading = context.toggleLoading
 
 
     useEffect(() => {
@@ -61,7 +50,8 @@ const AddUserBody = (props) => {
 
 
     const submit = (e) => {
-        setLoading(true)
+        toggleLoading()
+
 
         e.preventDefault()
 
@@ -82,8 +72,7 @@ const AddUserBody = (props) => {
         ).then((res)=>{
 
             // reload the parent to refetch the data with out reloading the whole page
-            alert("created")
-            setLoading(false)
+            toggleLoading()
             props.closeModal()
             props.reloadUserTable();
 
@@ -171,9 +160,7 @@ const AddUserBody = (props) => {
                 <Button variant="primary" type="submit" >
                     Submit
                 </Button>
-                <div className="sweet-loading" style={ overlay }>
-                    <DotLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
-                </div>
+
             </Form>
 
         </>

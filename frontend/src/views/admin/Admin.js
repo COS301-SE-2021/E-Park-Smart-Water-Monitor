@@ -13,16 +13,38 @@ import SiteTable from "../../components/Admin/Site/SiteTable";
 import { AdminProvider } from '../../components/Admin/AdminContext'
 import axios from "axios";
 import {DotLoader} from "react-spinners";
+import {css} from "@emotion/react";
 
 const useStyles = makeStyles(componentStyles);
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
+
+const overlay = css`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+`;
 
 function Admin() {
     const classes = useStyles();
     const [park, setPark] = useState("") // for passing from park table to site table
     const [parksAndSites, setParksAndSites] = useState(null) // all the parks and sites
+    const [loading, setLoading] = useState(false)
 
     const selectPark = (details) => {
         setPark(details)
+    }
+
+    const toggleLoading = ()=>{
+        alert("toggle")
+        setLoading(loading=>!loading)
     }
 
     // get all the park and site data to populate the park and site tables
@@ -59,7 +81,7 @@ function Admin() {
     else {
         return (
             <>
-                <AdminProvider value={parksAndSites}>
+                <AdminProvider value={ { parksAndSites: parksAndSites, toggleLoading: toggleLoading} } >
                     <AdminHeader/>
                     <Container
                         maxWidth={false}
@@ -123,7 +145,9 @@ function Admin() {
 
                         </Grid>
                     </Container>
-
+                    <div className="sweet-loading" style={ overlay }>
+                        <DotLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
+                    </div>
                 </AdminProvider>
             </>
         );
