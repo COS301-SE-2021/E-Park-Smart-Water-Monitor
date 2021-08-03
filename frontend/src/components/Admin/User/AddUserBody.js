@@ -11,7 +11,18 @@ import AdminContext from "../AdminContext";
 import {DotLoader} from "react-spinners";
 const { Form } = require( "react-bootstrap" );
 
-
+const styles = {
+    col_left: {
+        paddingRight:'3px'
+    },
+    col_right: {
+        paddingLeft:0
+    },
+    input: {
+        paddingLeft: 0,
+        paddingRight: 0
+    }
+}
 
 const AddUserBody = (props) => {
     const [park, setPark] = useState("")
@@ -65,7 +76,7 @@ const AddUserBody = (props) => {
             surname: surname,
             username: username,
             role: role.value,
-            cellNumber: `+27${cellNumber}`
+            cellNumber: `+27${cellNumber.substring(1,cellNumber.length)}`
         }
 
         axios.post('http://localhost:8080/api/user/createUser', obj
@@ -142,7 +153,42 @@ const AddUserBody = (props) => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Cell Number</Form.Label>
-                            <Form.Control required={"required"} type="text" minLength={10} maxLength={10} pattern="[0-9]*"  placeholder="Cell Number" name="cell_number" value={cellNumber} onChange={e => setCellNumber(e.target.value)}/>
+
+                                    <Row
+                                    p-xs={0}
+                                    >
+                                        <Col
+                                        xs={3}
+                                        style={styles.col_left}
+                                        >
+                                            {/*Shows the +27 for the user so they know only to type the rest of the number*/}
+                                            <Form.Control
+                                                type="text"
+                                                editable={false}
+                                                placeholder="+27"
+                                                value="+27"
+                                                disabled={true}
+                                            />
+                                        </Col>
+                                        <Col
+                                        xs={9}
+                                        style={styles.col_right}
+                                        >
+                                            <Form.Control
+                                                required={"required"}
+                                                type="text"
+                                                minLength={9}
+                                                maxLength={9}
+                                                pattern="[0-9]*"
+                                                placeholder="eg. 721619098"
+                                                name="cell_number"
+                                                value={cellNumber}
+                                                onChange={e => setCellNumber(e.target.value)}/>
+                                        </Col>
+                                    </Row>
+
+
+
                         </Form.Group>
                     </Col>
                 </Row>
