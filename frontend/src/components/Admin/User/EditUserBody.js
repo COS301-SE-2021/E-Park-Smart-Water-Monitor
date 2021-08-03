@@ -1,29 +1,28 @@
 import React, {useContext, useEffect, useState} from "react";
-
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
-import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addUser.css";
 import Select from 'react-select';
-// Be sure to include styles at some point, probably during your bootstrapping
-// import 'react-select/dist/react-select.css';
-
-//import {Form} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
-import {Marker, Popup} from "react-leaflet";
 import AdminContext from "../AdminContext";
 const { Form } = require( "react-bootstrap" );
 
+const styles = {
+    col_left: {
+        paddingRight:'3px'
+    },
+    col_right: {
+        paddingLeft:0
+    },
+    input: {
+        paddingLeft: 0,
+        paddingRight: 0
+    }
+}
 
-
-const useStyles = makeStyles(componentStyles);
 
 const EditUserBody = (props) => {
-    const classes = useStyles();
-    const theme = useTheme();
     const [park, setPark] = useState("")
     const [idNumber, setIDNumber] = useState("")
     const [email, setEmail] = useState("")
@@ -186,7 +185,38 @@ const EditUserBody = (props) => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Cell Number</Form.Label>
-                            <Form.Control required={"required"} type="text" minLength={10} maxLength={10} pattern="[0-9]*" placeholder="Cell Number" name="cell_number" value={cellNumber} onChange={e => setCellNumber(e.target.value)}/>
+                            <Row                                    >
+                                <Col
+                                    xs={3}
+                                    style={styles.col_left}
+                                >
+                                    {/*Shows the +27 for the user so they know only to type the rest of the number*/}
+                                    <Form.Control
+                                        type="text"
+                                        editable={false}
+                                        placeholder="+27"
+                                        value="+27"
+                                        disabled={true}
+                                    />
+                                </Col>
+                                <Col
+                                    xs={9}
+                                    style={styles.col_right}
+                                >
+                                    <Form.Control
+                                        required={"required"}
+                                        type="text"
+                                        minLength={9}
+                                        maxLength={9}
+                                        pattern="[0-9]*"
+                                        placeholder="eg. 721619098"
+                                        name="cell_number"
+                                        value={cellNumber}
+                                        onChange={e => setCellNumber(e.target.value)}/>
+                                </Col>
+                            </Row>
+
+                            {/*<Form.Control required={"required"} type="text" minLength={10} maxLength={10} pattern="[0-9]*" placeholder="Cell Number" name="cell_number" value={cellNumber} onChange={e => setCellNumber(e.target.value)}/>*/}
                         </Form.Group>
                     </Col>
                 </Row>

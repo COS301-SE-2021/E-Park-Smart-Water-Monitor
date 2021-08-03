@@ -154,9 +154,7 @@ const AddUserBody = (props) => {
                         <Form.Group className="mb-3" >
                             <Form.Label>Cell Number</Form.Label>
 
-                                    <Row
-                                    p-xs={0}
-                                    >
+                                    <Row                                    >
                                         <Col
                                         xs={3}
                                         style={styles.col_left}
@@ -186,8 +184,6 @@ const AddUserBody = (props) => {
                                                 onChange={e => setCellNumber(e.target.value)}/>
                                         </Col>
                                     </Row>
-
-
 
                         </Form.Group>
                     </Col>
