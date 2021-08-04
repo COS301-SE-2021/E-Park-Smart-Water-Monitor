@@ -47,6 +47,10 @@ const DeviceTable = () => {
     const context = useContext(AdminContext)
     const toggleLoading = context.toggleLoading
 
+    const reloadDeviceTable = () => {
+        setValue(value => value+1)
+    }
+
     // on delete of a device
     const removeDevice = (id) => {
         return ()=>{
@@ -135,7 +139,7 @@ const DeviceTable = () => {
                 </Modal>
 
                 { device && <Modal title="Edit Device" onClose={() => setShowEdit(false)} show={ showEdit }>
-                    <EditDeviceBody deviceDetails={ device } closeModal={()=>{ setShowEdit(false) }}/>
+                    <EditDeviceBody deviceDetails={ device } reloadDeviceTable={ reloadDeviceTable } closeModal={()=>{ setShowEdit(false) }}/>
                 </Modal> }
 
                 <Modal title="Add Inspection" onClose={() => setShowInspection(false)} show={ showInspection }>

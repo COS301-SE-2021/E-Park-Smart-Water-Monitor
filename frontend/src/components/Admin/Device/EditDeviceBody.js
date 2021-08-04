@@ -75,15 +75,17 @@ const EditDeviceBody = (props) => {
             ).then((res)=>{
                 toggleLoading()
                 console.log("response:"+JSON.stringify(res))
-                if(res.data.success == "false")
+                if(res.data.success === "false")
                 {
                     setError(res.data.status)
                     console.log("error with editing device")
                 }else{
-                    window.location.reload(); //need to get the new data from the db to populate the table again
+                    props.closeModal()
+                    props.reloadDeviceTable()
                 }
 
             }).catch((res)=>{
+                toggleLoading()
                 console.log("response:"+JSON.stringify(res))
             });
         }

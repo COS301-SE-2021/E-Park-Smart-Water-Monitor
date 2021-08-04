@@ -86,6 +86,7 @@ const AddDeviceBody = (props) => {
             {
                 parkName: park.label,
                 siteId: site.value,
+                deviceType: "WaterSource",
                 deviceModel: model,
                 deviceName: name,
                 latitude: latitude,
@@ -95,7 +96,7 @@ const AddDeviceBody = (props) => {
 
             toggleLoading();
             props.closeModal()
-            props.reloadUserTable();
+            props.reloadDeviceTable();
 
         }).catch((res) => {
 
