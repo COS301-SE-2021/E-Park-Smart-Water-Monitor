@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -10,6 +10,7 @@ import {Button, Form} from "react-bootstrap";
 import Select from "react-select";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import axios from "axios";
+import AdminContext from "../AdminContext";
 
 const useStyles = makeStyles(componentStyles);
 const mapStyles = {
@@ -23,6 +24,9 @@ const EditParkBody = (props) => {
     const [longitude, setLongitude] = useState(28.280765508)
     const [error, setError] = useState("")
 
+    const context = useContext(AdminContext)
+    const toggleLoading = context.toggleLoading
+
     useEffect(() => {
         if(props && props.parkDetails)
         {
@@ -33,6 +37,7 @@ const EditParkBody = (props) => {
     },[])
 
     const submit = (e) => {
+        toggleLoading()
         e.preventDefault()
 
         if(props && props.parkDetails)
@@ -45,19 +50,19 @@ const EditParkBody = (props) => {
                 longitude: longitude
             }
 
-            alert(JSON.stringify(obj))
-
-
             axios.post('http://localhost:8080/api/park/editPark', obj
             ).then((res)=>{
 
                 console.log("response:"+JSON.stringify(res))
                 if(res.data.success == "false")
                 {
+                    toggleLoading()
                     setError(res.data.status)
                     console.log("error with editing park")
                 }else{
-                    window.location.reload(); //need to get the new data from the db to populate the table again
+                    toggleLoading()
+                    props.closeModal()
+                    props.reloadParkTable()
                 }
 
             }).catch((res)=>{

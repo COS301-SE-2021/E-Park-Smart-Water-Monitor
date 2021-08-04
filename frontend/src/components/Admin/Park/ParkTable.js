@@ -40,6 +40,11 @@ const ParkTable = (props) => {
     // if you make this a state then the parent will rerender
     const context = useContext(AdminContext)
     const parksAndSites = context.parksAndSites
+    const toggleLoading = context.toggleLoading
+
+    const reloadParkTable = () => {
+        setValue(value => value+1)
+    }
 
     useEffect( () => {
 
@@ -118,17 +123,17 @@ const ParkTable = (props) => {
     // on delete of a park
     const removePark = (id) => {
         return ()=>{
-            alert("removing "+id)
+            toggleLoading()
             axios.delete('http://localhost:8080/api/park/deletePark', {
                 data: {
                     parkId: id
                 }
             }).then((res)=> {
-                // window.location.reload()
-                alert("forcing update")
-                setValue(value => value+1 ) // returns an updated value
+                toggleLoading()
+                reloadParkTable()
+
             }).catch((res)=>{
-                alert("didn't work")
+                toggleLoading()
                 console.log(JSON.stringify(res))
             })
         }
@@ -147,11 +152,11 @@ const ParkTable = (props) => {
                 classes={{ root: classes.containerRoot }}
             >
                 <Modal title="Add Park" onClose={() => setShow(false)} show={show}>
-                    <AddParkBody/>
+                    <AddParkBody reloadParkTable={ reloadParkTable } closeModal={()=>{ setShow(false) }}/>
                 </Modal>
 
                 { park && <Modal title="Edit Park" onClose={() => setShowEdit(false)} show={ showEdit }>
-                    <EditParkBody parkDetails={ park } closeModal={()=>{ setShowEdit(false) }}/>
+                    <EditParkBody parkDetails={ park } reloadParkTable={ reloadParkTable }  closeModal={()=>{ setShowEdit(false) }}/>
                 </Modal> }
 
 

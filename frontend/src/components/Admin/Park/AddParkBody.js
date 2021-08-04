@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, {useContext, useState} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -9,6 +9,7 @@ import Col from "react-bootstrap/Col";
 import {Button, Form} from "react-bootstrap";
 import Select from "react-select";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
+import AdminContext from "../AdminContext";
 
 const useStyles = makeStyles(componentStyles);
 const mapStyles = {
@@ -22,6 +23,9 @@ const AddParkBody = () => {
     const [name, setName] = useState("")
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
+
+    const context = useContext(AdminContext)
+    const toggleLoading = context.toggleLoading
 
 
 
