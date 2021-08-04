@@ -14,7 +14,7 @@ const mapStyles = {
     height: `100%`
 };
 
-const AddDeviceBody = () => {
+const AddDeviceBody = (props) => {
 
     // retrieved items from the DB to populate the select components
     const [parkOptions, setParkOptions] = useState("")
@@ -29,7 +29,9 @@ const AddDeviceBody = () => {
     const [longitude, setLongitude] = useState(28.280765508)
 
     // use the context supplied from the admin component to get the parks and sites
-    const parksAndSites = useContext(AdminContext)
+    const context = useContext(AdminContext)
+    const parksAndSites = context.parksAndSites;
+    const toggleLoading = context.toggleLoading
 
     const assignSiteOptions = (selectedPark) => {
 
@@ -78,6 +80,7 @@ const AddDeviceBody = () => {
 
 
     const createDevice = (e) => {
+        toggleLoading()
         e.preventDefault()
         axios.post('http://localhost:8080/api/devices/addDevice',
             {
@@ -90,10 +93,15 @@ const AddDeviceBody = () => {
             }
         ).then((res) => {
 
-            window.location.reload()
+            toggleLoading();
+            props.closeModal()
+            props.reloadUserTable();
 
         }).catch((res) => {
+
+            toggleLoading()
             console.log("error adding device: "+JSON.stringify(res))
+
         });
     }
 

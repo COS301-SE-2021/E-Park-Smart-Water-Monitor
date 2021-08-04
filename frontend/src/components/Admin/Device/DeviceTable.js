@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 import {makeStyles, withStyles} from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -26,6 +26,7 @@ import TableHead from "@material-ui/core/TableHead";
 import IconButton from "@material-ui/core/IconButton";
 import {Tooltip} from "@material-ui/core";
 import AddInspectionBody from "../Inspection/AddInspectionBody";
+import AdminContext from "../AdminContext";
 
 
 
@@ -43,17 +44,20 @@ const DeviceTable = () => {
     const [device, setDevice] = useState({});
     const [value, setValue] = useState(0);
 
+    const context = useContext(AdminContext)
+    const toggleLoading = context.toggleLoading
+
     // on delete of a device
     const removeDevice = (id) => {
         return ()=>{
-            alert("removing "+id)
+
+            toggleLoading()
             axios.delete('http://localhost:8080/api/devices/deleteDevice', {
                 data: {
                          id: id
                       }
             }).then((res)=> {
-                // window.location.reload()
-                alert("forcing update")
+                toggleLoading()
                 setValue(value => value+1 ) // returns an updated value
             }).catch((res)=>{
                 JSON.stringify(res)
