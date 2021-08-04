@@ -32,6 +32,33 @@ public class JwtTokenProvider
                 .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
     }
 
+    public Authentication getAuthentication(HttpServletRequest request)
+    {
+        String token= resolveToken(request);
+        if (token==null)
+            return null;
+
+        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+        String userName=claims.getSubject();
+
+        List<GrantedAuthority> authorities = Arrays.stream(claims.get("roles").toString().split(","))
+                .map( role -> role.startsWith("ROLE_")? role: "ROLE_"+role)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+        return userName!=null? new UsernamePasswordAuthenticationToken(userName,null,authorities):null;
+    }
+    public boolean validateToken(HttpServletRequest request)
+    {
+        String token = resolveToken(request);
+        if (token==null)
+            return false;
+
+        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+        if (claims.getExpiration().before(new Date()))
+            return false;
+
+        return true;
+    }
 
     private String resolveToken(HttpServletRequest request)
     {
