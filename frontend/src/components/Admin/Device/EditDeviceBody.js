@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import componentStyles from "assets/theme/views/admin/admin";
@@ -12,6 +12,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
+import AdminContext from "../AdminContext";
 const { Form } = require( "react-bootstrap" );
 
 
@@ -40,7 +41,8 @@ const EditDeviceBody = (props) => {
     const [longitude, setLongitude] = useState(28.280765508)
     const [error, setError] = useState("")
 
-
+    const context = useContext(AdminContext)
+    const toggleLoading = context.toggleLoading
 
     useEffect(() => {
 
@@ -53,6 +55,7 @@ const EditDeviceBody = (props) => {
     },[props.deviceDetails])
 
     const submit = (e) => {
+        toggleLoading()
         e.preventDefault()
 
         if(props && props.deviceDetails)
@@ -70,7 +73,7 @@ const EditDeviceBody = (props) => {
 
             axios.post('http://localhost:8080/api/user/editDevice', obj
             ).then((res)=>{
-
+                toggleLoading()
                 console.log("response:"+JSON.stringify(res))
                 if(res.data.success == "false")
                 {

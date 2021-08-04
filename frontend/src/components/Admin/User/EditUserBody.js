@@ -60,8 +60,7 @@ const EditUserBody = (props) => {
             let p = props.userDetails
 
             let cell = p.cellNumber;
-            cell = cell.substr(4)
-            cell = '0'+cell
+            cell = cell.substr(3)
 
             setPark(p.park)
             setIDNumber(p.idNumber)
@@ -107,7 +106,7 @@ const EditUserBody = (props) => {
                 surname: surname,
                 newUsername: temp_username,
                 role: role.value,
-                cellNumber: cellNumber
+                cellNumber: "+27"+cellNumber
             }
 
 
