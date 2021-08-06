@@ -7,6 +7,10 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.analytics.models.WaterLevelPr
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.analytics.requests.DeviceProjectionRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.analytics.responses.DeviceProjectionResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.FindDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetDeviceDataRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.FindDeviceResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetDeviceDataResponse;
 
 @Service("AnalyticsServiceImpl")
 public class AnalyticsServiceImpl implements AnalyticsService {
@@ -20,18 +24,53 @@ public class AnalyticsServiceImpl implements AnalyticsService {
 
     @Override
     public DeviceProjectionResponse deviceProjection(DeviceProjectionRequest request) {
-
-        switch (request.getType()) {
-            case "ph":
-                projectionStrategy = new PhProjectionStrategy(request);
-                return projectionStrategy.predict();
-            case "waterlevel":
-                projectionStrategy = new WaterLevelProjectionStrategy(request);
-                return projectionStrategy.predict();
-            case "temperature":
-                projectionStrategy = new TemperatureProjectionStrategy(request);
-                return projectionStrategy.predict();
+        if (request.getId() != null) {
+            FindDeviceResponse findDeviceResponse = devicesService.findDevice(new FindDeviceRequest(request.getId()));
+            if (findDeviceResponse.getSuccess() && findDeviceResponse.getDevice() != null) {
+                GetDeviceDataResponse deviceDataResponse = devicesService.getDeviceData(
+                        new GetDeviceDataRequest(findDeviceResponse.getDevice().getDeviceName(),0));
+                if (deviceDataResponse.getSuccess()) {
+                    switch (request.getType()) {
+                        case "ph":
+                            projectionStrategy = new PhProjectionStrategy(request, deviceDataResponse);
+                            return projectionStrategy.predict();
+                        case "waterlevel":
+                            projectionStrategy = new WaterLevelProjectionStrategy(request, deviceDataResponse);
+                            return projectionStrategy.predict();
+                        case "temperature":
+                            projectionStrategy = new TemperatureProjectionStrategy(request, deviceDataResponse);
+                            return projectionStrategy.predict();
+                    }
+                }
+                else {
+                    return new DeviceProjectionResponse(
+                            deviceDataResponse.getStatus(),
+                            false,
+                            request.getType(),
+                            request.getLength(),
+                            null,
+                            null,
+                            null);
+                }
+            }
+            else {
+                return new DeviceProjectionResponse(
+                        findDeviceResponse.getStatus(),
+                        false,
+                        request.getType(),
+                        request.getLength(),
+                        null,
+                        null,
+                        null);
+            }
         }
-        return new DeviceProjectionResponse("Nothing but works", true, request.getType(), request.getLength(), null, null, null);
+        return new DeviceProjectionResponse(
+                "No device id specified",
+                false,
+                request.getType(),
+                request.getLength(),
+                null,
+                null,
+                null);
     }
 }
