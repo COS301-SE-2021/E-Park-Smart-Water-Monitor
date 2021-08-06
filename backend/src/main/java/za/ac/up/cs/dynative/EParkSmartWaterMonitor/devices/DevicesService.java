@@ -12,12 +12,12 @@ public interface DevicesService {
     ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request);
     AddDeviceResponse addDevice(AddDeviceRequest addWSDRequest) throws InvalidRequestException;
     Collection<Device> getAll();
-    FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest) throws InvalidRequestException;
+    FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest);
     GetNumDevicesResponse getNumDevices(GetNumDevicesRequest getNumDevicesRequest) throws InvalidRequestException;
     GetParkDevicesResponse getParkDevices(GetParkDevicesRequest getParkDevicesRequest) throws InvalidRequestException;
     EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest);
     DeleteDeviceResponse deleteDevice(DeleteDeviceRequest deleteDeviceRequest);
-    GetDeviceDataResponse getDeviceData(GetDeviceDataRequest getDeviceDataRequest) throws InvalidRequestException;
+    GetDeviceDataResponse getDeviceData(GetDeviceDataRequest getDeviceDataRequest);
     GetAllDevicesResponse getAllDevices();
     SetMetricFrequencyResponse setMetricFrequency(SetMetricFrequencyRequest setMetricFrequencyRequest);
 }

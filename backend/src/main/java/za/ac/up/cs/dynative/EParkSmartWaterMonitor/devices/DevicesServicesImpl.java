@@ -281,8 +281,11 @@ public class DevicesServicesImpl implements DevicesService {
             Iterator<Item> iterator = items.iterator();
             Item item;
             int counter = 0;
-
-            while (iterator.hasNext() && counter < request.getNumResults()) {
+            int numResults = request.getNumResults();
+            if (numResults == 0) {
+                numResults = Integer.MAX_VALUE;
+            }
+            while (iterator.hasNext() && counter < numResults) {
                 item = iterator.next();
                 counter++;
 
