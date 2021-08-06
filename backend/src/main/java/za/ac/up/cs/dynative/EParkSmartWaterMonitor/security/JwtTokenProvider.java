@@ -26,6 +26,7 @@ public class JwtTokenProvider
     public String generateToken(Authentication authentication)
     {
         String authorities= authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining());
+        System.out.println(authorities);
         return Jwts.builder().setSubject(authentication.getName())
                 .claim("roles",authorities)
                 .setExpiration(new Date(System.currentTimeMillis()+jwtExpirationInMs))
@@ -52,7 +53,7 @@ public class JwtTokenProvider
         String token = resolveToken(request);
         if (token==null)
             return false;
-
+        System.out.println(request);
         Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
         if (claims.getExpiration().before(new Date()))
             return false;

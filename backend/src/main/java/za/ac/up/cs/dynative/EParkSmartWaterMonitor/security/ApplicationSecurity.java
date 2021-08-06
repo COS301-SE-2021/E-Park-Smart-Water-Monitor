@@ -39,6 +39,8 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 );*/
 
    // private final RequestMatcher PROTECTED_URLS = new NegatedRequestMatcher(USER_URLS);
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     private final JwtAuthProvider provider;
 
@@ -117,7 +119,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("addInspection/addInspection").hasAnyRole("ADMIN", "FIELD_ENGINEER")
                 .antMatchers("/api/park/addPark").hasAnyRole("ADMIN")
                 .antMatchers("/api/park/editPark").hasAnyRole("ADMIN")
-                .antMatchers("/api/user/createUser").hasAnyRole("ADMIN")
+                .antMatchers("/api/user/createUser").permitAll()
                 .antMatchers("/api/user/deleteUser").hasAnyRole("ADMIN")
                 .antMatchers("/api/user/editUser").hasAnyRole("ADMIN")
                 .antMatchers("/api/sites/addSite").hasAnyRole("ADMIN")
@@ -127,6 +129,8 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and()
                 .csrf().disable();
+
+        http.addFilter(new JwtAuthorizationFilter(authenticationManager(),jwtTokenProvider));
     }
 
     /*@Bean
