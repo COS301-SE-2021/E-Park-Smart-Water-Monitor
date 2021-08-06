@@ -110,7 +110,7 @@ const ParkTable = (props) => {
         }
 
 
-    }, [])
+    }, [value])
 
 
 

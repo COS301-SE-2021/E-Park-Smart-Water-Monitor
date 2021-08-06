@@ -135,7 +135,7 @@ const DeviceTable = () => {
                 classes={{ root: classes.containerRoot }}
             >
                 <Modal title="Add Device" onClose={() => setShow(false)} show={show}>
-                    <AddDeviceBody/>
+                    <AddDeviceBody reloadDeviceTable={ reloadDeviceTable } closeModal={()=>{ setShow(false) }}/>
                 </Modal>
 
                 { device && <Modal title="Edit Device" onClose={() => setShowEdit(false)} show={ showEdit }>

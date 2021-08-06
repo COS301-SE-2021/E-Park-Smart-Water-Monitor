@@ -65,6 +65,7 @@ const EditDeviceBody = (props) => {
                 parkName: park,
                 siteId: site,
                 deviceModel: model,
+                deviceType: "WaterSource",
                 deviceName: name,
                 latitude: latitude,
                 longitude: longitude
@@ -106,6 +107,7 @@ const EditDeviceBody = (props) => {
 
                     </Col>
                 </Row>
+                
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" >

@@ -82,16 +82,18 @@ const AddDeviceBody = (props) => {
     const createDevice = (e) => {
         toggleLoading()
         e.preventDefault()
+        let obj = {
+            parkName: park.label,
+            siteId: site.value,
+            deviceType: "WaterSource", // and infrastructure
+            deviceModel: model,
+            deviceName: name,
+            latitude: latitude,
+            longitude: longitude
+        }
+        console.log("Adding Device: "+JSON.stringify(obj))
         axios.post('http://localhost:8080/api/devices/addDevice',
-            {
-                parkName: park.label,
-                siteId: site.value,
-                deviceType: "WaterSource",
-                deviceModel: model,
-                deviceName: name,
-                latitude: latitude,
-                longitude: longitude
-            }
+            obj
         ).then((res) => {
 
             toggleLoading();
@@ -113,7 +115,10 @@ const AddDeviceBody = (props) => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Device Name</Form.Label>
-                            <Form.Control required={"required"} type="text" placeholder="Device Name" name="name" value={name} onChange={e => setName(e.target.value)}/>
+                            <Form.Control required={"required"} type="text" placeholder="Device Name" pattern={"[a-zA-Z0-9:_-]+"} name="name" value={name} onChange={e => setName(e.target.value)}/>
+                            <Form.Text className="text-muted">
+                                Use a dash or fullstop instead of a space
+                            </Form.Text>
                         </Form.Group>
 
                     </Col>
