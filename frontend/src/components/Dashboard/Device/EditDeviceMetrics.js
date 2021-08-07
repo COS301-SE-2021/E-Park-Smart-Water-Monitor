@@ -8,35 +8,52 @@ import Row from "react-bootstrap/Row";
 import axios from "axios";
 import { Range, getTrackBackground } from "react-range";
 import AdminContext from "../../Admin/AdminContext";
+import {PuffLoader} from "react-spinners";
+import Modal from "../../Modals/Modal";
+import {css} from "@emotion/react";
 const { Form } = require( "react-bootstrap" );
 
 
 
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
+
+const overlay = css`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+`;
 
 const useStyles = makeStyles(componentStyles);
 
 const EditDeviceMetricsBody = (props) => {
-    const [value, setValue] = useState(4)
+    const [value, setValue] = useState(0)
+    const [show, setShow] = useState(false)
+    const [loading, setLoading] = useState(false)
 
-    const context = useContext(AdminContext)
-    const toggleLoading = context.toggleLoading
+    const toggleLoading = ()=>{
+        setShow(show=>!show)
+        setLoading(loading=>!loading)
+    }
 
     useEffect(() => {
 
-        setValue(props.deviceDetails.deviceData.deviceConfiguration[0].value)
-
         // get the device details by id
-        alert("device ID: "+JSON.stringify(props.deviceDetails.deviceId))
         axios.post('http://localhost:8080/api/devices/getById', {
                 deviceID: props.deviceDetails.deviceId
             }
         ).then((res)=>{
 
-            alert(JSON.stringify(res))
-            setValue(res.deviceDetails.deviceData.deviceConfiguration[0].value)
+            setValue(res.data.device.deviceData.deviceConfiguration[0].value)
 
         }).catch((res)=>{
-            console.log("response:"+JSON.stringify(res))
+            console.log("response getById:"+JSON.stringify(res))
         });
 
     },[])
@@ -57,13 +74,11 @@ const EditDeviceMetricsBody = (props) => {
 
             toggleLoading()
             props.closeModal()
-            alert("after edit: "+JSON.stringify(res))
 
         }).catch((res)=>{
 
             toggleLoading()
-            alert("nope")
-            console.log("response:"+JSON.stringify(res))
+            console.log("response setMetricFrequency:"+JSON.stringify(res))
         });
 
     }
@@ -72,6 +87,11 @@ const EditDeviceMetricsBody = (props) => {
 
     return (
         <>
+            <Modal onClose={() => setShow(false)} show={show}>
+                <div style={ overlay }>
+                    <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
+                </div>
+            </Modal>
             <Form onSubmit={ submit }>
                 <Row>
                     <Col>
