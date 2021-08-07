@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addUser.css";
@@ -7,6 +7,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
 import { Range, getTrackBackground } from "react-range";
+import AdminContext from "../../Admin/AdminContext";
 const { Form } = require( "react-bootstrap" );
 
 
@@ -17,42 +18,51 @@ const useStyles = makeStyles(componentStyles);
 const EditDeviceMetricsBody = (props) => {
     const [value, setValue] = useState(4)
 
+    const context = useContext(AdminContext)
+    const toggleLoading = context.toggleLoading
+
     useEffect(() => {
 
         setValue(props.deviceDetails.deviceData.deviceConfiguration[0].value)
 
-        // get the parks for populating the select component
-        axios.get('http://localhost:8080/api/park/getAllParks'
+        // get the device details by id
+        alert("device ID: "+JSON.stringify(props.deviceDetails.deviceId))
+        axios.post('http://localhost:8080/api/devices/getById', {
+                deviceID: props.deviceDetails.deviceId
+            }
         ).then((res)=>{
 
-            let options = res.data.allParks.map((p)=>{
-                return {value: p.id, label: p.parkName}
-            })
-
-            setParkOptions(options)
-            setPark(options[0])
+            alert(JSON.stringify(res))
+            setValue(res.deviceDetails.deviceData.deviceConfiguration[0].value)
 
         }).catch((res)=>{
-            console.log(JSON.stringify(res))
+            console.log("response:"+JSON.stringify(res))
         });
+
     },[])
 
 
     const submit = (e) => {
         e.preventDefault()
+        toggleLoading()
 
         // set the frequency
         let obj = {
-            id: props.id,
-            value: frequency
+            id: props.deviceDetails.deviceId,
+            value: value
         }
 
-        axios.post('http://localhost:8080/api/user/createUser', obj
+        axios.post('http://localhost:8080/api/devices/setMetricFrequency', obj
         ).then((res)=>{
 
-            window.location.reload()
+            toggleLoading()
+            props.closeModal()
+            alert("after edit: "+JSON.stringify(res))
 
         }).catch((res)=>{
+
+            toggleLoading()
+            alert("nope")
             console.log("response:"+JSON.stringify(res))
         });
 
@@ -65,11 +75,11 @@ const EditDeviceMetricsBody = (props) => {
             <Form onSubmit={ submit }>
                 <Row>
                     <Col>
-                        <Form.Label>Hourly Frequency of Readings: { value }</Form.Label>
+                        <Form.Label>Hourly Frequency: { value }</Form.Label>
                         <input
                             style={{ width:"100%" }}
                             type="range"
-                            min="0" max="50"
+                            min="0" max="48"
                             value={value}
                             onChange={e => setValue(e.target.value)}
                             step="0.1"/>
