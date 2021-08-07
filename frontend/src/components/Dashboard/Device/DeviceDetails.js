@@ -40,7 +40,7 @@ function DeviceDetails(props) {
   return (
     <>
 
-        { device && <Modal title="Edit Device Metrics" onClose={() => setShowEdit(false)} show={ showEdit }>
+        { device && <Modal title="Edit Device Frequency" onClose={() => setShowEdit(false)} show={ showEdit }>
             <EditDeviceMetrics deviceDetails={ device } closeModal={()=>{ setShowEdit(false) }}/>
         </Modal> }
 
