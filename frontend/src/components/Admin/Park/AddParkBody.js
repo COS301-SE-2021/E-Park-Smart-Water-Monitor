@@ -10,6 +10,7 @@ import {Button, Form} from "react-bootstrap";
 import Select from "react-select";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import AdminContext from "../AdminContext";
+import axios from "axios";
 
 const useStyles = makeStyles(componentStyles);
 const mapStyles = {
@@ -17,7 +18,7 @@ const mapStyles = {
     height: `100%`
 };
 
-const AddParkBody = () => {
+const AddParkBody = (props) => {
     const classes = useStyles();
     const theme = useTheme();
     const [name, setName] = useState("")
@@ -27,11 +28,34 @@ const AddParkBody = () => {
     const context = useContext(AdminContext)
     const toggleLoading = context.toggleLoading
 
+    const createPark = (e) => {
+        toggleLoading()
+        e.preventDefault()
+        let obj = {
+            parkName: name,
+            latitude: latitude,
+            longitude: longitude
+        }
+        console.log("Adding Park: "+JSON.stringify(obj))
+        axios.post('http://localhost:8080/api/park/addPark',
+            obj
+        ).then((res) => {
 
+            toggleLoading();
+            props.closeModal()
+            props.reloadParkTable();
+
+        }).catch((res) => {
+
+            toggleLoading()
+            console.log("error adding park: "+JSON.stringify(res))
+
+        });
+    }
 
     return (
         <>
-            <Form>
+            <Form onSubmit={ createPark }>
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" >
@@ -80,7 +104,10 @@ const AddParkBody = () => {
                 </Row>
 
 
-                <Button background-color="primary" variant="primary" type="submit">
+                <Button
+                    background-color="primary"
+                    variant="primary"
+                    type="submit">
                     Submit
                 </Button>
             </Form>

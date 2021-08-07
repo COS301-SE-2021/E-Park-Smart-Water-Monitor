@@ -107,7 +107,7 @@ const EditDeviceBody = (props) => {
 
                     </Col>
                 </Row>
-                
+
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" >

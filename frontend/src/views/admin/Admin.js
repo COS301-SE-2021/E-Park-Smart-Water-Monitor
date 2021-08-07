@@ -40,6 +40,7 @@ function Admin() {
     const [parksAndSites, setParksAndSites] = useState(null) // all the parks and sites
     const [loading, setLoading] = useState(false)
     const [show, setShow] = useState(false)
+    const [value, setValue] = useState(0)
 
     const selectPark = (details) => {
         setPark(details)
@@ -48,6 +49,10 @@ function Admin() {
     const toggleLoading = ()=>{
         setShow(show=>!show)
         setLoading(loading=>!loading)
+    }
+
+    const reloadParksAndSites = () => {
+        setValue(value => value+1)
     }
 
     // get all the park and site data to populate the park and site tables
@@ -68,7 +73,7 @@ function Admin() {
                 setParksAndSites(res.data)
             }
         });  
-    },[])
+    },[value])
 
     // Context explained
     // https://medium.com/nerd-for-tech/using-context-api-in-react-with-functional-components-dbc653c7d485
@@ -84,7 +89,7 @@ function Admin() {
     else {
         return (
             <>
-                <AdminProvider value={ { parksAndSites: parksAndSites, toggleLoading: toggleLoading} } >
+                <AdminProvider value={ { parksAndSites: parksAndSites, toggleLoading: toggleLoading, reloadParksAndSites: reloadParksAndSites} } >
                     <AdminHeader/>
                     <Modal onClose={() => setShow(false)} show={show}>
                         <div className="sweet-loading" style={ overlay }>

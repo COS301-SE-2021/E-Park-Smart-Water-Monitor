@@ -40,6 +40,7 @@ const ParkTable = (props) => {
     // if you make this a state then the parent will rerender
     const context = useContext(AdminContext)
     const parksAndSites = context.parksAndSites
+    const reloadParksAndSites = context.reloadParksAndSites
     const toggleLoading = context.toggleLoading
 
     const reloadParkTable = () => {
@@ -130,7 +131,7 @@ const ParkTable = (props) => {
                 }
             }).then((res)=> {
                 toggleLoading()
-                reloadParkTable()
+                reloadParksAndSites()
 
             }).catch((res)=>{
                 toggleLoading()
