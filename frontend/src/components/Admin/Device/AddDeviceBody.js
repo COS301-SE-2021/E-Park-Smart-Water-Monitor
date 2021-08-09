@@ -156,7 +156,12 @@ const AddDeviceBody = (props) => {
                     <Col>
                         <div style={ { height: 250 } } className="mb-3" >
                             {/*rietvlei centre*/}
-                            {latitude && longitude && <MapContainer style={mapStyles} center={[-25.88536975144579, 28.277796392845673]} zoom={13} scrollWheelZoom={false}>
+                            {latitude && longitude && <MapContainer
+                                style={mapStyles}
+                                center={[-25.88536975144579, 28.277796392845673]}
+                                zoom={13}
+                                scrollWheelZoom={false}
+                                >
                                 <TileLayer
                                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
