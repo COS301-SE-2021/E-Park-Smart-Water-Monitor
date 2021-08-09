@@ -98,6 +98,10 @@ public class Measurement {
         return deviceDateTime;
     }
 
+    public String getDeviceDate() {
+        return deviceDateTime.substring(0,10);
+    }
+
     public void setDeviceDateTime(String deviceDateTime) {
         this.deviceDateTime = deviceDateTime;
     }
