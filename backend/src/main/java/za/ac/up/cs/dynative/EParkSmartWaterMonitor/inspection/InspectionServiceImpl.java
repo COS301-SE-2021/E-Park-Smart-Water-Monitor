@@ -11,6 +11,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models.Inspection;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.InspectionRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
@@ -25,9 +27,10 @@ public class InspectionServiceImpl implements InspectionService {
     InspectionRepo inspectionRepo;
     DevicesService devicesService;
     WaterSiteService waterSiteService;
-
+    ParkRepo parkRepo;
     @Autowired
     public InspectionServiceImpl(@Qualifier("InspectionRepo") InspectionRepo inspectionRepo,
+                                 @Qualifier("ParkRepo") ParkRepo parkRepo,
                                  @Qualifier("DeviceServiceImpl") DevicesService devicesService,
                                  @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService) {
         this.inspectionRepo = inspectionRepo;
@@ -181,6 +184,14 @@ public class InspectionServiceImpl implements InspectionService {
     @Override
     public GetAllInspectionsResponse getAllInspections()
     {
+        List<Park> parks  = parkRepo.findAll();
+
+
+        for (int i = 0; i <parks.size() ; i++)
+        {
+            inspectionRepo.getInspectionByParkId(parks.get(i).getId());
+        }
+
         List<Inspection> allInspections = inspectionRepo.findAll();
         System.out.println("HUH");
 
