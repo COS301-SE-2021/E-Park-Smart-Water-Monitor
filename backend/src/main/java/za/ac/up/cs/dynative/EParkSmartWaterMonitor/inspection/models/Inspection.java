@@ -36,6 +36,7 @@ public class Inspection {
             String description) {
         this.id = UUID.randomUUID();
         this.device = device;
+        this.deviceId = device.getDeviceId();
         this.waterSiteId = waterSiteId;
         this.dateCreated = new Date();
         this.dateDue = dateDue;
