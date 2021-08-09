@@ -85,7 +85,7 @@ function Admin() {
     else {
         return (
             <>
-                <AdminProvider value={ { parksAndSites: parksAndSites, toggleLoading: toggleLoading, reloadParksAndSites: reloadParksAndSites} } >
+                <AdminProvider value={ { parksAndSites: parksAndSites, toggleLoading: toggleLoading } } >
                     <AdminHeader/>
                     <Modal onClose={() => setShow(false)} show={show}>
                         <div className="sweet-loading" style={ overlay }>

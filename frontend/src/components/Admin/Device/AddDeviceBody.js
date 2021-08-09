@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Select from "react-select";
 import axios from "axios";
-import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
+import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import AdminContext from "../AdminContext";
 
 
@@ -27,11 +27,27 @@ const AddDeviceBody = (props) => {
     const [model, setModel] = useState("ESP32")
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
+    const [currentPos, setCurrentPos] = useState([-25.88536975144579, 28.277796392845673])
 
     // use the context supplied from the admin component to get the parks and sites
     const context = useContext(AdminContext)
     const parksAndSites = context.parksAndSites;
     const toggleLoading = context.toggleLoading
+
+    // getting the clicked location on
+    function MapEvents() {
+        const map = useMapEvents({
+            click: (e) => {
+                setLatitude(e.latlng.lat)
+                setLongitude(e.latlng.lng)
+            },
+            drag : () => {
+
+            }
+        })
+        return null
+    }
+
 
     const assignSiteOptions = (selectedPark) => {
 
@@ -154,24 +170,29 @@ const AddDeviceBody = (props) => {
 
                 <Row>
                     <Col>
+                        Click on the map to select the location
                         <div style={ { height: 250 } } className="mb-3" >
                             {/*rietvlei centre*/}
                             {latitude && longitude && <MapContainer
                                 style={mapStyles}
                                 center={[-25.88536975144579, 28.277796392845673]}
                                 zoom={13}
-                                scrollWheelZoom={false}
+                                draggable={true}
                                 >
                                 <TileLayer
                                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 />
-                                <Marker position={[latitude, longitude]}>
-                                    <Popup>
-                                        <h3>{name}</h3>
-                                        location
-                                    </Popup>
-                                </Marker>
+                                { currentPos && <Marker
+                                    position={[latitude, longitude]}
+                                >
+                                <Popup>
+                                    Current location: <pre>{JSON.stringify( currentPos, null, 2)}</pre>
+                                </Popup>
+                                </Marker>}
+
+                                <MapEvents/>
+
                             </MapContainer>}
                         </div>
                     </Col>

@@ -79,12 +79,12 @@ const SiteTable = (props) => {
 
     // when updates or deletes are made to a watersite, get the watersites for the selected park again
     useEffect(() => {
-        toggleLoading()
+
         axios.get('http://localhost:8080/api/park/getParksWaterSites', {
                 parkId: park.value
             }
         ).then((res)=>{
-            toggleLoading()
+
 
             alert(JSON.stringify(res))
 
@@ -136,7 +136,7 @@ const SiteTable = (props) => {
             // object using the park ID to retreive the
             // relevant sites to display
             let selectedPark = parksAndSites.parks.filter( p => p.id === park.value )
-            assignSiteOptions(selectedPark[0])
+            // assignSiteOptions(selectedPark[0])
 
         }
     },[park])
