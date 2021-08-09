@@ -13,7 +13,7 @@ def kalmanGain(errorEstimate, errorMeasurement):
   return errorEstimate/(errorEstimate + errorMeasurement)
 
 def estimate(prevEst, kalmanGain, currMeasurement):
-  return prevEst + kalmanGain*(currMeasurement - prevEst)
+  return float(prevEst) + float(kalmanGain)*float(currMeasurement - prevEst)
 
 def estError(kalmanGain, prevEstError):
   return (1 - kalmanGain)*(prevEstError)
@@ -57,7 +57,7 @@ def lambda_handler(event, context):
     exists=False
     if not table.item_count == 0 and not len(prevItem['Items'])==0:
         prevItem=prevItem['Items'][0]
-        exists = ("EstimateValue" in prevItem["WaterSourceData"]["measurements"][0] or 'EstimateValue' in prevItem["WaterSourceData"]["measurements"][0])
+        exists = ("estimateError" in prevItem["WaterSourceData"]["measurements"][0] or 'estimateValue' in prevItem["WaterSourceData"]["measurements"][0])
         prevMeasurements = prevItem["WaterSourceData"]["measurements"]
 
     print("TEST ",exists)
@@ -83,8 +83,8 @@ def lambda_handler(event, context):
             EST_ERR = estError(KG, initialEstimateError)
         else:
             prevMeasurementSet=prevMeasurements[x]
-            prevErrorEstimate=prevMeasurementSet['EstimateError']
-            prevEstimate=prevMeasurementSet['EstimateValue']
+            prevErrorEstimate=prevMeasurementSet['estimateError']
+            prevEstimate=prevMeasurementSet['estimateValue']
 
             KG = kalmanGain(prevErrorEstimate, currMeasurementError)
             EST = estimate(prevEstimate, KG, val)
@@ -98,8 +98,8 @@ def lambda_handler(event, context):
         'value':helper,
         'unitOfMeasurement':measurements[x]['unitOfMeasurement'],
         'deviceDateTime':measurements[x]['deviceDateTime'],
-        'EstimateValue': Decimal(str(EST)),
-        'EstimateError': Decimal(str(EST_ERR))
+        'estimateValue': Decimal(str(EST)),
+        'estimateError': Decimal(str(EST_ERR))
         })
 
 
@@ -121,22 +121,23 @@ def lambda_handler(event, context):
     print(response)
 
 
+
 # # kalman filter test implementation
 # def kalmanGain(errorEstimate, errorMeasurement):
 #   return errorEstimate/(errorEstimate + errorMeasurement)
-#
+
 # def estimate(prevEst, kalmanGain, currMeasurement):
 #   return prevEst + kalmanGain*(currMeasurement - prevEst)
-#
+
 # def estError(kalmanGain, prevEstError):
 #   return (1 - kalmanGain)*(prevEstError)
-#
-#
+
+
 # def kalmanAlg(measurement):
 #   currMeasurementError = 4
 #   initialEstimateError = 2
 #   initialEstimate = measurement + 4
-#
+
 #   if previousEntryVals == -1:
 #     KG = kalmanGain(initialEstimateError, currMeasurementError)
 #     EST = estimate(initialEstimate, KG, measurement)
@@ -145,7 +146,9 @@ def lambda_handler(event, context):
 #     KG = kalmanGain(prevErrorEstimate, currMeasurementError)
 #     EST = estimate(prevEstimate, KG, measurement)
 #     EST_ERR = estError(KG, prevEstimateError)
-#
+
 #   #add calculated values to json object
-#
+
 # kalmanAlg(measurements)
+
+
