@@ -402,9 +402,10 @@ public class UserServiceImpl implements UserService {
                 userRepo.save(userList.get(0));
                 return new ResetPasswordFinalizeResponse("Password successfully changed", true);
             }
+            return new ResetPasswordFinalizeResponse("There seems to be a typo in the code or provided password", false);
         }
 
-
+        return new ResetPasswordFinalizeResponse("Password reset failed, code expired", false);
     }
 
 }
