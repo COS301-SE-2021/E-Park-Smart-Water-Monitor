@@ -11,7 +11,7 @@ public class GetAllInspectionsResponse
     List<UUID> parkId;
     List< List<Inspection>> inspections;
 
-    public GetAllInspectionsResponse(List<Inspection> inspections)
+    public GetAllInspectionsResponse()
     {
         this.inspections = new ArrayList<>();
         this.parkId = new ArrayList<>();

@@ -20,6 +20,6 @@ public interface InspectionRepo extends Neo4jRepository<Inspection, UUID> {
     List<Inspection> getInspectionByDeviceId(@Param("id") UUID id);
 
 
-    @Query("MATCH (x:Park{parkId:$id})-[z]->(n:WaterSite)-[r]->(d:Inspection) return d")
+    @Query("MATCH (x:Park{id:$id})-[z]->(n:WaterSite)-[r]->(d:Inspection) return d")
     List<Inspection> getInspectionByParkId(@Param("id") UUID id);
 }

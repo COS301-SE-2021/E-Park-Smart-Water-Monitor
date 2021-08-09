@@ -36,6 +36,7 @@ public class InspectionServiceImpl implements InspectionService {
         this.inspectionRepo = inspectionRepo;
         this.devicesService = devicesService;
         this.waterSiteService = waterSiteService;
+        this.parkRepo = parkRepo;
     }
 
     @Override
@@ -72,9 +73,9 @@ public class InspectionServiceImpl implements InspectionService {
         Inspection inspection = new Inspection(findDeviceResponse.getDevice(), getSiteByIdResponse.getId(), request.getDateDue(), request.getDescription());
         inspectionRepo.save(inspection);
 
-//        getSiteByIdResponse.getSite().addInspection(inspection);
+        getSiteByIdResponse.addInspection(inspection);
 
-//        waterSiteService.saveSite(new SaveSiteRequest(getSiteByIdResponse.getSite()));
+        waterSiteService.saveSite(new SaveSiteRequest(getSiteByIdResponse));
 
         response.setStatus("Inspection successfully added!");
         response.setSuccess(true);
@@ -185,21 +186,23 @@ public class InspectionServiceImpl implements InspectionService {
     public GetAllInspectionsResponse getAllInspections()
     {
         List<Park> parks  = parkRepo.findAll();
-
-
+        GetAllInspectionsResponse response = new GetAllInspectionsResponse();
         for (int i = 0; i <parks.size() ; i++)
         {
-            inspectionRepo.getInspectionByParkId(parks.get(i).getId());
+            response.addPark(parks.get(i).getId());
+            List<Inspection> inspectionsForParks = inspectionRepo.getInspectionByParkId(parks.get(i).getId());
+            System.out.println(inspectionsForParks);
+            response.addInspectionSet(inspectionsForParks);
         }
 
-        List<Inspection> allInspections = inspectionRepo.findAll();
-        System.out.println("HUH");
+//        List<Inspection> allInspections = inspectionRepo.findAll();
+//        System.out.println("HUH");
 
-        for (int i = 0; i <allInspections.size() ; i++) {
-            System.out.println(allInspections.get(i).toString());
-        }
-        System.out.println("HUH2");
-        return new GetAllInspectionsResponse(allInspections);
+//        for (int i = 0; i <allInspections.size() ; i++) {
+//            System.out.println(allInspections.get(i).toString());
+//        }
+//        System.out.println("HUH2");
+        return response ;
     }
 
 }
