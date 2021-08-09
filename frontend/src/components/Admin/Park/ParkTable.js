@@ -40,7 +40,6 @@ const ParkTable = (props) => {
     // if you make this a state then the parent will rerender
     const context = useContext(AdminContext)
     const parksAndSites = context.parksAndSites
-    const reloadParksAndSites = context.reloadParksAndSites
     const toggleLoading = context.toggleLoading
 
     const reloadParkTable = () => {
@@ -59,8 +58,9 @@ const ParkTable = (props) => {
 
         let obj = null;
 
-        if (parksAndSites && parksAndSites.parks) {
-            obj = parksAndSites.parks.map((park) =>
+        // if (parksAndSites && parksAndSites.parks) {
+        axios.get('http://localhost:8080/api/park/getAllParks').then((res)=> {
+            obj = res.data.allParks.map((park) =>
                 <TableRow key={park.id}
                           onClick={handleParkSelection(park)} // send through the whole park object
                           style={hoverStyle}
@@ -106,9 +106,8 @@ const ParkTable = (props) => {
             )
 
             setResponse(obj)
-        }else{
-            alert("error parksAndSites not loaded, it contains: "+ JSON.stringify(parksAndSites))
-        }
+        });
+
 
 
     }, [value])
@@ -131,7 +130,7 @@ const ParkTable = (props) => {
                 }
             }).then((res)=> {
                 toggleLoading()
-                reloadParksAndSites()
+                reloadParkTable()
 
             }).catch((res)=>{
                 toggleLoading()

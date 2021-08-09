@@ -51,10 +51,6 @@ function Admin() {
         setLoading(loading=>!loading)
     }
 
-    const reloadParksAndSites = () => {
-        setValue(value => value+1)
-    }
-
     // get all the park and site data to populate the park and site tables
     // as well as the modals which require you select a park and a site
     // context will be passed down to all the children which require it
