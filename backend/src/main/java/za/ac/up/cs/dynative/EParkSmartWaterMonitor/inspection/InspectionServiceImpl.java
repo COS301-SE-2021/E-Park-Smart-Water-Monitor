@@ -52,21 +52,22 @@ public class InspectionServiceImpl implements InspectionService {
             return response;
         }
 
-        GetSiteByIdResponse getSiteByIdResponse = waterSiteService.getSiteById(new GetSiteByIdRequest((request.getWaterSiteId())));
+//        GetSiteByIdResponse getSiteByIdResponse = waterSiteService.getSiteById(new GetSiteByIdRequest((request.getWaterSiteId())));
+//
+//        if (getSiteByIdResponse == null || !getSiteByIdResponse.getSuccess()) {
+//            response.setStatus("Failed to add inspection! Failure to get site!");
+//            response.setSuccess(false);
+//
+//            return response;
+//        }
 
-        if (getSiteByIdResponse == null || !getSiteByIdResponse.getSuccess()) {
-            response.setStatus("Failed to add inspection! Failure to get site!");
-            response.setSuccess(false);
-
-            return response;
-        }
-
-        Inspection inspection = new Inspection(findDeviceResponse.getDevice(), request.getWaterSiteId(), request.getDateDue(), request.getDescription());
+        Inspection inspection = new Inspection(findDeviceResponse.getDevice(), request.getDateDue(), request.getDescription());
+//        Inspection inspection = new Inspection(findDeviceResponse.getDevice(), request.getWaterSiteId(), request.getDateDue(), request.getDescription());
         inspectionRepo.save(inspection);
 
-        getSiteByIdResponse.getSite().addInspection(inspection);
+//        getSiteByIdResponse.getSite().addInspection(inspection);
 
-        waterSiteService.saveSite(new SaveSiteRequest(getSiteByIdResponse.getSite()));
+//        waterSiteService.saveSite(new SaveSiteRequest(getSiteByIdResponse.getSite()));
 
         response.setStatus("Inspection successfully added!");
         response.setSuccess(true);
