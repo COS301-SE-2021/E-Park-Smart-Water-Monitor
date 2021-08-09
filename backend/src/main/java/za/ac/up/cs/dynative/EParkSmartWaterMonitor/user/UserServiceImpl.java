@@ -133,7 +133,7 @@ public class UserServiceImpl implements UserService {
             }
             if (!request.getCellNumber().equals(""))
             {
-                Pattern p = Pattern.compile("\\d{10}");
+                Pattern p = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");;
                 Matcher m = p.matcher(request.getCellNumber());
                 boolean validNumber = m.matches();
 
@@ -269,7 +269,7 @@ public class UserServiceImpl implements UserService {
                 Collection<SimpleGrantedAuthority> authorities = Sets.newHashSet();
                 authorities.add(new SimpleGrantedAuthority(user.getRole()));
 
-                Authentication auth = new UsernamePasswordAuthenticationToken("user", "pass", authorities);
+                Authentication auth = new UsernamePasswordAuthenticationToken(username, password, authorities);
 
                 JWTToken =  jwtTokenProvider.generateToken(auth);
 //                        Jwts.builder()

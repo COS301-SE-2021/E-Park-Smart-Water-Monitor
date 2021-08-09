@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider
 {
     private String jwtSecret ="tempSecret" ;
-    private String jwtTokenPrefix= "tempTokenPrefix";
-    private String jwtHeaderString= "tempHeaderString";
+    private String jwtTokenPrefix= "Bearer";
+    private String jwtHeaderString= "Authorization";
     private Long jwtExpirationInMs= Long.valueOf(86400000);
 
     public String generateToken(Authentication authentication)
@@ -35,9 +35,11 @@ public class JwtTokenProvider
 
     public Authentication getAuthentication(HttpServletRequest request)
     {
+        System.out.println("DO WE GET HERE");
         String token= resolveToken(request);
         if (token==null)
             return null;
+        System.out.println("WE  DONT GET HERE");
 
         Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
         String userName=claims.getSubject();
@@ -63,7 +65,12 @@ public class JwtTokenProvider
 
     private String resolveToken(HttpServletRequest request)
     {
+        System.out.println("DO WE GET HERE2");
+        System.out.println(request);
+
         String bearerToken = request.getHeader(jwtHeaderString);
+
+        System.out.println(bearerToken);
         if (bearerToken!=null&&bearerToken.startsWith(jwtTokenPrefix))
         {
             return bearerToken.substring(7,bearerToken.length());
