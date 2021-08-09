@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.NotificationService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.NotificationServiceImpl;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
@@ -17,6 +21,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -335,7 +340,46 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest){
-        //TODO
+        String username = resetPasswordRequest.getUsername();
+        List<User> userList=  userRepo.findUserByUsername(username);
+        if (userList.size()==0){
+            User user= userList.get(0);
+
+            //create a code
+            String upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            String lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
+            String numbers = "0123456789";
+            String alphaNumeric = upperAlphabet + lowerAlphabet + numbers;
+            StringBuilder sb = new StringBuilder();
+            Random random= new Random();
+
+            int length= 32;
+            for (int i= 0; i<length; i++){
+                int index= random.nextInt(alphaNumeric.length());
+                char randomChar = alphaNumeric.charAt(index);
+                sb.append(randomChar);
+            }
+            String code= sb.toString();
+            user.setActivationCode(code);
+
+            //code expiration
+            user.setResetPasswordExpiration(LocalDateTime.now().plusHours(2));
+
+            String message = "Hi "+user.getName()+",\n\n We received your request to reset your password. Here is your verification code: \n\n"
+                    +code+"\n\n The code is valid for 4 hours.";
+
+            //send email
+            NotificationService notificationService;//TODO: complete!!!
+            ArrayList<String> to= new ArrayList<>();
+            to.add(user.getEmail());
+            notificationService.sendMail(new EmailRequest("EPark Smart Water Monitoring System", "Password reset"
+                    ,to, null, null, Topic.PASSWORD_RESET,username,message,"Password rest code"));
+
+            return new ResetPasswordResponse(code);
+
+        }else{
+            return new ResetPasswordResponse("FFFFF"); //FFFFF means fail
+        }
     }
 
     @Override
