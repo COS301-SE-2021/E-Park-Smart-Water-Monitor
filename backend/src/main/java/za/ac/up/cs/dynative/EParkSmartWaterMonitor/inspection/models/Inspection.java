@@ -31,12 +31,12 @@ public class Inspection {
 
     public Inspection(
             Device device,
-            UUID waterSiteId,
+//            UUID waterSiteId,
             Date dateDue,
             String description) {
         this.id = UUID.randomUUID();
         this.device = device;
-        this.waterSiteId = waterSiteId;
+//        this.waterSiteId = waterSiteId;
         this.dateCreated = new Date();
         this.dateDue = dateDue;
         this.description = description;
