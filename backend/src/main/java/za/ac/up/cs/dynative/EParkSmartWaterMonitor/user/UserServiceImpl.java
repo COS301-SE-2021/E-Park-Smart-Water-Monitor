@@ -31,17 +31,17 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepo userRepo;
     private final ParkService parkService;
-    private final NotificationService notificationService;
+    //private final NotificationService notificationService;
 
 
 
     @Autowired
     public UserServiceImpl(@Qualifier("UserRepo") UserRepo userRepo,
-                           @Qualifier("ParkService") ParkService parkService,
-                           @Qualifier("NotificationServiceImpl") NotificationService notificationService) {
+                           @Qualifier("ParkService") ParkService parkService){
+                          // @Qualifier("NotificationServiceImpl") NotificationService notificationService) {
         this.userRepo = userRepo;
         this.parkService = parkService;
-        this.notificationService= notificationService;
+        //this.notificationService= notificationService;
     }
 
     @Override
