@@ -370,8 +370,8 @@ public class UserServiceImpl implements UserService {
             //code expiration
             user.setResetPasswordExpiration(LocalDateTime.now().plusHours(2));
 
-            String message = "Hi "+user.getName()+",\n\n We received your request to reset your password. Here is your verification code: \n\n"
-                    +code+"\n\n The code is valid for 4 hours.";
+            String message = "Hi "+user.getName()+",\n\nWe received your request to reset your password. Here is your verification code: \n\n"
+                    +code+"\n\nThe code is valid for 4 hours.";
 
             //send email
             ArrayList<String> to= new ArrayList<>();
@@ -398,8 +398,11 @@ public class UserServiceImpl implements UserService {
         if (userList.size()==0){
             return new ResetPasswordFinalizeResponse("User not found", false);
         }
+        System.out.println(123);    //TODO: remove
         if (!userList.get(0).getResetPasswordExpiration().isAfter(LocalDateTime.now())){
+            System.out.println(456);    //TODO: remove
             if (code.equals(userList.get(0).getActivationCode())&& password1.equals(password2)){
+
                 BCryptPasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
                 String passwordNew= passwordEncoder.encode(password1);
                 userList.get(0).setPassword(passwordNew);
