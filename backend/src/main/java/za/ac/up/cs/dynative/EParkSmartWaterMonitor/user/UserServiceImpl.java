@@ -342,7 +342,7 @@ public class UserServiceImpl implements UserService {
     public ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest){
         String username = resetPasswordRequest.getUsername();
         List<User> userList=  userRepo.findUserByUsername(username);
-        if (userList.size()==0){
+        if (userList.size()>0){
             User user= userList.get(0);
 
             //create a code
@@ -378,13 +378,33 @@ public class UserServiceImpl implements UserService {
             return new ResetPasswordResponse(code);
 
         }else{
-            return new ResetPasswordResponse("FFFFF"); //FFFFF means fail
+            return new ResetPasswordResponse("User not found");
         }
     }
 
     @Override
     public ResetPasswordFinalizeResponse resetPasswordFinalize(ResetPasswordFinalizeRequest resetPasswordFinalizeRequest){
-        //TODO
+        String username= resetPasswordFinalizeRequest.getUsername();
+        String code= resetPasswordFinalizeRequest.getResetCode();
+        String password1 = resetPasswordFinalizeRequest.getNewPassword();
+        String password2 = resetPasswordFinalizeRequest.getNewPasswordConfirm();
+
+        List<User> userList=  userRepo.findUserByUsername(username);
+        if (userList.size()==0){
+            return new ResetPasswordFinalizeResponse("User not found", false);
+        }
+        if (!userList.get(0).getResetPasswordExpiration().isAfter(LocalDateTime.now())){
+            if (code.equals(userList.get(0).getActivationCode())&& password1.equals(password2)){
+                BCryptPasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
+                String passwordNew= passwordEncoder.encode(password1);
+                userList.get(0).setPassword(passwordNew);
+
+                userRepo.save(userList.get(0));
+                return new ResetPasswordFinalizeResponse("Password successfully changed", true);
+            }
+        }
+
+
     }
 
 }
