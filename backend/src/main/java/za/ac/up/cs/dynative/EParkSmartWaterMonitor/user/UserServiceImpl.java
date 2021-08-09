@@ -20,6 +20,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.repositories.UserRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.*;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -375,8 +376,9 @@ public class UserServiceImpl implements UserService {
             //send email
             ArrayList<String> to= new ArrayList<>();
             to.add(user.getEmail());
-            notificationService.sendMail(new EmailRequest("EPark Smart Water Monitoring System", "Password reset"
-                    ,to, null, null, Topic.PASSWORD_RESET,username,message,"Password rest code"));
+            /*notificationService.sendMail(new EmailRequest("EPark Smart Water Monitoring System", "Password reset"
+                    ,to, null, null, Topic.PASSWORD_RESET,username,message,"Password rest code"));*/
+            System.out.println(message);
 
             return new ResetPasswordResponse(code);
 
