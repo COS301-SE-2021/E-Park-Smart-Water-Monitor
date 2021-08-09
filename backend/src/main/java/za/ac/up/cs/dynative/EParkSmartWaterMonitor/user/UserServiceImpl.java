@@ -31,13 +31,17 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepo userRepo;
     private final ParkService parkService;
+    private final NotificationService notificationService;
+
 
 
     @Autowired
     public UserServiceImpl(@Qualifier("UserRepo") UserRepo userRepo,
-                           @Qualifier("ParkService") ParkService parkService) {
+                           @Qualifier("ParkService") ParkService parkService,
+                           @Qualifier("NotificationServiceImpl") NotificationService notificationService) {
         this.userRepo = userRepo;
         this.parkService = parkService;
+        this.notificationService= notificationService;
     }
 
     @Override
@@ -339,7 +343,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest){
+    public ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest) throws InvalidRequestException {
         String username = resetPasswordRequest.getUsername();
         List<User> userList=  userRepo.findUserByUsername(username);
         if (userList.size()>0){
@@ -369,7 +373,6 @@ public class UserServiceImpl implements UserService {
                     +code+"\n\n The code is valid for 4 hours.";
 
             //send email
-            NotificationService notificationService;//TODO: complete!!!
             ArrayList<String> to= new ArrayList<>();
             to.add(user.getEmail());
             notificationService.sendMail(new EmailRequest("EPark Smart Water Monitoring System", "Password reset"

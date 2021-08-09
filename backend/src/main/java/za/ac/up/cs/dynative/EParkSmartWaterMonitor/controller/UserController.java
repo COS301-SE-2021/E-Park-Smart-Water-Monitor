@@ -53,7 +53,7 @@ public class UserController {
     }
 
     @PostMapping("/resetPassword")
-    public ResponseEntity<Object> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
+    public ResponseEntity<Object> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) throws InvalidRequestException {
         return new ResponseEntity<>(userService.resetPassword(resetPasswordRequest), HttpStatus.OK);
     }
 
