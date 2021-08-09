@@ -18,11 +18,11 @@ public class AddInspectionRequest {
     private String description;
 
     public AddInspectionRequest(@JsonProperty("deviceId") UUID deviceId,
-                                @JsonProperty("siteId") UUID waterSiteId,
+//                                @JsonProperty("siteId") UUID waterSiteId,
                                 @JsonProperty("dateDue") Date dateDue,
                                 @JsonProperty("description") String description) {
         this.deviceId = deviceId;
-        this.waterSiteId = waterSiteId;
+//        this.waterSiteId = waterSiteId;
         this.dateDue = dateDue;
         this.description = description;
     }
