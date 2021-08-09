@@ -35,11 +35,9 @@ public class JwtTokenProvider
 
     public Authentication getAuthentication(HttpServletRequest request)
     {
-        System.out.println("DO WE GET HERE");
         String token= resolveToken(request);
         if (token==null)
             return null;
-        System.out.println("WE  DONT GET HERE");
 
         Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
         String userName=claims.getSubject();
@@ -65,7 +63,6 @@ public class JwtTokenProvider
 
     private String resolveToken(HttpServletRequest request)
     {
-        System.out.println("DO WE GET HERE2");
         System.out.println(request);
 
         String bearerToken = request.getHeader(jwtHeaderString);
