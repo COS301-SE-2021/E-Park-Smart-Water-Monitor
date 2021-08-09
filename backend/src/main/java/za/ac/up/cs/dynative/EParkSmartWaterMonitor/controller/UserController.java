@@ -51,4 +51,14 @@ public class UserController {
     public ResponseEntity<Object> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
+
+    @PostMapping("/resetPassword")
+    public ResponseEntity<Object> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
+        return new ResponseEntity<>(userService.resetPassword(resetPasswordRequest), HttpStatus.OK);
+    }
+
+    @PostMapping("/resetPasswordFinalize")
+    public ResponseEntity<Object> resetPassword(@RequestBody ResetPasswordFinalizeRequest resetPasswordFinalizeRequest) {
+        return new ResponseEntity<>(userService.resetPasswordFinalize(resetPasswordFinalizeRequest), HttpStatus.OK);
+    }
 }
