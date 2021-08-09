@@ -40,9 +40,6 @@ const AddDeviceBody = (props) => {
             click: (e) => {
                 setLatitude(e.latlng.lat)
                 setLongitude(e.latlng.lng)
-            },
-            drag : () => {
-
             }
         })
         return null
@@ -170,7 +167,7 @@ const AddDeviceBody = (props) => {
 
                 <Row>
                     <Col>
-                        Click on the map to select the location
+                        Click on the map to select the device location
                         <div style={ { height: 250 } } className="mb-3" >
                             {/*rietvlei centre*/}
                             {latitude && longitude && <MapContainer
@@ -183,13 +180,12 @@ const AddDeviceBody = (props) => {
                                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 />
-                                { currentPos && <Marker
-                                    position={[latitude, longitude]}
-                                >
-                                <Popup>
-                                    Current location: <pre>{JSON.stringify( currentPos, null, 2)}</pre>
-                                </Popup>
-                                </Marker>}
+                                <Marker position={[latitude, longitude]}>
+                                    <Popup>
+                                        { name !== "" && `${name} location` }
+                                        { name === "" && "Device Location" }
+                                    </Popup>
+                                </Marker>
 
                                 <MapEvents/>
 
