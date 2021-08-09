@@ -70,7 +70,7 @@ public class InspectionServiceImpl implements InspectionService {
 //        }
 
 //        Inspection inspection = new Inspection(findDeviceResponse.getDevice(), request.getDateDue(), request.getDescription());
-        Inspection inspection = new Inspection(findDeviceResponse.getDevice(), getSiteByIdResponse.getId(), request.getDateDue(), request.getDescription());
+        Inspection inspection = new Inspection(findDeviceResponse.getDevice(),findDeviceResponse.getDevice().getDeviceId(), getSiteByIdResponse.getId(), request.getDateDue(), request.getDescription());
         inspectionRepo.save(inspection);
 
         getSiteByIdResponse.addInspection(inspection);
