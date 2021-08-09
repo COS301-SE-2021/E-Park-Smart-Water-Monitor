@@ -13,4 +13,6 @@ public interface UserService {
     User findUserByUserName(String username);
     DeleteUserResponse deleteUser(DeleteUserRequest deleteUserRequest);
     FindUserByIdResponse findUserById(FindUserByIdRequest findUserByIdRequest);
+    ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest);
+    ResetPasswordFinalizeResponse resetPasswordFinalize(ResetPasswordFinalizeRequest resetPasswordFinalizeRequest);
 }

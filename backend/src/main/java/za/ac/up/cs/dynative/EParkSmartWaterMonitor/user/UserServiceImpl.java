@@ -332,4 +332,15 @@ public class UserServiceImpl implements UserService {
     public GetAllUsersResponse getAllUsers() {
         return new GetAllUsersResponse(userRepo.getAllUsers());
     }
+
+    @Override
+    public ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest){
+        //TODO
+    }
+
+    @Override
+    public ResetPasswordFinalizeResponse resetPasswordFinalize(ResetPasswordFinalizeRequest resetPasswordFinalizeRequest){
+        //TODO
+    }
+
 }
