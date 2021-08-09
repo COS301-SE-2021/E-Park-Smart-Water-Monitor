@@ -12,9 +12,12 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.Inspe
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.SaveSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
+
+import java.util.List;
 
 @Service("InspectionServiceImpl")
 public class InspectionServiceImpl implements InspectionService {
@@ -52,6 +55,7 @@ public class InspectionServiceImpl implements InspectionService {
             return response;
         }
 
+        WaterSite getSiteByIdResponse = waterSiteService.getWaterSiteByRelatedDevice(findDeviceResponse.getDevice().getDeviceId());
 //        GetSiteByIdResponse getSiteByIdResponse = waterSiteService.getSiteById(new GetSiteByIdRequest((request.getWaterSiteId())));
 //
 //        if (getSiteByIdResponse == null || !getSiteByIdResponse.getSuccess()) {
@@ -61,8 +65,8 @@ public class InspectionServiceImpl implements InspectionService {
 //            return response;
 //        }
 
-        Inspection inspection = new Inspection(findDeviceResponse.getDevice(), request.getDateDue(), request.getDescription());
-//        Inspection inspection = new Inspection(findDeviceResponse.getDevice(), request.getWaterSiteId(), request.getDateDue(), request.getDescription());
+//        Inspection inspection = new Inspection(findDeviceResponse.getDevice(), request.getDateDue(), request.getDescription());
+        Inspection inspection = new Inspection(findDeviceResponse.getDevice(), getSiteByIdResponse.getId(), request.getDateDue(), request.getDescription());
         inspectionRepo.save(inspection);
 
 //        getSiteByIdResponse.getSite().addInspection(inspection);
@@ -173,4 +177,18 @@ public class InspectionServiceImpl implements InspectionService {
 
         return response;
     }
+
+    @Override
+    public GetAllInspectionsResponse getAllInspections()
+    {
+        List<Inspection> allInspections = inspectionRepo.findAll();
+        System.out.println("HUH");
+
+        for (int i = 0; i <allInspections.size() ; i++) {
+            System.out.println(allInspections.get(i).toString());
+        }
+        System.out.println("HUH2");
+        return new GetAllInspectionsResponse(allInspections);
+    }
+
 }

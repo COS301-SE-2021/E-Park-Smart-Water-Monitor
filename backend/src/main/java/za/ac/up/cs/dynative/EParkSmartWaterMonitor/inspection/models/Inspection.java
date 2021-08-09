@@ -31,17 +31,32 @@ public class Inspection {
 
     public Inspection(
             Device device,
-//            UUID waterSiteId,
+            UUID waterSiteId,
             Date dateDue,
             String description) {
         this.id = UUID.randomUUID();
         this.device = device;
-//        this.waterSiteId = waterSiteId;
+        this.waterSiteId = waterSiteId;
         this.dateCreated = new Date();
         this.dateDue = dateDue;
         this.description = description;
         this.comments = "";
         this.status = "NOT STARTED";
+    }
+
+    @Override
+    public String toString() {
+        return "Inspection{" +
+                "id=" + id +
+                ", device=" + device +
+                ", deviceId=" + deviceId +
+                ", waterSiteId=" + waterSiteId +
+                ", dateCreated=" + dateCreated +
+                ", dateDue=" + dateDue +
+                ", description='" + description + '\'' +
+                ", comments='" + comments + '\'' +
+                ", status='" + status + '\'' +
+                '}';
     }
 
     public UUID getId() {
