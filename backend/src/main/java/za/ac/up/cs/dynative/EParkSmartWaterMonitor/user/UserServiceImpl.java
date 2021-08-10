@@ -78,6 +78,7 @@ public class UserServiceImpl implements UserService {
                 && !idNumber.equals("")
                 && !password.equals("")) {
 
+            //cellphone number check:
             Pattern p = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");;
             Matcher m = p.matcher(cellNumber);
             boolean validNumber = m.matches();
@@ -86,6 +87,17 @@ public class UserServiceImpl implements UserService {
                 response.setSuccess(false);
                 return response;
             }
+
+            //email address check:
+            Pattern emailPattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+            Matcher emailMatcher = emailPattern.matcher(request.getEmail());
+            boolean validEmail = emailMatcher.matches();
+            if (!validEmail) {
+                response.setStatus("The provided email is not a valid email-address.");
+                response.setSuccess(false);
+                return response;
+            }
+
 
             List<User> users = userRepo.findUserByIdNumber(idNumber);
             List<User> usersByUsername = userRepo.findUserByUsername(username);
