@@ -143,7 +143,7 @@ const DeviceTable = () => {
                 </Modal> }
 
                 <Modal title="Add Inspection" onClose={() => setShowInspection(false)} show={ showInspection }>
-                    <AddInspectionBody device_id={ device.deviceId }/>
+                    <AddInspectionBody device_id={ device.deviceId } closeModal={ () => setShowInspection(false) }/>
                 </Modal>
 
                 <Grid container component={Box}>

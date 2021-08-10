@@ -233,12 +233,8 @@ const SiteTable = (props) => {
                                                 Watersites for park
                                             </Box>
                                         </Grid>
-                                        <Grid item xs="auto">
-                                            <Box
-                                                justifyContent="flex-end"
-                                                display="flex"
-                                                flexWrap="wrap"
-                                            >
+                                        <Grid item xs="auto"  xs={"12"} md={"6"}>
+                                            <Box>
                                                 {/*dropdown*/}
                                                 <Select required={"required"} className="mb-3" name="park" options={ parkOptions } value={ park } onChange={e => setPark(e)}/>
                                             </Box>

@@ -13,7 +13,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+import Select from "react-select";
 import componentStyles from "assets/theme/views/admin/admin";
 import Modal from "../../Modals/Modal";
 import axios from "axios";
@@ -73,9 +73,6 @@ const InspectionTable = () => {
                 marginTop="-3rem"
                 classes={{ root: classes.containerRoot }}
             >
-                <Modal title="Add Inspection" onClose={() => setShow(false)} show={show}>
-                    <AddInspectionBody/>
-                </Modal>
 
                 <Grid container component={Box} marginTop="3rem">
                     <Grid
@@ -96,7 +93,7 @@ const InspectionTable = () => {
                                         alignItems="center"
                                         justifyContent="space-between"
                                     >
-                                        <Grid item xs="auto">
+                                        <Grid item >
                                             <Box
                                                 component={Typography}
                                                 variant="h2"
@@ -105,12 +102,10 @@ const InspectionTable = () => {
                                                 Inspections
                                             </Box>
                                         </Grid>
-                                        <Grid item xs="auto">
-                                            <Box
-                                                justifyContent="flex-end"
-                                                display="flex"
-                                                flexWrap="wrap"
-                                            >
+                                        <Grid item xs={"12"} md={"3"}>
+                                            <Box>
+                                                {/*<Select required={"required"} className="mb-3" name="park" options={ parkOptions } value={ park } onChange={e => setPark(e)}/>*/}
+                                                <Select required={"required"} className="mb-3" name="park" />
                                             </Box>
                                         </Grid>
                                     </Grid>
