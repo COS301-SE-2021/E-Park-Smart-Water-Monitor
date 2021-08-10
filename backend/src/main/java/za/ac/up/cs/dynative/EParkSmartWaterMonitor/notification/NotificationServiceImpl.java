@@ -95,7 +95,7 @@ public class NotificationServiceImpl implements NotificationService
             }
             if (eMailRequest.getTopic()== Topic.PASSWORD_RESET)
             {
-                templateSelector="/AlertTemplate.ftlh";
+                templateSelector="/PasswordReset.ftlh";
             }
 
             templateData.put("entity", eMailRequest.getEntity());

@@ -417,8 +417,15 @@ public class UserServiceImpl implements UserService {
             //send email
             ArrayList<String> to= new ArrayList<>();
             to.add(user.getEmail());
-            notificationService.sendMail(new EmailRequest("EPark Smart Water Monitoring System", "Password reset"
-                    ,to, null, null, Topic.PASSWORD_RESET,username,message,"Password rest code"));
+            notificationService.sendMail(new EmailRequest("EPark Smart Water Monitoring System",
+                    "Password reset",
+                     to,
+                    null,
+                    null,
+                     Topic.PASSWORD_RESET,
+                     username,
+                     message,
+                    "Password Reset Code"));
             userRepo.save(user);
             return new ResetPasswordResponse(code);
 
