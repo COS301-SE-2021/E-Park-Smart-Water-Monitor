@@ -78,6 +78,15 @@ public class UserServiceImpl implements UserService {
                 && !idNumber.equals("")
                 && !password.equals("")) {
 
+            Pattern p = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");;
+            Matcher m = p.matcher(cellNumber);
+            boolean validNumber = m.matches();
+            if (!validNumber) {
+                response.setStatus("Cell-number provided is not valid.");
+                response.setSuccess(false);
+                return response;
+            }
+
             List<User> users = userRepo.findUserByIdNumber(idNumber);
             List<User> usersByUsername = userRepo.findUserByUsername(username);
 
