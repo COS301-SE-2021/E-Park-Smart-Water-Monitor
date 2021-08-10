@@ -1,9 +1,10 @@
-package za.ac.up.cs.dynative.EParkSmartWaterMonitor.security;
+package za.ac.up.cs.dynative.EParkSmartWaterMonitor.security.former;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.security.UserDetails;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.repositories.UserRepo;
 

@@ -1,5 +1,4 @@
-package za.ac.up.cs.dynative.EParkSmartWaterMonitor.security;
-import io.jsonwebtoken.JwtException;
+package za.ac.up.cs.dynative.EParkSmartWaterMonitor.security.former;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
