@@ -97,7 +97,6 @@ public class NotificationServiceImpl implements NotificationService
             {
                 templateSelector="/AlertTemplate.ftlh";
             }
-            else
 
             templateData.put("entity", eMailRequest.getEntity());
             templateData.put("shortDisc", eMailRequest.getDescription());
