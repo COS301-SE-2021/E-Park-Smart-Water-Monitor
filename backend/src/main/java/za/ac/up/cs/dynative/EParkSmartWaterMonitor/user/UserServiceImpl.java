@@ -416,6 +416,7 @@ public class UserServiceImpl implements UserService {
                 BCryptPasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
                 String passwordNew= passwordEncoder.encode(password1);
                 userList.get(0).setPassword(passwordNew);
+                userList.get(0).setResetPasswordExpiration(LocalDateTime.now());
 
                 userRepo.save(userList.get(0));
                 return new ResetPasswordFinalizeResponse("Password successfully changed", true);
