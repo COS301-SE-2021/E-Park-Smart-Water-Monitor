@@ -13,13 +13,11 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
-import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
+import componentStyles from "assets/theme/views/admin/admin";
 import Modal from "../../Modals/Modal";
 import axios from "axios";
 import AddInspectionBody from "./AddInspectionBody";
-
-
 
 const useStyles = makeStyles(componentStyles);
 
@@ -28,13 +26,41 @@ const InspectionTable = () => {
     const [show, setShow] = useState(false);
 
     const [inspections, setInspections] = useState([])
+    const [response, setResponse] = useState([])
+
 
     useEffect(() => {
-        axios.post('http://localhost:8080/api/inspections/getSiteInspections', {
-            siteId: "10ad3cf6-59c3-4469-b1b0-17a75e93cf7f"
-        }).then((res) => {
+        axios.get('http://localhost:8080/api/inspections/getAllInspections').then((res) => {
             if (res.data) {
-            setInspections(res.data.inspectionList)
+
+                if(res.data && res.data.inspections)
+                {
+                    let m = res.data.inspections[0].map((inspection) => (
+                        <TableRow key={inspection.id}>
+                            <TableCell
+                                classes={{
+                                    root:
+                                        classes.tableCellRoot +
+                                        " " +
+                                        classes.tableCellRootBodyHead,
+                                }}
+                                component="th"
+                                variant="head"
+                                scope="row"
+                            >
+                                { inspection.dateDue?.split("T")[0] }
+                            </TableCell>
+                            <TableCell classes={{ root: classes.tableCellRoot }}>
+                                { inspection.status }
+                            </TableCell>
+                            <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
+                                { inspection.description }
+                            </TableCell>
+                        </TableRow>
+                    ))
+
+                    setResponse(m)
+                }
             }
         })
       }, [])
@@ -155,29 +181,7 @@ const InspectionTable = () => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {inspections.map((inspection) => (
-                                            <TableRow key={inspection.id}>
-                                                <TableCell
-                                                    classes={{
-                                                        root:
-                                                            classes.tableCellRoot +
-                                                            " " +
-                                                            classes.tableCellRootBodyHead,
-                                                    }}
-                                                    component="th"
-                                                    variant="head"
-                                                    scope="row"
-                                                >
-                                                    { inspection.dateDue?.split("T")[0] }
-                                                </TableCell>
-                                                <TableCell classes={{ root: classes.tableCellRoot }}>
-                                                    { inspection.status }
-                                                </TableCell>
-                                                <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
-                                                    { inspection.description }
-                                                </TableCell>
-                                            </TableRow>
-                                        ))}
+                                        { response }
                                     </TableBody>
                                 </Box>
                             </TableContainer>
