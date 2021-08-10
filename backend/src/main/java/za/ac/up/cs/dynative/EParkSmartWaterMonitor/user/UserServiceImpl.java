@@ -371,7 +371,7 @@ public class UserServiceImpl implements UserService {
             StringBuilder sb = new StringBuilder();
             Random random= new Random();
 
-            int length= 32;
+            int length= 10;
             for (int i= 0; i<length; i++){
                 int index= random.nextInt(alphaNumeric.length());
                 char randomChar = alphaNumeric.charAt(index);
@@ -384,15 +384,13 @@ public class UserServiceImpl implements UserService {
             user.setResetPasswordExpiration(LocalDateTime.now().plusHours(2));
 
             String message = "Hi "+user.getName()+",\n\nWe received your request to reset your password. Here is your verification code: \n\n"
-                    +code+"\n\nThe code is valid for 4 hours.";
+                    +code+"\n\nThe code is valid for 2 hours.";
 
             //send email
             ArrayList<String> to= new ArrayList<>();
             to.add(user.getEmail());
             /*notificationService.sendMail(new EmailRequest("EPark Smart Water Monitoring System", "Password reset"
                     ,to, null, null, Topic.PASSWORD_RESET,username,message,"Password rest code"));*/
-            System.out.println(message);
-
             return new ResetPasswordResponse(code);
 
         }else{
@@ -411,9 +409,7 @@ public class UserServiceImpl implements UserService {
         if (userList.size()==0){
             return new ResetPasswordFinalizeResponse("User not found", false);
         }
-        System.out.println(123);    //TODO: remove
         if (!userList.get(0).getResetPasswordExpiration().isAfter(LocalDateTime.now())){
-            System.out.println(456);    //TODO: remove
             if (code.equals(userList.get(0).getActivationCode())&& password1.equals(password2)){
 
                 BCryptPasswordEncoder passwordEncoder= new BCryptPasswordEncoder();

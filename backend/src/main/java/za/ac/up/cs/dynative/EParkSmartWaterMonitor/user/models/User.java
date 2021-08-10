@@ -167,6 +167,8 @@ public class User {
                 ", surname='" + surname + '\'' +
                 ", password='" + password + '\'' +
                 ", username='" + username + '\'' +
+                ", resetCode='" + activationCode + '\'' +
+                ", passwordExpiration='" + resetPasswordExpiration + '\'' +
                 ", role='" + role + '\'' +
                 ", cellNumber='" + cellNumber + '\'' +
                 ", park=" + park +
