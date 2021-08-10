@@ -112,6 +112,8 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/createUser").permitAll()    //TODO: moet nog roles assign
                 .antMatchers("/api/user/deleteUser").hasAnyRole("ADMIN")
                 .antMatchers("/api/user/editUser").hasAnyRole("ADMIN")
+                .antMatchers("/api/user/resetPassword").permitAll()
+                .antMatchers("/api/user/resetPasswordFinalize").permitAll()
                 .antMatchers("/api/sites/addSite").hasAnyRole("ADMIN")
                 .antMatchers("/api/user/login").permitAll()
                 .anyRequest().fullyAuthenticated()
