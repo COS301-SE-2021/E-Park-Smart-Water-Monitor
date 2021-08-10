@@ -1,8 +1,6 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.user;
 
 import com.google.common.collect.Sets;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -387,7 +385,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest) throws InvalidRequestException {
+    public ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest) {
         String username = resetPasswordRequest.getUsername();
         List<User> userList=  userRepo.findUserByUsername(username);
         if (userList.size()>0){
