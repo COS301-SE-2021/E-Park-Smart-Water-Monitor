@@ -3,25 +3,16 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.EditDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.EditDeviceResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.DeleteParkResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.WaterSiteRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.*;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service("WaterSiteServiceImpl")
 public class WaterSiteServicesImpl implements WaterSiteService
@@ -47,18 +38,31 @@ public class WaterSiteServicesImpl implements WaterSiteService
         }
 
         if (request.getParkId() != null) {
-            WaterSite waterSite = new WaterSite(UUID.randomUUID(),request.getSiteName(),request.getLatitude(), request.getLongitude());
+            if (Objects.equals(request.getShape(), "circle") || Objects.equals(request.getShape(), "rectangle")) {
+                WaterSite waterSite = new WaterSite(UUID.randomUUID(),
+                        request.getSiteName(),
+                        request.getLatitude(),
+                        request.getLongitude(),
+                        request.getShape(),
+                        request.getLength(),
+                        request.getWidth(),
+                        request.getRadius());
 
-            FindByParkIdResponse findByParkIdResponse = parkService.findByParkId(new FindByParkIdRequest(request.getParkId()));
+                FindByParkIdResponse findByParkIdResponse = parkService.findByParkId(new FindByParkIdRequest(request.getParkId()));
 
-            if (findByParkIdResponse != null) {
-                findByParkIdResponse.getPark().addWaterSite(waterSite);
-                waterSiteRepo.save(waterSite);
-                parkService.savePark(new SaveParkRequest(findByParkIdResponse.getPark()));
-                response.setStatus("Successfully added: " + request.getSiteName());
-                response.setSuccess(true);
-            }else {
-                response.setStatus("Park not found");
+                if (findByParkIdResponse != null) {
+                    findByParkIdResponse.getPark().addWaterSite(waterSite);
+                    waterSiteRepo.save(waterSite);
+                    parkService.savePark(new SaveParkRequest(findByParkIdResponse.getPark()));
+                    response.setStatus("Successfully added: " + request.getSiteName());
+                    response.setSuccess(true);
+                }else {
+                    response.setStatus("Park not found");
+                    response.setSuccess(false);
+                }
+            }
+            else {
+                response.setStatus("Invalid watersite shape");
                 response.setSuccess(false);
             }
         }
