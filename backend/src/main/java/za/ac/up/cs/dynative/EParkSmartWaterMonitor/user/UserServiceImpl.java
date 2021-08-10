@@ -409,9 +409,9 @@ public class UserServiceImpl implements UserService {
         if (userList.size()==0){
             return new ResetPasswordFinalizeResponse("User not found", false);
         }
-        System.out.println(userList.get(0));
-        if (!userList.get(0).getResetPasswordExpiration().isAfter(LocalDateTime.now())){
-            if (code.equals(userList.get(0).getActivationCode())&& password1.equals(password2)){
+
+        if (userList.get(0).getResetPasswordExpiration().isAfter(LocalDateTime.now())){
+            if (code.equals(userList.get(0).getActivationCode()) && password1.equals(password2)){
 
                 BCryptPasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
                 String passwordNew= passwordEncoder.encode(password1);
