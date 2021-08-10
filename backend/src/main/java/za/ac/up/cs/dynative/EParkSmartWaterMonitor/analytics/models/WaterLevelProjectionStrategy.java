@@ -41,6 +41,8 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
         final double[] coefficients;
         Map<String, List<Measurement>> groupedMeasurements;
         ArrayList<Double> dailyAverage = new ArrayList<>();
+        ArrayList<Double> optimisticPredictions = new ArrayList<>();
+        ArrayList<Double> conservativePredictions = new ArrayList<>();
         ArrayList<Measurement> waterLevelData = new ArrayList<>();
 
         extractWaterLevelData(waterLevelData);
@@ -60,14 +62,24 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
         System.out.println("coef="+ Arrays.toString(coefficients));
         System.out.println("dailyAverage and predicted=" + dailyAverage);
 
+        optimisticProjection(optimisticPredictions);
+        conservativeProjection(conservativePredictions);
+
         return new DeviceProjectionResponse(
                 "Success",
                 true,
                 "waterlevel",
                 deviceProjectionRequest.getLength(),
-                null,
+                optimisticPredictions,
                 dailyAverage,
-                null);
+                conservativePredictions);
+    }
+
+    private void conservativeProjection(ArrayList<Double> conservativePredictions) {
+
+    }
+
+    private void optimisticProjection(ArrayList<Double> optimisticPredictions) {
     }
 
     private void polynomialRegressionPrediction(ArrayList<Double> dailyAverage, double[] coefficients) {
