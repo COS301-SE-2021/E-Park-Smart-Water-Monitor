@@ -385,7 +385,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest) {
+    public ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest) throws InvalidRequestException {
         String username = resetPasswordRequest.getUsername();
         List<User> userList=  userRepo.findUserByUsername(username);
         if (userList.size()>0){
@@ -417,8 +417,8 @@ public class UserServiceImpl implements UserService {
             //send email
             ArrayList<String> to= new ArrayList<>();
             to.add(user.getEmail());
-            /*notificationService.sendMail(new EmailRequest("EPark Smart Water Monitoring System", "Password reset"
-                    ,to, null, null, Topic.PASSWORD_RESET,username,message,"Password rest code"));*/
+            notificationService.sendMail(new EmailRequest("EPark Smart Water Monitoring System", "Password reset"
+                    ,to, null, null, Topic.PASSWORD_RESET,username,message,"Password rest code"));
             userRepo.save(user);
             return new ResetPasswordResponse(code);
 
