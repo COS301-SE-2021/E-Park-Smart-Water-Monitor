@@ -1,9 +1,13 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.user;
 
+import com.google.common.collect.Sets;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
@@ -15,6 +19,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.security.JwtTokenProvider;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.repositories.UserRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.*;
@@ -30,6 +35,8 @@ import java.util.regex.Pattern;
 @Service("UserService")
 public class UserServiceImpl implements UserService {
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
     private final UserRepo userRepo;
     private final ParkService parkService;
     //private final NotificationService notificationService;
@@ -136,7 +143,7 @@ public class UserServiceImpl implements UserService {
             }
             if (!request.getCellNumber().equals(""))
             {
-                Pattern p = Pattern.compile("\\d{10}");
+                Pattern p = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");;
                 Matcher m = p.matcher(request.getCellNumber());
                 boolean validNumber = m.matches();
 
@@ -269,14 +276,20 @@ public class UserServiceImpl implements UserService {
                 Map<String, Object> claims = new HashMap<>();
                 claims.put("UUID", user.getId().toString());
 
-                JWTToken = Jwts.builder()
-                        .setHeader(head)
-                        .setSubject(username)
-                        .setClaims(claims)
-                        .setIssuedAt(new Date())
-                        .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(7)))
-                        .signWith(SignatureAlgorithm.HS512, "secret")
-                        .compact();
+                Collection<SimpleGrantedAuthority> authorities = Sets.newHashSet();
+                authorities.add(new SimpleGrantedAuthority(user.getRole()));
+
+                Authentication auth = new UsernamePasswordAuthenticationToken(username, password, authorities);
+
+                JWTToken =  jwtTokenProvider.generateToken(auth);
+//                        Jwts.builder()
+//                        .setHeader(head)
+//                        .setSubject(username)
+//                        .setClaims(claims)
+//                        .setIssuedAt(new Date())
+//                        .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(7)))
+//                        .signWith(SignatureAlgorithm.HS512, "secret")
+//                        .compact();
 
                 return new LoginResponse(true, JWTToken,
                         user.getRole(),
