@@ -31,52 +31,34 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
 
     @Override
     public DeviceProjectionResponse predict() {
-        int regressionDegree = 4;
-        ArrayList<Measurement> waterLevelData = new ArrayList<>();
-        for (GetDeviceInnerResponse innerData :
-                deviceDataResponse.getInnerResponses()) {
-            for (Measurement waterLevelMeasurement :
-                    innerData.getMeasurements()) {
-                if (waterLevelMeasurement.getType().equals("WATER_LEVEL")) {
-                    waterLevelData.add(waterLevelMeasurement);
-                }
-            }
-        }
-
-        Map<String, List<Measurement>> set = waterLevelData.stream()
-                .collect(Collectors.groupingBy(Measurement::getDeviceDate));
-        ArrayList<Double> dailyAverage = new ArrayList<>();
-//        set.forEach((key, value) -> dailyAverage.add(average(value)));
-
         /*
-            The business below is done on line 50
+            When changing the regression degree, you must also
+            add the necessary coefficients polynomialRegressionPrediction function
          */
-        double[] test = {75, 71, 70, 74, 30, 28, 25, 30, 24, 23, 18, 22, 21, 18, 18, 16, 14, 10, 11, 9};
-        for (double t : test) {
-            dailyAverage.add(t);
-        }
-        System.out.println(dailyAverage);
-
+        final int regressionDegree = 3;
         final WeightedObservedPoints dataPoints = new WeightedObservedPoints();
+        final PolynomialCurveFitter fitter;
+        final double[] coefficients;
+        Map<String, List<Measurement>> groupedMeasurements;
+        ArrayList<Double> dailyAverage = new ArrayList<>();
+        ArrayList<Measurement> waterLevelData = new ArrayList<>();
+
+        extractWaterLevelData(waterLevelData);
+        groupedMeasurements = waterLevelData.stream().collect(Collectors.groupingBy(Measurement::getDeviceDate));
+        groupedMeasurements.forEach((key, value) -> dailyAverage.add(average(value)));
+
+        System.out.println("dailyAverages=" + dailyAverage);
+
         for (int x = 0; x < dailyAverage.size(); x++){
             dataPoints.add(x,dailyAverage.get(x));
         }
-        final PolynomialCurveFitter fitter = PolynomialCurveFitter.create(regressionDegree);
-        final double[] coeff = fitter.fit(dataPoints.toList());
-        System.out.println("coef="+ Arrays.toString(coeff));
 
-        int counter = 0;
-        int size = dailyAverage.size();
-        while (counter < deviceProjectionRequest.getLength()) {
-            dailyAverage.add(coeff[0]
-                    + coeff[1] * (counter + 1 + size)
-                    + coeff[2] * (Math.pow(counter + 1 + size, 2))
-                    + coeff[3] * (Math.pow(counter + 1 + size, 3))
-                    + coeff[4] * (Math.pow(counter + 1 + size, 4)));
-            counter++;
-        }
+        fitter = PolynomialCurveFitter.create(regressionDegree);
+        coefficients = fitter.fit(dataPoints.toList());
+        polynomialRegressionPrediction(dailyAverage, coefficients);
 
-        System.out.println(dailyAverage);
+        System.out.println("coef="+ Arrays.toString(coefficients));
+        System.out.println("dailyAverage and predicted=" + dailyAverage);
 
         return new DeviceProjectionResponse(
                 "Success",
@@ -88,12 +70,37 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
                 null);
     }
 
+    private void polynomialRegressionPrediction(ArrayList<Double> dailyAverage, double[] coefficients) {
+        int size = dailyAverage.size();
+        for (int counter = 0; counter < deviceProjectionRequest.getLength(); counter++) {
+            dailyAverage.add(coefficients[0]
+                    + coefficients[1] * (counter + 1 + size)
+                    + coefficients[2] * (Math.pow(counter + 1 + size, 2))
+                    + coefficients[3] * (Math.pow(counter + 1 + size, 3)));
+        }
+    }
+
+    private void extractWaterLevelData(ArrayList<Measurement> waterLevelData) {
+        for (GetDeviceInnerResponse innerData :
+                deviceDataResponse.getInnerResponses()) {
+            for (Measurement waterLevelMeasurement :
+                    innerData.getMeasurements()) {
+                if (waterLevelMeasurement.getType().equals("WATER_LEVEL")) {
+                    waterLevelData.add(waterLevelMeasurement);
+                }
+            }
+        }
+    }
+
     private double average(List<Measurement> value) {
         double total = 0;
-        for (Measurement m :
-                value) {
-            total += m.getEstimateValue();
+        if (value != null) {
+            for (Measurement m :
+                    value) {
+                total += m.getEstimateValue();
+            }
+            return total/value.size();
         }
-        return total/value.size();
+        else return 0;
     }
 }
