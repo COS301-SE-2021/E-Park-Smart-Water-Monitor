@@ -98,6 +98,16 @@ public class UserServiceImpl implements UserService {
                 return response;
             }
 
+            //id number check:
+            Pattern idPattern = Pattern.compile("\\d{13}");
+            Matcher idMatcher = idPattern.matcher(request.getIdNumber());
+            boolean validID = idMatcher.matches();
+            if (!validID){
+                response.setStatus("The provided ID number is not a valid ID number.");
+                response.setSuccess(false);
+                return  response;
+            }
+
 
             List<User> users = userRepo.findUserByIdNumber(idNumber);
             List<User> usersByUsername = userRepo.findUserByUsername(username);
