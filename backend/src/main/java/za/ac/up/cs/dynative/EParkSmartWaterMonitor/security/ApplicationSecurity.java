@@ -109,7 +109,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("addInspection/addInspection").hasAnyRole("ADMIN", "FIELD_ENGINEER")
                 .antMatchers("/api/park/addPark").hasAnyRole("ADMIN")
                 .antMatchers("/api/park/editPark").hasAnyRole("ADMIN")
-                .antMatchers("/api/user/createUser").permitAll()
+                .antMatchers("/api/user/createUser").permitAll()    //TODO: moet nog roles assign
                 .antMatchers("/api/user/deleteUser").hasAnyRole("ADMIN")
                 .antMatchers("/api/user/editUser").hasAnyRole("ADMIN")
                 .antMatchers("/api/sites/addSite").hasAnyRole("ADMIN")

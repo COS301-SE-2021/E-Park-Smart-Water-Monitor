@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,8 +26,6 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.repositories.UserRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.*;
 
-import java.sql.SQLOutput;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -39,17 +38,17 @@ public class UserServiceImpl implements UserService {
     private JwtTokenProvider jwtTokenProvider;
     private final UserRepo userRepo;
     private final ParkService parkService;
-    //private final NotificationService notificationService;
+    private final NotificationService notificationService;
 
 
 
     @Autowired
     public UserServiceImpl(@Qualifier("UserRepo") UserRepo userRepo,
-                           @Qualifier("ParkService") ParkService parkService){
-                          // @Qualifier("NotificationServiceImpl") NotificationService notificationService) {
+                           @Qualifier("ParkService") ParkService parkService,
+                           @Lazy @Qualifier("NotificationServiceImpl") NotificationService notificationService) {
         this.userRepo = userRepo;
         this.parkService = parkService;
-        //this.notificationService= notificationService;
+        this.notificationService= notificationService;
     }
 
     @Override
@@ -391,6 +390,7 @@ public class UserServiceImpl implements UserService {
             to.add(user.getEmail());
             /*notificationService.sendMail(new EmailRequest("EPark Smart Water Monitoring System", "Password reset"
                     ,to, null, null, Topic.PASSWORD_RESET,username,message,"Password rest code"));*/
+            userRepo.save(user);
             return new ResetPasswordResponse(code);
 
         }else{
@@ -409,6 +409,7 @@ public class UserServiceImpl implements UserService {
         if (userList.size()==0){
             return new ResetPasswordFinalizeResponse("User not found", false);
         }
+        System.out.println(userList.get(0));
         if (!userList.get(0).getResetPasswordExpiration().isAfter(LocalDateTime.now())){
             if (code.equals(userList.get(0).getActivationCode())&& password1.equals(password2)){
 
