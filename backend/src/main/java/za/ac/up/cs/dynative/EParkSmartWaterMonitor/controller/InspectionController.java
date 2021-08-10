@@ -45,4 +45,9 @@ public class InspectionController {
     public ResponseEntity<Object> setInspectionComments(@RequestBody SetInspectionCommentsRequest request) {
         return new ResponseEntity<>(inspectionService.setInspectionComments(request), HttpStatus.OK);
     }
+
+    @GetMapping("/getAllInspections")
+    public ResponseEntity<Object> getAllInspections() {
+        return new ResponseEntity<>(inspectionService.getAllInspections(),HttpStatus.OK);
+    }
 }

@@ -13,8 +13,6 @@ import GroupAdd from "@material-ui/icons/GroupAdd";
 import InsertChartOutlined from "@material-ui/icons/InsertChartOutlined";
 import PieChart from "@material-ui/icons/PieChart";
 
-// core components
-import CardStats from "components/Dashboard/CardStats.js";
 
 import componentStyles from "assets/theme/components/header.js";
 import axios from "axios";

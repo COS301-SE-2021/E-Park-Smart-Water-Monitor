@@ -1,18 +1,18 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses;
 
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 
 import java.util.Collection;
 
 public class GetAllDevicesResponse {
     private String status;
     private Boolean success;
-    private Collection<WaterSourceDevice> waterSourceDevices;
+    private Collection<Device> devices;
 
-    public GetAllDevicesResponse(String status, Boolean success, Collection<WaterSourceDevice> waterSourceDevices) {
+    public GetAllDevicesResponse(String status, Boolean success, Collection<Device> devices) {
         this.status = status;
         this.success = success;
-        this.waterSourceDevices = waterSourceDevices;
+        this.devices = devices;
     }
 
     public GetAllDevicesResponse() {
@@ -34,11 +34,11 @@ public class GetAllDevicesResponse {
         this.success = success;
     }
 
-    public Collection<WaterSourceDevice> getSite() {
-        return waterSourceDevices;
+    public Collection<Device> getSite() {
+        return devices;
     }
 
-    public void setSite(Collection<WaterSourceDevice> waterSourceDevices) {
-        this.waterSourceDevices = waterSourceDevices;
+    public void setSite(Collection<Device> devices) {
+        this.devices = devices;
     }
 }
