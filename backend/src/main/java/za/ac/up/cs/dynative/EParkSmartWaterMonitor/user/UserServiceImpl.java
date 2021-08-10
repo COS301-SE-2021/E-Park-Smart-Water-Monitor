@@ -411,8 +411,7 @@ public class UserServiceImpl implements UserService {
             //code expiration
             user.setResetPasswordExpiration(LocalDateTime.now().plusHours(2));
 
-            String message = "Hi "+user.getName()+",\n\nWe received your request to reset your password. Here is your verification code: \n\n"
-                    +code+"\n\nThe code is valid for 2 hours.";
+            String message = "We received your request to reset your password. The code that follows will be valid for 2 hours. ";
 
             //send email
             ArrayList<String> to= new ArrayList<>();
@@ -423,9 +422,10 @@ public class UserServiceImpl implements UserService {
                     null,
                     null,
                      Topic.PASSWORD_RESET,
-                     username,
-                     message,
-                    "Password Reset Code"));
+                     user.getName(),
+                     code,
+                     message
+                    ));
             userRepo.save(user);
             return new ResetPasswordResponse(code);
 
