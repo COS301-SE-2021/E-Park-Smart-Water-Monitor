@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles, withStyles} from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
@@ -15,10 +15,19 @@ import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
-import Modal from "../Modals/Modal";
+import Modal from "../../Modals/Modal";
 import AddDeviceBody from "./AddDeviceBody";
-import disableScroll from "disable-scroll";
 import axios from "axios";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
+import EditDeviceBody from "./EditDeviceBody";
+import TableHead from "@material-ui/core/TableHead";
+import IconButton from "@material-ui/core/IconButton";
+import {Tooltip} from "@material-ui/core";
+import AddInspectionBody from "../Inspection/AddInspectionBody";
+import AdminContext from "../AdminContext";
+
 
 
 const useStyles = makeStyles(componentStyles);
@@ -27,17 +36,35 @@ const DeviceTable = () => {
     const classes = useStyles();
     const theme = useTheme();
    // const [result, setResult] = useState(null)
+    const [showAdd, setShowAdd] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
+    const [showInspection, setShowInspection] = useState(false);
     const [show, setShow] = useState(false);
     const [response, setResponse] = useState([]);
+    const [device, setDevice] = useState({});
+    const [value, setValue] = useState(0);
 
+    const context = useContext(AdminContext)
+    const toggleLoading = context.toggleLoading
 
-    // on delete of a user
+    const reloadDeviceTable = () => {
+        setValue(value => value+1)
+    }
+
+    // on delete of a device
     const removeDevice = (id) => {
         return ()=>{
-            axios.get('http://localhost:8080/api/device/deleteDevice', {
-                id: id
+
+            toggleLoading()
+            axios.delete('http://localhost:8080/api/devices/deleteDevice', {
+                data: {
+                         id: id
+                      }
             }).then((res)=> {
-                window.location.reload()
+                toggleLoading()
+                setValue(value => value+1 ) // returns an updated value
+            }).catch((res)=>{
+                JSON.stringify(res)
             })
         }
     }
@@ -45,6 +72,7 @@ const DeviceTable = () => {
     useEffect(() => {
         // get all users
         axios.get('http://localhost:8080/api/devices/getAllDevices').then((res)=>{
+            // console.log(res.data.site[0])
             const m = res.data.site.map((device) =>
                 <TableRow key={ device.deviceId } >
                     <TableCell
@@ -61,31 +89,42 @@ const DeviceTable = () => {
                     </TableCell>
                     <TableCell classes={{root: classes.tableCellRoot}}
                                style={{verticalAlign: 'middle'}}>
-                        <Button
-                            size="small"
-                        >
-                            Edit
-                        </Button>
+
+                        {/*https://material-ui.com/components/tooltips/*/}
+                        <Tooltip title="Edit" arrow>
+                            <IconButton aria-label="edit"
+                                        onClick={() => { setShowEdit(true); setDevice(device) }}>
+                                <EditIcon />
+                            </IconButton>
+                        </Tooltip>
+
                     </TableCell>
                     <TableCell classes={{root: classes.tableCellRoot}}
                                style={{verticalAlign: 'middle'}}>
-                        <Button
-                            size="small"
-                        >
-                            Remove
-                        </Button>
+                        <Tooltip title="Delete" arrow>
+                            <IconButton aria-label="delete"
+                                        onClick={ removeDevice(device.deviceId) }>
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
+
+                    </TableCell>
+                    <TableCell classes={{root: classes.tableCellRoot}}
+                               style={{verticalAlign: 'middle'}}>
+                        <Tooltip title="Add Inspection" arrow>
+                            <IconButton aria-label="inspection"
+                                        onClick={ () => { setShowInspection(true); setDevice(device)} }>
+                                <AssignmentTurnedInIcon />
+                            </IconButton>
+                        </Tooltip>
+
                     </TableCell>
                 </TableRow>
             );
             setResponse(m);
         });
 
-    },[])
-
-    // useEffect(() => {
-    //     if (show == true) disableScroll.on()
-    //     if (show == false) disableScroll.off()
-    // }, [show])
+    },[value])
 
 
     return (
@@ -96,7 +135,15 @@ const DeviceTable = () => {
                 classes={{ root: classes.containerRoot }}
             >
                 <Modal title="Add Device" onClose={() => setShow(false)} show={show}>
-                    <AddDeviceBody/>
+                    <AddDeviceBody reloadDeviceTable={ reloadDeviceTable } closeModal={()=>{ setShow(false) }}/>
+                </Modal>
+
+                { device && <Modal title="Edit Device" onClose={() => setShowEdit(false)} show={ showEdit }>
+                    <EditDeviceBody deviceDetails={ device } reloadDeviceTable={ reloadDeviceTable } closeModal={()=>{ setShowEdit(false) }}/>
+                </Modal> }
+
+                <Modal title="Add Inspection" onClose={() => setShowInspection(false)} show={ showInspection }>
+                    <AddInspectionBody device_id={ device.deviceId }/>
                 </Modal>
 
                 <Grid container component={Box}>
@@ -136,24 +183,65 @@ const DeviceTable = () => {
                                             >
                                             </Box>
                                         </Grid>
-                                        <Grid item xs="auto">
-                                            <select name="Parks" id="parks" style={{width:'200px',padding:'5px', borderRadius:'5px'}}>
-                                                <option value="all parks">All Parks</option>
-                                            </select>
-                                        </Grid>
                                     </Grid>
                                 }
                                 classes={{ root: classes.cardHeaderRoot }}
                             ></CardHeader>
                             <TableContainer
-                                style={{maxHeight:"300px",overflowY:"scroll"}}>
+                                style={{maxHeight:"300px",overflowY:"auto"}}>
                                 <Box
                                     component={Table}
                                     alignItems="center"
                                     marginBottom="0!important"
                                 >
+                                    <TableHead>
+                                        <TableRow style={{background: 'rgb(243 243 243)'}}>
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
+                                                Name
+                                            </TableCell>
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
+
+                                            </TableCell>
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
+
+                                            </TableCell>
+                                            <TableCell
+                                                classes={{
+                                                    root:
+                                                        classes.tableCellRoot +
+                                                        " " +
+                                                        classes.tableCellRootHead,
+                                                }}
+                                            >
+
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableHead>
                                     <TableBody>
-                                        { response }
+
+                                        {response}
+
                                     </TableBody>
                                 </Box>
                             </TableContainer>

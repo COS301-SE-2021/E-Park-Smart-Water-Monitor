@@ -3,11 +3,10 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models.Inspection;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Node
 public class Park {
@@ -41,11 +40,14 @@ public class Park {
         this.parkWaterSites = parkWaterSites;
     }
 
+    private List<Inspection> InspectionsList;
+
     public Park(String parkName, double latitude, double longitude) {
         this.id = UUID.randomUUID();
         this.parkName = parkName;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.InspectionsList= new ArrayList<>();
     }
 
     public Park() {

@@ -15,7 +15,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 
-import "../../index.css"
+import "../../../index.css"
 
 const useStyles = makeStyles(componentStyles);
 
@@ -52,8 +52,11 @@ function DeviceTable(props) {
         {
             const m = props.devices.map((device) =>
                 <TableRow
-                    key={device.deviceId} onClick={handleDeviceSelection(device.deviceId)}
-                    style={hoverStyle} onMouseEnter={toggleHover} onMouseLeave={toggleHover}
+                    key={device.deviceId}
+                    onClick={ handleDeviceSelection(device.deviceId) }
+                    style={hoverStyle}
+                    onMouseEnter={toggleHover}
+                    onMouseLeave={toggleHover}
                 >
                     <TableCell
                         classes={{

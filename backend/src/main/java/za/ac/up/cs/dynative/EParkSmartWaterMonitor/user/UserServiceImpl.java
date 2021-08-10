@@ -73,8 +73,7 @@ public class UserServiceImpl implements UserService {
                 && !role.equals("")
                 && !cellNumber.equals("")
                 && !username.equals("")
-                && !idNumber.equals("")
-                && !password.equals("")) {
+                && !idNumber.equals("")) {
 
             //cellphone number check:
             Pattern p = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");;
@@ -171,7 +170,7 @@ public class UserServiceImpl implements UserService {
             }
             if (!request.getCellNumber().equals(""))
             {
-                Pattern p = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");;
+                Pattern p = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");
                 Matcher m = p.matcher(request.getCellNumber());
                 boolean validNumber = m.matches();
 

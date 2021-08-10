@@ -1,106 +1,103 @@
-import React, {useEffect, useState} from "react";
-import {Button, Form} from 'react-bootstrap';
+import React, {useContext, useEffect, useState} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
 import componentStyles from "assets/theme/views/admin/admin";
-import "../../assets/css/addDevice.css";
-import Row from "react-bootstrap/Row";
+import "../../../assets/css/addUser.css";
+// Be sure to include styles at some point, probably during your bootstrapping
+// import 'react-select/dist/react-select.css';
+
+//import {Form} from "react-bootstrap";
+import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
-import Select from "react-select";
+import Row from "react-bootstrap/Row";
 import axios from "axios";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
-// import AdminModal from 'admin-modal.js'
+import AdminContext from "../AdminContext";
+const { Form } = require( "react-bootstrap" );
 
 
 
 const useStyles = makeStyles(componentStyles);
-
 const mapStyles = {
     width: `100%`,
     height: `100%`
 };
 
-const AddDeviceBody = () => {
-    const classes = useStyles();
-    const theme = useTheme();
+const EditDeviceBody = (props) => {
 
     // retrieved items from the DB to populate the select components
     const [parkOptions, setParkOptions] = useState("")
     const [siteOptions, setSiteOptions] = useState("")
+    const [siteLoading, setSiteLoading] = useState(true)
+    const [parkLoading, setParkLoading] = useState(true)
 
-    // selected/provided items by the user
+    // park must be selected before the site can be selected to maintain validity
+
     const [name, setName] = useState("")
     const [park, setPark] = useState("") // id and name stored
     const [site, setSite] = useState("") // id and name stored
     const [model, setModel] = useState("ESP32")
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
+    const [error, setError] = useState("")
+
+    const context = useContext(AdminContext)
+    const toggleLoading = context.toggleLoading
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/park/getAllParks'
-        ).then((res)=>{
 
-            let options = res.data.allParks.map((p)=>{
-                return {value: p.id, label: p.parkName}
-            })
-            setParkOptions(options)
-
-
-        }).catch((res)=>{
-            console.log("response:"+JSON.stringify(res))
-        });
-    },[])
-
-    // get sites for this park when the park selected changes
-    useEffect(() => {
-        if(park && park.value) {
-
-            axios.post('http://localhost:8080/api/park/getParkWaterSites',
-                {
-                    parkId: park.value
-                }
-            ).then((res) => {
-
-                let options = res.data.site.map((s) => {
-                    return {value: s.id, label: s.waterSiteName}
-                })
-
-                setSiteOptions(options)
-
-
-            }).catch((res) => {
-                console.log("error getting water sites for park "+park.label)
-            });
-
+        // add the props to the variables so that the user can change the values in the components
+        if(props && props.deviceDetails)
+        {
+            // set all your device details here
+            setName(props.deviceDetails.deviceName)
         }
-    },[park])
+    },[props.deviceDetails])
 
-
-
-    const createDevice = (e) => {
+    const submit = (e) => {
+        toggleLoading()
         e.preventDefault()
-        axios.post('http://localhost:8080/api/devices/addDevice',
-            {
-                parkName: park.label,
-                siteId: site.value,
+
+        if(props && props.deviceDetails)
+        {
+            // device edit request
+            let obj = {
+                parkName: park,
+                siteId: site,
                 deviceModel: model,
+                deviceType: "WaterSource",
                 deviceName: name,
                 latitude: latitude,
                 longitude: longitude
             }
-        ).then((res) => {
 
-            window.location.reload()
 
-        }).catch((res) => {
-            console.log("error adding device: "+JSON.stringify(res))
-        });
+            axios.post('http://localhost:8080/api/user/editDevice', obj
+            ).then((res)=>{
+                toggleLoading()
+                console.log("response:"+JSON.stringify(res))
+                if(res.data.success === "false")
+                {
+                    setError(res.data.status)
+                    console.log("error with editing device")
+                }else{
+                    props.closeModal()
+                    props.reloadDeviceTable()
+                }
+
+            }).catch((res)=>{
+                toggleLoading()
+                console.log("response:"+JSON.stringify(res))
+            });
+        }
+
+
     }
+
 
     return (
         <>
-            <Form onSubmit={ createDevice }>
+            <Form onSubmit={ submit }>
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" >
@@ -110,18 +107,7 @@ const AddDeviceBody = () => {
 
                     </Col>
                 </Row>
-                <Row>
-                    <Col>
-                        <Form.Label>Park</Form.Label>
-                        <Select required={"required"} isClearable={true} className="mb-3" name="park" options={ parkOptions } value={park} onChange={e => setPark(e)}/>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Form.Label>Site</Form.Label>
-                        <Select required={"required"} isClearable={true} className="mb-3" name="site" options={ siteOptions } value={site} onChange={e => setSite(e)}/>
-                    </Col>
-                </Row>
+
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" >
@@ -161,11 +147,11 @@ const AddDeviceBody = () => {
 
 
                 <Button background-color="primary" variant="primary" type="submit">
-                    Submit
+                    Edit
                 </Button>
             </Form>
         </>
     );
 };
 
-export default AddDeviceBody;
+export default EditDeviceBody;
