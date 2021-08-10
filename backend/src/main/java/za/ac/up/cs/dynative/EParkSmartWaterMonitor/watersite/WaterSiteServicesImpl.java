@@ -3,6 +3,8 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.FindWaterSiteByDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.FindWaterSiteByDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
@@ -200,5 +202,21 @@ public class WaterSiteServicesImpl implements WaterSiteService
             response.setSuccess(false);
         }
         return response;
+    }
+
+    @Override
+    public FindWaterSiteByDeviceResponse findWaterSiteByDeviceId(FindWaterSiteByDeviceRequest request) {
+        if (request == null) {
+            return new FindWaterSiteByDeviceResponse("Request is null",false,null);
+        }
+        if (request.getDeviceID() == null) {
+            return new FindWaterSiteByDeviceResponse("No device ID specified",false,null);
+        }
+        Optional<WaterSite> waterSite = waterSiteRepo.findWaterSiteByDeviceId(request.getDeviceID());
+        if (waterSite.isPresent()) {
+            return new FindWaterSiteByDeviceResponse("Watersite found",true,waterSite.get());
+        }
+        else
+            return new FindWaterSiteByDeviceResponse("Watersite not found",false,null);
     }
 }
