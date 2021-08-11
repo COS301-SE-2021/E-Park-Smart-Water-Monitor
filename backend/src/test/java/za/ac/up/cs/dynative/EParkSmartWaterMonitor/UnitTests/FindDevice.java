@@ -76,13 +76,15 @@ public class FindDevice {
     }
 
     @Test
-    @DisplayName("device found")
-    public void findDevice() throws InvalidRequestException {
+    @DisplayName("find and existing device and find it")
+    public void findDevice(){
+        //setup
         UUID test= UUID.randomUUID();
         Device device= new Device();
         Optional<Device> op= Optional.of(device);
         Mockito.when(deviceRepo.findById(test)).thenReturn(op);
 
+        //test
         FindDeviceRequest request= new FindDeviceRequest(test);
         FindDeviceResponse response= devicesServices.findDevice(request);
         assertNotNull(response);
