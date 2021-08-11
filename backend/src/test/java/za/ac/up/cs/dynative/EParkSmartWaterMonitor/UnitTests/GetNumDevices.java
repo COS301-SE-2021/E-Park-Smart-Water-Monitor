@@ -1,4 +1,5 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests;
+
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
@@ -39,10 +40,12 @@ public class GetNumDevices {
     private DevicesServicesImpl devicesServices;
 
     @Test
-    @DisplayName("Request is null")
-    public void getNumDevicesRequestNull(){
-        Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.getNumDevices(null));
-        assertEquals("Request is null",t.getMessage());
+    @DisplayName("Try to get the num devices when the request is null")
+    public void getNumDevicesRequestNull() throws InvalidRequestException {
+        GetNumDevicesResponse response= devicesServices.getNumDevices(null);
+        assertNotNull(response);
+        assertEquals(false,response.isSuccess());
+        assertEquals(-1,response.getNumDevices());
     }
 
     @Test
