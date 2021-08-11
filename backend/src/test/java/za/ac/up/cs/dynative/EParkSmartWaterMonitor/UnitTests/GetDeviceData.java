@@ -13,6 +13,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetDeviceDataRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetDeviceDataResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
@@ -38,10 +39,12 @@ public class GetDeviceData {
     private DevicesServicesImpl devicesServices;
 
     @Test
-    @DisplayName("Request is null")
+    @DisplayName("Request to get device data is null")
     public void getDeviceDataRequestNull(){
-        Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.getDeviceData(null));
-        assertEquals("Request is null",t.getMessage());
+        GetDeviceDataResponse response= devicesServices.getDeviceData(null);
+        assertNotNull(response);
+        assertEquals("Request is null", response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
     @Test

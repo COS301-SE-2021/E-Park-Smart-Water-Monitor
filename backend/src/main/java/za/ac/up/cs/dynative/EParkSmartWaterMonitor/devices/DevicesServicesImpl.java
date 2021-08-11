@@ -233,14 +233,14 @@ public class DevicesServicesImpl implements DevicesService {
 
     @Override
     public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request)  {
+        if (request==null){
+            GetDeviceDataResponse response =  new GetDeviceDataResponse
+                    ("Request is null",false);
+            return response;
+        }
         GetDeviceDataResponse response =  new GetDeviceDataResponse
                 ("Failed to load device data for device: " + request.getDeviceName(),false);
         GetDeviceInnerResponse innerResponse;
-        if (request==null){
-            response.setSuccess(false);
-            response.setStatus("Request is null");
-            return response;
-        }
         if (request.getDeviceName().equals("")){
             response.setSuccess(false);
             response.setStatus("No device name is specified");
