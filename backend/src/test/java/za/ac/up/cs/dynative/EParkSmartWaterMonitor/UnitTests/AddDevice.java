@@ -96,16 +96,20 @@ public class AddDevice {
     }
 
     @Test
-    @DisplayName("Try and add a device but the site does not exists")
+    @DisplayName("Try and add a device to a non-existing site")
     public void addDeviceSiteDNE() throws InvalidRequestException {
+        //setup
         Device device= new Device();
         List<Device> devices=new ArrayList<>();
         Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
         Mockito.when(waterSiteServices.canAttachWaterSourceDevice(Mockito.any())).thenReturn(new CanAttachWaterSourceDeviceResponse("",false));
 
+        //test
         AddDeviceRequest request= new AddDeviceRequest("ParkA",UUID.randomUUID(),"XX","test","WaterSource",23,28);
-        Throwable t =assertThrows(InvalidRequestException.class, ()->devicesServices.addDevice(request));
-        assertEquals("The site does not exist",t.getMessage());
+        AddDeviceResponse response= devicesServices.addDevice(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("The water site "+request.getSiteId()+ " does not exist.",response.getStatus());
     }
 
 
