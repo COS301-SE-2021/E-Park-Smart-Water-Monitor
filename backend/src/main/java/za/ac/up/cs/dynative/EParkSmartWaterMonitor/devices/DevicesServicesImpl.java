@@ -233,39 +233,32 @@ public class DevicesServicesImpl implements DevicesService {
 
     @Override
     public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request)  {
-        GetDeviceDataResponse response =  new GetDeviceDataResponse("Failed to load device data for device: " + request.getDeviceName(),false);
+        GetDeviceDataResponse response =  new GetDeviceDataResponse
+                ("Failed to load device data for device: " + request.getDeviceName(),false);
         GetDeviceInnerResponse innerResponse;
-
         if (request==null){
             response.setSuccess(false);
             response.setStatus("Request is null");
             return response;
         }
-
         if (request.getDeviceName().equals("")){
             response.setSuccess(false);
             response.setStatus("No device name is specified");
             return response;
         }
-
         if (deviceRepo.findDeviceByDeviceName(request.getDeviceName()).size() != 0) {
             Table waterSourceDataTable = dynamoDB.getTable("WaterSourceData");
-
             QuerySpec spec = new QuerySpec()
                     .withKeyConditionExpression("deviceName = :id")
                     .withValueMap(new ValueMap()
                             .withString(":id",request.getDeviceName()));
-
             ItemCollection<QueryOutcome> items = waterSourceDataTable.query(spec);
-
             Iterator<Item> iterator = items.iterator();
             Item item;
             int counter = 0;
-
             while (iterator.hasNext() && counter < request.getNumResults()) {
                 item = iterator.next();
                 counter++;
-
                 ObjectMapper mapper = new ObjectMapper();
                 try {
                     innerResponse = mapper.readValue(item.getJSONPretty("WaterSourceData"),GetDeviceInnerResponse.class);
