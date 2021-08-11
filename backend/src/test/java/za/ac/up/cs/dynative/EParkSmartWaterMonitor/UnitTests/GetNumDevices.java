@@ -54,19 +54,21 @@ public class GetNumDevices {
         GetNumDevicesResponse response= devicesServices.getNumDevices(new GetNumDevicesRequest(null));
         assertNotNull(response);
         assertEquals(false,response.isSuccess());
-        assertEquals(-1,response.getNumDevices());
+        assertEquals(-3,response.getNumDevices());
     }
 
     @Test
     @DisplayName("Try to get the num devices of a non existing park")
     public void getNumDevicesDNE() throws InvalidRequestException {
         UUID id= UUID.randomUUID();
-        FindByParkIdResponse response= new FindByParkIdResponse(true,null);
-        Mockito.when(parkService.findByParkId(Mockito.any())).thenReturn(response);
+        FindByParkIdResponse response2= new FindByParkIdResponse(true,null);
+        Mockito.when(parkService.findByParkId(Mockito.any())).thenReturn(response2);
 
         GetNumDevicesRequest request= new GetNumDevicesRequest(id);
-        Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.getNumDevices(request));
-        assertEquals("Park does not exist",t.getMessage());
+        GetNumDevicesResponse response= devicesServices.getNumDevices(request);
+        assertNotNull(response);
+        assertEquals(false,response.isSuccess());
+        assertEquals(-2,response.getNumDevices());
     }
 
     @Test

@@ -189,12 +189,12 @@ public class DevicesServicesImpl implements DevicesService {
                 getNumDevicesResponse.setNumDevices(deviceRepo.getAllParkDevices(request.getParkId()).size());
                 getNumDevicesResponse.setSuccess(true);
             }else{
-                getNumDevicesResponse.setNumDevices(-1);
+                getNumDevicesResponse.setNumDevices(-2);
                 getNumDevicesResponse.setSuccess(false);
                 return getNumDevicesResponse;
             }
         } else{
-            getNumDevicesResponse.setNumDevices(-1);
+            getNumDevicesResponse.setNumDevices(-3);
             getNumDevicesResponse.setSuccess(false);
             return getNumDevicesResponse;
         }
