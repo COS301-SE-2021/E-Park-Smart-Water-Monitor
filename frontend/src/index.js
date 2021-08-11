@@ -22,10 +22,10 @@ ReactDOM.render(
     <CssBaseline />
     <BrowserRouter>
       <Switch>
-        <Route path="/dashboard/index" render={(props) => <DashboardLayout {...props} />} />
         <Route path="/auth/index" render={(props) => <AuthLayout {...props} />} />
+        <Route path="/dashboard/index" render={(props) => <DashboardLayout {...props} />} />
         <Route path="/admin/index" render={(props) => <AdminLayout {...props} />} />
-        <Redirect from="/" to="/dashboard/index" />
+        <Redirect from="/" to="/auth/index" />
       </Switch>
     </BrowserRouter>
   </ThemeProvider>,

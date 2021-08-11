@@ -51,14 +51,14 @@ var routes = [
   //   component: Device,
   //   layout: "/dashboard",
   // },
-  // {
-  //   path: "/index",
-  //   name: "Login",
-  //   icon: VpnKey,
-  //   iconColor: "Info",
-  //   component: Login,
-  //   layout: "/auth",
-  // },
+  {
+    path: "/index",
+    name: "Login",
+    icon: VpnKey,
+    iconColor: "Info",
+    component: Login,
+    layout: "/auth",
+  },
   {
     divider: true,
   },

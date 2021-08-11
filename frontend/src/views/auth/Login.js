@@ -109,26 +109,26 @@ function Login() {
             </Box>
           </CardContent>
         </Card>
-        {/*<Grid container component={Box} marginTop="1rem">*/}
-        {/*  <Grid item xs={6} component={Box} textAlign="left">*/}
-        {/*    <a*/}
-        {/*      href="#admui"*/}
-        {/*      onClick={(e) => e.preventDefault()}*/}
-        {/*      className={classes.footerLinks}*/}
-        {/*    >*/}
-        {/*      Forgot password*/}
-        {/*    </a>*/}
-        {/*  </Grid>*/}
-        {/*  <Grid item xs={6} component={Box} textAlign="right">*/}
-        {/*    <a*/}
-        {/*      href="#admui"*/}
-        {/*      onClick={(e) => e.preventDefault()}*/}
-        {/*      className={classes.footerLinks}*/}
-        {/*    >*/}
-        {/*      Create new account*/}
-        {/*    </a>*/}
-        {/*  </Grid>*/}
-        {/*</Grid>*/}
+        <Grid container component={Box} marginTop="1rem">
+          <Grid item xs={6} component={Box} textAlign="left">
+            <a
+              href="#admui"
+              onClick={(e) => e.preventDefault()}
+              className={classes.footerLinks}
+            >
+              Forgot password
+            </a>
+          </Grid>
+          {/*<Grid item xs={6} component={Box} textAlign="right">*/}
+          {/*  <a*/}
+          {/*    href="#admui"*/}
+          {/*    onClick={(e) => e.preventDefault()}*/}
+          {/*    className={classes.footerLinks}*/}
+          {/*  >*/}
+          {/*    Create new account*/}
+          {/*  </a>*/}
+          {/*</Grid>*/}
+        </Grid>
       </Grid>
     </>
   );

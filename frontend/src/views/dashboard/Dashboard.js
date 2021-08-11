@@ -37,11 +37,24 @@ function Dashboard() {
   }
 
 
-  axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+  // axios.defaults.headers.post['Access-Control-Allow-Origin'] = 'http://localhost:3000';
 
-  // MONOLITH of SITES
+
+  // let temp_jwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDSEljaGkyIiwicm9sZXMiOiJGSUVMRF9FTkdJTkVFUiIsImV4cCI6MTYyODc2MzA3NH0.Q6P7CwsJCWrG212X0gDw68663EAiNbkNoylXlwvVWVKdJM1jWyaACDWbc9F5nmi2BRoPtlhVgyfooyDP7sCmvw"
+  let temp_jwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDSEljaGkyIiwicm9sZXMiOiJGSUVMRF9FTkdJTkVFUiIsImV4cCI6MTYyODc2Mzg1NX0.mBZQjxJuuErfibzV6zRtweppy4XhbLA-V4khXINlk31ZYJlSWExLX4p7lD-9NtBIZYMHd5OIS9KLMSXzODGMjg"
+  // axios.defaults.headers.get['Authorization'] = 'Bearer '+ temp_jwt;
+  let config = {
+    headers: {
+      "Authorization": "Bearer "+ temp_jwt
+    }
+  }
+
   useEffect(() => {
-    axios.get('http://localhost:8080/api/devices/getAllDevices').then((res)=>{
+    axios.get('http://localhost:8080/api/devices/getAllDevices', { headers: {
+        "Authorization" : `Bearer ${temp_jwt}`,
+        "Access-Control-Allow-Origin" : 'http://localhost:3000'
+    }
+    }).then((res)=>{
       if(res.data)
       {
         const site = res.data.site; // site array
@@ -56,6 +69,8 @@ function Dashboard() {
       }else{
         console.log('res.data null')
       }
+    }).catch((res)=>{
+      console.log(JSON.stringify(res))
     });
   }, []) // second param [] is a list of dependency to watch and run useEffect
 
@@ -63,6 +78,10 @@ function Dashboard() {
     if (device != null) {
       axios.post('http://localhost:8080/api/inspections/getDeviceInspections', {
         deviceId: device.deviceId
+      }, {
+        headers: {
+          "Authorization": "Bearer "+ temp_jwt
+        }
       }).then((res) => {
         if (res.data) {
           setInspections(res.data.inspectionList)
