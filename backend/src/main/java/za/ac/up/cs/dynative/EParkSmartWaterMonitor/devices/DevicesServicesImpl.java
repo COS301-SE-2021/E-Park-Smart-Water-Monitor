@@ -211,9 +211,7 @@ public class DevicesServicesImpl implements DevicesService {
             return getParkDevicesResponse;
         }
         if (request.getParkId() != null) {
-
             List<Device> devices = deviceRepo.findAll();
-
             if (devices != null) {
                 getParkDevicesResponse.setSite(devices);
                 getParkDevicesResponse.setSuccess(true);

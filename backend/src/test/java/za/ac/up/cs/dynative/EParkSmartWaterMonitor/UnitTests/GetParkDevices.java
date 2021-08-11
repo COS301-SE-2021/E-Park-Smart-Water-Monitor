@@ -38,10 +38,13 @@ public class GetParkDevices {
     private DevicesServicesImpl devicesServices;
 
     @Test
-    @DisplayName("Request is null")
+    @DisplayName("Request to get park devices is null")
     public void getDevicesRequestNull(){
-        Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.getParkDevices(null));
-        assertEquals("Request is null",t.getMessage());
+        GetParkDevicesResponse response= devicesServices.getParkDevices(null);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals(null,response.getSite());
+        assertEquals("Request is null",response.getStatus());
     }
 
     @Test
