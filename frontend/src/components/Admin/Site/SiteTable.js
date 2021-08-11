@@ -75,6 +75,7 @@ const SiteTable = (props) => {
         setParkOptions(options)
         setPark(options[0])
 
+
     },[])
 
     // when updates or deletes are made to a watersite, get the watersites for the selected park again
@@ -129,26 +130,26 @@ const SiteTable = (props) => {
 
     },[value])
 
-    useEffect(() => {
-        if(park && park.value) {
-
-            // find the park object in the parksAndSites
-            // object using the park ID to retreive the
-            // relevant sites to display
-            let selectedPark = parksAndSites.parks.filter( p => p.id === park.value )
-            // assignSiteOptions(selectedPark[0])
-
-        }
-    },[park])
+    // useEffect(() => {
+    //     if(park && park.value) {
+    //
+    //         // find the park object in the parksAndSites
+    //         // object using the park ID to retreive the
+    //         // relevant sites to display
+    //         let selectedPark = parksAndSites.parks.filter( p => p.id === park.value )
+    //         // assignSiteOptions(selectedPark[0])
+    //
+    //     }
+    // },[park])
 
 
     useEffect(() => {
 
         // get all sites from the park object sent from the dropdown component
 
-        if(props.park)
+        if(park && park.parkWaterSites)
         {
-            const m = props.park.parkWaterSites.map((site) =>
+            const m = park.parkWaterSites.map((site) =>
                 <TableRow key={ site.id } >
                     <TableCell
                         classes={{
@@ -187,7 +188,7 @@ const SiteTable = (props) => {
             setResponse(m);
         }
 
-    },[props.park])
+    },[park]) // the park selected from dropdown is changed
 
     return (
         <>
