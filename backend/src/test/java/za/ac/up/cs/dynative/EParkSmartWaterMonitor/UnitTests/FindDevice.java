@@ -51,8 +51,11 @@ public class FindDevice {
     @Test
     @DisplayName("find Device with null id")
     public void findDeviceNullID(){
-        Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.findDevice(new FindDeviceRequest(null)));
-        assertEquals("No id specified",t.getMessage());
+        FindDeviceResponse response= devicesServices.findDevice(new FindDeviceRequest(null));
+        assertNotNull(response);
+        assertEquals("No device ID specified",response.getStatus());
+        assertEquals(false,response.getSuccess());
+        assertEquals(null,response.getDevice());
     }
 
     @Test
