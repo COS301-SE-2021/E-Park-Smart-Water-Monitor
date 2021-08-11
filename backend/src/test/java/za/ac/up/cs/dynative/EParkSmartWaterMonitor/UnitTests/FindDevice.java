@@ -59,15 +59,20 @@ public class FindDevice {
     }
 
     @Test
-    @DisplayName("find Device that does not exist")
+    @DisplayName("find a device that does not exist")
     public void findDeviceDNE(){
+        //setup
         UUID test= UUID.randomUUID();
         Optional<Device> op= Optional.empty();
         Mockito.when(deviceRepo.findById(test)).thenReturn(op);
 
+        //test
         FindDeviceRequest request= new FindDeviceRequest(test);
-        Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.findDevice(request));
-        assertEquals("Device not found",t.getMessage());
+        FindDeviceResponse response= devicesServices.findDevice(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals(null,response.getDevice());
+        assertEquals("Device not found",response.getStatus());
     }
 
     @Test
