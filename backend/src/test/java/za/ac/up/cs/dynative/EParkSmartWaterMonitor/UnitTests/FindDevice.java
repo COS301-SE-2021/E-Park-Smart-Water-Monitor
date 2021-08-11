@@ -14,7 +14,6 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.Measurem
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.FindDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.FindDeviceResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
 

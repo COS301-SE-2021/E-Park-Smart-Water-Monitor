@@ -126,8 +126,7 @@ public class DevicesServicesImpl implements DevicesService {
             return new FindDeviceResponse("No device ID specified",false,null);
         }
         Optional<Device> device = deviceRepo.findById(findDeviceRequest.getDeviceID());
-        if (device.isPresent())
-        {
+        if (device.isPresent()) {
             return new FindDeviceResponse("Device found",true,device.get());
         }
         else
@@ -139,7 +138,6 @@ public class DevicesServicesImpl implements DevicesService {
     public ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request) {
         List<Device> devices = deviceRepo.findDeviceByDeviceName(request.getDeviceName());
         ReceiveDeviceDataResponse response = new ReceiveDeviceDataResponse();
-
         if (devices.size()==0){
             response.setSuccess(false);
             response.setStatus("Device with that name does not exist");
@@ -157,15 +155,12 @@ public class DevicesServicesImpl implements DevicesService {
                 measurementRepo.save(data);
             }
             deviceRepo.save(device);
-
-
             response.setStatus(
                     "Successfully added data send from ESP: "
                             + request.getDeviceName()
                             + " sent at: "
                             + request.getMeasurements().get(0).getDeviceDateTime());
             response.setSuccess(true);
-
         } else {
             response.setSuccess(false);
             response.setStatus("Request Failed... fix not applied!");
