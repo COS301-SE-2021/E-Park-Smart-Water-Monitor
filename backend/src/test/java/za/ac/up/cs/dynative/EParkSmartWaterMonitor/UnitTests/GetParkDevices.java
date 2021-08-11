@@ -74,8 +74,8 @@ public class GetParkDevices {
     }
 
     @Test
-    @DisplayName("Get the num devices of a park")
-    public void getNumDevices() throws InvalidRequestException {
+    @DisplayName("Get the num devices of a park successfully")
+    public void getNumDevices()  {
         UUID id= UUID.randomUUID();
         List<Device> devices= new ArrayList<>();
         devices.add(new Device());
