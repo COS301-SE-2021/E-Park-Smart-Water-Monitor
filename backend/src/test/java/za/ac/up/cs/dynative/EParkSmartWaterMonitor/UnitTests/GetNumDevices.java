@@ -72,7 +72,7 @@ public class GetNumDevices {
     }
 
     @Test
-    @DisplayName("Get the num devices of a park")
+    @DisplayName("Get the num devices of an existing park")
     public void getNumDevices() throws InvalidRequestException {
         Park p=new Park();
         UUID id= UUID.randomUUID();
