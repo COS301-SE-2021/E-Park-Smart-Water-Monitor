@@ -116,11 +116,13 @@ public class AddDevice {
     @Test
     @DisplayName("Successfully add a device to a site")
     public void addDevice() throws InvalidRequestException {
+        //setup
         Device device= new Device();
         List<Device> devices=new ArrayList<>();
         Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
         Mockito.when(waterSiteServices.canAttachWaterSourceDevice(Mockito.any())).thenReturn(new CanAttachWaterSourceDeviceResponse("",true));
 
+        //test
         AddDeviceRequest request= new AddDeviceRequest("ParkA",UUID.randomUUID(),"XX","test","WaterSource",23,28);
         AddDeviceResponse response = devicesServices.addDevice(request);
         assertNotNull(response);
