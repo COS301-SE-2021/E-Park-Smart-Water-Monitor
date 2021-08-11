@@ -289,7 +289,7 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
             return (Math.PI * Math.pow(waterSite.getRadius(),2) * currentWaterlevel) * 10;
         }
         else if (waterSite.getShape().equals("rectangle")) {
-            return 0;
+            return waterSite.getLength() * waterSite.getWidth() * currentWaterlevel;
         }
         return 0;
     }
@@ -299,7 +299,7 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
             return waterWeight / (Math.PI * Math.pow(waterSite.getRadius(), 2) * 10);
         }
         else if (waterSite.getShape().equals("rectangle")) {
-            return 0;
+            return waterWeight / (waterSite.getLength() * waterSite.getWidth());
         }
         return 0;
     }
