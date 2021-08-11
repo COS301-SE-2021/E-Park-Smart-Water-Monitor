@@ -49,8 +49,8 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
         Map<String, List<Measurement>> groupedTemperatureMeasurements;
         ArrayList<Double> dailyAverageWaterLevel = new ArrayList<>();
         ArrayList<Double> dailyAverageTemperature = new ArrayList<>();
-        ArrayList<Double> optimisticPredictions = new ArrayList<>();
-        ArrayList<Double> conservativePredictions = new ArrayList<>();
+        ArrayList<Double> optimisticPredictions;
+        ArrayList<Double> conservativePredictions;
         ArrayList<Measurement> waterLevelData = new ArrayList<>();
         ArrayList<Measurement> temperatureData = new ArrayList<>();
         WaterSite waterSite = waterSiteByDeviceResponse.getWaterSite();
@@ -73,15 +73,24 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
         coefficients = fitter.fit(dataPoints.toList());
         polynomialRegressionPrediction(dailyAverageWaterLevel, coefficients);
 
-        System.out.println("coef="+ Arrays.toString(coefficients));
-        System.out.println("dailyAverageWaterLevel and predicted=" + dailyAverageWaterLevel);
+        optimisticPredictions = new ArrayList<>(dailyAverageWaterLevel);
+        conservativePredictions = new ArrayList<>(dailyAverageWaterLevel);
 
         optimisticProjection(optimisticPredictions,
                 dailyAverageTemperature,
                 waterSite,
                 deviceProjectionRequest);
 
-        conservativeProjection(conservativePredictions);
+
+        conservativeProjection(conservativePredictions,
+                dailyAverageTemperature,
+                waterSite,
+                deviceProjectionRequest);
+
+        System.out.println("coef="+ Arrays.toString(coefficients));
+        System.out.println("optimisticWaterLevel and predicted=" + optimisticPredictions);
+        System.out.println("dailyAverageWaterLevel and predicted=" + dailyAverageWaterLevel);
+        System.out.println("conservativeWaterLevel and predicted=" + conservativePredictions);
 
         return new DeviceProjectionResponse(
                 "Success",
@@ -93,9 +102,33 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
                 conservativePredictions);
     }
 
-    private void conservativeProjection(ArrayList<Double> conservativePredictions) {
+    private void conservativeProjection(ArrayList<Double> optimisticPredictions,
+                                        ArrayList<Double> dailyAverageTemperatures,
+                                        WaterSite waterSite,
+                                        DeviceProjectionRequest deviceProjectionRequest) {
         // premised on the fact that the ambient temperature will increase or remain the same in the coming days
+        double gravity = 9.81;
+        double betaValue = 0.000195;
+        double surfaceTemperature = 15.0;
+        double heatOfVaporization = 2454000; // winter & summer option
+        double[] prandtlNumbers = {0.735, 0.7336, 0.7323, 0.7309, 0.7296, 0.7282,0.7268, 0.7255};
+        double[] thermalConductivity = {0.02401, 0.02439, 0.02476, 0.02514, 0.02551, 0.02588,0.02625,0.02662};
+        double[] kinematicViscosities = {0.00001382, 0.00001426, 0.00001470, 0.00001516, 0.00001562, 0.00001608, 0.00001655, 0.00001702};
+        ArrayList<Double> futureAmbientTemperatures = new ArrayList<>();
 
+        populatateFutureAmbient(futureAmbientTemperatures,dailyAverageTemperatures,false);
+
+        evaporationCalc(optimisticPredictions,
+                waterSite,
+                deviceProjectionRequest,
+                gravity,
+                betaValue,
+                surfaceTemperature,
+                heatOfVaporization,
+                prandtlNumbers,
+                thermalConductivity,
+                kinematicViscosities,
+                futureAmbientTemperatures);
     }
 
     private void optimisticProjection(ArrayList<Double> optimisticPredictions,
@@ -106,44 +139,27 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
             premised on the fact that the ambient temperature will decrease or remain the same in the coming days
          */
         double gravity = 9.81;
-        double kinematicViscosity = 0.00001516;
-        double PR = 0.7309; // prandtl number
-        double K = 0.02514; // thermal conductivity
         double betaValue = 0.000195;
         double surfaceTemperature = 15.0;
         double heatOfVaporization = 2454000; // winter & summer option
+        double[] prandtlNumbers = {0.735, 0.7336, 0.7323, 0.7309, 0.7296, 0.7282,0.7268, 0.7255};
+        double[] thermalConductivity = {0.02401, 0.02439, 0.02476, 0.02514, 0.02551, 0.02588,0.02625,0.02662};
+        double[] kinematicViscosities = {0.00001382, 0.00001426, 0.00001470, 0.00001516, 0.00001562, 0.00001608, 0.00001655, 0.00001702};
         ArrayList<Double> futureAmbientTemperatures = new ArrayList<>();
-        populatateFutureAmbient(futureAmbientTemperatures,dailyAverageTemperatures);
 
-        if (waterSite.getShape().equals("circle")) {
-            double surfaceArea = Math.PI * Math.pow(waterSite.getRadius(), 2.0);
-            double diameter = waterSite.getRadius() * 2.0;
-            double perimeter = 2 * Math.PI * waterSite.getRadius();
-            double characteristicLength = diameter / 4.0;
+        populatateFutureAmbient(futureAmbientTemperatures,dailyAverageTemperatures,true);
 
-            double filmTemp = (surfaceArea + futureAmbientTemperatures.get(0)) / 2.0;
-            double rayleighNumber = ((gravity * betaValue)
-                    * Math.abs(surfaceTemperature - futureAmbientTemperatures.get(0))
-                    * Math.pow(characteristicLength, 3))
-                    / Math.pow(kinematicViscosity, 2)
-                    * PR;
-            double nusseltNumber = 0.15 * Math.cbrt(rayleighNumber);
-            double heatTransferCoefficient = (K * nusseltNumber) / characteristicLength;
-            double heatTransferRate = heatTransferCoefficient * (surfaceArea - (futureAmbientTemperatures.get(0)));
-            double massFlowRate = heatTransferRate / heatOfVaporization;
-            double secondsInDay = 24 * 60 * 60;
-            double evaporation = massFlowRate * secondsInDay;
-            System.out.println("vars");
-            System.out.println(futureAmbientTemperatures.get(0));
-            System.out.println(rayleighNumber);
-            System.out.println(nusseltNumber);
-            System.out.println(heatTransferCoefficient);
-            System.out.println(heatTransferRate);
-            System.out.println(evaporation);
-        }
-        else {
-            System.out.println("oogabooga");
-        }
+        evaporationCalc(optimisticPredictions,
+                waterSite,
+                deviceProjectionRequest,
+                gravity,
+                betaValue,
+                surfaceTemperature,
+                heatOfVaporization,
+                prandtlNumbers,
+                thermalConductivity,
+                kinematicViscosities,
+                futureAmbientTemperatures);
     }
 
     private void polynomialRegressionPrediction(ArrayList<Double> dailyAverageWaterLevel, double[] coefficients) {
@@ -192,18 +208,203 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
         else return 0;
     }
 
-    private void populatateFutureAmbient(ArrayList<Double> futureAmbientTemperatures,
-                                         ArrayList<Double> dailyAverageTemperatures) {
+    private void evaporationCalc(ArrayList<Double> optimisticPredictions, WaterSite waterSite, DeviceProjectionRequest deviceProjectionRequest, double gravity, double betaValue, double surfaceTemperature, double heatOfVaporization, double[] prandtlNumbers, double[] thermalConductivity, double[] kinematicViscosities, ArrayList<Double> futureAmbientTemperatures) {
+        if (waterSite.getShape().equals("circle")) {
+            double surfaceArea = Math.PI * Math.pow(waterSite.getRadius(), 2.0);
+            double diameter = waterSite.getRadius() * 2.0;
+            double characteristicLength = diameter / 4.0;
+
+            evaporationRateAdjustments(optimisticPredictions,
+                    waterSite,
+                    deviceProjectionRequest,
+                    gravity,
+                    betaValue,
+                    surfaceTemperature,
+                    heatOfVaporization,
+                    prandtlNumbers,
+                    thermalConductivity,
+                    kinematicViscosities,
+                    futureAmbientTemperatures,
+                    surfaceArea,
+                    characteristicLength);
+
+        }
+        else if (waterSite.getShape().equals("rectangle")){
+            double surfaceArea = waterSite.getLength() * waterSite.getWidth();
+            double perimeter = (waterSite.getLength() + waterSite.getWidth()) * 2.0;
+            double characteristicLength = surfaceArea / perimeter;
+
+            evaporationRateAdjustments(optimisticPredictions,
+                    waterSite,
+                    deviceProjectionRequest,
+                    gravity,
+                    betaValue,
+                    surfaceTemperature,
+                    heatOfVaporization,
+                    prandtlNumbers,
+                    thermalConductivity,
+                    kinematicViscosities,
+                    futureAmbientTemperatures,
+                    surfaceArea,
+                    characteristicLength);
+        }
+    }
+
+    private void evaporationRateAdjustments(ArrayList<Double> optimisticPredictions,
+                                            WaterSite waterSite,
+                                            DeviceProjectionRequest deviceProjectionRequest,
+                                            double gravity,
+                                            double betaValue,
+                                            double surfaceTemperature,
+                                            double heatOfVaporization,
+                                            double[] prandtlNumbers,
+                                            double[] thermalConductivity,
+                                            double[] kinematicViscosities,
+                                            ArrayList<Double> futureAmbientTemperatures,
+                                            double surfaceArea,
+                                            double characteristicLength) {
+
         for (int i = 0; i < deviceProjectionRequest.getLength(); i++) {
-            if (Math.random() < 0.2) {
-                futureAmbientTemperatures.add(dailyAverageTemperatures.get(dailyAverageTemperatures.size() - 1) - 2);
+            double evaporationRate = rateOfEvaporationCalc(gravity,
+                    betaValue,
+                    surfaceTemperature,
+                    heatOfVaporization,
+                    prandtlNumbers,
+                    thermalConductivity,
+                    kinematicViscosities,
+                    futureAmbientTemperatures.get(i),
+                    surfaceArea,
+                    characteristicLength);
+
+            double currWaterLevel = optimisticPredictions.get(optimisticPredictions.size() - deviceProjectionRequest.getLength() + i);
+            double currWaterWeight = calculateCurrentWaterWeight(waterSite, currWaterLevel);
+            double deltaWaterWeight = currWaterWeight - Math.abs(evaporationRate);
+            optimisticPredictions.set(optimisticPredictions.size() - deviceProjectionRequest.getLength() + i,
+                    calculateFutureWaterLevel(waterSite,deltaWaterWeight));
+        }
+    }
+
+    private double calculateCurrentWaterWeight(WaterSite waterSite,  double currentWaterlevel) {
+        if (waterSite.getShape().equals("circle")) {
+            return (Math.PI * Math.pow(waterSite.getRadius(),2) * currentWaterlevel) * 10;
+        }
+        else if (waterSite.getShape().equals("rectangle")) {
+            return 0;
+        }
+        return 0;
+    }
+
+    private double calculateFutureWaterLevel(WaterSite waterSite, double waterWeight) {
+        if (waterSite.getShape().equals("circle")) {
+            return waterWeight / (Math.PI * Math.pow(waterSite.getRadius(), 2) * 10);
+        }
+        else if (waterSite.getShape().equals("rectangle")) {
+            return 0;
+        }
+        return 0;
+    }
+
+    private double rateOfEvaporationCalc(double gravity,
+                                         double betaValue,
+                                         double surfaceTemperature,
+                                         double heatOfVaporization,
+                                         double[] prandtlNumbers,
+                                         double[] thermalConductivity,
+                                         double[] kinematicViscosities,
+                                         Double futureAmbientTemperature,
+                                         double surfaceArea,
+                                         double characteristicLength) {
+        double PR;
+        double K;
+        double kinematicViscosity;
+        ArrayList<Double> PRandKandViscosity = determinePRandKandViscosity(futureAmbientTemperature,
+                prandtlNumbers,
+                thermalConductivity,
+                kinematicViscosities);
+        PR = PRandKandViscosity.get(0);
+        K = PRandKandViscosity.get(1);
+        kinematicViscosity = PRandKandViscosity.get(2);
+        double filmTemp = (surfaceArea + futureAmbientTemperature) / 2.0;
+        double rayleighNumber = ((gravity * betaValue)
+                * Math.abs(surfaceTemperature - futureAmbientTemperature)
+                * Math.pow(characteristicLength, 3))
+                / Math.pow(kinematicViscosity, 2)
+                * PR;
+        double nusseltNumber = 0.15 * Math.cbrt(rayleighNumber);
+        double heatTransferCoefficient = (K * nusseltNumber) / characteristicLength;
+        double heatTransferRate = heatTransferCoefficient * (surfaceArea - (futureAmbientTemperature));
+        double massFlowRate = heatTransferRate / heatOfVaporization;
+        double secondsInDay = 24 * 60 * 60;
+        return massFlowRate * secondsInDay;
+    }
+
+    private void populatateFutureAmbient(ArrayList<Double> futureAmbientTemperatures,
+                                         ArrayList<Double> dailyAverageTemperatures, boolean optimistic) {
+        for (int i = 0; i < deviceProjectionRequest.getLength(); i++) {
+            if (Math.random() < 0.3) {
+                if (optimistic)
+                    futureAmbientTemperatures.add(dailyAverageTemperatures.get(dailyAverageTemperatures.size() - 1) - 2);
+                else
+                    futureAmbientTemperatures.add(dailyAverageTemperatures.get(dailyAverageTemperatures.size() - 1) + 2);
             }
-            else if (Math.random() >= 0.2 && Math.random() < 0.5) {
-                futureAmbientTemperatures.add(dailyAverageTemperatures.get(dailyAverageTemperatures.size() - 1) - 1);
+            else if (Math.random() >= 0.3 && Math.random() < 0.6) {
+                if (optimistic)
+                    futureAmbientTemperatures.add(dailyAverageTemperatures.get(dailyAverageTemperatures.size() - 1) - 1);
+                else
+                    futureAmbientTemperatures.add(dailyAverageTemperatures.get(dailyAverageTemperatures.size() - 1) + 1);
             }
             else {
                 futureAmbientTemperatures.add(dailyAverageTemperatures.get(dailyAverageTemperatures.size() - 1));
             }
         }
+    }
+
+
+    private ArrayList<Double> determinePRandKandViscosity(Double ambientTemp,
+                                              double[] prandtlNumbers,
+                                              double[] thermalConductivity,
+                                              double[] kinematicViscosites) {
+        ArrayList<Double> PRandK = new ArrayList<>();
+        if (ambientTemp >= 5 && ambientTemp < 10) {
+            PRandK.add(prandtlNumbers[0]);
+            PRandK.add(thermalConductivity[0]);
+            PRandK.add(kinematicViscosites[0]);
+        }
+        else if (ambientTemp >= 10 && ambientTemp < 15) {
+            PRandK.add(prandtlNumbers[1]);
+            PRandK.add(thermalConductivity[1]);
+            PRandK.add(kinematicViscosites[1]);
+        }
+        else if (ambientTemp >= 15 && ambientTemp < 20) {
+            PRandK.add(prandtlNumbers[2]);
+            PRandK.add(thermalConductivity[2]);
+            PRandK.add(kinematicViscosites[2]);
+        }
+        else if (ambientTemp >= 20 && ambientTemp < 25) {
+            PRandK.add(prandtlNumbers[3]);
+            PRandK.add(thermalConductivity[3]);
+            PRandK.add(kinematicViscosites[3]);
+        }
+        else if (ambientTemp >= 25 && ambientTemp < 30) {
+            PRandK.add(prandtlNumbers[4]);
+            PRandK.add(thermalConductivity[4]);
+            PRandK.add(kinematicViscosites[4]);
+        }
+        else if (ambientTemp >= 30 && ambientTemp < 35) {
+            PRandK.add(prandtlNumbers[5]);
+            PRandK.add(thermalConductivity[5]);
+            PRandK.add(kinematicViscosites[5]);
+        }
+        else if (ambientTemp >= 35 && ambientTemp < 40) {
+            PRandK.add(prandtlNumbers[6]);
+            PRandK.add(thermalConductivity[6]);
+            PRandK.add(kinematicViscosites[6]);
+        }
+        else {
+            PRandK.add(prandtlNumbers[7]);
+            PRandK.add(thermalConductivity[7]);
+            PRandK.add(kinematicViscosites[7]);
+        }
+        return PRandK;
     }
 }
