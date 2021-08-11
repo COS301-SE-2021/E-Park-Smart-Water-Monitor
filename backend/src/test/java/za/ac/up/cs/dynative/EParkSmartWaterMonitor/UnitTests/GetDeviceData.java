@@ -57,12 +57,16 @@ public class GetDeviceData {
     }
 
     @Test
-    @DisplayName("Device not found when searched")
-    public void getDeviceDataDNE(){
+    @DisplayName("Device not found when searched for")
+    public void getDeviceDataNotFound(){
+        //setup
         Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName(Mockito.any())).thenReturn(new ArrayList<Device>());
 
-        Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.getDeviceData(new GetDeviceDataRequest("test",23)));
-        assertEquals("Device does not exist",t.getMessage());
+        //test
+        GetDeviceDataResponse response= devicesServices.getDeviceData(new GetDeviceDataRequest("test",23));
+        assertNotNull(response);
+        assertEquals(false, response.getSuccess());
+        assertEquals("Device does not exist",response.getStatus());
     }
 
 
