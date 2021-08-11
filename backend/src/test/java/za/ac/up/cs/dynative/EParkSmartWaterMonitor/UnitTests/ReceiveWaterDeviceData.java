@@ -55,4 +55,21 @@ public class ReceiveWaterDeviceData {
         assertEquals("Device with that name does not exist",response.getStatus());
         assertEquals(false,response.getSuccess());
     }
+
+    @Test
+    @DisplayName("Try to receive device data but the device is null.")
+    public void receiveDeviceDataDeviceNull(){
+        //setup
+        ReceiveDeviceDataRequest request= new ReceiveDeviceDataRequest("abc",null);
+        List<Device> devices = new ArrayList<>();
+        Device device = null;
+        devices.add(device);
+        Mockito.when(deviceRepo.findDeviceByDeviceName("abc")).thenReturn(devices);
+
+        //test
+        ReceiveDeviceDataResponse response= devicesServices.receiveWaterDeviceData(request);
+        assertNotNull(response);
+        assertEquals("Request Failed... fix not applied!",response.getStatus());
+        assertEquals(false,response.getSuccess());
+    }
 }
