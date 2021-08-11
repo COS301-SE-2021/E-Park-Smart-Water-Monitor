@@ -10,6 +10,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesServicesImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Measurement;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
@@ -84,5 +85,28 @@ public class ReceiveWaterDeviceData {
         assertNotNull(response);
         assertEquals("No device name is specified.",response.getStatus());
         assertEquals(false,response.getSuccess());
+    }
+
+    @Test
+    @DisplayName("Successfully receive device data.")
+    public void receiveDeviceDataSuccess(){
+        //setup
+        List<Measurement> measurements = new ArrayList<>();
+        Measurement m = new Measurement("a",12,"km","ll","12","hl");
+        measurements.add(m);
+        ReceiveDeviceDataRequest request= new ReceiveDeviceDataRequest("abc",measurements);
+        List<Device> devices = new ArrayList<>();
+        Device device = new Device();
+        devices.add(device);
+        Mockito.when(deviceRepo.findDeviceByDeviceName("abc")).thenReturn(devices);
+
+        //test
+        ReceiveDeviceDataResponse response= devicesServices.receiveWaterDeviceData(request);
+        assertNotNull(response);
+        assertEquals(true,response.getSuccess());
+        assertEquals("Successfully added data send from ESP: "
+                + request.getDeviceName()
+                + " sent at: "
+                + request.getMeasurements().get(0).getDeviceDateTime(),response.getStatus());
     }
 }
