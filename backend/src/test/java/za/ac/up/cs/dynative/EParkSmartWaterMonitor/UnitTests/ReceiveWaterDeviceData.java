@@ -72,4 +72,17 @@ public class ReceiveWaterDeviceData {
         assertEquals("Request Failed... fix not applied!",response.getStatus());
         assertEquals(false,response.getSuccess());
     }
+
+    @Test
+    @DisplayName("Try to receive device data but the device name is not specified.")
+    public void receiveDeviceDataNoDeviceDataSpecified(){
+        //setup
+        ReceiveDeviceDataRequest request= new ReceiveDeviceDataRequest("",null);
+
+        //test
+        ReceiveDeviceDataResponse response= devicesServices.receiveWaterDeviceData(request);
+        assertNotNull(response);
+        assertEquals("No device name is specified.",response.getStatus());
+        assertEquals(false,response.getSuccess());
+    }
 }

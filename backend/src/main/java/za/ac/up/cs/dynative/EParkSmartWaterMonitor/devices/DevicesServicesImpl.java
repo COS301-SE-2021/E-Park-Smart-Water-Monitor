@@ -136,6 +136,12 @@ public class DevicesServicesImpl implements DevicesService {
 
     @Override
     public ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request) {
+        if (request.getDeviceName().equals("")){
+            ReceiveDeviceDataResponse response= new ReceiveDeviceDataResponse();
+            response.setSuccess(false);
+            response.setStatus("No device name is specified.");
+            return response;
+        }
         List<Device> devices = deviceRepo.findDeviceByDeviceName(request.getDeviceName());
         ReceiveDeviceDataResponse response = new ReceiveDeviceDataResponse();
         if (devices.size()==0){
