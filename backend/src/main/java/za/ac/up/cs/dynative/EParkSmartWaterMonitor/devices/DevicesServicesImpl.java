@@ -53,8 +53,7 @@ public class DevicesServicesImpl implements DevicesService {
     public DevicesServicesImpl(@Qualifier("WaterSourceDeviceRepo") DeviceRepo deviceRepo,
                                @Qualifier("ParkService") ParkService parkService,
                                @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService,
-                               @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo)
-    {
+                               @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo) {
         this.deviceRepo = deviceRepo;
         this.parkService = parkService;
         this.measurementRepo = measurementRepo;
@@ -71,67 +70,52 @@ public class DevicesServicesImpl implements DevicesService {
 
     public AddDeviceResponse addDevice(AddDeviceRequest addDeviceRequest) throws InvalidRequestException {
         AddDeviceResponse response = new AddDeviceResponse();
-        if (addDeviceRequest.getParkName().equals("")||addDeviceRequest.getSiteId()==null||addDeviceRequest.getDeviceModel().equals("")||addDeviceRequest.getDeviceType().equals("")||addDeviceRequest.getDeviceName().equals(""))
-        {
+        if (addDeviceRequest.getParkName().equals("")||addDeviceRequest.getSiteId()==null||addDeviceRequest.getDeviceModel().equals("")||addDeviceRequest.getDeviceType().equals("")||addDeviceRequest.getDeviceName().equals("")) {
             response.setSuccess(false);
             response.setStatus("Request is missing parameters.");
             return response;
         }
         List<Device> devices = deviceRepo.findDeviceByDeviceName(addDeviceRequest.getDeviceName());
-
         if (devices.size() == 0) {
-
-            CanAttachWaterSourceDeviceResponse canAttachWaterSourceDeviceResponse = waterSiteService.canAttachWaterSourceDevice(new CanAttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId()));
-
+            CanAttachWaterSourceDeviceResponse canAttachWaterSourceDeviceResponse =
+                    waterSiteService.canAttachWaterSourceDevice(new CanAttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId()));
             if (!canAttachWaterSourceDeviceResponse.getSuccess()) {
                 response.setSuccess(false);
                 response.setStatus("The water site " + addDeviceRequest.getSiteId() + " does not exist.");
                 return response;
             } else {
-
                 Map<String, String> attributes = Map.of("deviceModel",addDeviceRequest.getDeviceModel());
-
                 AttributePayload attributePayload = AttributePayload.builder()
                         .attributes(attributes)
                         .build();
-
                 CreateThingRequest createThingRequest = CreateThingRequest.builder()
                         .thingName(addDeviceRequest.getDeviceName())
                         .thingTypeName("WaterSourceDevice")
                         .attributePayload(attributePayload)
                         .build();
-
                 CreateThingResponse createThingResponse = iotClient.createThing(createThingRequest);
-
                 Device newDevice = new Device(UUID.fromString(createThingResponse.thingId()),addDeviceRequest.getDeviceName(),addDeviceRequest.getDeviceType(), addDeviceRequest.getDeviceModel(), addDeviceRequest.getLongitude(), addDeviceRequest.getLatitude());
-                AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse = waterSiteService.attachWaterSourceDevice(new AttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId(), newDevice));
-
+                AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse =
+                        waterSiteService.attachWaterSourceDevice(new AttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId(), newDevice));
                 String payload = "{\"state\": {\"reported\": {";
                 payload += newDevice.getDeviceData().toString();
                 payload += "}}}";
-
                 SdkBytes shadowPayload = SdkBytes.fromUtf8String(payload);
-
                 UpdateThingShadowRequest updateThingShadowRequest = UpdateThingShadowRequest.builder()
                         .thingName(createThingResponse.thingName())
                         .shadowName(createThingResponse.thingName()+"_Shadow")
                         .payload(shadowPayload)
                         .build();
-
                 UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
-
                 deviceRepo.save(newDevice);
                 response.setSuccess(true);
                 response.setStatus("Device " + addDeviceRequest.getDeviceName() + " successfully added");
             }
-
         } else {
             response.setSuccess(false);
             response.setStatus("Device " + addDeviceRequest.getDeviceName() + " already exists.");
         }
-
         return response;
-
     }
 
     public FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest)  {
@@ -373,8 +357,6 @@ public class DevicesServicesImpl implements DevicesService {
         }
 
     }
-
-
 
     @Override
     public DeleteDeviceResponse deleteDevice(DeleteDeviceRequest request) {

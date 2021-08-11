@@ -40,16 +40,20 @@ public class AddDevice {
     private DevicesServicesImpl devicesServices;
 
     @Test
-    @DisplayName("Try to add a device, but it already exists")
-    public void addDeviceDup(){
+    @DisplayName("Try to add a device that already exists.")
+    public void addDeviceDuplicate() throws InvalidRequestException {
+        //setup
         Device device= new Device();
         List<Device> devices=new ArrayList<>();
         devices.add(device);
-        Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
+        Mockito.when(deviceRepo.findDeviceByDeviceName("test")).thenReturn(devices);
 
+        //test
         AddDeviceRequest request= new AddDeviceRequest("Unit",UUID.randomUUID(),"XX","test","WaterSource",23,28);
-        Throwable t =assertThrows(InvalidRequestException.class, ()->devicesServices.addDevice(request));
-        assertEquals("Device already exists",t.getMessage());
+        AddDeviceResponse response = devicesServices.addDevice(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("Device test already exists.",response.getStatus());
     }
 
     @Test
