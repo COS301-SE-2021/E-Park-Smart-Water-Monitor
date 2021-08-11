@@ -49,10 +49,12 @@ public class GetNumDevices {
     }
 
     @Test
-    @DisplayName("No park id specified")
-    public void getNumDevicesParkIDNull(){
-        Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.getNumDevices(new GetNumDevicesRequest(null)));
-        assertEquals("Park id not specified",t.getMessage());
+    @DisplayName("Try to get the num devices at a park but the park id is null.")
+    public void getNumDevicesParkIDNull() throws InvalidRequestException {
+        GetNumDevicesResponse response= devicesServices.getNumDevices(new GetNumDevicesRequest(null));
+        assertNotNull(response);
+        assertEquals(false,response.isSuccess());
+        assertEquals(-1,response.getNumDevices());
     }
 
     @Test
