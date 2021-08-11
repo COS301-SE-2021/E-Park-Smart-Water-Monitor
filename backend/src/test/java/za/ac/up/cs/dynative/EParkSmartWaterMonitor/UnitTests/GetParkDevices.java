@@ -48,10 +48,13 @@ public class GetParkDevices {
     }
 
     @Test
-    @DisplayName("No park id specified")
+    @DisplayName("Request to get the devices in a park but the prk id is null")
     public void getDevicesParkIDNull(){
-        Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.getParkDevices(new GetParkDevicesRequest(null)));
-        assertEquals("Park id not specified",t.getMessage());
+        GetParkDevicesResponse response= devicesServices.getParkDevices(new GetParkDevicesRequest(null));
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals(null,response.getSite());
+        assertEquals("No Park ID specified",response.getStatus());
     }
 
     @Test
