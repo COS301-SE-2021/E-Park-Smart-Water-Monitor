@@ -58,26 +58,41 @@ public class AddDevice {
 
     @Test
     @DisplayName("Try and add a device but the request is not complete")
-    public void addDeviceIncomplete(){
+    public void addDeviceIncomplete() throws InvalidRequestException {
+        //test 1
         AddDeviceRequest request1= new AddDeviceRequest("",UUID.randomUUID(),"XX","test","WaterSource",23,28);
-        Throwable t1 =assertThrows(InvalidRequestException.class, ()->devicesServices.addDevice(request1));
-        assertEquals("Request not complete",t1.getMessage());
+        AddDeviceResponse response = devicesServices.addDevice(request1);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("Request is missing parameters.",response.getStatus());
 
+        //test 2
         AddDeviceRequest request2= new AddDeviceRequest("Unit",null,"XX","test","WaterSource",23,28);
-        Throwable t2 =assertThrows(InvalidRequestException.class, ()->devicesServices.addDevice(request2));
-        assertEquals("Request not complete",t2.getMessage());
+        AddDeviceResponse response2 = devicesServices.addDevice(request2);
+        assertNotNull(response2);
+        assertEquals(false,response2.getSuccess());
+        assertEquals("Request is missing parameters.",response2.getStatus());
 
+        //test 3
         AddDeviceRequest request3= new AddDeviceRequest("Unit",UUID.randomUUID(),"","test","WaterSource",23,28);
-        Throwable t3 =assertThrows(InvalidRequestException.class, ()->devicesServices.addDevice(request3));
-        assertEquals("Request not complete",t3.getMessage());
+        AddDeviceResponse response3 = devicesServices.addDevice(request3);
+        assertNotNull(response3);
+        assertEquals(false,response3.getSuccess());
+        assertEquals("Request is missing parameters.",response3.getStatus());
 
+        //test 4
         AddDeviceRequest request4= new AddDeviceRequest("Unit",UUID.randomUUID(),"XX","","WaterSource",23,28);
-        Throwable t4 =assertThrows(InvalidRequestException.class, ()->devicesServices.addDevice(request4));
-        assertEquals("Request not complete",t4.getMessage());
+        AddDeviceResponse response4 = devicesServices.addDevice(request4);
+        assertNotNull(response4);
+        assertEquals(false,response4.getSuccess());
+        assertEquals("Request is missing parameters.",response4.getStatus());
 
+        //test 5
         AddDeviceRequest request5= new AddDeviceRequest("",UUID.randomUUID(),"","test","WaterSource",23,28);
-        Throwable t5 =assertThrows(InvalidRequestException.class, ()->devicesServices.addDevice(request5));
-        assertEquals("Request not complete",t5.getMessage());
+        AddDeviceResponse response5 = devicesServices.addDevice(request5);
+        assertNotNull(response5);
+        assertEquals(false,response5.getSuccess());
+        assertEquals("Request is missing parameters.",response5.getStatus());
     }
 
     @Test
