@@ -48,13 +48,12 @@ public class GetDeviceData {
     }
 
     @Test
-    @DisplayName("No device name sppecified when trying to get data")
+    @DisplayName("Try to get device data but the device name is null")
     public void getDeviceDataNameNull(){
-        Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.getDeviceData(new GetDeviceDataRequest("",23)));
-        assertEquals("Device name not specified",t.getMessage());
-
-        Throwable t2= assertThrows(InvalidRequestException.class,()->devicesServices.getDeviceData(new GetDeviceDataRequest("",9)));
-        assertEquals("Device name not specified",t2.getMessage());
+        GetDeviceDataResponse response= devicesServices.getDeviceData(new GetDeviceDataRequest("",23));
+        assertNotNull(response);
+        assertEquals("No device name is specified", response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
     @Test
