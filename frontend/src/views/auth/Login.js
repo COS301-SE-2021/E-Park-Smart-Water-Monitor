@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -19,12 +19,27 @@ import Lock from "@material-ui/icons/Lock";
 
 // core components
 import componentStyles from "assets/theme/views/auth/login.js";
+import axios from "axios";
 
 const useStyles = makeStyles(componentStyles);
 
 function Login() {
   const classes = useStyles();
   const theme = useTheme();
+
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const login = () => {
+    axios.post('http://localhost:8080/api/user/editDevice', obj
+    ).then((res)=>{
+
+    }).catch((res)=>{
+
+      console.log("response:"+JSON.stringify(res))
+    });
+  }
+
   return (
     <>
       <Grid item xs={12} lg={5} md={7}>
@@ -68,6 +83,7 @@ function Login() {
                 autoComplete="off"
                 type="email"
                 placeholder="Email"
+                value={email}
                 startAdornment={
                   <InputAdornment position="start">
                     <Email />
@@ -85,6 +101,7 @@ function Login() {
                 autoComplete="off"
                 type="password"
                 placeholder="Password"
+                value={password}
                 startAdornment={
                   <InputAdornment position="start">
                     <Lock />
@@ -103,7 +120,7 @@ function Login() {
             {/*  }}*/}
             {/*/>*/}
             <Box textAlign="center" marginTop="1.5rem" marginBottom="1.5rem">
-              <Button color="primary" variant="contained">
+              <Button color="primary" variant="contained" onClick={ login }>
                 Sign in
               </Button>
             </Box>
