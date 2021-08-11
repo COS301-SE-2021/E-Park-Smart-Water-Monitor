@@ -58,14 +58,19 @@ public class GetParkDevices {
     }
 
     @Test
-    @DisplayName("Try to get the devices but there are no devices")
-    public void getDevicesDNE() throws InvalidRequestException {
+    @DisplayName("Request to get the devices of a park, but there is no devices")
+    public void getDevicesDNE() {
+        //setup
         UUID id= UUID.randomUUID();
         Mockito.when(deviceRepo.findAll()).thenReturn(null);
 
+        //test
         GetParkDevicesRequest request= new GetParkDevicesRequest(id);
-        Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.getParkDevices(request));
-        assertEquals("No devices present",t.getMessage());
+        GetParkDevicesResponse response= devicesServices.getParkDevices(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals(null,response.getSite());
+        assertEquals("No devices present",response.getStatus());
     }
 
     @Test
