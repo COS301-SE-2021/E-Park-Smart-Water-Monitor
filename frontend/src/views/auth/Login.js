@@ -14,12 +14,13 @@ import FormControl from "@material-ui/core/FormControl";
 import Grid from "@material-ui/core/Grid";
 import InputAdornment from "@material-ui/core/InputAdornment";
 // @material-ui/icons components
-import Email from "@material-ui/icons/Email";
 import Lock from "@material-ui/icons/Lock";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 // core components
 import componentStyles from "assets/theme/views/auth/login.js";
 import axios from "axios";
+import {ScaleLoader} from "react-spinners";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -27,15 +28,27 @@ function Login() {
   const classes = useStyles();
   const theme = useTheme();
 
-  const [email, setEmail] = useState("")
+  const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const login = () => {
-    axios.post('http://localhost:8080/api/user/editDevice', obj
+
+    setLoading(true)
+    let obj = {
+      username: username,
+      password: password
+    }
+
+    axios.post('http://localhost:8080/api/user/login', obj
     ).then((res)=>{
+        setLoading(false)
+        console.log(JSON.stringify(res))
 
+        let jwt = res.data.jwt
+        let temp_jwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDSEljaGkyIiwicm9sZXMiOiJGSUVMRF9FTkdJTkVFUiIsImV4cCI6MTYyODc2Mzg1NX0.mBZQjxJuuErfibzV6zRtweppy4XhbLA-V4khXINlk31ZYJlSWExLX4p7lD-9NtBIZYMHd5OIS9KLMSXzODGMjg"
+        axios.defaults.headers.get['Authorization'] = 'Bearer '+ jwt;
     }).catch((res)=>{
-
       console.log("response:"+JSON.stringify(res))
     });
   }
@@ -80,13 +93,14 @@ function Login() {
               marginBottom="1rem!important"
             >
               <FilledInput
-                autoComplete="off"
-                type="email"
-                placeholder="Email"
-                value={email}
+                // autoComplete="off"
+                type="username"
+                placeholder="Username"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
                 startAdornment={
                   <InputAdornment position="start">
-                    <Email />
+                    <AccountCircleIcon />
                   </InputAdornment>
                 }
               />
@@ -98,10 +112,11 @@ function Login() {
               marginBottom="1rem!important"
             >
               <FilledInput
-                autoComplete="off"
+                // autoComplete="off"
                 type="password"
                 placeholder="Password"
                 value={password}
+                onChange={e => setPassword(e.target.value)}
                 startAdornment={
                   <InputAdornment position="start">
                     <Lock />
@@ -119,10 +134,16 @@ function Login() {
             {/*    label: classes.formControlLabelLabel,*/}
             {/*  }}*/}
             {/*/>*/}
+
             <Box textAlign="center" marginTop="1.5rem" marginBottom="1.5rem">
+              { loading &&
+              <ScaleLoader size={50} color={"#5E72E4"} loading={loading} speedMultiplier={1.5} />
+              }
+              { !loading &&
               <Button color="primary" variant="contained" onClick={ login }>
                 Sign in
               </Button>
+              }
             </Box>
           </CardContent>
         </Card>
