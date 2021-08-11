@@ -5,6 +5,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Node
@@ -30,6 +31,10 @@ public class User {
     private String cellNumber;
 
     private String parkName;
+
+    private String activationCode;
+
+    private LocalDateTime resetPasswordExpiration;
 
     @Relationship(type = "WORKS_FOR", direction = Relationship.Direction.OUTGOING)
     private Park park;
@@ -162,6 +167,8 @@ public class User {
                 ", surname='" + surname + '\'' +
                 ", password='" + password + '\'' +
                 ", username='" + username + '\'' +
+                ", resetCode='" + activationCode + '\'' +
+                ", passwordExpiration='" + resetPasswordExpiration + '\'' +
                 ", role='" + role + '\'' +
                 ", cellNumber='" + cellNumber + '\'' +
                 ", park=" + park +
@@ -183,6 +190,20 @@ public class User {
         public String toString() {
             return name;
         }
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
+    public String getActivationCode(){
+        return activationCode;
+    }
+
+    public void setResetPasswordExpiration(LocalDateTime expiration){
+        resetPasswordExpiration= expiration;
+    }
+    public LocalDateTime getResetPasswordExpiration(){
+        return resetPasswordExpiration;
     }
 }
 

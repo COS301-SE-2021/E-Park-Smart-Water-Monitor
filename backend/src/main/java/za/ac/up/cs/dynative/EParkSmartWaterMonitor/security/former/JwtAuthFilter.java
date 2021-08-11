@@ -1,4 +1,4 @@
-package za.ac.up.cs.dynative.EParkSmartWaterMonitor.security;
+package za.ac.up.cs.dynative.EParkSmartWaterMonitor.security.former;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.*;
