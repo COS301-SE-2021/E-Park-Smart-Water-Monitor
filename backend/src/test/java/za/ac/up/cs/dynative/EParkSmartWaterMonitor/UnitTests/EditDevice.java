@@ -59,8 +59,23 @@ public class EditDevice {
     @Test
     @DisplayName("Attempt to edit a device but the request is incomplete")
     public void EditDeviceIncompleteRequest(){
+        //test 1:
         EditDeviceRequest request = new EditDeviceRequest(UUID.randomUUID(),"", "xyz", "abc");
         EditDeviceResponse response = devicesServices.editDevice(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("Request incomplete",response.getStatus());
+
+        //test 2:
+        request = new EditDeviceRequest(null,"568", "xyz", "abc");
+        response = devicesServices.editDevice(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("Request incomplete",response.getStatus());
+
+        //test 3:
+        request = new EditDeviceRequest(null,"568", "", "");
+        response = devicesServices.editDevice(request);
         assertNotNull(response);
         assertEquals(false,response.getSuccess());
         assertEquals("Request incomplete",response.getStatus());
