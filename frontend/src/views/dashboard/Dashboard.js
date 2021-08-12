@@ -15,6 +15,7 @@ import DeviceDetails from "../../components/Dashboard/Device/DeviceDetails";
 // core components
 import Header from "components/Headers/Header.js";
 
+
 import {
   chartOptions,
   parseOptions
@@ -23,6 +24,9 @@ import {
 import axios from "axios";
 import componentStyles from "assets/theme/views/dashboard/dashboard.js";
 import InspectionTable from "components/Dashboard/InspectionTable.js";
+import useToken from "../../Hooks/useToken";
+import {Redirect} from "react-router-dom";
+
 const useStyles = makeStyles(componentStyles);
 
 function Dashboard() {
@@ -31,6 +35,16 @@ function Dashboard() {
   const [devices, setDevices] = useState([])
   const [device, setDevice] = useState(null)
   const [inspections, setInspections] = useState([])
+
+  // const { token, setToken } = useToken();
+
+
+  // if(!token) {
+  //   alert("redirecting")
+  //   return <Redirect to="/auth/index" />
+  // }else{
+  //   alert("not redirecting")
+  // }
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());

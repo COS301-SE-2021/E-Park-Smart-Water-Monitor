@@ -21,10 +21,11 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import componentStyles from "assets/theme/views/auth/login.js";
 import axios from "axios";
 import {ScaleLoader} from "react-spinners";
+import PropTypes from 'prop-types';
 
 const useStyles = makeStyles(componentStyles);
 
-function Login() {
+function Login({ setToken }) {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -46,8 +47,8 @@ function Login() {
         console.log(JSON.stringify(res))
 
         let jwt = res.data.jwt
-        let temp_jwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDSEljaGkyIiwicm9sZXMiOiJGSUVMRF9FTkdJTkVFUiIsImV4cCI6MTYyODc2Mzg1NX0.mBZQjxJuuErfibzV6zRtweppy4XhbLA-V4khXINlk31ZYJlSWExLX4p7lD-9NtBIZYMHd5OIS9KLMSXzODGMjg"
-        axios.defaults.headers.get['Authorization'] = 'Bearer '+ jwt;
+        axios.defaults.headers.get['Authorization'] = 'Bearer '+ jwt; // allow all axios requests to work
+        setToken(jwt) // allow for authorisation of a user for the other pages
     }).catch((res)=>{
       console.log("response:"+JSON.stringify(res))
     });
@@ -170,6 +171,10 @@ function Login() {
       </Grid>
     </>
   );
+}
+
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired
 }
 
 export default Login;

@@ -43,20 +43,20 @@ var routes = [
   //   component: Profile,
   //   layout: "/admin",
   // },
-  // {
-  //   path: "/device",
-  //   name: "Device",
-  //   icon: AccountCircle,
-  //   iconColor: "ErrorLight",
-  //   component: Device,
-  //   layout: "/dashboard",
-  // },
   {
     path: "/index",
     name: "Login",
     icon: VpnKey,
     iconColor: "Info",
     component: Login,
+    layout: "/auth",
+  },
+  {
+    path: "/login",
+    name: "Logout",
+    icon: AccountCircle,
+    iconColor: "ErrorLight",
+    component: Device,
     layout: "/auth",
   },
   {
