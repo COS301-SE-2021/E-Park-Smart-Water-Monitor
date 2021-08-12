@@ -123,4 +123,25 @@ public class EditDevice {
         assertEquals("A device with that name already exists",response.getStatus());
     }
 
+    @Test
+    @DisplayName("Attempt to edit a device and successfully complete.")
+    public void EditDeviceSuccess(){
+        //setup
+        UUID id=UUID.randomUUID();
+        EditDeviceRequest request = new EditDeviceRequest(id, "WaterSource", "a", "P12Q");
+        Device d = new Device();
+        d.setDeviceName("abc");
+        d.setDeviceModel("abc");
+        Optional<Device> device = Optional.of(d);
+        List<Device> devicesReturn = new ArrayList<>();
+        Mockito.when(deviceRepo.findById(id)).thenReturn(device);
+        Mockito.when(deviceRepo.findDeviceByDeviceName(Mockito.any())).thenReturn(devicesReturn);
+
+        //test
+        EditDeviceResponse response = devicesServices.editDevice(request);
+        assertNotNull(response);
+        assertEquals(true,response.getSuccess());
+        assertEquals("Device successfully edited.",response.getStatus());
+    }
+
 }
