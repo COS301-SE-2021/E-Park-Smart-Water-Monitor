@@ -17,6 +17,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.EditDeviceR
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -90,7 +92,6 @@ public class EditDevice {
         //setup
         UUID id=UUID.randomUUID();
         EditDeviceRequest request = new EditDeviceRequest(id, "WaterSource", "a", "P12Q");
-        //Optional<Device> device = Optional.of(new Device());
         Optional<Device> device = Optional.empty();
         Mockito.when(deviceRepo.findById(id)).thenReturn(device);
 
@@ -99,6 +100,27 @@ public class EditDevice {
         assertNotNull(response);
         assertEquals(false,response.getSuccess());
         assertEquals("That device does not exist.",response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Attempt to edit a device but the new name is a duplicate")
+    public void EditDeviceDuplicateName(){
+        //setup
+        UUID id=UUID.randomUUID();
+        EditDeviceRequest request = new EditDeviceRequest(id, "WaterSource", "a", "P12Q");
+        Device d = new Device();
+        d.setDeviceName("abc");
+        Optional<Device> device = Optional.of(d);
+        List<Device> devicesReturn = new ArrayList<>();
+        devicesReturn.add(d);
+        Mockito.when(deviceRepo.findById(id)).thenReturn(device);
+        Mockito.when(deviceRepo.findDeviceByDeviceName(Mockito.any())).thenReturn(devicesReturn);
+
+        //test
+        EditDeviceResponse response = devicesServices.editDevice(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("A device with that name already exists",response.getStatus());
     }
 
 }

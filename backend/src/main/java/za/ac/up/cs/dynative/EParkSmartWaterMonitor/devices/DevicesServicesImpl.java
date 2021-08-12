@@ -321,9 +321,7 @@ public class DevicesServicesImpl implements DevicesService {
                     List<Device> devicesWithSameName = deviceRepo.findDeviceByDeviceName(editDeviceRequest.getDeviceName());
                     if (devicesWithSameName.size() == 0) {
                         deviceToChange.get().setDeviceName(editDeviceRequest.getDeviceName());
-                    }
-                    else
-                    {
+                    }else {
                         response.setStatus("A device with that name already exists");
                         response.setSuccess(false);
                         return response;
