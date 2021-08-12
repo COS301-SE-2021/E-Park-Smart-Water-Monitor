@@ -52,4 +52,18 @@ public class GetAllDevices {
         assertEquals(false,response.getSuccess());
         assertEquals("Failed to get all the devices",response.getStatus());
     }
+
+    @Test
+    @DisplayName("Return all devices in the system")
+    public void getAllDevicesSuccess() throws InvalidRequestException {
+        List<Device> devices = new ArrayList<>();
+        Device d = new Device();
+        devices.add(d);
+        Mockito.when(deviceRepo.findAll()).thenReturn(devices);
+
+        GetAllDevicesResponse response = devicesServices.getAllDevices();
+        assertNotNull(response);
+        assertEquals(true,response.getSuccess());
+        assertEquals("Successfully got all the devices",response.getStatus());
+    }
 }
