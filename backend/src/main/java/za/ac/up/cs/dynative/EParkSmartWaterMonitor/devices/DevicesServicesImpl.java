@@ -282,7 +282,7 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     @Override
-    public GetAllDevicesResponse getAllDevices() {  //TODO: start here
+    public GetAllDevicesResponse getAllDevices() {
         GetAllDevicesResponse response = new GetAllDevicesResponse();
 
         List<Device> devices = deviceRepo.findAll();
