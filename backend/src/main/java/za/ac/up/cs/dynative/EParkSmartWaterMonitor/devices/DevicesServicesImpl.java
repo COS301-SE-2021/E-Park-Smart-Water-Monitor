@@ -306,6 +306,11 @@ public class DevicesServicesImpl implements DevicesService {
             response.setSuccess(false);
             return response;
         }
+        if (editDeviceRequest.getDeviceName()=="" || editDeviceRequest.getDeviceType()==""|| editDeviceRequest.getDeviceId()==null || editDeviceRequest.getDeviceModel()==""){
+            response.setStatus("Request incomplete");
+            response.setSuccess(false);
+            return response;
+        }
         if (editDeviceRequest.getDeviceType().equals("WaterSource")||editDeviceRequest.getDeviceType().equals("Infrastructure")) {
             Optional<Device> deviceToChange = deviceRepo.findById(editDeviceRequest.getDeviceId());
             if (deviceToChange.isPresent()) {
