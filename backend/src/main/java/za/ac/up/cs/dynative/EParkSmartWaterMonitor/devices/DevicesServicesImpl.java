@@ -339,14 +339,11 @@ public class DevicesServicesImpl implements DevicesService {
 
     @Override
     public DeleteDeviceResponse deleteDevice(DeleteDeviceRequest request) {
-        if (request.getDeviceId() == null)
-        {
+        if (request.getDeviceId() == null) {
             return new DeleteDeviceResponse("No device id specified.", false);
         }
         Optional<Device> device = deviceRepo.findById(request.getDeviceId());
-
-        if (device.isPresent())
-        {
+        if (device.isPresent()) {
             deviceRepo.deleteDevice(device.get().getDeviceId());
             return new DeleteDeviceResponse("Successfully deleted the device and all related entities.", true);
         }
@@ -358,7 +355,6 @@ public class DevicesServicesImpl implements DevicesService {
             return new SetMetricFrequencyResponse("No device id specified.", false);
         }
         Optional<Device> device = deviceRepo.findById(request.getId());
-
         if (device.isPresent()) {
             if (device.get().getDeviceData().getDeviceConfiguration() != null) {
                 for (sensorConfiguration config : device.get().getDeviceData().getDeviceConfiguration()) {
