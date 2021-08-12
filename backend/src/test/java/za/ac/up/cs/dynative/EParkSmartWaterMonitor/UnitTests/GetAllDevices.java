@@ -12,12 +12,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesServicesImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevicesResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.GetAllDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
 
@@ -43,7 +38,7 @@ public class GetAllDevices {
 
     @Test
     @DisplayName("Try to get all the devices in the system but no devices are found")
-    public void getAllDevicesFail() throws InvalidRequestException {
+    public void getAllDevicesFail() {
         List<Device> devices = new ArrayList<>();
         Mockito.when(deviceRepo.findAll()).thenReturn(devices);
 
@@ -55,7 +50,7 @@ public class GetAllDevices {
 
     @Test
     @DisplayName("Return all devices in the system")
-    public void getAllDevicesSuccess() throws InvalidRequestException {
+    public void getAllDevicesSuccess() {
         List<Device> devices = new ArrayList<>();
         Device d = new Device();
         devices.add(d);
