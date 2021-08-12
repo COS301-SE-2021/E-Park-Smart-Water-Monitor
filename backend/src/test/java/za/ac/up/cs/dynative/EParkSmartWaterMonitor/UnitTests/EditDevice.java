@@ -5,9 +5,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesServicesImpl;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.EditDeviceRequest;
@@ -15,6 +17,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.EditDeviceR
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -80,4 +83,22 @@ public class EditDevice {
         assertEquals(false,response.getSuccess());
         assertEquals("Request incomplete",response.getStatus());
     }
+
+    @Test
+    @DisplayName("Attempt to edit a device but the device is not present")
+    public void EditDeviceNotPresent(){
+        //setup
+        UUID id=UUID.randomUUID();
+        EditDeviceRequest request = new EditDeviceRequest(id, "WaterSource", "a", "P12Q");
+        //Optional<Device> device = Optional.of(new Device());
+        Optional<Device> device = Optional.empty();
+        Mockito.when(deviceRepo.findById(id)).thenReturn(device);
+
+        //test
+        EditDeviceResponse response = devicesServices.editDevice(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("That device does not exist.",response.getStatus());
+    }
+
 }
