@@ -301,6 +301,11 @@ public class DevicesServicesImpl implements DevicesService {
     @Override
     public EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest) {
         EditDeviceResponse response = new EditDeviceResponse();
+        if (editDeviceRequest==null){
+            response.setStatus("Request is null");
+            response.setSuccess(false);
+            return response;
+        }
         if (editDeviceRequest.getDeviceType().equals("WaterSource")||editDeviceRequest.getDeviceType().equals("Infrastructure")) {
             Optional<Device> deviceToChange = deviceRepo.findById(editDeviceRequest.getDeviceId());
             if (deviceToChange.isPresent()) {
