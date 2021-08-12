@@ -270,11 +270,12 @@ public class DevicesServicesImpl implements DevicesService {
 
         if (deviceRepo.findDeviceByDeviceName(request.getDeviceName()).size() != 0) {
             Table waterSourceDataTable = dynamoDB.getTable("WaterSourceData");
-
             QuerySpec spec = new QuerySpec()
                     .withKeyConditionExpression("deviceName = :id")
+                    .withScanIndexForward(true)
                     .withValueMap(new ValueMap()
-                            .withString(":id",request.getDeviceName()));
+                            .withString(":id",request.getDeviceName()))
+                    .withScanIndexForward(!request.isSorted());
 
             ItemCollection<QueryOutcome> items = waterSourceDataTable.query(spec);
 

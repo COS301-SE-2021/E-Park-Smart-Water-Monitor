@@ -81,7 +81,6 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
                 waterSite,
                 deviceProjectionRequest);
 
-
         conservativeProjection(conservativePredictions,
                 dailyAverageTemperature,
                 waterSite,

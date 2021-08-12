@@ -37,7 +37,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
             if ((findDeviceResponse.getSuccess() && findDeviceResponse.getDevice() != null)
                     && (waterSiteByDeviceResponse.getSuccess() && waterSiteByDeviceResponse.getWaterSite() != null)) {
                 GetDeviceDataResponse deviceDataResponse = devicesService.getDeviceData(
-                        new GetDeviceDataRequest(findDeviceResponse.getDevice().getDeviceName(),0));
+                        new GetDeviceDataRequest(findDeviceResponse.getDevice().getDeviceName(),0, false));
                 if (deviceDataResponse.getSuccess()) {
                     switch (request.getType()) {
                         case "ph":

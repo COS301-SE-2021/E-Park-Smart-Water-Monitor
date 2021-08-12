@@ -6,11 +6,14 @@ public class GetDeviceDataRequest {
 
     private final String deviceName;
     private final int numResults;
+    private final boolean sorted;
 
     public GetDeviceDataRequest(@JsonProperty("deviceName") String deviceName,
-                                @JsonProperty("numResults") int numResults) {
+                                @JsonProperty("numResults") int numResults,
+                                @JsonProperty("sorted") boolean sorted) {
         this.deviceName = deviceName;
         this.numResults = numResults;
+        this.sorted = sorted;
     }
 
     public String getDeviceName() {
@@ -18,6 +21,10 @@ public class GetDeviceDataRequest {
     }
 
     public int getNumResults() { return numResults; }
+
+    public boolean isSorted() {
+        return sorted;
+    }
 
     @Override
     public String toString() {
