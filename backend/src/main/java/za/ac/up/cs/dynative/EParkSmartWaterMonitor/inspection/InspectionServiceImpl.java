@@ -15,9 +15,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.SaveSiteRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
 
 import java.util.List;
 
@@ -42,23 +40,17 @@ public class InspectionServiceImpl implements InspectionService {
     @Override
     public AddInspectionResponse addInspection(AddInspectionRequest request) throws InvalidRequestException {
         AddInspectionResponse response = new AddInspectionResponse();
-
         if (request.getDeviceId() == null) {
             response.setStatus("Failed to add inspection! No deviceId specified!");
             response.setSuccess(false);
-
             return response;
         }
-
         FindDeviceResponse findDeviceResponse = devicesService.findDevice(new FindDeviceRequest(request.getDeviceId()));
-
         if (findDeviceResponse == null || !findDeviceResponse.getSuccess()) {
             response.setStatus("Failed to add inspection! Failure to get device!");
             response.setSuccess(false);
-
             return response;
         }
-
         WaterSite getSiteByIdResponse = waterSiteService.getWaterSiteByRelatedDevice(findDeviceResponse.getDevice().getDeviceId());
 //        GetSiteByIdResponse getSiteByIdResponse = waterSiteService.getSiteById(new GetSiteByIdRequest((request.getWaterSiteId())));
 //
@@ -72,113 +64,80 @@ public class InspectionServiceImpl implements InspectionService {
 //        Inspection inspection = new Inspection(findDeviceResponse.getDevice(), request.getDateDue(), request.getDescription());
         Inspection inspection = new Inspection(findDeviceResponse.getDevice(),findDeviceResponse.getDevice().getDeviceId(), getSiteByIdResponse.getId(), request.getDateDue(), request.getDescription());
         inspectionRepo.save(inspection);
-
         getSiteByIdResponse.addInspection(inspection);
-
         waterSiteService.saveSite(new SaveSiteRequest(getSiteByIdResponse));
-
         response.setStatus("Inspection successfully added!");
         response.setSuccess(true);
-
         return  response;
     }
 
     @Override
     public GetWaterSiteInspectionsResponse getWaterSiteInspections(GetWaterSiteInspectionsRequest request) {
         GetWaterSiteInspectionsResponse response = new GetWaterSiteInspectionsResponse();
-
         if (request.getWaterSiteId() == null) {
             response.setStatus("Failed to get inspection! Invalid waterSiteId!");
             response.setSuccess(false);
-
             return response;
         }
-
         response.setInspectionList(inspectionRepo.findInspectionsByWaterSiteId(request.getWaterSiteId()));
-
         response.setStatus("Inspections retrieved successfully!");
         response.setSuccess(true);
-
         return response;
     }
 
     @Override
     public GetDeviceInspectionsResponse getDeviceInspections(GetDeviceInspectionsRequest request) {
         GetDeviceInspectionsResponse response = new GetDeviceInspectionsResponse();
-
         if (request.getDeviceId() == null) {
             response.setStatus("Failed to get inspection! Invalid deviceId!");
             response.setSuccess(false);
-
             return response;
         }
-
         response.setInspectionList(inspectionRepo.getInspectionByDeviceId(request.getDeviceId()));
-
         response.setStatus("Inspections retrieved successfully!");
         response.setSuccess(true);
-
         return response;
     }
 
     @Override
     public SetInspectionStatusResponse setInspectionStatus(SetInspectionStatusRequest request) {
         SetInspectionStatusResponse response = new SetInspectionStatusResponse();
-
         if (request.getInspectionId() == null) {
             response.setStatus("Failed to set inspection status! Invalid inspectionId!");
             response.setSuccess(false);
-
             return response;
         }
-
         Inspection inspection = inspectionRepo.findInspectionById(request.getInspectionId());
-
         if (inspection == null) {
             response.setStatus("Failed to set inspection status! Inspection not found!");
             response.setSuccess(false);
-
             return response;
         }
-
         inspection.setStatus(request.getStatus());
-
         inspectionRepo.save(inspection);
-
         response.setStatus("Inspection status successfully set!");
         response.setSuccess(true);
-
         return response;
     }
-
 
     @Override
     public SetInspectionCommentsResponse setInspectionComments(SetInspectionCommentsRequest request) {
         SetInspectionCommentsResponse response = new SetInspectionCommentsResponse();
-
         if (request.getInspectionId() == null) {
             response.setStatus("Failed to set inspection comments! Invalid inspectionId!");
             response.setSuccess(false);
-
             return response;
         }
-
         Inspection inspection = inspectionRepo.findInspectionById(request.getInspectionId());
-
         if (inspection == null) {
             response.setStatus("Failed to set inspection comments! Inspection not found!");
             response.setSuccess(false);
-
             return response;
         }
-
         inspection.setComments(request.getComments());
-
         inspectionRepo.save(inspection);
-
         response.setStatus("Inspection comments successfully set!");
         response.setSuccess(true);
-
         return response;
     }
 
@@ -187,14 +146,12 @@ public class InspectionServiceImpl implements InspectionService {
     {
         List<Park> parks  = parkRepo.findAll();
         GetAllInspectionsResponse response = new GetAllInspectionsResponse();
-        for (int i = 0; i <parks.size() ; i++)
-        {
+        for (int i = 0; i <parks.size() ; i++) {
             response.addPark(parks.get(i).getId());
             List<Inspection> inspectionsForParks = inspectionRepo.getInspectionByParkId(parks.get(i).getId());
             System.out.println(inspectionsForParks);
             response.addInspectionSet(inspectionsForParks);
         }
-
 //        List<Inspection> allInspections = inspectionRepo.findAll();
 //        System.out.println("HUH");
 
