@@ -10,12 +10,15 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.InspectionServiceImpl;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models.Inspection;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.InspectionRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetAllInspectionsResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -48,6 +51,24 @@ public class GetAllInspections {
         GetAllInspectionsResponse response = inspectionService.getAllInspections();
         assertNotNull(response);
         assertEquals(new ArrayList<>(),response.getInspections());
+    }
+
+    @Test
+    @DisplayName("Successfully get all the inspections of a park")
+    public void GetAllInspectionsSuccess(){
+        //setup
+        List<Park> parks = new ArrayList<>();
+        Park p1 = new Park();
+        parks.add(p1);
+        List<List<Inspection>> list=new ArrayList<>();
+        List<Inspection> inspections = new ArrayList<>();
+        list.add(inspections);
+        Mockito.when(parkRepo.findAll()).thenReturn(parks);
+
+        //test
+        GetAllInspectionsResponse response = inspectionService.getAllInspections();
+        assertNotNull(response);
+        assertEquals(list,response.getInspections());
     }
 }
 
