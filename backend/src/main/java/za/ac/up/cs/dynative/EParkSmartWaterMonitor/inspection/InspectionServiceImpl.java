@@ -149,7 +149,7 @@ public class InspectionServiceImpl implements InspectionService {
         for (int i = 0; i <parks.size() ; i++) {
             response.addPark(parks.get(i).getId());
             List<Inspection> inspectionsForParks = inspectionRepo.getInspectionByParkId(parks.get(i).getId());
-            System.out.println(inspectionsForParks);
+            //System.out.println(inspectionsForParks);
             response.addInspectionSet(inspectionsForParks);
         }
 //        List<Inspection> allInspections = inspectionRepo.findAll();
