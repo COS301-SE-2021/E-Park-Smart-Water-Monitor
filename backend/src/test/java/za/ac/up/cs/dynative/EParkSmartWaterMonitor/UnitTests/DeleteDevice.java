@@ -12,6 +12,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesServicesImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.DeleteDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.DeleteDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
 
@@ -42,6 +44,9 @@ public class DeleteDevice {
     @Test
     @DisplayName("Attempt to delete a device but the id is null")
     public void DeleteDeviceNullID() {
-
+        DeleteDeviceResponse response = devicesServices.deleteDevice(new DeleteDeviceRequest(null));
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("No device id specified.",response.getStatus());
     }
 }
