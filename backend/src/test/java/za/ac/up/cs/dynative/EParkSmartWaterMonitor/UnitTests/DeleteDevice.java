@@ -49,4 +49,18 @@ public class DeleteDevice {
         assertEquals(false,response.getSuccess());
         assertEquals("No device id specified.",response.getStatus());
     }
+
+    @Test
+    @DisplayName("Attempt to delete a device but the device does not exist")
+    public void DeleteDeviceDeviceDNE() {
+        //setup
+        Optional<Device> device = Optional.empty();
+        Mockito.when(deviceRepo.findById(Mockito.any())).thenReturn(device);
+
+        //test
+        DeleteDeviceResponse response = devicesServices.deleteDevice(new DeleteDeviceRequest(UUID.randomUUID()));
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("No device with this id exists.",response.getStatus());
+    }
 }
