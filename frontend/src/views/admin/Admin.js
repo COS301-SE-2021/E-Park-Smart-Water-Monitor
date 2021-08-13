@@ -62,12 +62,12 @@ function Admin() {
     // A context object is created so that other inforamtion can be passed
     // to child components easily in future
 
-    let temp_jwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDSEljaGkyIiwicm9sZXMiOiJGSUVMRF9FTkdJTkVFUiIsImV4cCI6MTYyODc2MzA3NH0.Q6P7CwsJCWrG212X0gDw68663EAiNbkNoylXlwvVWVKdJM1jWyaACDWbc9F5nmi2BRoPtlhVgyfooyDP7sCmvw"
+    let temp_jwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDSEljaGkyIiwicm9sZXMiOiJGSUVMRF9FTkdJTkVFUiIsImV4cCI6MTYyODkzMTkxN30.MEfrCH6mcP2x9LB9-SQxFtB03hrYQPhPNgydbuVqTpP_6mQeISqAiXx2RpjN4fdfbWBNNUqGlJhZhNelmQcQfQ"
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/park/getAllParksAndSites', {
             headers: {
-                Authorization: "Bearer " + temp_jwt
+                'Authorization': "Bearer " + temp_jwt
             }
         }).then((res)=>{
             if(res)

@@ -120,15 +120,21 @@ const ParkTable = (props) => {
         }
     }
 
+
     // on delete of a park
     const removePark = (id) => {
+
+        const config = {
+            headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
+        };
+
         return ()=>{
             toggleLoading()
             axios.delete('http://localhost:8080/api/park/deletePark', {
                 data: {
                     parkId: id
                 }
-            }).then((res)=> {
+            }, config).then((res)=> {
                 toggleLoading()
                 reloadParkTable()
 

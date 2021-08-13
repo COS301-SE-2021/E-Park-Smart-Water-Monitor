@@ -47,9 +47,12 @@ const AddParkBody = (props) => {
             latitude: latitude,
             longitude: longitude
         }
+        const config = {
+            headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
+        };
         console.log("Adding Park: "+JSON.stringify(obj))
         axios.post('http://localhost:8080/api/park/addPark',
-            obj
+            obj, config
         ).then((res) => {
 
             toggleLoading();

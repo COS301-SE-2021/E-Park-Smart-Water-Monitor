@@ -50,7 +50,11 @@ const EditParkBody = (props) => {
                 longitude: longitude
             }
 
-            axios.post('http://localhost:8080/api/park/editPark', obj
+            const config = {
+                headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
+            };
+
+            axios.post('http://localhost:8080/api/park/editPark', obj, config
             ).then((res)=>{
 
                 console.log("response:"+JSON.stringify(res))

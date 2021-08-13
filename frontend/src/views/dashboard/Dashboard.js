@@ -51,14 +51,18 @@ function Dashboard() {
   }
 
 
-  // axios.defaults.headers.post['Access-Control-Allow-Origin'] = 'http://localhost:3000';
 
 
-  // let temp_jwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDSEljaGkyIiwicm9sZXMiOiJGSUVMRF9FTkdJTkVFUiIsImV4cCI6MTYyODc2MzA3NH0.Q6P7CwsJCWrG212X0gDw68663EAiNbkNoylXlwvVWVKdJM1jWyaACDWbc9F5nmi2BRoPtlhVgyfooyDP7sCmvw"
+
+  let temp_jwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDSEljaGkyIiwicm9sZXMiOiJGSUVMRF9FTkdJTkVFUiIsImV4cCI6MTYyODkzMTkxN30.MEfrCH6mcP2x9LB9-SQxFtB03hrYQPhPNgydbuVqTpP_6mQeISqAiXx2RpjN4fdfbWBNNUqGlJhZhNelmQcQfQ"
 
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/devices/getAllDevices').then((res)=>{
+    axios.get('http://localhost:8080/api/devices/getAllDevices',{
+      headers: {
+        'Authorization': "Bearer " + temp_jwt
+      }
+    }).then((res)=>{
       if(res.data)
       {
         const site = res.data.site; // site array

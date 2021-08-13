@@ -47,7 +47,10 @@ function Login({ setToken }) {
         console.log(JSON.stringify(res))
 
         let jwt = res.data.jwt
-        axios.defaults.headers.get['Authorization'] = 'Bearer '+ jwt; // allow all axios requests to work
+        axios.defaults.headers.common['Authorization'] = "Bearer " +jwt; // allow all axios requests to work
+        axios.defaults.headers.delete['Authorization'] = jwt; // allow all axios requests to work
+        // axios.defaults.headers.post['Authorization'] = 'Bearer '+ jwt;
+        sessionStorage.setItem('token', jwt)
         setToken(jwt) // allow for authorisation of a user for the other pages
     }).catch((res)=>{
       console.log("response:"+JSON.stringify(res))

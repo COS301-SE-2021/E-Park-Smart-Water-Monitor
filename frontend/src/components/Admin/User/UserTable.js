@@ -53,11 +53,15 @@ const UserTable = () => {
     // on delete of a user
     const removeUser = (id) => {
 
+        const config = {
+            headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
+        };
+
         return ()=>{
             toggleLoading()
             axios.post('http://localhost:8080/api/user/deleteUser', {
                 id: id
-            }).then((res)=> {
+            }, config).then((res)=> {
                 toggleLoading()
                 reloadUserTable()
             })

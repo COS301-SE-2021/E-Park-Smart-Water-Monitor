@@ -15,9 +15,13 @@ import DashboardLayout from "layouts/Dashboard.js";
 import AuthLayout from "layouts/Auth.js";
 import AdminLayout from "layouts/Admin.js"
 import useToken from "./Hooks/useToken";
+import axios from "axios";
 
 const App = () => {
     const { token, setToken } = useToken();
+
+    axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+    axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 
     const isLogin = () => {
         // const tokenString = localStorage.getItem('token');
@@ -25,7 +29,8 @@ const App = () => {
         // alert("login status: "+userToken?.token)
         // return userToken?.token
 
-        let login = !(!token || token === "undefined");
+        let tokenString = sessionStorage.getItem('token')
+        let login = !(!tokenString || tokenString === "undefined");
         alert("login status: "+login)
         return login
     }
