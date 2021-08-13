@@ -12,9 +12,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesServicesImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.DeleteDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.SetMetricFrequencyRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.DeleteDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.SetMetricFrequencyResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
@@ -63,4 +61,5 @@ public class SetMetricFrequency {
         assertEquals(false,response.getSuccess());
         assertEquals("No device configurations set.",response.getStatus());
     }
+
 }
