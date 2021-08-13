@@ -17,8 +17,6 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.DeleteDevic
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
