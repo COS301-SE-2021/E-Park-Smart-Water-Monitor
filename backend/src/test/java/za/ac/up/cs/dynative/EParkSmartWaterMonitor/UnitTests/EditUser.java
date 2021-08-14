@@ -14,6 +14,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdRe
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.UserServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.repositories.UserRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.EditUserRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.EditUserResponse;
 
 import java.util.*;
 
@@ -31,5 +33,35 @@ public class EditUser {
     @InjectMocks
     private UserServiceImpl userService;
 
+    @Test
+    @DisplayName("Try to edit a user but the username does not exist")
+    public void EditUserDNE(){
+        //setup
+        Mockito.when(userRepo.findUserByUsername(Mockito.any())).thenReturn(new ArrayList<>());
 
+        //test
+        EditUserRequest request = new EditUserRequest("ch","12","","","","","","");
+        EditUserResponse response = userService.editUser(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("User with that username does not exist.",response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Try to edit a user but the username is already in use")
+    public void EditUserDuplicate(){
+        //setup
+        List<User> users = new ArrayList<>();
+        User u = new User();
+        users.add(u);
+        Mockito.when(userRepo.findUserByUsername(Mockito.any())).thenReturn(users);
+        Mockito.when(userRepo.findUserByUsername(Mockito.any())).thenReturn(users);
+
+        //test
+        EditUserRequest request = new EditUserRequest("ch","12","","","","123","","");
+        EditUserResponse response = userService.editUser(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("Username is already in use.",response.getStatus());
+    }
 }

@@ -153,7 +153,7 @@ public class CreateUser {
     @Test
     @DisplayName("Create a valid user")
     public void createUser() throws InvalidRequestException {
-        //setuo
+        //setup
         List<User> list = new ArrayList<>();
         List<User> list2 = new ArrayList<>();
         Mockito.when(userRepo.findUserByIdNumber(idNumber)).thenReturn(list);
