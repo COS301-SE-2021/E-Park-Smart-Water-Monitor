@@ -124,8 +124,9 @@ public class GetParkWaterSites {
     @DisplayName("Find all the sites of a park but no ID is provided.")
     public void getSitesNull(){
         GetParkSitesRequest request= new GetParkSitesRequest(null);
-        Throwable t= assertThrows(InvalidRequestException.class,()->parkService.getParkWaterSites(request));
-        assertEquals("No ID provided",t.getMessage());
-
+        GetParkSitesResponse response =parkService.getParkWaterSites(request);
+        assertNotNull(response);
+        assertEquals("No park id specified",response.getStatus());
+        assertEquals(false,response.getSuccess());
     }
 }
