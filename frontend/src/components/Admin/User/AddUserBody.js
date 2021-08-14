@@ -9,6 +9,7 @@ import Row from "react-bootstrap/Row";
 import axios from "axios";
 import AdminContext from "../AdminContext";
 import {DotLoader} from "react-spinners";
+import {UserContext} from "../../../Context/UserContext";
 const { Form } = require( "react-bootstrap" );
 
 const styles = {
@@ -43,6 +44,7 @@ const AddUserBody = (props) => {
     ];
 
     const context = useContext(AdminContext)
+    const user = useContext(UserContext)
     const parksAndSites = context.parksAndSites
     const toggleLoading = context.toggleLoading
 
@@ -79,7 +81,11 @@ const AddUserBody = (props) => {
             cellNumber: `+27${cellNumber}`
         }
 
-        axios.post('http://localhost:8080/api/user/createUser', obj
+        axios.post('http://localhost:8080/api/user/createUser', obj, {
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
+            }
         ).then((res)=>{
 
             // reload the parent to refetch the data with out reloading the whole page

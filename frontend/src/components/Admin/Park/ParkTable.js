@@ -23,6 +23,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditParkBody from "./EditParkBody";
 import {Tooltip} from "@material-ui/core";
 import AdminContext from '../AdminContext'
+import {UserContext} from "../../../Context/UserContext";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -39,6 +40,7 @@ const ParkTable = (props) => {
     // get the parks context with the sites from the Admin parent component
     // if you make this a state then the parent will rerender
     const context = useContext(AdminContext)
+    const user = useContext(UserContext)
     const parksAndSites = context.parksAndSites
     const toggleLoading = context.toggleLoading
 
@@ -59,7 +61,11 @@ const ParkTable = (props) => {
         let obj = null;
 
         // if (parksAndSites && parksAndSites.parks) {
-        axios.get('http://localhost:8080/api/park/getAllParks').then((res)=> {
+        axios.get('http://localhost:8080/api/park/getAllParks',{
+            headers: {
+                'Authorization': "Bearer " + user.token
+            }
+        }).then((res)=> {
             obj = res.data.allParks.map((park) =>
                 <TableRow key={park.id}
                           onClick={handleParkSelection(park)} // send through the whole park object
@@ -134,7 +140,11 @@ const ParkTable = (props) => {
                 data: {
                     parkId: id
                 }
-            }, config).then((res)=> {
+            }, {
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
+            }).then((res)=> {
                 toggleLoading()
                 reloadParkTable()
 

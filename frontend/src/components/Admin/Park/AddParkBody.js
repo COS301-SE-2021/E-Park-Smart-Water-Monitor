@@ -11,6 +11,7 @@ import Select from "react-select";
 import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import AdminContext from "../AdminContext";
 import axios from "axios";
+import {UserContext} from "../../../Context/UserContext";
 
 const useStyles = makeStyles(componentStyles);
 const mapStyles = {
@@ -26,6 +27,7 @@ const AddParkBody = (props) => {
     const [longitude, setLongitude] = useState(28.280765508)
 
     const context = useContext(AdminContext)
+    const user = useContext(UserContext)
     const toggleLoading = context.toggleLoading
 
     // getting the clicked location on
@@ -47,12 +49,14 @@ const AddParkBody = (props) => {
             latitude: latitude,
             longitude: longitude
         }
-        const config = {
-            headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
-        };
+
         console.log("Adding Park: "+JSON.stringify(obj))
         axios.post('http://localhost:8080/api/park/addPark',
-            obj, config
+            obj, {
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
+            }
         ).then((res) => {
 
             toggleLoading();

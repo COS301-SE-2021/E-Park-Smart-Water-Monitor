@@ -6,6 +6,7 @@ import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addDevice.css";
 import axios from "axios";
 import AdminContext from "../AdminContext";
+import {UserContext} from "../../../Context/UserContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -17,6 +18,7 @@ const AddInspectionBody = (props) => {
     const [date, setDate] = useState(null)
 
     const context = useContext(AdminContext)
+    const user = useContext(UserContext)
     const toggleLoading = context.toggleLoading
 
     const selectDevice = (event) => {
@@ -48,7 +50,11 @@ const AddInspectionBody = (props) => {
       console.log("body: ", body)
 
         toggleLoading()
-      axios.post('http://localhost:8080/api/inspections/addInspection', body).then((res)=>{
+      axios.post('http://localhost:8080/api/inspections/addInspection', body, {
+          headers: {
+              'Authorization': "Bearer " + user.token
+          }
+      }).then((res)=>{
             console.log(res)
             props.closeModal()
             toggleLoading()

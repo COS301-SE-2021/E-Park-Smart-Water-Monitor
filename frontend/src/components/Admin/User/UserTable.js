@@ -26,6 +26,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {Tooltip} from "@material-ui/core";
 import AdminContext from "../AdminContext";
+import {UserContext} from "../../../Context/UserContext";
 // import disableScroll from 'disable-scroll';
 
 // import AdminModal from 'admin-modal'
@@ -44,6 +45,7 @@ const UserTable = () => {
     const [value, setValue] = useState(0);
 
     const context = useContext(AdminContext)
+    const userContext = useContext(UserContext)
     const toggleLoading = context.toggleLoading
 
     const reloadUserTable = () => {
@@ -53,15 +55,17 @@ const UserTable = () => {
     // on delete of a user
     const removeUser = (id) => {
 
-        const config = {
-            headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
-        };
+
 
         return ()=>{
             toggleLoading()
             axios.post('http://localhost:8080/api/user/deleteUser', {
                 id: id
-            }, config).then((res)=> {
+            }, {
+                headers: {
+                    'Authorization': "Bearer " + userContext.token
+                }
+            }).then((res)=> {
                 toggleLoading()
                 reloadUserTable()
             })
@@ -72,7 +76,11 @@ const UserTable = () => {
 
     useEffect(() => {
         // get all users
-        axios.get('http://localhost:8080/api/user/getAllUsers').then((res)=>{
+        axios.get('http://localhost:8080/api/user/getAllUsers',{
+            headers: {
+                'Authorization': "Bearer " + userContext.token
+            }
+        }).then((res)=>{
             // console.log("res: "+JSON.stringify(res))
             const m = res.data.allUsers.map((user) =>
                 <TableRow key={ user.id } >

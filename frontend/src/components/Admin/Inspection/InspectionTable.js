@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
@@ -18,6 +18,7 @@ import componentStyles from "assets/theme/views/admin/admin";
 import Modal from "../../Modals/Modal";
 import axios from "axios";
 import AddInspectionBody from "./AddInspectionBody";
+import {UserContext} from "../../../Context/UserContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -29,8 +30,14 @@ const InspectionTable = () => {
     const [response, setResponse] = useState([])
 
 
+    const user = useContext(UserContext)
+
     useEffect(() => {
-        axios.get('http://localhost:8080/api/inspections/getAllInspections').then((res) => {
+        axios.get('http://localhost:8080/api/inspections/getAllInspections', {
+            headers: {
+                'Authorization': "Bearer " + user.token
+            }
+        }).then((res) => {
             if (res.data) {
 
                 if(res.data && res.data.inspections)

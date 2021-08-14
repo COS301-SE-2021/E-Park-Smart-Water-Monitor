@@ -11,6 +11,7 @@ import Select from "react-select";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import axios from "axios";
 import AdminContext from "../AdminContext";
+import {UserContext} from "../../../Context/UserContext";
 
 const useStyles = makeStyles(componentStyles);
 const mapStyles = {
@@ -25,6 +26,7 @@ const EditParkBody = (props) => {
     const [error, setError] = useState("")
 
     const context = useContext(AdminContext)
+    const user = useContext(UserContext)
     const toggleLoading = context.toggleLoading
 
     useEffect(() => {
@@ -50,11 +52,11 @@ const EditParkBody = (props) => {
                 longitude: longitude
             }
 
-            const config = {
-                headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
-            };
-
-            axios.post('http://localhost:8080/api/park/editPark', obj, config
+            axios.post('http://localhost:8080/api/park/editPark', obj, {
+                    headers: {
+                        'Authorization': "Bearer " + user.token
+                    }
+                }
             ).then((res)=>{
 
                 console.log("response:"+JSON.stringify(res))
