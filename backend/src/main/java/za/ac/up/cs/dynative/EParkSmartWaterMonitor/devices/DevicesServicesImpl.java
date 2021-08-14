@@ -106,7 +106,13 @@ public class DevicesServicesImpl implements DevicesService {
 
                 CreateThingResponse createThingResponse = iotClient.createThing(createThingRequest);
 
-                Device newDevice = new Device(UUID.fromString(createThingResponse.thingId()),addDeviceRequest.getDeviceName(),addDeviceRequest.getDeviceType(), addDeviceRequest.getDeviceModel(), addDeviceRequest.getLongitude(), addDeviceRequest.getLatitude());
+                Device newDevice = new Device(UUID.fromString(createThingResponse.thingId()),
+                        addDeviceRequest.getDeviceName(),
+                        addDeviceRequest.getDeviceType(),
+                        addDeviceRequest.getDeviceModel(),
+                        addDeviceRequest.getLongitude(),
+                        addDeviceRequest.getLatitude());
+
                 AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse = waterSiteService.attachWaterSourceDevice(new AttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId(), newDevice));
 
                 String payload = "{\"state\": {\"reported\": {";
@@ -122,7 +128,6 @@ public class DevicesServicesImpl implements DevicesService {
                         .build();
 
                 UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
-
                 deviceRepo.save(newDevice);
                 response.setSuccess(true);
                 response.setStatus("Device " + addDeviceRequest.getDeviceName() + " successfully added");
@@ -411,6 +416,20 @@ public class DevicesServicesImpl implements DevicesService {
                     if (config.getSettingType().equals("reportingFrequency")) {
                         config.setValue(request.getValue());
                         deviceRepo.save(device.get());
+
+                        String payload = "{\"state\": {\"reported\": {";
+                        payload += device.get().getDeviceData().toString();
+                        payload += "}}}";
+
+                        SdkBytes shadowPayload = SdkBytes.fromUtf8String(payload);
+
+                        UpdateThingShadowRequest updateThingShadowRequest = UpdateThingShadowRequest.builder()
+                                .thingName(device.get().getDeviceName())
+                                .shadowName(device.get().getDeviceName()+"_Shadow")
+                                .payload(shadowPayload)
+                                .build();
+                        UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
+
                         return new SetMetricFrequencyResponse("Successfully changed metric frequency to: " +
                                 request.getValue() + " hours.", true);
                     }

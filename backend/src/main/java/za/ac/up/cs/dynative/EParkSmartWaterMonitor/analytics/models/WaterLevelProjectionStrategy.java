@@ -207,7 +207,18 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
         else return 0;
     }
 
-    private void evaporationCalc(ArrayList<Double> optimisticPredictions, WaterSite waterSite, DeviceProjectionRequest deviceProjectionRequest, double gravity, double betaValue, double surfaceTemperature, double heatOfVaporization, double[] prandtlNumbers, double[] thermalConductivity, double[] kinematicViscosities, ArrayList<Double> futureAmbientTemperatures) {
+    private void evaporationCalc(ArrayList<Double> optimisticPredictions,
+                                 WaterSite waterSite,
+                                 DeviceProjectionRequest deviceProjectionRequest,
+                                 double gravity,
+                                 double betaValue,
+                                 double surfaceTemperature,
+                                 double heatOfVaporization,
+                                 double[] prandtlNumbers,
+                                 double[] thermalConductivity,
+                                 double[] kinematicViscosities,
+                                 ArrayList<Double> futureAmbientTemperatures) {
+
         if (waterSite.getShape().equals("circle")) {
             double surfaceArea = Math.PI * Math.pow(waterSite.getRadius(), 2.0);
             double diameter = waterSite.getRadius() * 2.0;
