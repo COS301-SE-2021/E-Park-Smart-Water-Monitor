@@ -178,6 +178,7 @@ public class UserServiceImpl implements UserService {
                     else {
                         response.setStatus("The provided email is not a valid email-address.");
                         response.setSuccess(false);
+                        return response;
                     }
                 } else {
                     response.setStatus("The provided email is already in use.");

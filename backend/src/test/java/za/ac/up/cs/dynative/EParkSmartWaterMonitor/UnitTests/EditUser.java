@@ -55,7 +55,6 @@ public class EditUser {
         User u = new User();
         users.add(u);
         Mockito.when(userRepo.findUserByUsername(Mockito.any())).thenReturn(users);
-        Mockito.when(userRepo.findUserByUsername(Mockito.any())).thenReturn(users);
 
         //test
         EditUserRequest request = new EditUserRequest("ch","12","","","","123","","");
@@ -63,5 +62,38 @@ public class EditUser {
         assertNotNull(response);
         assertEquals(false,response.getSuccess());
         assertEquals("Username is already in use.",response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Try to edit a user with invalid data")
+    public void EditUserInvalid(){
+        //setup
+        List<User> users = new ArrayList<>();
+        User u = new User();
+        users.add(u);
+        Mockito.when(userRepo.findUserByUsername("ch")).thenReturn(users);
+        Mockito.when(userRepo.findUserByUsername("123")).thenReturn(new ArrayList<>());
+        Mockito.when(userRepo.findUserByEmail(Mockito.any())).thenReturn(new ArrayList<>());
+
+        //test invalid cellphone
+        EditUserRequest request = new EditUserRequest("ch","12","","","","123","","77");
+        EditUserResponse response = userService.editUser(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("Cell-number provided is not valid.",response.getStatus());
+
+        //test invalid email
+        request = new EditUserRequest("ch","12","55","","","123","","0728480427");
+        response = userService.editUser(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("The provided email is not a valid email-address.",response.getStatus());
+
+        //test invalid id
+        request = new EditUserRequest("ch","12","nita.nell92@gmail.com","","","123","","0728480427");
+        response = userService.editUser(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("The provided ID number is not a valid ID number.",response.getStatus());
     }
 }
