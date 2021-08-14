@@ -34,7 +34,7 @@ public class CreateUser {
     private UserServiceImpl userService;
 
     UUID parkId=UUID.randomUUID();
-    String idNumber = "2356897410";
+    String idNumber = "2356897410000";
     String name = "Nita";
     String surname = "Nell";
     String email = "utests@dynative.com";
@@ -97,21 +97,25 @@ public class CreateUser {
 
     @Test
     @DisplayName("Try and create an user with an existing Id Number")
-    public void createUserDupID(){
+    public void createUserDuplicateID() throws InvalidRequestException {
+        //setup
         User u= new User();
         List<User> list=new ArrayList<>();
         list.add(u);
         Mockito.when(userRepo.findUserByIdNumber(idNumber)).thenReturn(list);
 
+        //testing
         CreateUserRequest request= new CreateUserRequest(parkId,idNumber,email,password,name,surname,username,role,cellNumber);
-        Throwable t= assertThrows(InvalidRequestException.class,()->userService.createUser(request));
-        assertEquals("A user with this id number already exists.",t.getMessage());
-
+        CreateUserResponse response=userService.createUser(request);
+        assertNotNull(response);
+        assertEquals("A user with this id number already exists.",response.getStatus());
+        assertEquals(false,response.getSuccess());
     }
 
     @Test
     @DisplayName("Try and create an user with an existing username")
-    public void createUserDupUsername(){
+    public void createUserDuplicateUsername() throws InvalidRequestException {
+        //setup
         User u= new User();
         List<User> list=new ArrayList<>();
         List<User> list2=new ArrayList<>();
@@ -119,9 +123,12 @@ public class CreateUser {
         list2.add(u);
         Mockito.when(userRepo.findUserByUsername(username)).thenReturn(list2);
 
+        //test
         CreateUserRequest request= new CreateUserRequest(parkId,idNumber,email,password,name,surname,username,role,cellNumber);
-        Throwable t= assertThrows(InvalidRequestException.class,()->userService.createUser(request));
-        assertEquals("A user with this username already exists.",t.getMessage());
+        CreateUserResponse response=userService.createUser(request);
+        assertNotNull(response);
+        assertEquals("A user with this username already exists.",response.getStatus());
+        assertEquals(false,response.getSuccess());
     }
 
 
