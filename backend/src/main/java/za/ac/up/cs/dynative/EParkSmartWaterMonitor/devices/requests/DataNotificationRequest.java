@@ -1,20 +1,26 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Measurement;
-
-import java.util.List;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceData;
 
 public class DataNotificationRequest {
 
-    String deviceName;
-    List<Measurement> measurements;
+    //'deviceName':deviceName,
+//        'timestamp':date,
+//        'WaterSourceData':{
+//    'deviceName':deviceName,
+//            'measurements':newMeasurements
 
-    public DataNotificationRequest(
-            @JsonProperty("deviceName") String deviceName,
-            @JsonProperty("measurements")  List<Measurement> measurements) {
+    String deviceName;
+    String timestamp;
+    WaterSourceData WaterSourceData;
+
+    public DataNotificationRequest(@JsonProperty("deviceName") String deviceName,
+                                   @JsonProperty("timestamp") String timestamp,
+                                   @JsonProperty("WaterSourceData") za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceData waterSourceData) {
         this.deviceName = deviceName;
-        this.measurements = measurements;
+        this.timestamp = timestamp;
+        WaterSourceData = waterSourceData;
     }
 
     public String getDeviceName() {
@@ -25,19 +31,19 @@ public class DataNotificationRequest {
         this.deviceName = deviceName;
     }
 
-    public List<Measurement> getMeasurements() {
-        return measurements;
+    public String getTimestamp() {
+        return timestamp;
     }
 
-    public void setMeasurements(List<Measurement> measurements) {
-        this.measurements = measurements;
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
-    @Override
-    public String toString() {
-        return "DataNotificationRequest{" +
-                "deviceName='" + deviceName + '\'' +
-                ", measurements=" + measurements +
-                '}';
+    public za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceData getWaterSourceData() {
+        return WaterSourceData;
+    }
+
+    public void setWaterSourceData(za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceData waterSourceData) {
+        WaterSourceData = waterSourceData;
     }
 }
