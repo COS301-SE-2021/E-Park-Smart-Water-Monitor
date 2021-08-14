@@ -8,6 +8,15 @@ public class DataNotification {
     String timestamp;
 
 
+    @Override
+    public String toString() {
+        return "DataNotification{" +
+                "deviceName='" + deviceName + '\'' +
+                ", waterSourceData=" + waterSourceData +
+                ", timestamp='" + timestamp + '\'' +
+                '}';
+    }
+
     public DataNotification(@JsonProperty("deviceName") String deviceName, @JsonProperty("WaterSourceData") WaterSourceData waterSourceData, @JsonProperty("timestamp") String timestamp)
     {
         this.deviceName = deviceName;
