@@ -140,7 +140,7 @@ public class NotificationServiceImpl implements NotificationService
                 if(i!=smsErrors.size()-1)
                 users+=",";
             }
-            return new SMSResponse("The following users have invalid phone numbers: \" +users +\". Please correct and try again.",false);
+            return new SMSResponse("The following users have invalid phone numbers: " +users +". Please correct and try again.",false);
         }
         else {
             PhoneNumber from = new PhoneNumber(twilioConfig.getNumber());

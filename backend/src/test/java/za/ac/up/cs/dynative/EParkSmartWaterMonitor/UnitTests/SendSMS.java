@@ -54,14 +54,18 @@ public class SendSMS {
     @Test
     @DisplayName("Send SMS to invalid numbers")
     public void sensSMSInvalidNumber(){
+        //setup
         User u= new User(23456789,"email@test.com","name", "Surname",
                 "String password", "uT1", "Agent", new Park(), "123");
         ArrayList<User> list= new ArrayList<>();
         list.add(u);
 
+        //test
         SMSRequest request= new SMSRequest(list,"Hi");
-        Throwable t= assertThrows(IllegalArgumentException.class,()->notificationService.sendSMS(request));
-        assertEquals("The following users have invalid phone numbers: uT1. Please correct and try again.",t.getMessage());
+        SMSResponse response = notificationService.sendSMS(request);
+        assertNotNull(response);
+        assertEquals("The following users have invalid phone numbers: uT1. Please correct and try again.", response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
     /*@Test
