@@ -1,5 +1,6 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices;
 
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.DataNotification;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
@@ -20,5 +21,6 @@ public interface DevicesService {
     GetDeviceDataResponse getDeviceData(GetDeviceDataRequest getDeviceDataRequest) throws InvalidRequestException;
     GetAllDevicesResponse getAllDevices();
     SetMetricFrequencyResponse setMetricFrequency(SetMetricFrequencyRequest setMetricFrequencyRequest);
+    void getDataNotification(DataNotification dataNotificationRequest);
 
 }

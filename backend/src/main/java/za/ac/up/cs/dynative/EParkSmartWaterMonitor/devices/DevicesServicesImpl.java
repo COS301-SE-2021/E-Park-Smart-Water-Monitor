@@ -18,6 +18,7 @@ import software.amazon.awssdk.services.iot.model.CreateThingResponse;
 import software.amazon.awssdk.services.iotdataplane.IotDataPlaneClient;
 import software.amazon.awssdk.services.iotdataplane.model.UpdateThingShadowRequest;
 import software.amazon.awssdk.services.iotdataplane.model.UpdateThingShadowResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.DataNotification;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Measurement;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.sensorConfiguration;
@@ -417,6 +418,13 @@ public class DevicesServicesImpl implements DevicesService {
             }
         }
         return new SetMetricFrequencyResponse("No device configurations set.", false);
+    }
+
+    @Override
+    public void getDataNotification(DataNotification dataNotificationRequest) {
+
+        dataNotificationRequest.toString();
+
     }
 
 }
