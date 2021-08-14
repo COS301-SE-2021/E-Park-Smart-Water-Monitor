@@ -45,42 +45,54 @@ public class CreateUser {
 
     @Test
     @DisplayName("Try to create a user but the fields are not complete")
-    public void CreateUserIncomplete(){
+    public void CreateUserIncomplete() throws InvalidRequestException {
         CreateUserRequest request= new CreateUserRequest(parkId,idNumber,email,password,name,surname,"",role,cellNumber);
-        Throwable t= assertThrows(InvalidRequestException.class,()->userService.createUser(request));
-        assertEquals("Details incomplete",t.getMessage());
+        CreateUserResponse response=userService.createUser(request);
+        assertNotNull(response);
+        assertEquals("User's details are incomplete",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
-        CreateUserRequest request2= new CreateUserRequest(parkId,"",email,password,name,surname,"",role,cellNumber);
-        Throwable t2= assertThrows(InvalidRequestException.class,()->userService.createUser(request2));
-        assertEquals("Details incomplete",t2.getMessage());
+        request= new CreateUserRequest(parkId,"",email,password,name,surname,"",role,cellNumber);
+        response=userService.createUser(request);
+        assertNotNull(response);
+        assertEquals("User's details are incomplete",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
-        CreateUserRequest request3= new CreateUserRequest(null,idNumber,email,password,name,surname,username,role,cellNumber);
-        Throwable t3= assertThrows(InvalidRequestException.class,()->userService.createUser(request3));
-        assertEquals("Details incomplete",t3.getMessage());
+        request= new CreateUserRequest(null,idNumber,email,password,name,surname,username,role,cellNumber);
+        response=userService.createUser(request);
+        assertNotNull(response);
+        assertEquals("User's details are incomplete",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
-        CreateUserRequest request4= new CreateUserRequest(parkId,idNumber,email,password,name,surname,username,role,"");
-        Throwable t4= assertThrows(InvalidRequestException.class,()->userService.createUser(request));
-        assertEquals("Details incomplete",t4.getMessage());
+        request= new CreateUserRequest(parkId,idNumber,email,password,name,surname,username,role,"");
+        response=userService.createUser(request);
+        assertNotNull(response);
+        assertEquals("User's details are incomplete",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
-        CreateUserRequest request5= new CreateUserRequest(parkId,idNumber,email,password,name,surname,username,"",cellNumber);
-        Throwable t5= assertThrows(InvalidRequestException.class,()->userService.createUser(request5));
-        assertEquals("Details incomplete",t5.getMessage());
+        request= new CreateUserRequest(parkId,idNumber,email,password,name,surname,username,"",cellNumber);
+        response=userService.createUser(request);
+        assertNotNull(response);
+        assertEquals("User's details are incomplete",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
-        CreateUserRequest request6= new CreateUserRequest(parkId,idNumber,email,password,name,"",username,role,cellNumber);
-        Throwable t6= assertThrows(InvalidRequestException.class,()->userService.createUser(request6));
-        assertEquals("Details incomplete",t6.getMessage());
+        request= new CreateUserRequest(parkId,idNumber,email,password,name,"",username,role,cellNumber);
+        response=userService.createUser(request);
+        assertNotNull(response);
+        assertEquals("User's details are incomplete",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
-        CreateUserRequest request7= new CreateUserRequest(parkId,idNumber,"",password,name,surname,username,role,cellNumber);
-        Throwable t7= assertThrows(InvalidRequestException.class,()->userService.createUser(request7));
-        assertEquals("Details incomplete",t7.getMessage());
+        request= new CreateUserRequest(parkId,idNumber,"",password,name,surname,username,role,cellNumber);
+        response=userService.createUser(request);
+        assertNotNull(response);
+        assertEquals("User's details are incomplete",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
-        CreateUserRequest request9= new CreateUserRequest(parkId,idNumber,email,password,"",surname,username,role,cellNumber);
-        Throwable t9= assertThrows(InvalidRequestException.class,()->userService.createUser(request9));
-        assertEquals("Details incomplete",t9.getMessage());
-
-        CreateUserRequest request8= new CreateUserRequest(parkId,idNumber,email,"",name,surname,username,role,cellNumber);
-        Throwable t8= assertThrows(InvalidRequestException.class,()->userService.createUser(request8));
-        assertEquals("Details incomplete",t8.getMessage());
+        request= new CreateUserRequest(parkId,idNumber,email,password,"",surname,username,role,cellNumber);
+        response=userService.createUser(request);
+        assertNotNull(response);
+        assertEquals("User's details are incomplete",response.getStatus());
+        assertEquals(false,response.getSuccess());
     }
 
     @Test
@@ -129,5 +141,35 @@ public class CreateUser {
         assertNotNull(response);
         assertEquals(true,response.getSuccess());
         assertEquals("Successfully create user: "+name+ " "+ surname+" and added them to park: UnitTest",response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Try and create an user but the email is invalid")
+    public void CreateUserInvalidEmail() throws InvalidRequestException {
+        CreateUserRequest request= new CreateUserRequest(parkId,idNumber,"email",password,name,surname,username,role,cellNumber);
+        CreateUserResponse response= userService.createUser(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("The provided email is not a valid email-address.",response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Try and create an user but the id is invalid")
+    public void CreateUserInvalidId() throws InvalidRequestException {
+        CreateUserRequest request= new CreateUserRequest(parkId,"12",email,password,name,surname,username,role,cellNumber);
+        CreateUserResponse response= userService.createUser(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("The provided ID number is not a valid ID number.",response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Try and create an user but the cellphone is invalid")
+    public void CreateUserInvalidCell() throws InvalidRequestException {
+        CreateUserRequest request= new CreateUserRequest(parkId,idNumber,email,password,name,surname,username,role,"333");
+        CreateUserResponse response= userService.createUser(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("Cell-number provided is not valid.",response.getStatus());
     }
 }
