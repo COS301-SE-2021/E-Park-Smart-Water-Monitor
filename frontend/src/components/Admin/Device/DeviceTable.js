@@ -27,6 +27,7 @@ import IconButton from "@material-ui/core/IconButton";
 import {Tooltip} from "@material-ui/core";
 import AddInspectionBody from "../Inspection/AddInspectionBody";
 import AdminContext from "../AdminContext";
+import {UserContext} from "../../../Context/UserContext";
 
 
 
@@ -45,6 +46,7 @@ const DeviceTable = () => {
     const [value, setValue] = useState(0);
 
     const context = useContext(AdminContext)
+    const user = useContext(UserContext)
     const toggleLoading = context.toggleLoading
 
     const reloadDeviceTable = () => {
@@ -60,6 +62,10 @@ const DeviceTable = () => {
                 data: {
                          id: id
                       }
+            },{
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
             }).then((res)=> {
                 toggleLoading()
                 setValue(value => value+1 ) // returns an updated value

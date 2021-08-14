@@ -33,38 +33,40 @@ function Login() {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
+    const [error, setError] = useState(false)
 
     const user = useContext(UserContext)
 
     const login = () => {
 
-    setLoading(true)
-    let obj = {
-        username: username,
-        password: password
-    }
+        setLoading(true)
+        setError("")
+        let obj = {
+            username: username,
+            password: password
+        }
 
-    axios.post('http://localhost:8080/api/user/login', obj
-    ).then((res)=>{
-        setLoading(false)
-        console.log("login response: "+JSON.stringify(res))
+        axios.post('http://localhost:8080/api/user/login', obj
+        ).then((res)=>{
+            setLoading(false)
+            console.log("login response: "+JSON.stringify(res))
+            let x = res.data;
+            if(x.success){
+                user.setToken(x.jwt) // allow for authorisation of a user for the other pages
+                user.setRole(x.userRole) // allow for authorisation of a user for the other pages
+                user.setEmail(x.userEmail) // allow for authorisation of a user for the other pages
+                user.setName(x.name) // allow for authorisation of a user for the other pages
+                user.setName(x.name) // allow for authorisation of a user for the other pages
+                history.push("/dashboard/index");
+            }else{
+                setError("Login details incorrect")
+            }
 
-        // let jwt = res.data.jwt
-        // axios.defaults.headers.common['Authorization'] = "Bearer " +jwt; // allow all axios requests to work
-        // axios.defaults.headers.delete['Authorization'] = jwt; // allow all axios requests to work
-        // sessionStorage.setItem('token', jwt)
-        user.setToken(res.data.jwt) // allow for authorisation of a user for the other pages
-        // user.setAxiosConfig({
-        //     headers: {
-        //         'Authorization': "Bearer " + user.token
-        //     }
-        // })
 
-        history.push("/dashboard/index");
+        }).catch((res)=>{
+          console.log("response:"+JSON.stringify(res))
+        });
 
-    }).catch((res)=>{
-      console.log("response:"+JSON.stringify(res))
-    });
     }
 
     return (
@@ -158,7 +160,11 @@ function Login() {
                 Sign in
               </Button>
               }
+
             </Box>
+              { error &&  <Box textAlign="center" marginTop="1.5rem" marginBottom="1.5rem">
+                  { error }
+              </Box> }
           </CardContent>
         </Card>
         <Grid container component={Box} marginTop="1rem">

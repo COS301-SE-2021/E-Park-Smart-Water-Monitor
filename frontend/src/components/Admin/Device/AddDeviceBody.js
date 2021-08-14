@@ -7,6 +7,7 @@ import Select from "react-select";
 import axios from "axios";
 import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import AdminContext from "../AdminContext";
+import {UserContext} from "../../../Context/UserContext";
 
 
 const mapStyles = {
@@ -27,10 +28,10 @@ const AddDeviceBody = (props) => {
     const [model, setModel] = useState("ESP32")
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
-    const [currentPos, setCurrentPos] = useState([-25.88536975144579, 28.277796392845673])
 
     // use the context supplied from the admin component to get the parks and sites
     const context = useContext(AdminContext)
+    const user = useContext(UserContext)
     const parksAndSites = context.parksAndSites;
     const toggleLoading = context.toggleLoading
 
@@ -105,9 +106,11 @@ const AddDeviceBody = (props) => {
             longitude: longitude
         }
         console.log("Adding Device: "+JSON.stringify(obj))
-        axios.post('http://localhost:8080/api/devices/addDevice',
-            obj
-        ).then((res) => {
+        axios.post('http://localhost:8080/api/devices/addDevice', obj, {
+            headers: {
+                'Authorization': "Bearer " + user.token
+            }
+        }).then((res) => {
 
             toggleLoading();
             props.closeModal()

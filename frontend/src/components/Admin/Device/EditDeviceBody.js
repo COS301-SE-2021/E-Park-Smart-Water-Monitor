@@ -13,6 +13,7 @@ import Row from "react-bootstrap/Row";
 import axios from "axios";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import AdminContext from "../AdminContext";
+import {UserContext} from "../../../Context/UserContext";
 const { Form } = require( "react-bootstrap" );
 
 
@@ -42,6 +43,7 @@ const EditDeviceBody = (props) => {
     const [error, setError] = useState("")
 
     const context = useContext(AdminContext)
+    const user = useContext(UserContext)
     const toggleLoading = context.toggleLoading
 
     useEffect(() => {
@@ -72,7 +74,11 @@ const EditDeviceBody = (props) => {
             }
 
 
-            axios.post('http://localhost:8080/api/user/editDevice', obj
+            axios.post('http://localhost:8080/api/user/editDevice', obj, {
+                    headers: {
+                        'Authorization': "Bearer " + user.token
+                    }
+                }
             ).then((res)=>{
                 toggleLoading()
                 console.log("response:"+JSON.stringify(res))

@@ -25,6 +25,10 @@ export const UserProvider = ({ children }) => {
         return !(token === "")
     }
 
+    const Logout = () => {
+        setToken("")
+    }
+
     return (
         <UserContext.Provider
             value={{
@@ -50,7 +54,8 @@ export const UserProvider = ({ children }) => {
                 setParkID,
                 setParkName,
                 setAxiosConfig,
-                isLogin
+                isLogin,
+                Logout
             }}
         >
             {children}
