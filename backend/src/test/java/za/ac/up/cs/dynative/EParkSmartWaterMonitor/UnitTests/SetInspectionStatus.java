@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
@@ -16,6 +17,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.SetInspe
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.SetInspectionStatusResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
+
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -55,6 +58,20 @@ public class SetInspectionStatus {
         assertNotNull(response);
         assertEquals(false,response.getSuccess());
         assertEquals("Failed to set inspection status! Invalid inspectionId!",response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Try to set an inspection status but the inspection does not exist")
+    public void SetInspectionStatusInspectionDNE(){
+        //setup
+        SetInspectionStatusRequest request = new SetInspectionStatusRequest(UUID.randomUUID(),"Done");
+        Mockito.when(inspectionRepo.findInspectionById(Mockito.any())).thenReturn(null);
+
+        //test
+        SetInspectionStatusResponse response = inspectionService.setInspectionStatus(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("Failed to set inspection status! Inspection not found!",response.getStatus());
     }
 }
 
