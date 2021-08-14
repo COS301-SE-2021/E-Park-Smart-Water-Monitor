@@ -1,4 +1,5 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests;
+
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
@@ -23,13 +24,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @RunWith(MockitoJUnitRunner.class)
-public class GetParkSites {
+public class GetParkWaterSites {
     @Mock
     private ParkRepo parkRepo;
 
     @InjectMocks
     private ParkServiceImpl parkService;
-
 
     WaterSite site1;
     WaterSite site2;
@@ -70,14 +70,11 @@ public class GetParkSites {
     Date date2= new Date();
     Date date3= new Date();
     Set<WeatherData> weather;
-
-
     Park park1;
-
 
     @Test
     @DisplayName("Find all the sites of an existing park.")
-    public void getSitesExisting() throws InvalidRequestException {
+    public void GetParkWaterSitesExisting() throws InvalidRequestException {
         //setting up the repo
         site1= new WaterSite(id1,name1,lat1,lon1);
         site2= new WaterSite(id2,name2,lat2,lon2);
@@ -86,7 +83,6 @@ public class GetParkSites {
         site.add(site1);
         site.add(site2);
         site.add(site3);
-
         weather1= new WeatherData(id21,temp1,moonPhase1,humudity1,windSpeed1,date1);
         weather2= new WeatherData(id22,temp2,moonPhase2,humudity2,windSpeed2,date2);
         weather3= new WeatherData(id23,temp3,moonPhase3,humudity3,windSpeed3,date3);
@@ -94,7 +90,6 @@ public class GetParkSites {
         weather.add(weather1);
         weather.add(weather2);
         weather.add(weather3);
-
         park1= new Park("Unit Test Park",-27.378888,28.111111,weather,site);
         Mockito.when(parkRepo.findParkById(park1.getId())).thenReturn(park1);
 
@@ -119,9 +114,10 @@ public class GetParkSites {
 
         //testing
         GetParkSitesRequest request= new GetParkSitesRequest(testID);
-        Throwable t= assertThrows(InvalidRequestException.class,()->parkService.getParkWaterSites(request));
-        assertEquals("Park not present",t.getMessage());
-
+        GetParkSitesResponse response = parkService.getParkWaterSites(request);
+        assertNotNull(response);
+        assertEquals("Park not present",response.getStatus());
+        assertEquals(false,response.getSuccess());
     }
 
     @Test
