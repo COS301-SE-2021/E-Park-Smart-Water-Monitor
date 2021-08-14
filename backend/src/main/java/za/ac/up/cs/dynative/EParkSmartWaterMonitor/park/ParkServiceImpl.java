@@ -38,7 +38,7 @@ public class ParkServiceImpl implements ParkService {
             response.setSuccess(true);
         }
         else {
-            response.setStatus("No Park Name specified!");
+            response.setStatus("No park name specified!");
             response.setSuccess(false);
         }
         return response;

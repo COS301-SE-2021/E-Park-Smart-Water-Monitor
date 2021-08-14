@@ -35,7 +35,6 @@ public class CreatePark {
     Double lat =-27.371767;
     Double lon =28.737437;
 
-
     WaterSite site1;
     WaterSite site2;
     UUID id1= UUID.randomUUID();
@@ -71,11 +70,13 @@ public class CreatePark {
     Park park2;
 
     @Test
-    @DisplayName("Creating a park where the name is not set.")
+    @DisplayName("Attempt to create a park but the park name is unknown")
     public void createParkNameNull() {
         CreateParkRequest request= new CreateParkRequest("",lat,lon);
-        Throwable t= assertThrows(InvalidRequestException.class,()->parkService.createPark(request));
-        assertEquals("No park name specified!",t.getMessage());
+        CreateParkResponse response = parkService.createPark(request);
+        assertNotNull(response);
+        assertEquals("No park name specified!",response.getStatus());
+        assertEquals(false,response.getSuccess());
     }
 
     @Test
@@ -91,24 +92,22 @@ public class CreatePark {
         assertEquals(true,response.getSuccess());
     }
 
-
     @Test
     @DisplayName("Creating a park with an existing name")
-    public void createParkAE()  {
+    public void createParkAlreadyExists()  {
+        //setup
         site1= new WaterSite(id1,name1,lat1,lon1);
         site2= new WaterSite(id2,name2,lat2,lon2);
         siteSet1= new HashSet<>();
         siteSet2= new HashSet<>();
         siteSet1.add(site1);
         siteSet2.add(site2);
-
         weather1= new WeatherData(id21,temp1,moonPhase1,humudity1,windSpeed1,date1);
         weather2= new WeatherData(id22,temp2,moonPhase2,humudity2,windSpeed2,date2);
         weatherSet1 = new HashSet<>();
         weatherSet2 = new HashSet<>();
         weatherSet1.add(weather1);
         weatherSet2.add(weather2);
-
         park1= new Park("Unit Test Park 1",-27.378888,28.111471,weatherSet1,siteSet1);
         park2= new Park("Unit Test Park 2",-27.368888,28.681111,weatherSet2,siteSet2);
         List<Park> list= new ArrayList<>();
@@ -118,9 +117,11 @@ public class CreatePark {
         p.add(park2);
         Mockito.when(parkRepo.findParkByParkName("Unit Test 2")).thenReturn(p);
 
+        //test
         CreateParkRequest request= new CreateParkRequest("Unit Test 2",lat,lon);
-        Throwable t= assertThrows(InvalidRequestException.class,()->parkService.createPark(request));
-        assertEquals("Park name specified already exists!",t.getMessage());
+        CreateParkResponse response= parkService.createPark(request);
+        assertEquals("Park Unit Test 2 already exists!",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
     }
 
