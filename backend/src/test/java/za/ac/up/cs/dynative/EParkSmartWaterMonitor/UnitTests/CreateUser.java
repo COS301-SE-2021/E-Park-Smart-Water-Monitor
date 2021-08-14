@@ -153,6 +153,7 @@ public class CreateUser {
     @Test
     @DisplayName("Create a valid user")
     public void createUser() throws InvalidRequestException {
+        //setuo
         List<User> list = new ArrayList<>();
         List<User> list2 = new ArrayList<>();
         Mockito.when(userRepo.findUserByIdNumber(idNumber)).thenReturn(list);
@@ -161,6 +162,7 @@ public class CreateUser {
         FindByParkIdResponse re = new FindByParkIdResponse(true,p);
         Mockito.when(parkService.findByParkId(Mockito.any())).thenReturn(re);
 
+        //test
         CreateUserRequest request= new CreateUserRequest(parkId,idNumber,email,password,name,surname,username,role,cellNumber);
         CreateUserResponse response= userService.createUser(request);
         assertNotNull(response);
