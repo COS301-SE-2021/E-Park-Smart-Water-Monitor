@@ -61,8 +61,24 @@ public class Login {
     }
 
     @Test
+    @DisplayName("Attempt to login but the user does not exist")
+    public void LoginUserDNE(){
+        //setup
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
+        Mockito.when(userRepo.findUserByUsername("unitTest22")).thenReturn(new ArrayList<>());
+
+        //test
+        String pass= "258";
+        LoginRequest request= new LoginRequest("unitTest22",passwordEncoder.encode(pass));
+        LoginResponse response = userService.loginUser(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("",response.getJwt());
+    }
+
+    @Test
     @DisplayName("Try to login but password is not correct")
-    public void loginIncorrectPAssword(){
+    public void loginIncorrectPassword(){
         List<User> userList=new ArrayList<>();
         Park park= new Park();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
@@ -73,8 +89,10 @@ public class Login {
 
         String pass= "258";
         LoginRequest request= new LoginRequest("unitTest22",passwordEncoder.encode(pass));
-        Throwable t= assertThrows(InvalidRequestException.class,()->userService.loginUser(request));
-        assertEquals("Wrong Password",t.getMessage());
+        LoginResponse response = userService.loginUser(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("",response.getJwt());
 
     }
 
