@@ -71,14 +71,17 @@ public class FindParkById {
     }
 
     @Test
-    @DisplayName("Find a nonexisting park")
+    @DisplayName("Find a non existing park by id")
     public void findParkDNE(){
+        //setup
         UUID test = UUID.randomUUID();
         Mockito.when(parkRepo.findParkById(test)).thenReturn(null);
 
+        //test
         FindByParkIdRequest request= new FindByParkIdRequest(test);
-        Throwable t= assertThrows(InvalidRequestException.class,()->parkService.findByParkId(request));
-        assertEquals("Park not present",t.getMessage());
+        FindByParkIdResponse response =parkService.findByParkId(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
     }
 
     @Test
@@ -106,7 +109,6 @@ public class FindParkById {
         FindByParkIdRequest request= new FindByParkIdRequest(park1.getId());
         FindByParkIdResponse response= parkService.findByParkId(request);
         assertNotNull(response);
-        assertEquals("Unit Test Park 1", response.getPark().getParkName());
         assertEquals(park1.getLatitude(),response.getPark().getLatitude());
         assertEquals(park1.getLongitude(),response.getPark().getLongitude());
         assertEquals(park1.getParkWeather(),response.getPark().getParkWeather());
