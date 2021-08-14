@@ -21,4 +21,11 @@ public class DataNotificationRequest {
     public void setData(List<DataNotification> data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "DataNotificationRequest{" +
+                "data=" + data +
+                '}';
+    }
 }

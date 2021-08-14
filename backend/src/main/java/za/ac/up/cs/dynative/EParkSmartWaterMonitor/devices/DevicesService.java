@@ -21,6 +21,6 @@ public interface DevicesService {
     GetDeviceDataResponse getDeviceData(GetDeviceDataRequest getDeviceDataRequest) throws InvalidRequestException;
     GetAllDevicesResponse getAllDevices();
     SetMetricFrequencyResponse setMetricFrequency(SetMetricFrequencyRequest setMetricFrequencyRequest);
-    void getDataNotification(DataNotification dataNotificationRequest);
+    void getDataNotification(DataNotificationRequest dataNotificationRequest);
 
 }

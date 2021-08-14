@@ -80,7 +80,7 @@ public class DeviceController {
     }
 
     @PostMapping("/dataNotification")
-    public void dataNotification(@RequestBody DataNotification dataNotificationRequest)
+    public void dataNotification(@RequestBody DataNotificationRequest dataNotificationRequest)
     {
         devicesService.getDataNotification(dataNotificationRequest);
     }

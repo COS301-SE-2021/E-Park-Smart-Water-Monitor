@@ -421,9 +421,9 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     @Override
-    public void getDataNotification(DataNotification dataNotificationRequest) {
+    public void getDataNotification(DataNotificationRequest dataNotificationRequest) {
 
-        dataNotificationRequest.toString();
+        System.out.println(dataNotificationRequest.toString());
 
     }
 
