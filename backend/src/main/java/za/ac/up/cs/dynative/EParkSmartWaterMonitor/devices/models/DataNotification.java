@@ -2,13 +2,13 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class DataNotificationQuery {
+public class DataNotification {
     String deviceName;
     WaterSourceData waterSourceData;
     String timestamp;
 
 
-    public DataNotificationQuery(@JsonProperty("deviceName") String deviceName, @JsonProperty("WaterSourceData") WaterSourceData waterSourceData,    @JsonProperty("timestamp") String timestamp)
+    public DataNotification(@JsonProperty("deviceName") String deviceName, @JsonProperty("WaterSourceData") WaterSourceData waterSourceData, @JsonProperty("timestamp") String timestamp)
     {
         this.deviceName = deviceName;
         this.waterSourceData = waterSourceData;

@@ -1,25 +1,23 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.DataNotificationQuery;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceData;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.DataNotification;
 
 import java.util.List;
 
 public class DataNotificationRequest {
 
-    List<DataNotificationQuery> data;
+    List<DataNotification> data;
 
-    public DataNotificationRequest(List<DataNotificationQuery> incomingData)
+    public DataNotificationRequest(List<DataNotification> incomingData)
     {
         data=incomingData;
     }
 
-    public List<DataNotificationQuery> getData() {
+    public List<DataNotification> getData() {
         return data;
     }
 
-    public void setData(List<DataNotificationQuery> data) {
+    public void setData(List<DataNotification> data) {
         this.data = data;
     }
 }
