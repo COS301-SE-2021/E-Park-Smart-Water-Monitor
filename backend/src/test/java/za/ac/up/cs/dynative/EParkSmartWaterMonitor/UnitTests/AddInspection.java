@@ -11,6 +11,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.InspectionServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.InspectionRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.AddInspectionRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.AddInspectionResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
@@ -43,6 +44,15 @@ public class AddInspection {
         assertNotNull(response);
         assertEquals(false,response.getSuccess());
         assertEquals("Request is null",response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Attempt to add an inspection, but the id is null")
+    public void AddInspectionIdNull() throws InvalidRequestException {
+        AddInspectionResponse response = inspectionService.addInspection(new AddInspectionRequest(null,null,"abc"));
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("Failed to add inspection! No deviceId specified!",response.getStatus());
     }
 }
 
