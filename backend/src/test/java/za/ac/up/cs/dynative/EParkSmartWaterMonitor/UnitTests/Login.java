@@ -79,6 +79,7 @@ public class Login {
     @Test
     @DisplayName("Try to login but password is not correct")
     public void loginIncorrectPassword(){
+        //setup
         List<User> userList=new ArrayList<>();
         Park park= new Park();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
@@ -87,18 +88,19 @@ public class Login {
         userList.add(user);
         Mockito.when(userRepo.findUserByUsername("unitTest22")).thenReturn(userList);
 
+        //test
         String pass= "258";
         LoginRequest request= new LoginRequest("unitTest22",passwordEncoder.encode(pass));
         LoginResponse response = userService.loginUser(request);
         assertNotNull(response);
         assertEquals(false,response.getSuccess());
         assertEquals("",response.getJwt());
-
     }
 
     @Test
     @DisplayName("Try to login but username is not correct")
     public void loginIncorrectUserDNE(){
+        //setup
         List<User> userList=new ArrayList<>();
         Park park= new Park();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
@@ -107,52 +109,10 @@ public class Login {
         userList.add(user);
         Mockito.when(userRepo.findUserByUsername("unitTest2")).thenReturn(new ArrayList<>());
 
+        //test
         LoginRequest request= new LoginRequest("unitTest2",user.getPassword());
-        Throwable t= assertThrows(InvalidRequestException.class,()->userService.loginUser(request));
-        assertEquals("User doesnt exist!",t.getMessage());
-    }
-
-    @Test
-    @DisplayName("Successfully log in")
-    public void login() throws InvalidRequestException {
-        List<User> userList=new ArrayList<>();
-        Park park= new Park();
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
-        User user= new User(1234567890,"test@gmail.com","Unit","Surname",passwordEncoder.encode("Ok")
-                ,"unitTest22","RANGER",park,"1234567890");
-        userList.add(user);
-        Mockito.when(userRepo.findUserByUsername("unitTest22")).thenReturn(userList);
-
-        LoginRequest request= new LoginRequest("unitTest22",user.getPassword());
-        LoginResponse response= userService.loginUser(request);
+        LoginResponse response = userService.loginUser(request);
         assertNotNull(response);
-        assertEquals(true,response.getSuccess());
-        assertEquals(1234567890,response.getUserIdNumber());
-        assertEquals("test@gmail.com",response.getUserEmail());
-        assertEquals("Unit",response.getName());
-        assertEquals("Surname",response.getSurname());
-        assertEquals("unitTest22",response.getUsername());
-        assertEquals("RANGER",response.getUserRole());
-        assertEquals("1234567890",response.getCellNumber());
+        assertEquals(false,response.getSuccess());
     }
-
-    @Test
-    @DisplayName("Too many users with the same username")
-    public void loginFailToMany() throws InvalidRequestException {
-        List<User> userList=new ArrayList<>();
-        Park park= new Park();
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
-        User user= new User(1234567890,"test@gmail.com","Unit","Surname",passwordEncoder.encode("Ok")
-                ,"unitTest22","RANGER",park,"1234567890");
-        userList.add(user);
-        userList.add(user);
-        userList.add(user);
-        Mockito.when(userRepo.findUserByUsername("unitTest22")).thenReturn(userList);
-
-        LoginRequest request= new LoginRequest("unitTest22",user.getPassword());
-        Throwable t= assertThrows(InvalidRequestException.class,()->userService.loginUser(request));
-        assertEquals( "To many users with this username",t.getMessage());
-    }
-
-
 }
