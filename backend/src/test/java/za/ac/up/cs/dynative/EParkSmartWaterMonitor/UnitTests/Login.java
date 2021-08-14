@@ -38,17 +38,26 @@ public class Login {
     @Test
     @DisplayName("Try to login but details are not complete")
     public void loginIncompleteDetails(){
+        //test 1
         LoginRequest request= new LoginRequest(username,"");
-        Throwable t= assertThrows(InvalidRequestException.class,()->userService.loginUser(request));
-        assertEquals("Login details not complete",t.getMessage());
+        LoginResponse response = userService.loginUser(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("",response.getJwt());
 
-        LoginRequest request2= new LoginRequest("",password);
-        Throwable t2= assertThrows(InvalidRequestException.class,()->userService.loginUser(request2));
-        assertEquals("Login details not complete",t2.getMessage());
+        //test 2
+        request= new LoginRequest("",password);
+        response = userService.loginUser(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("",response.getJwt());
 
-        LoginRequest request3= new LoginRequest("",password);
-        Throwable t3= assertThrows(InvalidRequestException.class,()->userService.loginUser(request3));
-        assertEquals("Login details not complete",t3.getMessage());
+        //test 3
+        request= new LoginRequest("","");
+        response = userService.loginUser(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("",response.getJwt());
     }
 
     @Test

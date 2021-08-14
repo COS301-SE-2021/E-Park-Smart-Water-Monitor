@@ -230,14 +230,11 @@ public class UserServiceImpl implements UserService {
     public LoginResponse loginUser(LoginRequest request) {
         String username = request.getUsername();
         String password = request.getPassword();
-
         if (username.equals("")||password.equals("")){
             return new LoginResponse("", false);
         }
         String JWTToken = "";
-
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
-
         assert userRepo != null;
         List<User> users = userRepo.findUserByUsername(username);
         if (users.size() <= 1) {
@@ -255,12 +252,9 @@ public class UserServiceImpl implements UserService {
                 Map<String, Object> head = new HashMap<>();
                 Map<String, Object> claims = new HashMap<>();
                 claims.put("UUID", user.getId().toString());
-
                 Collection<SimpleGrantedAuthority> authorities = Sets.newHashSet();
                 authorities.add(new SimpleGrantedAuthority(user.getRole()));
-
                 Authentication auth = new UsernamePasswordAuthenticationToken(username, password, authorities);
-
                 JWTToken =  jwtTokenProvider.generateToken(auth);
 //                        Jwts.builder()
 //                        .setHeader(head)
@@ -270,7 +264,6 @@ public class UserServiceImpl implements UserService {
 //                        .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(7)))
 //                        .signWith(SignatureAlgorithm.HS512, "secret")
 //                        .compact();
-
                 return new LoginResponse(true, JWTToken,
                         user.getRole(),
                         user.getEmail(),
