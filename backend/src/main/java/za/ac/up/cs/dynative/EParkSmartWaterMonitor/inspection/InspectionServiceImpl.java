@@ -88,6 +88,11 @@ public class InspectionServiceImpl implements InspectionService {
     @Override
     public GetDeviceInspectionsResponse getDeviceInspections(GetDeviceInspectionsRequest request) {
         GetDeviceInspectionsResponse response = new GetDeviceInspectionsResponse();
+        if (request==null){
+            response.setStatus("Request is null");
+            response.setSuccess(false);
+            return response;
+        }
         if (request.getDeviceId() == null) {
             response.setStatus("Failed to get inspection! Invalid deviceId!");
             response.setSuccess(false);

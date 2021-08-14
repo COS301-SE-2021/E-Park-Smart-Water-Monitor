@@ -28,5 +28,6 @@ public class GetDeviceInspections {
 
     @InjectMocks
     private InspectionServiceImpl inspectionService;
+
 }
 
