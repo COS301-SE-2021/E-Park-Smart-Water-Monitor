@@ -128,8 +128,7 @@ public class UserServiceImpl implements UserService {
                                 + park.getParkName());
 
                         response.setSuccess(true);
-                    }
-                    else {
+                    } else {
                         response.setSuccess(false);
                         response.setStatus("No park with this id exists.");
                     }

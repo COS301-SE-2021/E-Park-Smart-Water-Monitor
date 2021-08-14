@@ -131,6 +131,24 @@ public class CreateUser {
         assertEquals(false,response.getSuccess());
     }
 
+    @Test
+    @DisplayName("Try and create an user with a park that is non existing")
+    public void createUserParkDNE() throws InvalidRequestException {
+        //setup
+        User u = new User();
+        List<User> list = new ArrayList<>();
+        List<User> list2 = new ArrayList<>();
+        Mockito.when(userRepo.findUserByIdNumber(idNumber)).thenReturn(list);
+        Mockito.when(userRepo.findUserByUsername(username)).thenReturn(list2);
+        Mockito.when(parkService.findByParkId(Mockito.any())).thenReturn(new FindByParkIdResponse());
+
+        //test
+        CreateUserRequest request = new CreateUserRequest(UUID.randomUUID(), idNumber, email, password, name, surname, username, role, cellNumber);
+        CreateUserResponse response = userService.createUser(request);
+        assertNotNull(response);
+        assertEquals("No park with this id exists.", response.getStatus());
+        assertEquals(false, response.getSuccess());
+    }
 
     @Test
     @DisplayName("Create a valid user")
