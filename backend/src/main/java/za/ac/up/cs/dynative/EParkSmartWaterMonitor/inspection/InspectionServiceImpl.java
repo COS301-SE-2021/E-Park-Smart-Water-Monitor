@@ -74,6 +74,11 @@ public class InspectionServiceImpl implements InspectionService {
     @Override
     public GetWaterSiteInspectionsResponse getWaterSiteInspections(GetWaterSiteInspectionsRequest request) {
         GetWaterSiteInspectionsResponse response = new GetWaterSiteInspectionsResponse();
+        if (request==null){
+            response.setStatus("Request is null");
+            response.setSuccess(false);
+            return response;
+        }
         if (request.getWaterSiteId() == null) {
             response.setStatus("Failed to get inspection! Invalid waterSiteId!");
             response.setSuccess(false);
