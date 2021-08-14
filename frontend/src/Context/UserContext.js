@@ -20,6 +20,11 @@ export const UserProvider = ({ children }) => {
         }
     });
 
+    const isLogin = () => {
+        // let token = sessionStorage.getItem('token')
+        return !(token === "")
+    }
+
     return (
         <UserContext.Provider
             value={{
@@ -44,7 +49,8 @@ export const UserProvider = ({ children }) => {
                 setIDNumber,
                 setParkID,
                 setParkName,
-                setAxiosConfig
+                setAxiosConfig,
+                isLogin
             }}
         >
             {children}

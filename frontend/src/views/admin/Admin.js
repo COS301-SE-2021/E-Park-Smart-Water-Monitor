@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import AdminHeader from "../../components/Headers/AdminHeader";
 import UserTable from "../../components/Admin/User/UserTable";
 import Grid from "@material-ui/core/Grid";
@@ -16,6 +16,7 @@ import {BeatLoader, DotLoader, PuffLoader} from "react-spinners";
 import {css} from "@emotion/react";
 import AddParkBody from "../../components/Admin/Park/AddParkBody";
 import Modal from "../../components/Modals/Modal";
+import {UserContext} from "../../Context/UserContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -42,6 +43,8 @@ function Admin() {
     const [show, setShow] = useState(false)
     const [value, setValue] = useState(0)
 
+    const user = useContext(UserContext)
+
     const selectPark = (details) => {
         setPark(details)
     }
@@ -65,9 +68,10 @@ function Admin() {
     let temp_jwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDSEljaGkyIiwicm9sZXMiOiJGSUVMRF9FTkdJTkVFUiIsImV4cCI6MTYyODkzMTkxN30.MEfrCH6mcP2x9LB9-SQxFtB03hrYQPhPNgydbuVqTpP_6mQeISqAiXx2RpjN4fdfbWBNNUqGlJhZhNelmQcQfQ"
 
     useEffect(() => {
+
         axios.get('http://localhost:8080/api/park/getAllParksAndSites', {
             headers: {
-                'Authorization': "Bearer " + temp_jwt
+                'Authorization': "Bearer " + user.token
             }
         }).then((res)=>{
             if(res)

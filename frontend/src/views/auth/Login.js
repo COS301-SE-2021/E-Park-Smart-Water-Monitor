@@ -49,11 +49,16 @@ function Login() {
         setLoading(false)
         console.log("login response: "+JSON.stringify(res))
 
-        let jwt = res.data.jwt
-        axios.defaults.headers.common['Authorization'] = "Bearer " +jwt; // allow all axios requests to work
-        axios.defaults.headers.delete['Authorization'] = jwt; // allow all axios requests to work
-        sessionStorage.setItem('token', jwt)
-        user.setToken(jwt) // allow for authorisation of a user for the other pages
+        // let jwt = res.data.jwt
+        // axios.defaults.headers.common['Authorization'] = "Bearer " +jwt; // allow all axios requests to work
+        // axios.defaults.headers.delete['Authorization'] = jwt; // allow all axios requests to work
+        // sessionStorage.setItem('token', jwt)
+        user.setToken(res.data.jwt) // allow for authorisation of a user for the other pages
+        // user.setAxiosConfig({
+        //     headers: {
+        //         'Authorization': "Bearer " + user.token
+        //     }
+        // })
 
         history.push("/dashboard/index");
 
