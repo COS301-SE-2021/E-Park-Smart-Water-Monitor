@@ -1,5 +1,7 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests;
 
+import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -8,8 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.InspectionServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.InspectionRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetDeviceInspectionsResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @SpringBootTest
@@ -29,5 +35,13 @@ public class GetDeviceInspections {
     @InjectMocks
     private InspectionServiceImpl inspectionService;
 
+    @Test
+    @DisplayName("Try to set an inspection of device but the request is null")
+    public void GetDeviceInspectionRequestNull(){
+        GetDeviceInspectionsResponse response = inspectionService.getDeviceInspections(null);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("Request is null",response.getStatus());
+    }
 }
 
