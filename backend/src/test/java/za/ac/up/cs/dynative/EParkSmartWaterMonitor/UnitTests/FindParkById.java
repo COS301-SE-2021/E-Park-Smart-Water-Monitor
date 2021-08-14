@@ -1,3 +1,4 @@
+/*
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests;
 
 import org.junit.Test;
@@ -115,3 +116,4 @@ public class FindParkById {
         assertEquals(park1.getParkWaterSites(),response.getPark().getParkWaterSites());
     }
 }
+*/
