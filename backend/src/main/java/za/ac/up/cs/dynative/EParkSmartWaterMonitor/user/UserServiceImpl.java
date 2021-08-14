@@ -51,7 +51,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CreateUserResponse createUser(CreateUserRequest request) throws InvalidRequestException {
-
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
         CreateUserResponse response = new CreateUserResponse();
 
@@ -64,7 +63,6 @@ public class UserServiceImpl implements UserService {
         String username = request.getUsername();
         String role = request.getRole();
         String cellNumber = request.getCellNumber();
-
 
         if (parkId != null
                 && !name.equals("")
@@ -105,28 +103,21 @@ public class UserServiceImpl implements UserService {
                 return  response;
             }
 
-
             List<User> users = userRepo.findUserByIdNumber(idNumber);
             List<User> usersByUsername = userRepo.findUserByUsername(username);
-
             if (users.size() < 1) {
                 if (usersByUsername.size() < 1) {
                     FindByParkIdResponse findByParkIdResponse = parkService.findByParkId(new FindByParkIdRequest(parkId));
-
                     Park park = findByParkIdResponse.getPark();
-
                     if (park != null) {
                         User user = new User(Long.parseLong(idNumber), email, name, surname, passwordEncoder.encode(password), username, role, park, cellNumber);
-
                         userRepo.save(user);
-
                         response.setStatus("Successfully create user: "
                                 + name
                                 + " "
                                 + surname
                                 + " and added them to park: "
                                 + park.getParkName());
-
                         response.setSuccess(true);
                     } else {
                         response.setSuccess(false);
@@ -152,10 +143,8 @@ public class UserServiceImpl implements UserService {
         EditUserResponse response = new EditUserResponse();
         List<User> usersWithUsername = userRepo.findUserByUsername(request.getUsername());
         User userToChange=null;
-        if (usersWithUsername.size() != 0)
-        {
+        if (usersWithUsername.size() != 0) {
             userToChange= usersWithUsername.get(0);
-
             if (!request.getNewUsername().equals("")) {
                 usersWithUsername = userRepo.findUserByUsername(request.getNewUsername());
                 if (usersWithUsername.size() == 0) {
@@ -164,34 +153,24 @@ public class UserServiceImpl implements UserService {
                     response.setStatus("Username is already in use.");
                     response.setSuccess(false);
                     return response;
-
                 }
             }
-            if (!request.getCellNumber().equals(""))
-            {
+            if (!request.getCellNumber().equals("")) {
                 Pattern p = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");
                 Matcher m = p.matcher(request.getCellNumber());
                 boolean validNumber = m.matches();
-
                 if (validNumber) {
                     userToChange.setCellNumber(request.getCellNumber());
-
                 } else {
                     response.setStatus("Cell-number provided is not valid.");
                     response.setSuccess(false);
                     return response;
-
                 }
-
             }
             if (!request.getEmail().equals("")) {
-
                 List<User> usersWithThisEmail = userRepo.findUserByEmail(request.getEmail());
-
                 if (usersWithThisEmail.size() == 0) {
-
                     Pattern emailPattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
                     Matcher emailMatcher = emailPattern.matcher(request.getEmail());
                     boolean validEmail = emailMatcher.matches();
                     if (validEmail)
@@ -200,75 +179,50 @@ public class UserServiceImpl implements UserService {
                         response.setStatus("The provided email is not a valid email-address.");
                         response.setSuccess(false);
                     }
-
                 } else {
                     response.setStatus("The provided email is already in use.");
                     response.setSuccess(false);
                     return  response;
-
                 }
-
             }
             if (!request.getIdNumber().equals("")) {
-
                 List<User> usersWithThisIdNumber = userRepo.findUserByIdNumber(request.getIdNumber());
-
-                if (usersWithThisIdNumber.size() == 0)
-                {
+                if (usersWithThisIdNumber.size() == 0) {
                     Pattern idPattern = Pattern.compile("\\d{13}");
-
                     Matcher idMatcher = idPattern.matcher(request.getIdNumber());
                     boolean validID = idMatcher.matches();
                     if (validID)
                         userToChange.setIdNumber(Long.parseLong(request.getIdNumber()));
-                    else
-                        {
+                    else {
                         response.setStatus("The provided ID number is not a valid ID number.");
                         response.setSuccess(false);
                         return  response;
-
                     }
-                }
-                else
-                {
+                } else {
                     response.setStatus("The provided ID number is already registered to someone else.");
                     response.setSuccess(false);
                     return  response;
                 }
             }
-            if (!request.getName().equals(""))
-            {
+            if (!request.getName().equals("")) {
                 userToChange.setName(request.getName());
             }
-            if (!request.getSurname().equals(""))
-            {
+            if (!request.getSurname().equals("")) {
                 userToChange.setSurname(request.getSurname());
 
             }
-            if (!request.getRole().equals(""))
-            {
+            if (!request.getRole().equals("")) {
                 userToChange.setRole(request.getRole());
-
             }
-
-
-
-
-            if (userToChange != null)
-            {
+            if (userToChange != null) {
                 userRepo.save(userToChange);
             }
-
-
-
             response.setStatus("User details updated.");
             response.setSuccess(true);
-
         } else {
             response.setStatus("User with that username does not exist.");
             response.setSuccess(false);
         }
-
         return response;
     }
 
