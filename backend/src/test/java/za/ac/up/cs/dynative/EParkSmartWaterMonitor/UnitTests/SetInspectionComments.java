@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
@@ -55,6 +56,20 @@ public class SetInspectionComments {
         assertNotNull(response);
         assertEquals(false,response.getSuccess());
         assertEquals("Failed to set inspection comments! Invalid inspectionId!",response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Try to set an inspection comment but the inspection does not exist")
+    public void SetInspectionCommentInspectionDNE(){
+        //setup
+        SetInspectionCommentsRequest request = new SetInspectionCommentsRequest(UUID.randomUUID(), "abc");
+        Mockito.when(inspectionRepo.findInspectionById(Mockito.any())).thenReturn(null);
+
+        //test
+        SetInspectionCommentsResponse response = inspectionService.setInspectionComments(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("Failed to set inspection comments! Inspection not found!",response.getStatus());
     }
 }
 
