@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.NotificationServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.configurations.TwilioConfig;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.SMSRequest;
@@ -68,21 +67,5 @@ public class SendSMS {
         assertEquals(false, response.getSuccess());
     }
 
-    /*@Test
-    @DisplayName("send a sms")
-    public void sendSMS() throws InvalidRequestException {
-        User u= new User(23456789,"email@test.com","name", "Surname",
-                "String password", "uT1", "Agent", new Park(), "0832920868");
-        ArrayList<User> list= new ArrayList<>();
-        list.add(u);
-
-        Mockito.when(config.getNumber()).then(Twilio.init()).thenReturn("1234567890");
-
-        SMSRequest request= new SMSRequest(list,"Hi");
-        SMSResponse response= notificationService.sendSMS(request);
-        assertNotNull(response);
-        assertEquals(true,response.getSuccess());
-        assertEquals("Messages sent successfully",response.getStatus());
-    }*/
 
 }
