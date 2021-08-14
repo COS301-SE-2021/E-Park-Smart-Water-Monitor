@@ -10,7 +10,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.InspectionServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.InspectionRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetDeviceInspectionsRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.SetInspectionStatusRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetDeviceInspectionsResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.SetInspectionStatusResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 
@@ -42,6 +45,16 @@ public class GetDeviceInspections {
         assertNotNull(response);
         assertEquals(false,response.getSuccess());
         assertEquals("Request is null",response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Try to set an inspection status but the inspection id is null")
+    public void GetDeviceInspectionIdNull(){
+        GetDeviceInspectionsRequest request = new GetDeviceInspectionsRequest(null);
+        GetDeviceInspectionsResponse response = inspectionService.getDeviceInspections(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("Failed to get inspection! Invalid deviceId!",response.getStatus());
     }
 }
 
