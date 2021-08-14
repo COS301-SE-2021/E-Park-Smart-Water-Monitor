@@ -81,9 +81,11 @@ public class CreatePark {
 
     @Test
     @DisplayName("Creating a new park successfully")
-    public void createPark() throws InvalidRequestException {
-        Mockito.when(parkRepo.findParkByParkName("Unit Testing")).thenReturn(null);
+    public void createParkSuccess() {
+        //setup
+        Mockito.when(parkRepo.findParkByParkName("Unit Testing")).thenReturn(new ArrayList<>());
 
+        //test
         CreateParkRequest request= new CreateParkRequest("Unit Testing",lat,lon);
         assertNotNull(request);
         CreateParkResponse response= parkService.createPark(request);
