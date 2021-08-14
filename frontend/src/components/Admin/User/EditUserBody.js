@@ -109,8 +109,11 @@ const EditUserBody = (props) => {
                 cellNumber: "+27"+cellNumber
             }
 
+            const config = {
+                headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
+            };
 
-            axios.post('http://localhost:8080/api/user/editUser', obj
+            axios.post('http://localhost:8080/api/user/editUser', obj, config
             ).then((res)=>{
 
                 console.log("response:"+JSON.stringify(res))

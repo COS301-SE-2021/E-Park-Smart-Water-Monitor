@@ -72,6 +72,7 @@ function DeviceDetails(props) {
                                 display="flex"
                                 flexWrap="wrap"
                             >
+
                                 { access &&
                                     <Button
                                         color="primary"

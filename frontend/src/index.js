@@ -24,15 +24,8 @@ const App = () => {
     axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
 
     const isLogin = () => {
-        // const tokenString = localStorage.getItem('token');
-        // const userToken = JSON.parse(tokenString);
-        // alert("login status: "+userToken?.token)
-        // return userToken?.token
-
         let tokenString = sessionStorage.getItem('token')
-        let login = !(!tokenString || tokenString === "undefined");
-        alert("login status: "+login)
-        return login
+        return !(!tokenString || tokenString === "undefined");
     }
 
     return (<ThemeProvider theme={theme}>

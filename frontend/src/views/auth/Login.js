@@ -16,18 +16,20 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 // @material-ui/icons components
 import Lock from "@material-ui/icons/Lock";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-
+import routes from "routes.js";
 // core components
 import componentStyles from "assets/theme/views/auth/login.js";
 import axios from "axios";
 import {ScaleLoader} from "react-spinners";
 import PropTypes from 'prop-types';
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles(componentStyles);
 
-function Login({ setToken }) {
+function Login() {
   const classes = useStyles();
   const theme = useTheme();
+  const history = useHistory();
 
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
@@ -44,14 +46,20 @@ function Login({ setToken }) {
     axios.post('http://localhost:8080/api/user/login', obj
     ).then((res)=>{
         setLoading(false)
-        console.log(JSON.stringify(res))
+        console.log("login response: "+JSON.stringify(res))
+
 
         let jwt = res.data.jwt
-        axios.defaults.headers.common['Authorization'] = "Bearer " +jwt; // allow all axios requests to work
-        axios.defaults.headers.delete['Authorization'] = jwt; // allow all axios requests to work
-        // axios.defaults.headers.post['Authorization'] = 'Bearer '+ jwt;
+        // axios.defaults.headers.common['Authorization'] = "Bearer " +jwt; // allow all axios requests to work
+        // axios.defaults.headers.delete['Authorization'] = jwt; // allow all axios requests to work
         sessionStorage.setItem('token', jwt)
-        setToken(jwt) // allow for authorisation of a user for the other pages
+        // setToken(jwt) // allow for authorisation of a user for the other pages
+
+        console.log("pushed")
+        history.push("/dashboard/index");
+
+
+
     }).catch((res)=>{
       console.log("response:"+JSON.stringify(res))
     });
@@ -176,8 +184,5 @@ function Login({ setToken }) {
   );
 }
 
-Login.propTypes = {
-  setToken: PropTypes.func.isRequired
-}
 
 export default Login;
