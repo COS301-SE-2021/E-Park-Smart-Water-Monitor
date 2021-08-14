@@ -31,15 +31,17 @@ public class EditPark {
 
     @Test
     @DisplayName("Try and edit a park but no park with that id exists")
-    public void EditDNE(){
+    public void EditIdDNE(){
         //set up repo
         UUID testID= UUID.randomUUID();
         Mockito.when(parkRepo.findParkById(testID)).thenReturn(null);
 
         //test
         EditParkRequest request= new EditParkRequest(testID,"Pname","50","50");
-        Throwable t= assertThrows(InvalidRequestException.class,()->parkService.editPark(request));
-        assertEquals("No park with that id exists.",t.getMessage());
+        EditParkResponse response=parkService.editPark(request);
+        assertNotNull(response);
+        assertEquals("No park with that id exists.",response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
     @Test
