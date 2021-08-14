@@ -46,48 +46,56 @@ public class CreateUser {
     @Test
     @DisplayName("Try to create a user but the fields are not complete")
     public void CreateUserIncomplete() throws InvalidRequestException {
+        //test 1
         CreateUserRequest request= new CreateUserRequest(parkId,idNumber,email,password,name,surname,"",role,cellNumber);
         CreateUserResponse response=userService.createUser(request);
         assertNotNull(response);
         assertEquals("User's details are incomplete",response.getStatus());
         assertEquals(false,response.getSuccess());
 
+        //test 2
         request= new CreateUserRequest(parkId,"",email,password,name,surname,"",role,cellNumber);
         response=userService.createUser(request);
         assertNotNull(response);
         assertEquals("User's details are incomplete",response.getStatus());
         assertEquals(false,response.getSuccess());
 
+        //test 3
         request= new CreateUserRequest(null,idNumber,email,password,name,surname,username,role,cellNumber);
         response=userService.createUser(request);
         assertNotNull(response);
         assertEquals("User's details are incomplete",response.getStatus());
         assertEquals(false,response.getSuccess());
 
+        //test 4
         request= new CreateUserRequest(parkId,idNumber,email,password,name,surname,username,role,"");
         response=userService.createUser(request);
         assertNotNull(response);
         assertEquals("User's details are incomplete",response.getStatus());
         assertEquals(false,response.getSuccess());
 
+        // test 5
         request= new CreateUserRequest(parkId,idNumber,email,password,name,surname,username,"",cellNumber);
         response=userService.createUser(request);
         assertNotNull(response);
         assertEquals("User's details are incomplete",response.getStatus());
         assertEquals(false,response.getSuccess());
 
+        //test 6
         request= new CreateUserRequest(parkId,idNumber,email,password,name,"",username,role,cellNumber);
         response=userService.createUser(request);
         assertNotNull(response);
         assertEquals("User's details are incomplete",response.getStatus());
         assertEquals(false,response.getSuccess());
 
+        //test 7
         request= new CreateUserRequest(parkId,idNumber,"",password,name,surname,username,role,cellNumber);
         response=userService.createUser(request);
         assertNotNull(response);
         assertEquals("User's details are incomplete",response.getStatus());
         assertEquals(false,response.getSuccess());
 
+        //test 8
         request= new CreateUserRequest(parkId,idNumber,email,password,"",surname,username,role,cellNumber);
         response=userService.createUser(request);
         assertNotNull(response);
