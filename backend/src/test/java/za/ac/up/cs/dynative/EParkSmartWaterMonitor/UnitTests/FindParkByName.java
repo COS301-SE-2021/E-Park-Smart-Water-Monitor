@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.WeatherData;
@@ -93,31 +92,30 @@ public class FindParkByName {
 
     @Test
     @DisplayName("Find an existing park.")
-    public void FindParkExisting() throws InvalidRequestException {
+    public void FindParkExisting() {
+        //setup
         site1= new WaterSite(id1,name1,lat1,lon1);
         site2= new WaterSite(id2,name2,lat2,lon2);
         siteSet1= new HashSet<>();
         siteSet2= new HashSet<>();
         siteSet1.add(site1);
         siteSet2.add(site2);
-
         weather1= new WeatherData(id21,temp1,moonPhase1,humudity1,windSpeed1,date1);
         weather2= new WeatherData(id22,temp2,moonPhase2,humudity2,windSpeed2,date2);
         weatherSet1 = new HashSet<>();
         weatherSet2 = new HashSet<>();
         weatherSet1.add(weather1);
         weatherSet2.add(weather2);
-
         park1= new Park("Unit Test Park 1",-27.378888,28.111471,weatherSet1,siteSet1);
         park2= new Park("Unit Test Park 2",-27.368888,28.681111,weatherSet2,siteSet2);
         List<Park> p= new ArrayList<>();
         p.add(park2);
         Mockito.when(parkRepo.findParkByParkName(park2.getParkName())).thenReturn(p);
 
+        //test
         FindByParkNameRequest request= new FindByParkNameRequest("Unit Test Park 2");
         FindByParkNameResponse response= parkService.findParkByName(request);
         assertNotNull(response);
-        assertEquals("Unit Test Park 2", response.getPark().getParkName());
         assertEquals(park2.getLatitude(),response.getPark().getLatitude());
         assertEquals(park2.getLongitude(),response.getPark().getLongitude());
         assertEquals(park2.getParkWeather(),response.getPark().getParkWeather());
