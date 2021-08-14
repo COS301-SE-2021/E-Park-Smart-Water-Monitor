@@ -119,41 +119,4 @@ public class SendEmail {
         assertEquals("No recipients specified",response.getStatus());
         assertEquals(false,response.getSuccess());
     }
-
-    @Test
-    @DisplayName("Send email from invalid email")
-    public void sendEmailInvalidFrom() throws InvalidRequestException {
-        ArrayList<String> list= new ArrayList<>();
-        list.add("hi@gmail.com");
-        EmailRequest request= new EmailRequest("test@email",
-                "Hello",list,null,null, Topic.ALERT,"E-Park","Testing","problem");
-        EmailResponse response= notificationService.sendMail(request);
-        assertNotNull(response);
-        assertEquals(false,response.getSuccess());
-    }
-
-    @Test
-    @DisplayName("Send email to invalid email")
-    public void sendEmailInvalidTo() throws InvalidRequestException {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("hi@gmail");
-        EmailRequest request = new EmailRequest("test@email.com",
-                "Hello", list, null, null, Topic.ALERT, "E-Park", "Testing", "problem");
-        EmailResponse response = notificationService.sendMail(request);
-        assertNotNull(response);
-        assertEquals(false,response.getSuccess());
-    }
-
-    /*@Test
-    @DisplayName("Send email")
-    public void sendEmail() throws InvalidRequestException {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("dynative301@gmail.com");
-        EmailRequest request = new EmailRequest("epark.communications@gmail.com",
-                "Hello", list, null, null, Topic.ALERT, "E-Park", "Testing", "problem");
-        EmailResponse response = notificationService.sendMail(request);
-        assertNotNull(response);
-        assertEquals(true,response.getSuccess());
-    }*/
-
-    }
+}
