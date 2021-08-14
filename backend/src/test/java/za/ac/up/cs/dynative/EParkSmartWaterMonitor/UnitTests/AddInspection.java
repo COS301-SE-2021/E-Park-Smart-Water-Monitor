@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.FindDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.FindDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.InspectionServiceImpl;
@@ -18,6 +18,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.AddInspec
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.AddInspectionResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 
 import java.util.UUID;
 
@@ -63,8 +64,11 @@ public class AddInspection {
     @Test
     @DisplayName("Attempt to add an inspection, but the device does not exist")
     public void AddInspectionDeviceNotFound() throws InvalidRequestException {
-        AddInspectionResponse response = inspectionService.addInspection(new AddInspectionRequest(UUID.randomUUID(),null,"abc"));
+        //setup
         Mockito.when(devicesService.findDevice(Mockito.any())).thenReturn(null);
+
+        //test
+        AddInspectionResponse response = inspectionService.addInspection(new AddInspectionRequest(UUID.randomUUID(),null,"abc"));
         assertNotNull(response);
         assertEquals(false,response.getSuccess());
         assertEquals("Failed to add inspection! Failure to get device!",response.getStatus());
@@ -73,20 +77,34 @@ public class AddInspection {
     @Test
     @DisplayName("Attempt to add an inspection, but the device does not exist part 2")
     public void AddInspectionDeviceNotFound2() throws InvalidRequestException {
-        AddInspectionResponse response = inspectionService.addInspection(new AddInspectionRequest(UUID.randomUUID(),null,"abc"));
+        //setup
         Mockito.when(devicesService.findDevice(Mockito.any())).thenReturn(new FindDeviceResponse());
+
+        //test
+        AddInspectionResponse response = inspectionService.addInspection(new AddInspectionRequest(UUID.randomUUID(),null,"abc"));
         assertNotNull(response);
         assertEquals(false,response.getSuccess());
         assertEquals("Failed to add inspection! Failure to get device!",response.getStatus());
     }
 
+    @Test
+    @DisplayName("Add inspection successfully")
+    public void AddInspectionSuccess() throws InvalidRequestException {
+        //setup
+        FindDeviceResponse re = new FindDeviceResponse();
+        re.setSuccess(true);
+        re.setDevice(new Device());
+        Mockito.when(waterSiteService.getWaterSiteByRelatedDevice(Mockito.any())).thenReturn(new WaterSite());
+        Mockito.when(devicesService.findDevice(Mockito.any())).thenReturn(re);
 
-//    FindDeviceResponse findDeviceResponse = devicesService.findDevice(new FindDeviceRequest(request.getDeviceId()));
-//        if (findDeviceResponse == null || !findDeviceResponse.getSuccess()) {
-//        response.setStatus("Failed to add inspection! Failure to get device!");
-//        response.setSuccess(false);
-//        return response;
-//    }
+        //response
+        AddInspectionResponse response = inspectionService.addInspection(new AddInspectionRequest(UUID.randomUUID(),null,"abc"));
+        assertNotNull(response);
+        assertEquals(true,response.getSuccess());
+        assertEquals("Inspection successfully added!",response.getStatus());
+    }
+
+
 }
 
 
