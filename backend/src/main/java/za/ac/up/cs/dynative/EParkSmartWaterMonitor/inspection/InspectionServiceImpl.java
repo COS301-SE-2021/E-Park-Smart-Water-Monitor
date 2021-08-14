@@ -40,6 +40,11 @@ public class InspectionServiceImpl implements InspectionService {
     @Override
     public AddInspectionResponse addInspection(AddInspectionRequest request) throws InvalidRequestException {
         AddInspectionResponse response = new AddInspectionResponse();
+        if (request==null){
+            response.setStatus("Request is null");
+            response.setSuccess(false);
+            return response;
+        }
         if (request.getDeviceId() == null) {
             response.setStatus("Failed to add inspection! No deviceId specified!");
             response.setSuccess(false);
