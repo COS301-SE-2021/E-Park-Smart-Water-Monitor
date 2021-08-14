@@ -3,6 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models;
 import org.springframework.data.neo4j.core.schema.Id;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,6 +11,7 @@ public class DeviceData {
 
     @Id
     private UUID deviceDataId;
+    private Date lastSeen;
     private double longitude;
     private double latitude;
     private double battery;
@@ -37,6 +39,18 @@ public class DeviceData {
         this.upTime = upTime;
         this.lifeTime = lifeTime;
         this.deviceConfiguration=deviceConfiguration;
+    }
+
+    public Date getLastSeen() {
+        return lastSeen;
+    }
+
+    public void setLastSeen(Date lastSeen) {
+        this.lastSeen = lastSeen;
+    }
+
+    public void setDeviceDataId(UUID deviceDataId) {
+        this.deviceDataId = deviceDataId;
     }
 
     public UUID getDeviceDataId() {
