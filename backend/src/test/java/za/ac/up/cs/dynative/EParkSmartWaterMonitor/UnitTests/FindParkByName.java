@@ -42,7 +42,6 @@ public class FindParkByName {
     String name2="UnitTest 2";
     Set<WaterSite> siteSet1;
     Set<WaterSite> siteSet2;
-
     int id21= 336;
     int id22= 337;
     WeatherData weather1;
@@ -57,30 +56,39 @@ public class FindParkByName {
     double windSpeed2 =20;
     Date date1= new Date();
     Date date2= new Date();
-
     Set<WeatherData> weatherSet1;
     Set<WeatherData> weatherSet2;
-
     Park park1;
     Park park2;
 
     @Test
-    @DisplayName("Find a park by name, but name is null")
+    @DisplayName("Find a park by name, but the request is null")
     public void findParkNull(){
-        FindByParkNameRequest request= new FindByParkNameRequest("");
-        Throwable t= assertThrows(InvalidRequestException.class,()->parkService.findParkByName(request));
-        assertEquals("No park name specified",t.getMessage());
+        FindByParkNameResponse response =parkService.findParkByName(null);
+        assertNotNull(response);
+        assertEquals(null, response.getPark());
     }
 
+    @Test
+    @DisplayName("Find a park by name, but name is null")
+    public void findParkNoName(){
+        FindByParkNameRequest request= new FindByParkNameRequest("");
+        FindByParkNameResponse response =parkService.findParkByName(request);
+        assertNotNull(response);
+        assertEquals(null, response.getPark());
+    }
 
     @Test
-    @DisplayName("Find a nonexisting park")
+    @DisplayName("Find a non existing park")
     public void findParkDNE(){
+        //setup
         Mockito.when(parkRepo.findParkByParkName("DNE")).thenReturn(null);
 
+        //test
         FindByParkNameRequest request= new FindByParkNameRequest("DNE");
-        Throwable t= assertThrows(InvalidRequestException.class,()->parkService.findParkByName(request));
-        assertEquals("Park not present",t.getMessage());
+        FindByParkNameResponse response =parkService.findParkByName(request);
+        assertNotNull(response);
+        assertEquals(null, response.getPark());
     }
 
     @Test

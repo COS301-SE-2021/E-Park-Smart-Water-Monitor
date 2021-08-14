@@ -46,6 +46,9 @@ public class ParkServiceImpl implements ParkService {
 
     @Override
     public FindByParkNameResponse findParkByName(FindByParkNameRequest request) {
+        if (request==null){
+            return new FindByParkNameResponse(null);
+        }
         if (!request.getParkName().equals("")) {
             List<Park> park = parkRepo.findParkByParkName(request.getParkName());
             if (park==null){
