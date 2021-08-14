@@ -96,4 +96,42 @@ public class EditUser {
         assertEquals(false,response.getSuccess());
         assertEquals("The provided ID number is not a valid ID number.",response.getStatus());
     }
+
+    @Test
+    @DisplayName("Try to edit a user with an existing email")
+    public void EditUserDuplicateEmail() {
+        //setup
+        List<User> users = new ArrayList<>();
+        User u = new User();
+        users.add(u);
+        Mockito.when(userRepo.findUserByUsername("ch")).thenReturn(users);
+        Mockito.when(userRepo.findUserByUsername("123")).thenReturn(new ArrayList<>());
+        Mockito.when(userRepo.findUserByEmail(Mockito.any())).thenReturn(users);
+
+        //test
+        EditUserRequest request = new EditUserRequest("ch", "12", "nita.nell92@gmail.com", "", "", "123", "", "0728480427");
+        EditUserResponse response = userService.editUser(request);
+        assertNotNull(response);
+        assertEquals(false, response.getSuccess());
+        assertEquals("The provided email is already in use.", response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Try to edit an user and succeeds")
+    public void EditUserSuccess() {
+        //setup
+        List<User> users = new ArrayList<>();
+        User u = new User();
+        users.add(u);
+        Mockito.when(userRepo.findUserByUsername("ch")).thenReturn(users);
+        Mockito.when(userRepo.findUserByUsername("123")).thenReturn(new ArrayList<>());
+        Mockito.when(userRepo.findUserByEmail(Mockito.any())).thenReturn(new ArrayList<>());
+
+        //test
+        EditUserRequest request = new EditUserRequest("ch", "1299999999999", "nita.nell92@gmail.com", "Mieke", "kk", "123", "Engineer", "0728480427");
+        EditUserResponse response = userService.editUser(request);
+        assertNotNull(response);
+        assertEquals(true, response.getSuccess());
+        assertEquals("User details updated.", response.getStatus());
+    }
 }

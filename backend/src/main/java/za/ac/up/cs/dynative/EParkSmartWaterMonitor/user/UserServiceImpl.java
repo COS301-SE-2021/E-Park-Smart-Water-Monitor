@@ -210,7 +210,6 @@ public class UserServiceImpl implements UserService {
             }
             if (!request.getSurname().equals("")) {
                 userToChange.setSurname(request.getSurname());
-
             }
             if (!request.getRole().equals("")) {
                 userToChange.setRole(request.getRole());
