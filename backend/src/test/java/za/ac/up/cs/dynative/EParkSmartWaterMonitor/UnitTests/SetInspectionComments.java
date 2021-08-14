@@ -10,9 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.InspectionServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.InspectionRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.SetInspectionCommentsRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.SetInspectionCommentsResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
+
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -42,6 +45,16 @@ public class SetInspectionComments {
         assertNotNull(response);
         assertEquals(false,response.getSuccess());
         assertEquals("Request is null",response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Try to set an inspection comment but the inspection id is null")
+    public void SetInspectionCommentIdNull(){
+        SetInspectionCommentsRequest request = new SetInspectionCommentsRequest(null, "abc");
+        SetInspectionCommentsResponse response = inspectionService.setInspectionComments(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("Failed to set inspection comments! Invalid inspectionId!",response.getStatus());
     }
 }
 
