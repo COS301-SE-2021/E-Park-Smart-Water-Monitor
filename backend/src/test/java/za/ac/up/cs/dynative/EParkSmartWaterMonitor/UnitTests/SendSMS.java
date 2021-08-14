@@ -11,6 +11,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestExce
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.NotificationServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.configurations.TwilioConfig;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.SMSRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.responses.SMSResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.UserService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
@@ -33,10 +34,12 @@ public class SendSMS {
     private NotificationServiceImpl notificationService;
 
     @Test
-    @DisplayName("Send SMS to a null request")
-    public void sensSMSNullRequest(){
-        Throwable t= assertThrows(InvalidRequestException.class,()->notificationService.sendSMS(null));
-        assertEquals("Request is null",t.getMessage());
+    @DisplayName("Attempt to send a sms but the request is null")
+    public void sensSMSRequestNull(){
+        SMSResponse response = notificationService.sendSMS(null);
+        assertNotNull(response);
+        assertEquals("Request is null", response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
     @Test
