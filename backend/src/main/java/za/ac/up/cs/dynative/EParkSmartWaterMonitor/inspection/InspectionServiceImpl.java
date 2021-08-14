@@ -102,6 +102,11 @@ public class InspectionServiceImpl implements InspectionService {
     @Override
     public SetInspectionStatusResponse setInspectionStatus(SetInspectionStatusRequest request) {
         SetInspectionStatusResponse response = new SetInspectionStatusResponse();
+        if (request==null){
+            response.setStatus("Request is null");
+            response.setSuccess(false);
+            return response;
+        }
         if (request.getInspectionId() == null) {
             response.setStatus("Failed to set inspection status! Invalid inspectionId!");
             response.setSuccess(false);
