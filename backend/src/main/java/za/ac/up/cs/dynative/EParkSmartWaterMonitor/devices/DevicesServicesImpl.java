@@ -414,6 +414,7 @@ public class DevicesServicesImpl implements DevicesService {
             if (device.get().getDeviceData().getDeviceConfiguration() != null) {
                 for (sensorConfiguration config : device.get().getDeviceData().getDeviceConfiguration()) {
                     if (config.getSettingType().equals("reportingFrequency")) {
+                        if (request.getValue() >= 0) {
                         config.setValue(request.getValue());
                         deviceRepo.save(device.get());
 
@@ -432,6 +433,7 @@ public class DevicesServicesImpl implements DevicesService {
 
                         return new SetMetricFrequencyResponse("Successfully changed metric frequency to: " +
                                 request.getValue() + " hours.", true);
+                        }
                     }
                 }
             }
