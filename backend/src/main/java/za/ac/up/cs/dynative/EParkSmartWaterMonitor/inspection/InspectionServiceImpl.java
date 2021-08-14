@@ -123,6 +123,11 @@ public class InspectionServiceImpl implements InspectionService {
     @Override
     public SetInspectionCommentsResponse setInspectionComments(SetInspectionCommentsRequest request) {
         SetInspectionCommentsResponse response = new SetInspectionCommentsResponse();
+        if (request==null){
+            response.setStatus("Request is null");
+            response.setSuccess(false);
+            return response;
+        }
         if (request.getInspectionId() == null) {
             response.setStatus("Failed to set inspection comments! Invalid inspectionId!");
             response.setSuccess(false);
