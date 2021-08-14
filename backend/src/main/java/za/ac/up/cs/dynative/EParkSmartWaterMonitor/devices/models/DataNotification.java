@@ -7,21 +7,11 @@ public class DataNotification {
     WaterSourceData waterSourceData;
     String timestamp;
 
-
-    @Override
-    public String toString() {
-        return "DataNotification{" +
-                "deviceName='" + deviceName + '\'' +
-                ", waterSourceData=" + waterSourceData +
-                ", timestamp='" + timestamp + '\'' +
-                '}';
-    }
-
     public DataNotification(@JsonProperty("deviceName") String deviceName, @JsonProperty("WaterSourceData") WaterSourceData waterSourceData, @JsonProperty("timestamp") String timestamp)
     {
         this.deviceName = deviceName;
         this.waterSourceData = waterSourceData;
-        this.timestamp=timestamp;
+        this.timestamp= timestamp;
 
     }
 
@@ -40,4 +30,14 @@ public class DataNotification {
     public void setWaterSourceData(WaterSourceData waterSourceData) {
         this.waterSourceData = waterSourceData;
     }
+
+    @Override
+    public String toString() {
+        return "DataNotification{" +
+                "deviceName='" + deviceName + '\'' +
+                ", waterSourceData=" + waterSourceData +
+                ", timestamp='" + timestamp + '\'' +
+                '}';
+    }
+
 }
