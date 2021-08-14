@@ -33,54 +33,79 @@ public class SendEmail {
 
     @Test
     @DisplayName("Send email to a null request")
-    public void sensSMSNullRequest(){
-        Throwable t= assertThrows(InvalidRequestException.class,()->notificationService.sendMail(null));
-        assertEquals("Request is null",t.getMessage());
+    public void sensMailRequestNull(){
+        EmailResponse response = notificationService.sendMail(null);
+        assertNotNull(response);
+        assertEquals("Request is null",response.getStatus());
+        assertEquals(false,response.getSuccess());
     }
 
     @Test
     @DisplayName("Send email but the request is not complete")
-    public void sendMailNotComplete(){
+    public void sendMailRequestNotComplete(){
         ArrayList<String> list= new ArrayList<>();
         EmailRequest request= new EmailRequest("",
                 "Hello",list,null,null, Topic.ALERT,"E-Park","Testing","problem");
-        Throwable t= assertThrows(InvalidRequestException.class,()->notificationService.sendMail(request));
-        assertEquals("Request not complete",t.getMessage());
+        EmailResponse response = notificationService.sendMail(request);
+        assertNotNull(response);
+        assertEquals("Request is missing parameters",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
-        EmailRequest request2= new EmailRequest("test@gmail.com",
+
+        request= new EmailRequest("test@gmail.com",
                 "",list,null,null, Topic.ALERT,"E-Park","Testing","problem");
-        Throwable t2= assertThrows(InvalidRequestException.class,()->notificationService.sendMail(request2));
-        assertEquals("Request not complete",t2.getMessage());
+        response = notificationService.sendMail(request);
+        assertNotNull(response);
+        assertEquals("Request is missing parameters",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
-        EmailRequest request3= new EmailRequest("test@gmail.com",
+
+        request= new EmailRequest("test@gmail.com",
                 "Hello",null,null,null, Topic.ALERT,"E-Park","Testing","problem");
-        Throwable t3= assertThrows(InvalidRequestException.class,()->notificationService.sendMail(request3));
-        assertEquals("Request not complete",t3.getMessage());
+        response = notificationService.sendMail(request);
+        assertNotNull(response);
+        assertEquals("Request is missing parameters",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
-        EmailRequest request4= new EmailRequest("test@gmail.com",
+
+        request= new EmailRequest("test@gmail.com",
                 "Hello",list,null,null, null,"E-Park","Testing","problem");
-        Throwable t4= assertThrows(InvalidRequestException.class,()->notificationService.sendMail(request4));
-        assertEquals("Request not complete",t4.getMessage());
+        response = notificationService.sendMail(request);
+        assertNotNull(response);
+        assertEquals("Request is missing parameters",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
-        EmailRequest request5= new EmailRequest("test@gmail.com",
+
+        request= new EmailRequest("test@gmail.com",
                 "Hello",list,null,null, Topic.ALERT,"","Testing","problem");
-        Throwable t5= assertThrows(InvalidRequestException.class,()->notificationService.sendMail(request5));
-        assertEquals("Request not complete",t5.getMessage());
+        response = notificationService.sendMail(request);
+        assertNotNull(response);
+        assertEquals("Request is missing parameters",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
-        EmailRequest request6= new EmailRequest("test@gmail.com",
+
+        request= new EmailRequest("test@gmail.com",
                 "Hello",list,null,null, Topic.ALERT,"E-Park","","problem");
-        Throwable t6= assertThrows(InvalidRequestException.class,()->notificationService.sendMail(request6));
-        assertEquals("Request not complete",t6.getMessage());
+        response = notificationService.sendMail(request);
+        assertNotNull(response);
+        assertEquals("Request is missing parameters",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
-        EmailRequest request7= new EmailRequest("test@gmail.com",
+
+        request= new EmailRequest("test@gmail.com",
                 "Hello",list,null,null, Topic.ALERT,"E-Park","Testing","");
-        Throwable t7= assertThrows(InvalidRequestException.class,()->notificationService.sendMail(request7));
-        assertEquals("Request not complete",t7.getMessage());
+        response = notificationService.sendMail(request);
+        assertNotNull(response);
+        assertEquals("Request is missing parameters",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
-        EmailRequest request8= new EmailRequest("test@gmail.com",
+
+        request= new EmailRequest("test@gmail.com",
                 "",list,null,null, null,"E-Park","Testing","problem");
-        Throwable t8= assertThrows(InvalidRequestException.class,()->notificationService.sendMail(request8));
-        assertEquals("Request not complete",t8.getMessage());
+        response = notificationService.sendMail(request);
+        assertNotNull(response);
+        assertEquals("Request is missing parameters",response.getStatus());
+        assertEquals(false,response.getSuccess());
     }
 
     @Test
