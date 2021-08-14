@@ -9,15 +9,16 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.InspectionServiceImpl;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models.Inspection;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.InspectionRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.SetInspectionCommentsRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.SetInspectionStatusRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.SetInspectionCommentsResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.SetInspectionStatusResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 
+import java.util.Date;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -72,6 +73,20 @@ public class SetInspectionStatus {
         assertNotNull(response);
         assertEquals(false,response.getSuccess());
         assertEquals("Failed to set inspection status! Inspection not found!",response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Try to set an inspection and succeed")
+    public void SetInspectionStatusSuccess(){
+        //setup
+        SetInspectionStatusRequest request = new SetInspectionStatusRequest(UUID.randomUUID(),"Done");
+        Mockito.when(inspectionRepo.findInspectionById(Mockito.any())).thenReturn(new Inspection(new Device(),UUID.randomUUID(),UUID.randomUUID(), new Date(),"abc"));
+
+        //test
+        SetInspectionStatusResponse response = inspectionService.setInspectionStatus(request);
+        assertNotNull(response);
+        assertEquals(true,response.getSuccess());
+        assertEquals("Inspection status successfully set!",response.getStatus());
     }
 }
 
