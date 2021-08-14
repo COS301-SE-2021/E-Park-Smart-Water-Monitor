@@ -109,13 +109,15 @@ public class SendEmail {
     }
 
     @Test
-    @DisplayName("Send email to no recipients")
-    public void sensEmailNullRecipients(){
+    @DisplayName("Send email but no recipients specified")
+    public void sensEmailRecipientsNull(){
         ArrayList<String> list= new ArrayList<>();
         EmailRequest request= new EmailRequest("test@email.com",
                 "Hello",list,null,null, Topic.ALERT,"E-Park","Testing","problem");
-        Throwable t= assertThrows(InvalidRequestException.class,()->notificationService.sendMail(request));
-        assertEquals("No recipients specified",t.getMessage());
+        EmailResponse response=notificationService.sendMail(request);
+        assertNotNull(response);
+        assertEquals("No recipients specified",response.getStatus());
+        assertEquals(false,response.getSuccess());
     }
 
     @Test
