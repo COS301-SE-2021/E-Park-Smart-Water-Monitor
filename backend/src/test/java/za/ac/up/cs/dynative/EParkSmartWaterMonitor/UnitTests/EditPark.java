@@ -31,7 +31,7 @@ public class EditPark {
 
     @Test
     @DisplayName("Try and edit a park but no park with that id exists")
-    public void EditIdDNE(){
+    public void EditParkIdDNE(){
         //set up repo
         UUID testID= UUID.randomUUID();
         Mockito.when(parkRepo.findParkById(testID)).thenReturn(null);
@@ -46,33 +46,17 @@ public class EditPark {
 
     @Test
     @DisplayName("Try and edit a park but no park id specified")
-    public void EditNull(){
+    public void EditParkIdNull(){
         EditParkRequest request= new EditParkRequest(null,"Pname","50","50");
-        Throwable t= assertThrows(InvalidRequestException.class,()->parkService.editPark(request));
-        assertEquals("No id specified",t.getMessage());
-    }
-
-    @Test
-    @DisplayName("Edit all fields, but we have more than one park")
-    public void EditAllWithMultipleParksPresent() throws InvalidRequestException {
-        //setup repo
-        Set<WaterSite> sites= new HashSet<>();
-        Set<WeatherData> weather= new HashSet<>();
-        Park p1= new Park("Unit tests",25,36,weather,sites);
-        Mockito.when(parkRepo.findParkById(p1.getId())).thenReturn(p1);
-
-        //testing
-        EditParkRequest request = new EditParkRequest(p1.getId(),"Unit Testing","29","11");
-        assertNotNull(request);
-        EditParkResponse response = parkService.editPark(request);
+        EditParkResponse response=parkService.editPark(request);
         assertNotNull(response);
-        assertEquals("Park details changed.",response.getStatus());
-        assertEquals(true,response.getSuccess());
+        assertEquals("No park id specified",response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
     @Test
-    @DisplayName("Edit the name fields, but we have more than one park")
-    public void EditAllName() throws InvalidRequestException {
+    @DisplayName("Edit the park with success")
+    public void EditParkSuccess(){
         //setup repo
         Set<WaterSite> sites= new HashSet<>();
         Set<WeatherData> weather= new HashSet<>();
