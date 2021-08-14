@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 // javascript plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
@@ -10,6 +10,7 @@ import Map from "components/Dashboard/Map.js"
 import LineChart from "components/Dashboard/LineChart.js"
 import DeviceTable from "../../components/Dashboard/Device/DeviceTable";
 import DeviceDetails from "../../components/Dashboard/Device/DeviceDetails";
+import { UserContext } from '../../Context/UserContext';
 
 
 // core components
@@ -24,43 +25,27 @@ import {
 import axios from "axios";
 import componentStyles from "assets/theme/views/dashboard/dashboard.js";
 import InspectionTable from "components/Dashboard/InspectionTable.js";
-import useToken from "../../Hooks/useToken";
-import {Redirect} from "react-router-dom";
 
 const useStyles = makeStyles(componentStyles);
 
 function Dashboard() {
   const classes = useStyles();
-  // const [response, setResponse] = useState(null)
   const [devices, setDevices] = useState([])
   const [device, setDevice] = useState(null)
   const [inspections, setInspections] = useState([])
 
-  // const { token, setToken } = useToken();
-
-
-  // if(!token) {
-  //   alert("redirecting")
-  //   return <Redirect to="/auth/index" />
-  // }else{
-  //   alert("not redirecting")
-  // }
+  const user = useContext(UserContext)
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
 
-
-
-
-
   let temp_jwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDSEljaGkyIiwicm9sZXMiOiJGSUVMRF9FTkdJTkVFUiIsImV4cCI6MTYyODkzMTkxN30.MEfrCH6mcP2x9LB9-SQxFtB03hrYQPhPNgydbuVqTpP_6mQeISqAiXx2RpjN4fdfbWBNNUqGlJhZhNelmQcQfQ"
-
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/devices/getAllDevices',{
       headers: {
-        'Authorization': "Bearer " + temp_jwt
+        'Authorization': "Bearer " + user.token
       }
     }).then((res)=>{
       if(res.data)

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -16,31 +16,32 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 // @material-ui/icons components
 import Lock from "@material-ui/icons/Lock";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import routes from "routes.js";
 // core components
 import componentStyles from "assets/theme/views/auth/login.js";
 import axios from "axios";
 import {ScaleLoader} from "react-spinners";
-import PropTypes from 'prop-types';
 import {useHistory} from "react-router-dom";
+import { UserContext } from '../../Context/UserContext';
 
 const useStyles = makeStyles(componentStyles);
 
 function Login() {
-  const classes = useStyles();
-  const theme = useTheme();
-  const history = useHistory();
+    const classes = useStyles();
+    const theme = useTheme();
+    const history = useHistory();
 
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(false)
+    const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
+    const [loading, setLoading] = useState(false)
 
-  const login = () => {
+    const user = useContext(UserContext)
+
+    const login = () => {
 
     setLoading(true)
     let obj = {
-      username: username,
-      password: password
+        username: username,
+        password: password
     }
 
     axios.post('http://localhost:8080/api/user/login', obj
@@ -48,21 +49,20 @@ function Login() {
         setLoading(false)
         console.log("login response: "+JSON.stringify(res))
 
-
         let jwt = res.data.jwt
         axios.defaults.headers.common['Authorization'] = "Bearer " +jwt; // allow all axios requests to work
         axios.defaults.headers.delete['Authorization'] = jwt; // allow all axios requests to work
         sessionStorage.setItem('token', jwt)
-        // setToken(jwt) // allow for authorisation of a user for the other pages
+        user.setToken(jwt) // allow for authorisation of a user for the other pages
 
         history.push("/dashboard/index");
 
     }).catch((res)=>{
       console.log("response:"+JSON.stringify(res))
     });
-  }
+    }
 
-  return (
+    return (
     <>
       <Grid item xs={12} lg={5} md={7}>
         <Card classes={{ root: classes.cardRoot }}>
@@ -178,7 +178,7 @@ function Login() {
         </Grid>
       </Grid>
     </>
-  );
+    );
 }
 
 
