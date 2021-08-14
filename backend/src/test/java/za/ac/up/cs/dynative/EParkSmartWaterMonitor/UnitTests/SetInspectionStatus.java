@@ -10,6 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.InspectionServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.InspectionRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.SetInspectionCommentsRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.SetInspectionStatusRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.SetInspectionCommentsResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.SetInspectionStatusResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
@@ -36,12 +39,22 @@ public class SetInspectionStatus {
     private InspectionServiceImpl inspectionService;
 
     @Test
-    @DisplayName("Try to set an inspection comment but the request is null")
-    public void SetInspectionCommentRequestNull(){
+    @DisplayName("Try to set an inspection status but the request is null")
+    public void SetInspectionStatusRequestNull(){
         SetInspectionStatusResponse response = inspectionService.setInspectionStatus(null);
         assertNotNull(response);
         assertEquals(false,response.getSuccess());
         assertEquals("Request is null",response.getStatus());
+    }
+
+    @Test
+    @DisplayName("Try to set an inspection status but the inspection id is null")
+    public void SetInspectionStatusIdNull(){
+        SetInspectionStatusRequest request = new SetInspectionStatusRequest(null,"Done");
+        SetInspectionStatusResponse response = inspectionService.setInspectionStatus(request);
+        assertNotNull(response);
+        assertEquals(false,response.getSuccess());
+        assertEquals("Failed to set inspection status! Invalid inspectionId!",response.getStatus());
     }
 }
 
