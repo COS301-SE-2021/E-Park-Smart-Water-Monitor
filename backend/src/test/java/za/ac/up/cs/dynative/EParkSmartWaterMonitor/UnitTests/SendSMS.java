@@ -43,10 +43,12 @@ public class SendSMS {
     }
 
     @Test
-    @DisplayName("Send SMS to no recipients")
-    public void sensSMSNullRecipients(){
-        Throwable t= assertThrows(InvalidRequestException.class,()->notificationService.sendSMS(new SMSRequest(new ArrayList<User>(),"hi")));
-        assertEquals("No recipients specified",t.getMessage());
+    @DisplayName("Attempt to send an sms but there are no recipients")
+    public void sensSMSNoRecipients(){
+        SMSResponse response =notificationService.sendSMS(new SMSRequest(new ArrayList<UUID>(),"hi"));
+        assertNotNull(response);
+        assertEquals("No recipients specified", response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
     @Test
