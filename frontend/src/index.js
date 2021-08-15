@@ -20,7 +20,8 @@ const override = css`
   border-color: red;
 `;
 
-const overlay = css`
+
+const overlay = `
   width: 100%;
   height: 100%;
   position: absolute;

@@ -17,6 +17,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 const ResetPassword = (props) => {
     const [username, setUsername] = useState("")
     const [code, setCode] = useState(false)
+    const [error, setError] = useState(false)
 
     const user = useContext(UserContext)
     const loader = useContext(LoadingContext)
@@ -24,18 +25,22 @@ const ResetPassword = (props) => {
 
     // send the username to the system to get an email
     const submitUsername = (e) => {
+        e.preventDefault()
+        toggleLoading()
 
         let obj = {
             username : username
         }
 
-        axios.post('http://localhost:8080/api/user/resetPassword', obj, {
-            headers: {
-                'Authorization': "Bearer " + user.token
-            }
-        }).then((res) => {
-
+        axios.post('http://localhost:8080/api/user/resetPassword', obj).then((res) => {
+            
             toggleLoading();
+
+            if(res.data.code === "User not found"){
+                setError(res.data.code)
+            }else{
+                setCode(res.data.code)
+            }
 
         }).catch((res) => {
 
@@ -45,7 +50,8 @@ const ResetPassword = (props) => {
         });
     }
 
-    const submitNewPassword = ()=>{
+    const submitNewPassword = (e) => {
+        e.preventDefault()
         console.log("submitting new password")
         props.closeModal() // do this after giving a success message.
     }
