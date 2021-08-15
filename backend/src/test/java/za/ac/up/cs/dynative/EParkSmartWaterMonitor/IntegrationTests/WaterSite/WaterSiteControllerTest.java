@@ -91,12 +91,34 @@ public class WaterSiteControllerTest {
 
     //post: /api/sites/addSite
     @Test
-    public void addWaterSiteRequestNull(){
-        AddSiteRequest request = null;
+    public void addWaterSiteParkIdNull(){
+        AddSiteRequest request = new AddSiteRequest(null,"IntTesting123123",-25.6637895,28.271731499999998);
         ResponseEntity<EditWaterSiteResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
                 .postForEntity("/api/sites/addSite", request,EditWaterSiteResponse.class);
-        assertEquals(HttpStatus.OK,response.getStatusCode());
-        assertEquals("Request is null",response.getBody().getStatus());
+        assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
+        assertEquals("No park id specified",response.getBody().getStatus());
         assertEquals(false,response.getBody().getSuccess());
+    }
+
+    @Test
+    public void addWaterSiteParkDNE(){
+        UUID id = UUID.randomUUID();
+        AddSiteRequest request = new AddSiteRequest(id,"IntTesting123123",-25.6637895,28.271731499999998);
+        ResponseEntity<EditWaterSiteResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
+                .postForEntity("/api/sites/addSite", request,EditWaterSiteResponse.class);
+        assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
+        assertEquals("Park not found",response.getBody().getStatus());
+        assertEquals(false,response.getBody().getSuccess());
+    }
+
+    @Test
+    public void addWaterSiteSuccess(){
+        UUID id = UUID.randomUUID();
+        AddSiteRequest request = new AddSiteRequest(id,"IntTesting123123",-25.6637895,28.271731499999998);
+        ResponseEntity<EditWaterSiteResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
+                .postForEntity("/api/sites/addSite", request,EditWaterSiteResponse.class);
+        assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
+        assertEquals("Successfully added: IntTesting123123",response.getBody().getStatus());
+        assertEquals(true,response.getBody().getSuccess());
     }
 }
