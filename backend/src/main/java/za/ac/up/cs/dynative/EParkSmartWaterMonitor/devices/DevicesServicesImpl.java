@@ -41,6 +41,9 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWat
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.CanAttachWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.DeleteWaterSiteResponse;
 
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -473,8 +476,17 @@ public class DevicesServicesImpl implements DevicesService {
                     e.printStackTrace();
                 }
 
-//                GetDeviceDataResponse deviceDataResponse = getDeviceData(new GetDeviceDataRequest(deviceName,1, true));
-//                deviceDataResponse.getInnerResponses().get(0).getMeasurements().get(0).getDateTime();
+                GetDeviceDataResponse deviceDataResponse = getDeviceData(new GetDeviceDataRequest(deviceName,1, true));
+                String latestDeviceTime = deviceDataResponse.getInnerResponses().get(0).getMeasurements().get(0).getDeviceDateTime();
+
+                String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+                try {
+                    Date latestDateTime = new SimpleDateFormat(dateTimeFormat).parse(new Date().toString());
+                    Date latestDeviceDateTime = new SimpleDateFormat(dateTimeFormat).parse(latestDeviceTime);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
 
 
                 return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
