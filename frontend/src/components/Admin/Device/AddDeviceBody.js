@@ -8,6 +8,7 @@ import axios from "axios";
 import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
 
 
 const mapStyles = {
@@ -32,8 +33,10 @@ const AddDeviceBody = (props) => {
     // use the context supplied from the admin component to get the parks and sites
     const context = useContext(AdminContext)
     const user = useContext(UserContext)
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
     const parksAndSites = context.parksAndSites;
-    const toggleLoading = context.toggleLoading
+
 
     // getting the clicked location on
     function MapEvents() {

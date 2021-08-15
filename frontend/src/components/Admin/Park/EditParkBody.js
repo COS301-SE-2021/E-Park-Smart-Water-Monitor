@@ -12,6 +12,7 @@ import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import axios from "axios";
 import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
 
 const useStyles = makeStyles(componentStyles);
 const mapStyles = {
@@ -25,9 +26,9 @@ const EditParkBody = (props) => {
     const [longitude, setLongitude] = useState(28.280765508)
     const [error, setError] = useState("")
 
-    const context = useContext(AdminContext)
     const user = useContext(UserContext)
-    const toggleLoading = context.toggleLoading
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
     useEffect(() => {
         if(props && props.parkDetails)

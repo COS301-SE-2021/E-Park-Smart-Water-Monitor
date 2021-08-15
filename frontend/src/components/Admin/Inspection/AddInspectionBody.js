@@ -7,6 +7,7 @@ import "../../../assets/css/addDevice.css";
 import axios from "axios";
 import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -17,9 +18,9 @@ const AddInspectionBody = (props) => {
     const [description, setDescription] = useState("")
     const [date, setDate] = useState(null)
 
-    const context = useContext(AdminContext)
     const user = useContext(UserContext)
-    const toggleLoading = context.toggleLoading
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
     const selectDevice = (event) => {
       setDevice(event.target.value)

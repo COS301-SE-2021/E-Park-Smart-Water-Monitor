@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, {useContext, useState} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -9,6 +9,7 @@ import Col from "react-bootstrap/Col";
 import {Button, Form} from "react-bootstrap";
 import Select from "react-select";
 import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
+import LoadingContext from "../../../Context/LoadingContext";
 
 const useStyles = makeStyles(componentStyles);
 const mapStyles = {
@@ -23,7 +24,8 @@ const AddSiteBody = () => {
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
 
-
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
     return (
         <>

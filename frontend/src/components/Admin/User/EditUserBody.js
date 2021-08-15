@@ -7,6 +7,7 @@ import Row from "react-bootstrap/Row";
 import axios from "axios";
 import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
 const { Form } = require( "react-bootstrap" );
 
 const styles = {
@@ -38,7 +39,8 @@ const EditUserBody = (props) => {
 
     const context = useContext(AdminContext)
     const user = useContext(UserContext)
-    const toggleLoading = context.toggleLoading
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
     let userRoles = [
         { value: 'ADMIN', label: 'Admin' },

@@ -10,6 +10,7 @@ import axios from "axios";
 import AdminContext from "../AdminContext";
 import {DotLoader} from "react-spinners";
 import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
 const { Form } = require( "react-bootstrap" );
 
 const styles = {
@@ -36,7 +37,6 @@ const AddUserBody = (props) => {
     const [cellNumber, setCellNumber] = useState("")
     const [parkOptions, setParkOptions] = useState("")
 
-
     let userRoles = [
         { value: 'ADMIN', label: 'Admin' },
         { value: 'FIELD_ENGINEER', label: 'Field Engineer' },
@@ -46,7 +46,8 @@ const AddUserBody = (props) => {
     const context = useContext(AdminContext)
     const user = useContext(UserContext)
     const parksAndSites = context.parksAndSites
-    const toggleLoading = context.toggleLoading
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
 
     useEffect(() => {

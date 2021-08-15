@@ -27,6 +27,7 @@ import EditSiteBody from "./EditSiteBody";
 import {Tooltip} from "@material-ui/core";
 import AdminContext from "../AdminContext";
 import Select from "react-select";
+import LoadingContext from "../../../Context/LoadingContext";
 
 
 
@@ -44,7 +45,8 @@ const SiteTable = (props) => {
 
     const context = useContext(AdminContext)
     const parksAndSites = context.parksAndSites
-    const toggleLoading = context.toggleLoading
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
     const reloadSiteTable = () => {
         setValue(value => value+1)

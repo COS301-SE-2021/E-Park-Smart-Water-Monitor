@@ -19,6 +19,7 @@ import Modal from "../../Modals/Modal";
 import axios from "axios";
 import AddInspectionBody from "./AddInspectionBody";
 import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -31,6 +32,8 @@ const InspectionTable = () => {
 
 
     const user = useContext(UserContext)
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/inspections/getAllInspections', {

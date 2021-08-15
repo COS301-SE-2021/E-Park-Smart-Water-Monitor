@@ -27,6 +27,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import {Tooltip} from "@material-ui/core";
 import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
 // import disableScroll from 'disable-scroll';
 
 // import AdminModal from 'admin-modal'
@@ -44,9 +45,9 @@ const UserTable = () => {
     // for reloads of the component values
     const [value, setValue] = useState(0);
 
-    const context = useContext(AdminContext)
     const userContext = useContext(UserContext)
-    const toggleLoading = context.toggleLoading
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
     const reloadUserTable = () => {
         setValue(value => value+1)
@@ -54,9 +55,7 @@ const UserTable = () => {
 
     // on delete of a user
     const removeUser = (id) => {
-
-
-
+        
         return ()=>{
             toggleLoading()
             axios.post('http://localhost:8080/api/user/deleteUser', {

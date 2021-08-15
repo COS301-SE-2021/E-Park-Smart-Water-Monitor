@@ -24,6 +24,7 @@ import EditParkBody from "./EditParkBody";
 import {Tooltip} from "@material-ui/core";
 import AdminContext from '../AdminContext'
 import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -37,12 +38,9 @@ const ParkTable = (props) => {
     const [hover, setHover] = useState(true)
     const [value, setValue] = useState(0);
 
-    // get the parks context with the sites from the Admin parent component
-    // if you make this a state then the parent will rerender
-    const context = useContext(AdminContext)
     const user = useContext(UserContext)
-    const parksAndSites = context.parksAndSites
-    const toggleLoading = context.toggleLoading
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
     const reloadParkTable = () => {
         setValue(value => value+1)
