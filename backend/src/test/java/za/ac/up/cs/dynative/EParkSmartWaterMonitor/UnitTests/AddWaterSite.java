@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
@@ -60,26 +59,32 @@ public class AddWaterSite {
     }
 
     @Test
-    @DisplayName("Add a water site but the park does not exist")
-    public void AddSiteDNE() throws InvalidRequestException {
+    @DisplayName("Attempt to add a water site but the park does not exist")
+    public void AddSiteParkDNE() {
+        //setup
         Mockito.when(parkService.findByParkId(Mockito.any())).thenReturn(null);
 
-        AddSiteRequest request2= new AddSiteRequest(id2,name1,lat1,lon1);
-        Throwable t= assertThrows(InvalidRequestException.class,()->waterSiteServices.addSite(request2));
-        assertEquals("Park not found",t.getMessage());
+        //test
+        AddSiteRequest request= new AddSiteRequest(id2,name1,lat1,lon1);
+        AddSiteResponse response = waterSiteServices.addSite(request);
+        assertNotNull(response);
+        assertEquals("Park not found", response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
     @Test
-    @DisplayName("Add a water site to a park")
-    public void AddSite() throws InvalidRequestException {
+    @DisplayName("Add a water site to a park successfully")
+    public void AddSiteSuccess()  {
+        //setup
         Park p= new Park();
         FindByParkIdResponse response =new FindByParkIdResponse(true,p);
         Mockito.when(parkService.findByParkId(Mockito.any())).thenReturn(response);
 
-        AddSiteRequest request2=new AddSiteRequest(id2,name2,lat2,lon2);
-        AddSiteResponse response2= waterSiteServices.addSite(request2);
-        assertNotNull(response2);
-        assertEquals("Successfully added: " + request2.getSiteName(),response2.getStatus());
+        //test
+        AddSiteRequest request=new AddSiteRequest(id2,name2,lat2,lon2);
+        AddSiteResponse response2= waterSiteServices.addSite(request);
+        assertNotNull(response);
+        assertEquals("Successfully added: " + request.getSiteName(),response2.getStatus());
         assertEquals(true,response2.getSuccess());
     }
 }
