@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.EditWaterSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AddSiteResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.EditWaterSiteResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
 
@@ -93,19 +94,19 @@ public class WaterSiteControllerTest {
     @Test
     public void addWaterSiteParkIdNull(){
         AddSiteRequest request = new AddSiteRequest(null,"IntTesting123123",-25.6637895,28.271731499999998);
-        ResponseEntity<EditWaterSiteResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
-                .postForEntity("/api/sites/addSite", request,EditWaterSiteResponse.class);
+        ResponseEntity<AddSiteResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
+                .postForEntity("/api/sites/addSite", request,AddSiteResponse.class);
         assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
         assertEquals("No park id specified",response.getBody().getStatus());
         assertEquals(false,response.getBody().getSuccess());
     }
 
-    @Test
+    @Test //TODO
     public void addWaterSiteParkDNE(){
         UUID id = UUID.randomUUID();
         AddSiteRequest request = new AddSiteRequest(id,"IntTesting123123",-25.6637895,28.271731499999998);
-        ResponseEntity<EditWaterSiteResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
-                .postForEntity("/api/sites/addSite", request,EditWaterSiteResponse.class);
+        ResponseEntity<AddSiteResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
+                .postForEntity("/api/sites/addSite", request,AddSiteResponse.class);
         assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
         assertEquals("Park not found",response.getBody().getStatus());
         assertEquals(false,response.getBody().getSuccess());
@@ -113,10 +114,10 @@ public class WaterSiteControllerTest {
 
     @Test
     public void addWaterSiteSuccess(){
-        UUID id = UUID.randomUUID();
+        UUID id = UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80");
         AddSiteRequest request = new AddSiteRequest(id,"IntTesting123123",-25.6637895,28.271731499999998);
-        ResponseEntity<EditWaterSiteResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
-                .postForEntity("/api/sites/addSite", request,EditWaterSiteResponse.class);
+        ResponseEntity<AddSiteResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
+                .postForEntity("/api/sites/addSite", request,AddSiteResponse.class);
         assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
         assertEquals("Successfully added: IntTesting123123",response.getBody().getStatus());
         assertEquals(true,response.getBody().getSuccess());
