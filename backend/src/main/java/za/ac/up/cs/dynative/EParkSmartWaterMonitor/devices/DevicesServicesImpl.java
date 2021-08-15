@@ -16,6 +16,8 @@ import software.amazon.awssdk.services.iot.model.AttributePayload;
 import software.amazon.awssdk.services.iot.model.CreateThingRequest;
 import software.amazon.awssdk.services.iot.model.CreateThingResponse;
 import software.amazon.awssdk.services.iotdataplane.IotDataPlaneClient;
+import software.amazon.awssdk.services.iotdataplane.model.PublishRequest;
+import software.amazon.awssdk.services.iotdataplane.model.PublishResponse;
 import software.amazon.awssdk.services.iotdataplane.model.UpdateThingShadowRequest;
 import software.amazon.awssdk.services.iotdataplane.model.UpdateThingShadowResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Measurement;
@@ -40,6 +42,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.CanAttach
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.DeleteWaterSiteResponse;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service("DeviceServiceImpl")
 public class DevicesServicesImpl implements DevicesService {
@@ -417,6 +420,43 @@ public class DevicesServicesImpl implements DevicesService {
             }
         }
         return new SetMetricFrequencyResponse("No device configurations set.", false);
+    }
+
+    @Override
+    public PingDeviceResponse pingDevice(PingDeviceRequest request) {
+        String deviceName = "";
+        if (request.getDeviceID() != null) {
+            FindDeviceResponse findDeviceResponse = findDevice(new FindDeviceRequest(request.getDeviceID()));
+
+            if (findDeviceResponse.getDevice() != null) {
+                deviceName = findDeviceResponse.getDevice().getDeviceName();
+                String payload = "{\"DeviceName\": \"";
+                payload += deviceName;
+                payload += "\"}";
+
+                SdkBytes publishPayload = SdkBytes.fromUtf8String(payload);
+                PublishResponse publishResponse = iotDataPlaneClient.publish(PublishRequest
+                        .builder()
+                        .topic("iot/ping")
+                        .payload(publishPayload)
+                        .qos(1)
+                        .build());
+
+                try {
+                    TimeUnit.SECONDS.sleep(2);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+//                GetDeviceDataResponse deviceDataResponse = getDeviceData(new GetDeviceDataRequest(deviceName,1, true));
+//                deviceDataResponse.getInnerResponses().get(0).getMeasurements().get(0).getDateTime();
+
+
+                return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
+            }
+            return new PingDeviceResponse("Device does not exist.", false, deviceName, null);
+        }
+        return new PingDeviceResponse("No device ID specified.", false, deviceName, null);
     }
 
 }
