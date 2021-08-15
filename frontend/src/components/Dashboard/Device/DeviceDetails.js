@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
@@ -12,6 +12,7 @@ import {CardContent} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import EditDeviceMetrics from "./EditDeviceMetrics";
 import Modal from "../../Modals/Modal";
+import {UserContext} from "../../../Context/UserContext";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -22,11 +23,17 @@ function DeviceDetails(props) {
   const [access, setAccess] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
 
+    const user = useContext(UserContext)
 
     useEffect(() => {
 
         // access will be updated depending on the user priveleges
         setAccess(true)
+
+        if(user.role && user.role === "RANGER" )
+        {
+            setAccess(true)
+        }
 
         if(props.device != null)
         {
