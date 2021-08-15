@@ -8,11 +8,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.WaterSiteRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.EditWaterSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.EditWaterSiteResponse;
@@ -55,5 +53,19 @@ public class EditWaterSite {
         assertNotNull(response);
         assertEquals("Watersite does not exist.", response.getStatus());
         assertEquals(false, response.getSuccess());
+    }
+
+    @Test
+    @DisplayName("Attempt to edit a water site with success")
+    public void EditSiteSuccess(){
+        //setup
+        Mockito.when(repo.findById(Mockito.any())).thenReturn(Optional.of(new WaterSite()));
+
+        //test
+        EditWaterSiteRequest request = new EditWaterSiteRequest(UUID.randomUUID(),"Apple",12,15);
+        EditWaterSiteResponse response = waterSiteServices.editWaterSite(request);
+        assertNotNull(response);
+        assertEquals("Watersite successfully edited.", response.getStatus());
+        assertEquals(true, response.getSuccess());
     }
 }
