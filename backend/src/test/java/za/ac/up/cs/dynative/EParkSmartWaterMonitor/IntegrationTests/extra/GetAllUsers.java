@@ -1,4 +1,4 @@
-package za.ac.up.cs.dynative.EParkSmartWaterMonitor.IntegrationTests;
+package za.ac.up.cs.dynative.EParkSmartWaterMonitor.IntegrationTests.extra;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.MethodOrderer;

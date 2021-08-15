@@ -1,4 +1,4 @@
-package za.ac.up.cs.dynative.EParkSmartWaterMonitor.IntegrationTests;
+package za.ac.up.cs.dynative.EParkSmartWaterMonitor.IntegrationTests.extra;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -30,6 +30,8 @@ public class EditUser {
     @Test
     @Order(1)
     public void EditUserNoChanges(){
+
+
         EditUserRequest request = new EditUserRequest("GONERSOON","9971219577231","gone@gmail.com",
                 "team","dynative","GONERSOON","Admin","0125643412");
         ResponseEntity<EditUserResponse> responseEntity = this.restTemplate

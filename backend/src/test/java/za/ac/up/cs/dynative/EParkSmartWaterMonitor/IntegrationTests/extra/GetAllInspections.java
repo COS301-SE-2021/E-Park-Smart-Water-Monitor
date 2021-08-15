@@ -1,4 +1,4 @@
-package za.ac.up.cs.dynative.EParkSmartWaterMonitor.IntegrationTests;
+package za.ac.up.cs.dynative.EParkSmartWaterMonitor.IntegrationTests.extra;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -13,15 +13,16 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.EParkSmartWaterMonitorApplication;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.DeleteUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.DeleteUserResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetWaterSiteInspectionsRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetWaterSiteInspectionsResponse;
 
 import java.util.UUID;
+
 
 @SpringBootTest(classes = EParkSmartWaterMonitorApplication.class,
         webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class RemoveUser {
+public class GetAllInspections {
     @LocalServerPort
     private int port;
 
@@ -30,20 +31,23 @@ public class RemoveUser {
 
     @Test
     @Order(1)
-    public void RemoveUser(){
-        DeleteUserRequest request = new DeleteUserRequest(UUID.fromString("48356a22-e568-484b-bc5d-4aa35b07e86a"));
-        ResponseEntity<DeleteUserResponse> responseEntity = this.restTemplate
-                .postForEntity("http://localhost:" + port + "/api/user/deleteUser", request, DeleteUserResponse.class);
+    public void GetInspectionsSiteDNE(){
+        GetWaterSiteInspectionsRequest request = new GetWaterSiteInspectionsRequest(UUID.randomUUID());
+        ResponseEntity<GetWaterSiteInspectionsResponse> responseEntity = this.restTemplate
+                .postForEntity("http://localhost:" + port + "/api/inspections/getSiteInspections", request, GetWaterSiteInspectionsResponse.class);
         assertEquals(200, responseEntity.getStatusCodeValue());
     }
 
     @Test
     @Order(2)
-    public void removeUserDNE(){
-        DeleteUserRequest request = new DeleteUserRequest(UUID.fromString("77356a22-e568-484b-bc5d-4aa35b07e86a"));
-        ResponseEntity<DeleteUserResponse> responseEntity = this.restTemplate
-                .postForEntity("http://localhost:" + port + "/api/user/deleteUser", request, DeleteUserResponse.class);
+    public void GetInspectionsSite(){
+        GetWaterSiteInspectionsRequest request = new GetWaterSiteInspectionsRequest(UUID.fromString("886f7187-a436-4105-8bc6-1c340a7232bc"));
+        ResponseEntity<GetWaterSiteInspectionsResponse> responseEntity = this.restTemplate
+                .postForEntity("http://localhost:" + port + "/api/inspections/getSiteInspections", request, GetWaterSiteInspectionsResponse.class);
         assertEquals(200, responseEntity.getStatusCodeValue());
     }
+
+
+
 }
 

@@ -347,6 +347,7 @@ public class DevicesServicesImpl implements DevicesService {
 
     @Override
     public DeleteDeviceResponse deleteDevice(DeleteDeviceRequest request) {
+        System.out.println("A");
         if (request.getDeviceId() == null) {
             return new DeleteDeviceResponse("No device id specified.", false);
         }
