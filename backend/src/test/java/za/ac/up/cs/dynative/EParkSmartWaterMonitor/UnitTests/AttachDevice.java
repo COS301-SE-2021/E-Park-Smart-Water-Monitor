@@ -39,11 +39,13 @@ public class AttachDevice {
 
     @Test
     @DisplayName("Try and attach a water source device but the site has a null id")
-    public void AttachNull(){
+    public void AttachWaterSourceDeviceSiteIdNull(){
         Device device = new Device(UUID.randomUUID(),"TEST!!!","WaterSource", "UNIT",3,9);
         AttachWaterSourceDeviceRequest request= new AttachWaterSourceDeviceRequest(null,device);
-        Throwable t =assertThrows(InvalidRequestException.class, ()->waterSiteServices.attachWaterSourceDevice(request));
-        assertEquals("No Id specified",t.getMessage());
+        AttachWaterSourceDeviceResponse response =waterSiteServices.attachWaterSourceDevice(request);
+        assertNotNull(response);
+        assertEquals("No id specified", response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
     @Test
@@ -79,16 +81,20 @@ public class AttachDevice {
     public void AttachNullDeviceID(){
         Device device = new Device(null,"TEST!!!", "UNIT","WaterSource",3,9);
         AttachWaterSourceDeviceRequest request= new AttachWaterSourceDeviceRequest(id1,device);
-        Throwable t =assertThrows(InvalidRequestException.class, ()->waterSiteServices.attachWaterSourceDevice(request));
-        assertEquals("No device Id specified",t.getMessage());
+        AttachWaterSourceDeviceResponse response=waterSiteServices.attachWaterSourceDevice(request);
+        assertNotNull(response);
+        assertEquals("No device id specified", response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
     @Test
     @DisplayName("Try and attach a water source device but the device is null")
     public void AttachDNEDevice(){
         AttachWaterSourceDeviceRequest request= new AttachWaterSourceDeviceRequest(UUID.randomUUID(),null);
-        Throwable t =assertThrows(InvalidRequestException.class, ()->waterSiteServices.attachWaterSourceDevice(request));
-        assertEquals("No device specified",t.getMessage());
+        AttachWaterSourceDeviceResponse response=waterSiteServices.attachWaterSourceDevice(request);
+        assertNotNull(response);
+        assertEquals("No device specified", response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
 
