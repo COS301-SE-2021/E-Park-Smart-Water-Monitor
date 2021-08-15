@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
+
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -30,6 +33,26 @@ public class GetSite {
         assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
         assertEquals("No id specified",response.getBody().getStatus());
         assertEquals(false,response.getBody().getSuccess());
+    }
+
+    @Test
+    public void getSiteDNE(){
+        GetSiteByIdRequest request = new GetSiteByIdRequest(UUID.randomUUID());
+        ResponseEntity<GetSiteByIdResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
+                .postForEntity("/api/sites/getSite", request,GetSiteByIdResponse.class);
+        assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
+        assertEquals("Site does not exist.",response.getBody().getStatus());
+        assertEquals(false,response.getBody().getSuccess());
+    }
+
+    @Test
+    public void getSite(){
+        GetSiteByIdRequest request = new GetSiteByIdRequest(UUID.fromString("91d05eb1-2a35-4e44-9726-631d83121edb"));
+        ResponseEntity<GetSiteByIdResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
+                .postForEntity("/api/sites/getSite", request,GetSiteByIdResponse.class);
+        assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
+        assertEquals("Successfully found site.",response.getBody().getStatus());
+        assertEquals(true,response.getBody().getSuccess());
     }
 
 
