@@ -14,11 +14,6 @@ export const UserProvider = ({ children }) => {
     const [IDNumber, setIDNumber] = useState("");
     const [parkID, setParkID] = useState("");
     const [parkName, setParkName] = useState("");
-    const [axiosConfig, setAxiosConfig] = useState({
-        headers: {
-            'Authorization': "Bearer " + token
-        }
-    });
 
     const isLogin = () => {
         // let token = sessionStorage.getItem('token')
@@ -28,6 +23,7 @@ export const UserProvider = ({ children }) => {
     const Logout = () => {
         setToken("")
     }
+
 
     return (
         <UserContext.Provider
@@ -42,7 +38,6 @@ export const UserProvider = ({ children }) => {
                 IDNumber,
                 parkID,
                 parkName,
-                axiosConfig,
                 // functions
                 setToken,
                 setRole,
@@ -53,7 +48,6 @@ export const UserProvider = ({ children }) => {
                 setIDNumber,
                 setParkID,
                 setParkName,
-                setAxiosConfig,
                 isLogin,
                 Logout
             }}

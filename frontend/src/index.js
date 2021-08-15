@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import ReactDOM from "react-dom";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { ThemeProvider } from "@material-ui/core/styles";
@@ -9,17 +9,45 @@ import "assets/scss/argon-dashboard-react.scss";
 import axios from "axios";
 import Routing from "./Routing";
 import {UserProvider} from "./Context/UserContext";
+import {LoadingProvider} from "./Context/LoadingContext";
+import {PuffLoader} from "react-spinners";
+import Modal from "./components/Modals/Modal";
+import {css} from "@emotion/react";
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
+
+const overlay = css`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+`;
 
 const App = () => {
+    const [loading, setLoading] = useState(false)
 
-    axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-    axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*';
-
+    const toggleLoading = ()=>{
+        setLoading(loading=>!loading)
+    }
 
     return (<ThemeProvider theme={theme}>
         <UserProvider>
+            <Modal onClose={() => setLoading(false)} show={loading}>
+                <div className="sweet-loading" style={ overlay }>
+                    <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
+                </div>
+            </Modal>
             <CssBaseline />
-            <Routing/>
+            {/*Loading Modal*/}
+            <LoadingProvider value={ { toggleLoading: toggleLoading } } >
+                <Routing/>
+            </LoadingProvider>
         </UserProvider>
     </ThemeProvider>)
 

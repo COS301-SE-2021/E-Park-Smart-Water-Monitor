@@ -22,6 +22,7 @@ import axios from "axios";
 import {ScaleLoader} from "react-spinners";
 import {useHistory} from "react-router-dom";
 import { UserContext } from '../../Context/UserContext';
+import LoadingContext from "../../Context/LoadingContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -37,9 +38,11 @@ function Login() {
     const [showReset, setShowReset] = useState(false)
 
     const user = useContext(UserContext)
+    const loader = useContext(LoadingContext)
+
 
     const login = () => {
-
+        loader.toggleLoading()
         setLoading(true)
         setError("")
         let obj = {
@@ -49,6 +52,7 @@ function Login() {
 
         axios.post('http://localhost:8080/api/user/login', obj
         ).then((res)=>{
+            loader.toggleLoading()
             setLoading(false)
             console.log("login response: "+JSON.stringify(res))
             let x = res.data;
