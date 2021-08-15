@@ -165,28 +165,49 @@ function Login() {
               { error &&  <Box textAlign="center" marginTop="1.5rem" marginBottom="1.5rem">
                   { error }
               </Box> }
+
+              {/* show popup for reset code to fill in, only allow close when cancel button clicked */}
+              <Box textAlign="center" marginTop="1rem" marginBottom="1rem">
+                  <a
+                      href="#admui"
+                      onClick={(e) => e.preventDefault()}
+                      className={classes.footerLinks}
+                  >
+                      Forgot password?
+                  </a>
+              </Box>
+              {/* show popup for contacting administrator */}
+              <Box textAlign="center" marginTop="1rem" >
+                  <a
+                      href="#admui"
+                      onClick={(e) => e.preventDefault()}
+                      className={classes.footerLinks}
+                  >
+                      Need login details?
+                  </a>
+              </Box>
           </CardContent>
         </Card>
-        <Grid container component={Box} marginTop="1rem">
-          <Grid item xs={6} component={Box} textAlign="left">
-            <a
-              href="#admui"
-              onClick={(e) => e.preventDefault()}
-              className={classes.footerLinks}
-            >
-              Forgot password
-            </a>
-          </Grid>
-          {/*<Grid item xs={6} component={Box} textAlign="right">*/}
-          {/*  <a*/}
-          {/*    href="#admui"*/}
-          {/*    onClick={(e) => e.preventDefault()}*/}
-          {/*    className={classes.footerLinks}*/}
-          {/*  >*/}
-          {/*    Create new account*/}
-          {/*  </a>*/}
-          {/*</Grid>*/}
-        </Grid>
+      {/*  <Grid container component={Box} marginTop="1rem">*/}
+      {/*    <Grid item xs={6} component={Box} textAlign="left">*/}
+      {/*      <a*/}
+      {/*        href="#admui"*/}
+      {/*        onClick={(e) => e.preventDefault()}*/}
+      {/*        className={classes.footerLinks}*/}
+      {/*      >*/}
+      {/*        Forgot password*/}
+      {/*      </a>*/}
+      {/*    </Grid>*/}
+      {/*    /!*<Grid item xs={6} component={Box} textAlign="right">*!/*/}
+      {/*    /!*  <a*!/*/}
+      {/*    /!*    href="#admui"*!/*/}
+      {/*    /!*    onClick={(e) => e.preventDefault()}*!/*/}
+      {/*    /!*    className={classes.footerLinks}*!/*/}
+      {/*    /!*  >*!/*/}
+      {/*    /!*    Create new account*!/*/}
+      {/*    /!*  </a>*!/*/}
+      {/*    /!*</Grid>*!/*/}
+      {/*  </Grid>*/}
       </Grid>
     </>
     );
