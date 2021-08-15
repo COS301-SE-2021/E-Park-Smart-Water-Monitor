@@ -115,7 +115,7 @@ public class Measurement {
     }
 
     public void setEstimateValue(String estimateValue) {
-        estimateValue = estimateValue;
+        this.estimateValue = estimateValue;
     }
 
     public String getEstimateError() {
@@ -123,6 +123,6 @@ public class Measurement {
     }
 
     public void setEstimateError(String estimateError) {
-        estimateError = estimateError;
+        this.estimateError = estimateError;
     }
 }

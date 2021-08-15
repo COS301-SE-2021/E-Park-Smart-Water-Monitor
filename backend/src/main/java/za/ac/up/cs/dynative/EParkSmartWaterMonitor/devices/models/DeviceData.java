@@ -130,7 +130,27 @@ public class DeviceData {
                 '}';
     }
 
-    public enum DeviceStatus {
+    public enum DeviceStatus
+    {
         FINE, DIRE, NEEDS_ATTENTION
+    }
+
+    public double getSensorUpperLimit(String type)
+    {
+        for (int i = 0; i < getDeviceConfiguration().size() ; i++)
+        {
+            if(getDeviceConfiguration().get(i).getSettingType().equals(type))
+                return getDeviceConfiguration().get(i).getUpperLimit();
+        }
+        return -1;
+    }
+    public double getSensorLowerLimit(String type)
+    {
+        for (int i = 0; i < getDeviceConfiguration().size() ; i++)
+        {
+            if(getDeviceConfiguration().get(i).getSettingType().equals(type))
+                return getDeviceConfiguration().get(i).getLowerLimit();
+        }
+        return -1;
     }
 }

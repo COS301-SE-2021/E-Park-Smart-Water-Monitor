@@ -43,7 +43,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.DeleteWat
 import java.util.*;
 
 @Service("DeviceServiceImpl")
-public class DevicesServicesImpl implements DevicesService {
+public class DevicesServicesImpl implements DevicesService
+{
 
     private DeviceRepo deviceRepo;
     private ParkService parkService;
@@ -421,8 +422,22 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     @Override
-    public void getDataNotification(DataNotificationRequest dataNotificationRequest) {
+    public void getDataNotification(DataNotificationRequest dataNotificationRequest)
+    {
+        List<Device> deviceList = deviceRepo.findDeviceByDeviceName(dataNotificationRequest.getData().get(0).getDeviceName());
+        int problematicMeasurements=0;
+        if (deviceList.size()<1)
+            return;
 
+        Device targetDevice = deviceList.get(0);
+
+        for (int i = 0; i < dataNotificationRequest.getData().size(); i++)
+        {
+            if (i==0)
+            {
+                targetDevice.getDeviceData().setLastSeen(dataNotificationRequest.getData().get(0).getWaterSourceData().getMeasurements().get(0).getDateTime());
+            }
+        }
         System.out.println(dataNotificationRequest.toString());
 
     }
