@@ -14,8 +14,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.WaterSiteRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AddSiteResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.EditWaterSiteRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.EditWaterSiteResponse;
 
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,4 +32,14 @@ public class EditWaterSite {
 
     @InjectMocks
     WaterSiteServicesImpl waterSiteServices;
+
+    @Test
+    @DisplayName("Attempt to edit a water site but no id is specified")
+    public void EditSiteIdNull(){
+        EditWaterSiteRequest request = new EditWaterSiteRequest(null,"",0,0);
+        EditWaterSiteResponse response = waterSiteServices.editWaterSite(request);
+        assertNotNull(response);
+        assertEquals("No watersite id specified", response.getStatus());
+        assertEquals(false, response.getSuccess());
+    }
 }
