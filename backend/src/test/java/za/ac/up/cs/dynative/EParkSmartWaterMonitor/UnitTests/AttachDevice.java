@@ -50,25 +50,31 @@ public class AttachDevice {
 
     @Test
     @DisplayName("Try and attach a water source device but the site does not exist")
-    public void AttachDNE(){
+    public void AttachSiteDNE(){
+        //setup
         UUID test= UUID.randomUUID();
         Optional<WaterSite> op= Optional.empty();
         Mockito.when(repo.findById(test)).thenReturn(op);
         Device device = new Device(UUID.randomUUID(),"TEST!!!","WaterSource", "UNIT",3,9);
 
+        //test
         AttachWaterSourceDeviceRequest request= new AttachWaterSourceDeviceRequest(test,device);
-        Throwable t =assertThrows(InvalidRequestException.class, ()->waterSiteServices.attachWaterSourceDevice(request));
-        assertEquals("Site not found",t.getMessage());
+        AttachWaterSourceDeviceResponse response= waterSiteServices.attachWaterSourceDevice(request);
+        assertNotNull(response);
+        assertEquals("Site does not exist",response.getStatus());
+        assertEquals(false,response.getSuccess());
     }
 
     @Test
     @DisplayName("Succesfully attach a device")
-    public void Attach() throws InvalidRequestException {
+    public void Attach() {
+        //setup
         WaterSite site1= new WaterSite(id1,name1,lat1,lon1);
         Device device = new Device(id2,"TESTING","UNIt","WaterSource",lat2,lon2);
         Optional<WaterSite> op = Optional.of(site1);
         Mockito.when(repo.findById(id1)).thenReturn(op);
 
+        //test
         AttachWaterSourceDeviceRequest request= new AttachWaterSourceDeviceRequest(id1,device);
         AttachWaterSourceDeviceResponse response= waterSiteServices.attachWaterSourceDevice(request);
         assertNotNull(response);
