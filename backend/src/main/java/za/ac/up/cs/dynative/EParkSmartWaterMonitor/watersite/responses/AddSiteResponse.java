@@ -1,8 +1,11 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses;
 
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
+
 public class AddSiteResponse {
     private String status;
     private Boolean success;
+    private WaterSite site;
 
     public AddSiteResponse(String status, Boolean success) {
         this.status = status;
@@ -26,5 +29,13 @@ public class AddSiteResponse {
 
     public void setSuccess(Boolean success) {
         this.success = success;
+    }
+
+    public WaterSite getSite() {
+        return site;
+    }
+
+    public void setSite(WaterSite site) {
+        this.site = site;
     }
 }

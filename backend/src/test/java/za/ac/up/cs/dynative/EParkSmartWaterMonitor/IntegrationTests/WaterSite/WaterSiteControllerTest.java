@@ -9,10 +9,13 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.DeleteWaterSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.EditWaterSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AddSiteResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.DeleteWaterSiteResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.EditWaterSiteResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
 
@@ -27,6 +30,8 @@ public class WaterSiteControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    private UUID siteId;
 
     //post: /api/sites/getSite
     @Test
@@ -101,23 +106,25 @@ public class WaterSiteControllerTest {
         assertEquals(false,response.getBody().getSuccess());
     }
 
-    @Test //TODO
-    public void addWaterSiteParkDNE(){
-        UUID id = UUID.randomUUID();
-        AddSiteRequest request = new AddSiteRequest(id,"IntTesting123123",-25.6637895,28.271731499999998);
-        ResponseEntity<AddSiteResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
-                .postForEntity("/api/sites/addSite", request,AddSiteResponse.class);
-        assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
-        assertEquals("Park not found",response.getBody().getStatus());
-        assertEquals(false,response.getBody().getSuccess());
-    }
-
     @Test
     public void addWaterSiteSuccess(){
         UUID id = UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80");
         AddSiteRequest request = new AddSiteRequest(id,"IntTesting123123",-25.6637895,28.271731499999998);
         ResponseEntity<AddSiteResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
                 .postForEntity("/api/sites/addSite", request,AddSiteResponse.class);
+        assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
+        assertEquals("Successfully added: IntTesting123123",response.getBody().getStatus());
+        assertEquals(true,response.getBody().getSuccess());
+        siteId = response.getBody().getSite().getId();
+    }
+
+    //delete: /api/sites/deleteWaterSite
+    @Test
+    public void deleteSuccess(){
+        UUID id = UUID.fromString("79b750a6-43a6-43a5-9cf6-1a9beb0011f0");
+        DeleteWaterSiteRequest request = new DeleteWaterSiteRequest(id);
+        ResponseEntity<DeleteWaterSiteResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
+                .delete("/api/sites/addSite", request,DeleteWaterSiteResponse.class);
         assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
         assertEquals("Successfully added: IntTesting123123",response.getBody().getStatus());
         assertEquals(true,response.getBody().getSuccess());
