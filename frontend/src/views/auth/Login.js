@@ -23,6 +23,9 @@ import {ScaleLoader} from "react-spinners";
 import {useHistory} from "react-router-dom";
 import { UserContext } from '../../Context/UserContext';
 import LoadingContext from "../../Context/LoadingContext";
+import AddDeviceBody from "../../components/Admin/Device/AddDeviceBody";
+import Modal from "../../components/Modals/Modal";
+import ResetPassword from "../../components/Auth/ResetPassword";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -76,6 +79,9 @@ function Login() {
 
     return (
     <>
+        <Modal title="Reset Password" onClose={() => setShowReset(false)} show={showReset}>
+            <ResetPassword closeModal={()=>{ setShowReset(false) }}/>
+        </Modal>
       <Grid item xs={12} lg={5} md={7}>
         <Card classes={{ root: classes.cardRoot }}>
           <CardHeader
@@ -177,13 +183,18 @@ function Login() {
               <Grid item xs={6} component={Box} textAlign="left">
                   <a
                       href="#admui"
-                      onClick={(e) => e.preventDefault()}
+                      onClick={(e) => {
+                          e.preventDefault()
+                          // show modal
+                            setShowReset(true)
+                      }}
                       className={classes.footerLinks}
                   >
                       {/* show popup for reset code to fill in, only allow close when cancel button clicked */}
                       Forgot password
                   </a>
               </Grid>
+              {/*Add a mui popup for telling them to contact their administrator*/}
               <Grid item xs={6} component={Box} textAlign="right">
                   <a
                       href="#admui"
@@ -192,7 +203,6 @@ function Login() {
                       )}
                       className={classes.footerLinks}
                   >
-                      {/* show popup for contacting administrator */}
                       Need Login Details
                   </a>
               </Grid>

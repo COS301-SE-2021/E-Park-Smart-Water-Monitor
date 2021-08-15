@@ -11,8 +11,6 @@ import {css} from "@emotion/react";
 const Routing = () => {
 
     const user = useContext(UserContext)
-    let loading = user.loading;
-    loading = true;
 
     return (
             <BrowserRouter>
