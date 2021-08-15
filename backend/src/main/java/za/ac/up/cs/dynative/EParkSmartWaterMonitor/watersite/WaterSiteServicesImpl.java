@@ -33,6 +33,7 @@ public class WaterSiteServicesImpl implements WaterSiteService {
         if (request==null){
             response.setStatus("Request is null");
             response.setSuccess(false);
+            return response;
         }
         if (request.getParkId() != null) {
             WaterSite waterSite = new WaterSite(UUID.randomUUID(),request.getSiteName(),request.getLatitude(), request.getLongitude());

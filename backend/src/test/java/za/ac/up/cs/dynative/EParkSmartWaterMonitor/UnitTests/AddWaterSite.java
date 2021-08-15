@@ -41,18 +41,22 @@ public class AddWaterSite {
     String name2="UnitTest 2";
 
     @Test
-    @DisplayName("Add a water site but the request is null")
+    @DisplayName("Attempt to add a water site but the request is null")
     public void AddSiteRequestNull(){
-        Throwable t= assertThrows(InvalidRequestException.class,()->waterSiteServices.addSite(null));
-        assertEquals("Request is null",t.getMessage());
+        AddSiteResponse response = waterSiteServices.addSite(null);
+        assertNotNull(response);
+        assertEquals("Request is null", response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
     @Test
-    @DisplayName("Add a water site but the park id is null")
+    @DisplayName("Attempt to add a water site but no id is specified")
     public void AddSiteIDNull(){
         AddSiteRequest request= new AddSiteRequest(null,name1,lat1,lon1);
-        Throwable t= assertThrows(InvalidRequestException.class,()->waterSiteServices.addSite(request));
-        assertEquals("No park id specified",t.getMessage());
+        AddSiteResponse response = waterSiteServices.addSite(request);
+        assertNotNull(response);
+        assertEquals("No park id specified", response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
     @Test
