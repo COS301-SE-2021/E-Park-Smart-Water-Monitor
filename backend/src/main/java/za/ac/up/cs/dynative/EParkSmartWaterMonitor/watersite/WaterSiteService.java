@@ -20,6 +20,6 @@ public interface WaterSiteService {
     DeleteWaterSiteResponse deleteWaterSite(DeleteWaterSiteRequest deleteWaterSiteRequest);
     EditWaterSiteResponse editWaterSite(EditWaterSiteRequest editWaterSiteRequest);
     WaterSite getWaterSiteByRelatedDevice( UUID id);
-
+    FindWaterSiteByDeviceResponse findWaterSiteByDeviceId(FindWaterSiteByDeviceRequest findWaterSiteByDeviceRequest);}
 }
 

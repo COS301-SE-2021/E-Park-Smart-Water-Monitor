@@ -47,10 +47,10 @@ public class GetDeviceData {
     @Test
     @DisplayName("No device name sppecified when trying to get data")
     public void getDeviceDataNameNull(){
-        Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.getDeviceData(new GetDeviceDataRequest("",23)));
+        Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.getDeviceData(new GetDeviceDataRequest("",23, false)));
         assertEquals("Device name not specified",t.getMessage());
 
-        Throwable t2= assertThrows(InvalidRequestException.class,()->devicesServices.getDeviceData(new GetDeviceDataRequest("",9)));
+        Throwable t2= assertThrows(InvalidRequestException.class,()->devicesServices.getDeviceData(new GetDeviceDataRequest("",9, false)));
         assertEquals("Device name not specified",t2.getMessage());
     }
 
@@ -59,7 +59,7 @@ public class GetDeviceData {
     public void getDeviceDataDNE(){
         Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName(Mockito.any())).thenReturn(new ArrayList<Device>());
 
-        Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.getDeviceData(new GetDeviceDataRequest("test",23)));
+        Throwable t= assertThrows(InvalidRequestException.class,()->devicesServices.getDeviceData(new GetDeviceDataRequest("test",23, false)));
         assertEquals("Device does not exist",t.getMessage());
     }
 

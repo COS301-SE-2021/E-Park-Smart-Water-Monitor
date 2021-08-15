@@ -31,6 +31,10 @@ public class CanAttachDevice {
     double lat1= -27.371767;
     double lon1=28.737437;
     String name1="UnitTest 1";
+    String shape="circle";
+    double length = 0;
+    double width=0;
+    double radius=1.785;
 
     @Test
     @DisplayName("Test if a device can be added to a site, but the site id is null")
@@ -62,7 +66,7 @@ public class CanAttachDevice {
     @Test
     @DisplayName("Test if a device can be added to a site successful")
     public void CanAttach() throws InvalidRequestException {
-        site1= new WaterSite(id1,name1,lat1,lon1);
+        site1= new WaterSite(id1,name1,lat1,lon1,shape,length,width,radius);
         Optional<WaterSite> op = Optional.of(site1);
         Mockito.when(repo.findById(id1)).thenReturn(op);
 
