@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.WaterSiteRepo;
@@ -40,34 +39,42 @@ public class GetSiteById {
     String name2="UnitTest 2";
 
     @Test
-    @DisplayName("Find a site with a null id")
-    public void FindSiteWithNullID(){
+    @DisplayName("Find a site but the id is null")
+    public void FindSiteIdNull(){
         GetSiteByIdRequest request = new GetSiteByIdRequest(null);
-        Throwable t= assertThrows(InvalidRequestException.class,()->waterSiteServices.getSiteById(request));
-        assertEquals("No Id specified",t.getMessage());
+        GetSiteByIdResponse response= waterSiteServices.getSiteById(request);
+        assertNotNull(response);
+        assertEquals("No id specified",response.getStatus());
+        assertEquals(false,response.getSuccess());
     }
 
     @Test
     @DisplayName("Find a site with an invalid id")
     public void FindSiteDNE(){
+        //setup
         UUID test =UUID.randomUUID();
         Optional<WaterSite> op = Optional.empty();
         Mockito.when(repo.findById(test)).thenReturn(op);
 
+        //test
         GetSiteByIdRequest request = new GetSiteByIdRequest(test);
-        Throwable t = assertThrows(InvalidRequestException.class, ()->waterSiteServices.getSiteById(request));
-        assertEquals("Site not found",t.getMessage());
+        GetSiteByIdResponse response= waterSiteServices.getSiteById(request);
+        assertNotNull(response);
+        assertEquals("Site does not exist.",response.getStatus());
+        assertEquals(false,response.getSuccess());
 
     }
 
     @Test
     @DisplayName("Find a site with a valid id")
-    public void FindSiteWithID() throws InvalidRequestException {
+    public void FindSiteWithID() {
+        //setup
         site1= new WaterSite(id1,name1,lat1,lon1);
         site2= new WaterSite(id2,name2,lat2,lon2);
         Optional<WaterSite> foundSite = Optional.of(site1);
         Mockito.when(repo.findById(site1.getId())).thenReturn(foundSite);
 
+        //test
         GetSiteByIdRequest request = new GetSiteByIdRequest(site1.getId());
         GetSiteByIdResponse response= waterSiteServices.getSiteById(request);
         assertNotNull(response);
