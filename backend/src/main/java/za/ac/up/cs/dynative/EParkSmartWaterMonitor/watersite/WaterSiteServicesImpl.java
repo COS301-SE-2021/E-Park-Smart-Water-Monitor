@@ -2,17 +2,10 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.EditDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.EditDeviceResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.DeleteParkResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.WaterSiteRepo;
@@ -20,20 +13,16 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.*;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service("WaterSiteServiceImpl")
-public class WaterSiteServicesImpl implements WaterSiteService
-{
-
+public class WaterSiteServicesImpl implements WaterSiteService {
     ParkServiceImpl parkService;
     WaterSiteRepo waterSiteRepo;
 
     @Autowired
-    public WaterSiteServicesImpl(@Qualifier("ParkService") ParkServiceImpl parkService, @Qualifier("WaterSiteRepo") WaterSiteRepo sRepo)
-    {
+    public WaterSiteServicesImpl(@Qualifier("ParkService") ParkServiceImpl parkService, @Qualifier("WaterSiteRepo") WaterSiteRepo sRepo) {
         this.waterSiteRepo = sRepo;
         this.parkService = parkService;
     }
@@ -41,17 +30,13 @@ public class WaterSiteServicesImpl implements WaterSiteService
     @Override
     public AddSiteResponse addSite(AddSiteRequest request) {
         AddSiteResponse response = new AddSiteResponse();
-
         if (request==null){
             response.setStatus("Request is null");
             response.setSuccess(false);
         }
-
         if (request.getParkId() != null) {
             WaterSite waterSite = new WaterSite(UUID.randomUUID(),request.getSiteName(),request.getLatitude(), request.getLongitude());
-
             FindByParkIdResponse findByParkIdResponse = parkService.findByParkId(new FindByParkIdRequest(request.getParkId()));
-
             if (findByParkIdResponse != null) {
                 findByParkIdResponse.getPark().addWaterSite(waterSite);
                 waterSiteRepo.save(waterSite);
@@ -62,12 +47,10 @@ public class WaterSiteServicesImpl implements WaterSiteService
                 response.setStatus("Park not found");
                 response.setSuccess(false);
             }
-        }
-        else {
+        } else {
             response.setStatus("No park id specified");
             response.setSuccess(false);
         }
-
         return response;
     }
 
@@ -82,21 +65,16 @@ public class WaterSiteServicesImpl implements WaterSiteService
             return response;
         }
         Optional<WaterSite> siteToAddTo = waterSiteRepo.findById(request.getSiteId());
-        if (siteToAddTo.isPresent())
-        {
+        if (siteToAddTo.isPresent()) {
             response= new CanAttachWaterSourceDeviceResponse("Can attach device to site!",true);
-        }
-        else
-        {
+        } else {
             response = new CanAttachWaterSourceDeviceResponse("Site does not exist", false);
         }
-
         return response;
     }
 
     public AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request)  {
         AttachWaterSourceDeviceResponse response;
-
         if (request.getSiteId()==null){
             response = new AttachWaterSourceDeviceResponse("No id specified", false);
             return response;
@@ -124,11 +102,9 @@ public class WaterSiteServicesImpl implements WaterSiteService
         return null;
     }
 
-
     @Override
     public GetSiteByIdResponse getSiteById(GetSiteByIdRequest request)  {
         GetSiteByIdResponse response;
-
         if (request.getSiteId()==null){
             response = new GetSiteByIdResponse("No id specified", false, null);
             return response;
@@ -159,7 +135,6 @@ public class WaterSiteServicesImpl implements WaterSiteService
             return new DeleteWaterSiteResponse("No watersite id specified.", false);
         }
         Optional<WaterSite> waterSite = waterSiteRepo.findById(request.getWaterSiteId());
-
         if (waterSite.isPresent()) {
             waterSiteRepo.deletEntireWaterSite(waterSite.get().getId());
             return new DeleteWaterSiteResponse("Successfully deleted the watersite and all related entities.", true);
@@ -169,7 +144,6 @@ public class WaterSiteServicesImpl implements WaterSiteService
 
     @Override
     public EditWaterSiteResponse editWaterSite(EditWaterSiteRequest request) {
-
         EditWaterSiteResponse response = new EditWaterSiteResponse();
         if (request.getId() != null) {
             Optional<WaterSite> waterSiteToEdit = waterSiteRepo.findById(request.getId());
@@ -200,8 +174,7 @@ public class WaterSiteServicesImpl implements WaterSiteService
     }
 
     @Override
-    public WaterSite getWaterSiteByRelatedDevice(UUID id)
-    {
+    public WaterSite getWaterSiteByRelatedDevice(UUID id) {
         return  waterSiteRepo.getWaterSiteByRelatedDevice(id);
     }
 
