@@ -1,4 +1,5 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests;
+
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
@@ -30,6 +31,7 @@ public class AddWaterSite {
 
     @InjectMocks
     WaterSiteServicesImpl waterSiteServices;
+
     UUID id2= UUID.randomUUID();
     double lat1= -27.371767;
     double lat2= -27.991767;
