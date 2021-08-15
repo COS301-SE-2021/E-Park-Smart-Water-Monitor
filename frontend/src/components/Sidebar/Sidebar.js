@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import PropTypes from "prop-types";
 import { useLocation, Link } from "react-router-dom";
 // @material-ui/core components
@@ -20,6 +20,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 // core components
 import componentStyles from "assets/theme/components/sidebar.js";
+import {UserContext} from "../../Context/UserContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -29,6 +30,8 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
+
+  const user = useContext(UserContext)
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -41,7 +44,20 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
   const menuId = "responsive-menu-id";
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes) => {
+
+    // Test admin status and remove that element from appearing
+    let routesWithAdminConstraint = []
+    if(user.role && user.role !== "ADMIN")
+    {
+      // remove the admin prop from the array
+      routesWithAdminConstraint = routes.filter((elem)=>{
+          return elem.name !== "Admin"
+      })
+      routes = [...routesWithAdminConstraint]
+    }
+
     return routes.map((prop, key) => {
+
       if (prop.divider) {
         return <Divider key={key} classes={{ root: classes.divider }} />;
       } else if (prop.title) {
@@ -56,6 +72,7 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
           </Typography>
         );
       }
+
       let textContent = (
         <>
           <Box minWidth="2.25rem" display="flex" alignItems="center">
