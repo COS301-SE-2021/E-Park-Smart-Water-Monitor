@@ -101,7 +101,7 @@ public class AddDevice {
         //setup
         Device device= new Device();
         List<Device> devices=new ArrayList<>();
-        Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
+        //Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
         Mockito.when(waterSiteServices.canAttachWaterSourceDevice(Mockito.any())).thenReturn(new CanAttachWaterSourceDeviceResponse("",false));
 
         //test
@@ -119,7 +119,7 @@ public class AddDevice {
         //setup
         Device device= new Device();
         List<Device> devices=new ArrayList<>();
-        Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
+        //Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName("test")).thenReturn(devices);
         Mockito.when(waterSiteServices.canAttachWaterSourceDevice(Mockito.any())).thenReturn(new CanAttachWaterSourceDeviceResponse("",true));
 
         //test

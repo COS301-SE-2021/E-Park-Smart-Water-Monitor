@@ -5,11 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesServicesImpl;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.MeasurementRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.DeviceRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetDeviceDataRequest;
@@ -17,7 +15,6 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetDeviceDa
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteServicesImpl;
 
-import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -58,10 +55,6 @@ public class GetDeviceData {
     @Test
     @DisplayName("Device not found when searched for")
     public void getDeviceDataNotFound(){
-        //setup
-        Mockito.when(deviceRepo.findWaterSourceDeviceByDeviceName(Mockito.any())).thenReturn(new ArrayList<Device>());
-
-        //test
         GetDeviceDataResponse response= devicesServices.getDeviceData(new GetDeviceDataRequest("test",23));
         assertNotNull(response);
         assertEquals(false, response.getSuccess());

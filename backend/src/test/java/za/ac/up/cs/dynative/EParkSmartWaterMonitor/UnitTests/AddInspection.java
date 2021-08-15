@@ -78,7 +78,9 @@ public class AddInspection {
     @DisplayName("Attempt to add an inspection, but the device does not exist part 2")
     public void AddInspectionDeviceNotFound2() throws InvalidRequestException {
         //setup
-        Mockito.when(devicesService.findDevice(Mockito.any())).thenReturn(new FindDeviceResponse());
+        FindDeviceResponse re = new FindDeviceResponse();
+        re.setSuccess(false);
+        Mockito.when(devicesService.findDevice(Mockito.any())).thenReturn(re);
 
         //test
         AddInspectionResponse response = inspectionService.addInspection(new AddInspectionRequest(UUID.randomUUID(),null,"abc"));
