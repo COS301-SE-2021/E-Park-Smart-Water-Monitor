@@ -42,4 +42,18 @@ public class EditWaterSite {
         assertEquals("No watersite id specified", response.getStatus());
         assertEquals(false, response.getSuccess());
     }
+
+    @Test
+    @DisplayName("Attempt to edit a water site that does not exist")
+    public void EditSiteDNE(){
+        //setup
+        Mockito.when(repo.findById(Mockito.any())).thenReturn(Optional.empty());
+
+        //test
+        EditWaterSiteRequest request = new EditWaterSiteRequest(UUID.randomUUID(),"",0,0);
+        EditWaterSiteResponse response = waterSiteServices.editWaterSite(request);
+        assertNotNull(response);
+        assertEquals("Watersite does not exist.", response.getStatus());
+        assertEquals(false, response.getSuccess());
+    }
 }
