@@ -55,22 +55,28 @@ public class CanAttachDevice {
 
     @Test
     @DisplayName("Test if a device can be added to a site, but the site id does not exist")
-    public void CanAttachDNE(){
+    public void CanAttachSiteDNE(){
+        //setup
         Optional<WaterSite> op= Optional.empty();
         Mockito.when(repo.findById(id1)).thenReturn(op);
 
+        //test
         CanAttachWaterSourceDeviceRequest request= new CanAttachWaterSourceDeviceRequest(id1);
-        Throwable t= assertThrows(InvalidRequestException.class,()->waterSiteServices.canAttachWaterSourceDevice(request));
-        assertEquals("Site does not exist",t.getMessage());
+        CanAttachWaterSourceDeviceResponse response= waterSiteServices.canAttachWaterSourceDevice(request);
+        assertNotNull(response);
+        assertEquals("Site does not exist", response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
     @Test
     @DisplayName("Test if a device can be added to a site successful")
-    public void CanAttach() throws InvalidRequestException {
+    public void CanAttach() {
+        //setup
         site1= new WaterSite(id1,name1,lat1,lon1);
         Optional<WaterSite> op = Optional.of(site1);
         Mockito.when(repo.findById(id1)).thenReturn(op);
 
+        //test
         CanAttachWaterSourceDeviceRequest request= new CanAttachWaterSourceDeviceRequest(id1);
         CanAttachWaterSourceDeviceResponse response= waterSiteServices.canAttachWaterSourceDevice(request);
         assertNotNull(response);
