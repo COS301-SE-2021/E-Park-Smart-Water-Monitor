@@ -58,7 +58,7 @@ public class WaterSiteServicesImpl implements WaterSiteService {
     public CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request)  {
         CanAttachWaterSourceDeviceResponse response;
         if (request==null){
-            response= new CanAttachWaterSourceDeviceResponse("CRequest is null",false);
+            response= new CanAttachWaterSourceDeviceResponse("Request is null",false);
             return response;
         }
         if (request.getSiteId()==null){

@@ -35,18 +35,22 @@ public class CanAttachDevice {
 
     @Test
     @DisplayName("Test if a device can be added to a site, but the site id is null")
-    public void CanAttachIDNULL(){
+    public void CanAttachIdNULL(){
         CanAttachWaterSourceDeviceRequest request= new CanAttachWaterSourceDeviceRequest(null);
-        Throwable t= assertThrows(InvalidRequestException.class,()->waterSiteServices.canAttachWaterSourceDevice(request));
-        assertEquals("No id specified",t.getMessage());
+        CanAttachWaterSourceDeviceResponse response= waterSiteServices.canAttachWaterSourceDevice(request);
+        assertNotNull(response);
+        assertEquals("No id specified", response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
 
     @Test
     @DisplayName("Test if a device can be added to a site, but the request is null")
     public void CanAttachRequestNull(){
-        Throwable t= assertThrows(InvalidRequestException.class,()->waterSiteServices.canAttachWaterSourceDevice(null));
-        assertEquals("Request is null",t.getMessage());
+        CanAttachWaterSourceDeviceResponse response= waterSiteServices.canAttachWaterSourceDevice(null);
+        assertNotNull(response);
+        assertEquals("Request is null", response.getStatus());
+        assertEquals(false, response.getSuccess());
     }
 
     @Test
