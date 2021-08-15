@@ -70,7 +70,7 @@ function DeviceDetails(props) {
                                 variant="h3"
                                 marginBottom="0!important"
                             >
-                                Device Details
+                                { device && device.deviceName } Details
                             </Box>
                         </Grid>
                         <Grid item xs="auto">

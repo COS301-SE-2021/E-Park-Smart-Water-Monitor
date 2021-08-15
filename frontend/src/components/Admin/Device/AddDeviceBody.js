@@ -44,7 +44,16 @@ const AddDeviceBody = (props) => {
             }
         })
         return null
+    }    function MapEvents() {
+        const map = useMapEvents({
+            click: (e) => {
+                setLatitude(e.latlng.lat)
+                setLongitude(e.latlng.lng)
+            }
+        })
+        return null
     }
+
 
 
     const assignSiteOptions = (selectedPark) => {

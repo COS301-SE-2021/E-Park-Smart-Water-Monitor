@@ -8,6 +8,8 @@ import Box from "@material-ui/core/Box";
 
 // core components
 import componentStyles from "assets/theme/components/auth-header.js";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -22,28 +24,28 @@ const AuthHeader = () => {
         paddingTop="8rem"
         paddingBottom="8rem"
       >
-        {/*<Container maxWidth="xl">*/}
-        {/*  <Box marginBottom="6rem" textAlign="center">*/}
-        {/*    <Box*/}
-        {/*      component={Grid}*/}
-        {/*      container*/}
-        {/*      justifyContent="center"*/}
-        {/*      color={theme.palette.white.main}*/}
-        {/*    >*/}
-        {/*      <Grid item lg={5} md={6} xs={12}>*/}
-        {/*        <h1>E-Park Monitoring</h1>*/}
-        {/*        <Box*/}
-        {/*          component="p"*/}
-        {/*          color={theme.palette.gray[400]}*/}
-        {/*          lineHeight="1.7"*/}
-        {/*          fontSize="1rem"*/}
-        {/*        >*/}
-        {/*          An IoT based system for the maintenance and protection of South Africa's parks*/}
-        {/*        </Box>*/}
-        {/*      </Grid>*/}
-        {/*    </Box>*/}
-        {/*  </Box>*/}
-        {/*</Container>*/}
+        <Container maxWidth="xl">
+          <Box marginBottom="2rem" textAlign="center">
+            <Box
+              component={Grid}
+              container
+              justifyContent="center"
+              color={theme.palette.white.main}
+            >
+              <Grid item lg={5} md={6} xs={12}>
+                <h1>E-Park Monitoring</h1>
+                <Box
+                  component="p"
+                  color={theme.palette.gray[400]}
+                  lineHeight="1.7"
+                  fontSize="1rem"
+                >
+                  An IoT based system for the maintenance and protection of South Africa's parks
+                </Box>
+              </Grid>
+            </Box>
+          </Box>
+        </Container>
         <Box
           position="absolute"
           zIndex="100"

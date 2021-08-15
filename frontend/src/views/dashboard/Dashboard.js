@@ -84,7 +84,7 @@ function Dashboard() {
     // get the device from the monolith of devices to render the specific details
     for(let i =0; i<devices.length;i++)
     {
-      if(devices[i].deviceId == device_id)
+      if(devices[i].deviceId === device_id)
       {
         setDevice(devices[i])
       }
@@ -113,7 +113,7 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            { devices && <Map devices={ devices }></Map> }
+            { devices && <Map onSelectDevice={load_device} devices={ devices }></Map> }
           </Grid>
         </Grid>
 
