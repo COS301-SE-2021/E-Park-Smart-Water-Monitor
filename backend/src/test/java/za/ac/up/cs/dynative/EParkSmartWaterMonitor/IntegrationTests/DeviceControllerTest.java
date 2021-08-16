@@ -8,13 +8,11 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.FindDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetParkDevicesRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.FindDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetParkDevicesResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.CreateUserResponse;
@@ -131,21 +129,21 @@ public class DeviceControllerTest {
     }
 
     //post: /api/devices/receiveDeviceData
-    /*@Test
+    @Test
     public void receiveDeviceDataNameNull(){
         ReceiveDeviceDataRequest request = new ReceiveDeviceDataRequest("",new ArrayList<>());
-        ResponseEntity<GetParkDevicesResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
-                .postForEntity("/api/devices/receiveDeviceData", request, GetParkDevicesResponse.class);
+        ResponseEntity<ReceiveDeviceDataResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/receiveDeviceData", request, ReceiveDeviceDataResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Device with that name does not exist", response.getBody().getStatus());
+        assertEquals("No device name is specified.", response.getBody().getStatus());
         assertEquals(false, response.getBody().getSuccess());
-    }*/
+    }
 
     @Test
     public void receiveDeviceData(){
         ReceiveDeviceDataRequest request = new ReceiveDeviceDataRequest("IntTesting123123",new ArrayList<>());
-        ResponseEntity<GetParkDevicesResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
-                .postForEntity("/api/devices/receiveDeviceData", request, GetParkDevicesResponse.class);
+        ResponseEntity<ReceiveDeviceDataResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/receiveDeviceData", request, ReceiveDeviceDataResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Device with that name does not exist", response.getBody().getStatus());
         assertEquals(false, response.getBody().getSuccess());
@@ -154,7 +152,12 @@ public class DeviceControllerTest {
     //post: /api/devices/setMetricFrequency
     @Test
     public void setMetricFreqIdNull(){
-
+        SetMetricFrequencyRequest request = new SetMetricFrequencyRequest(null,2);
+        ResponseEntity<GetParkDevicesResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/setMetricFrequency", request, GetParkDevicesResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Device with that name does not exist", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
     }
 
 }
