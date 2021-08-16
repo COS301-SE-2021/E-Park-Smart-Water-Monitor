@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests.GetAllInspections;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.AddInspectionRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetDeviceInspectionsRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetWaterSiteInspectionsRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.SetInspectionStatusRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
@@ -85,6 +82,36 @@ public class InspectionControllerTest {
     }
 
     //post: /api/inspections/setComments
+    @Test
+    public void setCommentsIdNull(){
+        SetInspectionCommentsRequest request = new SetInspectionCommentsRequest(null,"Integration testing is going good ;)");
+        ResponseEntity<SetInspectionCommentsResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/inspections/setComments",request,SetInspectionCommentsResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Failed to set inspection comments! Invalid inspectionId!", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void setCommentsInspectionDNE(){
+        SetInspectionCommentsRequest request = new SetInspectionCommentsRequest(UUID.randomUUID(),"Integration testing is going good ;)");
+        ResponseEntity<SetInspectionCommentsResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/inspections/setComments",request,SetInspectionCommentsResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Failed to set inspection comments! Inspection not found!", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void setComments(){
+        SetInspectionCommentsRequest request = new SetInspectionCommentsRequest(UUID.fromString("7cd82d9d-8a1f-4ca5-b334-6522f2fc845b"),"Integration testing is going good ;)");
+        ResponseEntity<SetInspectionCommentsResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/inspections/setComments",request,SetInspectionCommentsResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Inspection comments successfully set!", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
+        assertNotNull(response);
+    }
 
     //post: /api/inspections/getDeviceInspections
     @Test
