@@ -44,6 +44,7 @@ public class WaterSiteServicesImpl implements WaterSiteService {
                 parkService.savePark(new SaveParkRequest(findByParkIdResponse.getPark()));
                 response.setStatus("Successfully added: " + request.getSiteName());
                 response.setSuccess(true);
+                response.setSite(waterSite);
             }else {
                 response.setStatus("Park not found");
                 response.setSuccess(false);

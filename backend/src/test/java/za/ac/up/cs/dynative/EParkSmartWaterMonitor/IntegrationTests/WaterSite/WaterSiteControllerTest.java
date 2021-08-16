@@ -3,13 +3,12 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.IntegrationTests.WaterSite;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.DeleteWaterSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.EditWaterSiteRequest;
@@ -19,6 +18,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.DeleteWat
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.EditWaterSiteResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
 
+import java.net.URISyntaxException;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -118,15 +118,4 @@ public class WaterSiteControllerTest {
         siteId = response.getBody().getSite().getId();
     }
 
-    //delete: /api/sites/deleteWaterSite
-    @Test
-    public void deleteSuccess(){
-        UUID id = UUID.fromString("79b750a6-43a6-43a5-9cf6-1a9beb0011f0");
-        DeleteWaterSiteRequest request = new DeleteWaterSiteRequest(id);
-        ResponseEntity<DeleteWaterSiteResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
-                .delete("/api/sites/addSite", request,DeleteWaterSiteResponse.class);
-        assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
-        assertEquals("Successfully added: IntTesting123123",response.getBody().getStatus());
-        assertEquals(true,response.getBody().getSuccess());
-    }
 }
