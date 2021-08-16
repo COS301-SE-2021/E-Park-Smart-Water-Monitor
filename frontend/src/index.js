@@ -13,6 +13,7 @@ import {LoadingProvider} from "./Context/LoadingContext";
 import {PuffLoader} from "react-spinners";
 import Modal from "./components/Modals/Modal";
 import {css} from "@emotion/react";
+import {Alert} from "@material-ui/lab";
 
 
 
@@ -46,7 +47,6 @@ const App = () => {
                     <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
                 {/*</div>*/}
             </Modal>
-            
             <CssBaseline />
             {/*Loading Modal*/}
             <LoadingProvider value={ { toggleLoading: toggleLoading } } >

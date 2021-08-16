@@ -16,12 +16,16 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import Dialpad from '@material-ui/icons/Dialpad';
 import Lock from '@material-ui/icons/Lock';
 import {Alert} from "@material-ui/lab";
+import {useTheme} from "@material-ui/core/styles";
 
 const ResetPassword = (props) => {
+    const theme = useTheme();
+
     const [username, setUsername] = useState("")
     const [code, setCode] = useState(false) // code on our side, can be used to match
     const [resetCode, setResetCode] = useState(false) // the code they type in to verify on backend on second API call
     const [error, setError] = useState(false)
+    const [errorConfirmation, setErrorConfirmation] = useState(false)
     const [next, setNext] = useState(false)
     const [newPassword, setNewPassword] = useState(false)
     const [newPasswordConfirmed, setNewPasswordConfirmed] = useState(false)
@@ -68,39 +72,49 @@ const ResetPassword = (props) => {
 
     const submitNewPassword = (e) => {
         e.preventDefault()
-        toggleLoading()
 
+        setErrorConfirmation("")
 
-        console.log("submitting new password")
+        if(newPassword !== newPasswordConfirmed)
+        {
+            setErrorConfirmation("Passwords do not match")
+        }else{
+            toggleLoading()
+            console.log("submitting new password")
 
-        let obj = {
-            username: username,
-            resetCode: resetCode,
-            newPassword: newPassword,
-            newPasswordConfirmed: newPasswordConfirmed
-        }
-
-        axios.post('http://localhost:8080/api/user/resetPasswordFinalize', obj).then((res) => {
-
-            toggleLoading();
-            console.log(JSON.stringify(res))
-
-            if(res.data.success === "false")
-            {
-                setError(res.data.message)
-            }else{
-                setTimeout(()=>{
-                    return
-                }, 3000)
+            let obj = {
+                username: username,
+                resetCode: resetCode,
+                newPassword: newPassword,
+                newPasswordConfirmed: newPasswordConfirmed
             }
 
+            axios.post('http://localhost:8080/api/user/resetPasswordFinalize', obj).then((res) => {
 
-        }).catch((res) => {
+                toggleLoading();
+                console.log(JSON.stringify(res))
 
-            toggleLoading()
-            console.log("error sending username to reset password: "+JSON.stringify(res))
+                if(res.data.success === false)
+                {
+                    setErrorConfirmation(res.data.message)
+                }else{
+                    setShowAlert(true)
+                    setTimeout(()=>{
+                        setShowAlert(false)
+                        props.closeModal()
+                    }, 5000)
+                }
 
-        });
+
+            }).catch((res) => {
+
+                toggleLoading()
+                console.log("error sending username to reset password: "+JSON.stringify(res))
+
+            });
+        }
+
+
 
 
 
@@ -108,9 +122,10 @@ const ResetPassword = (props) => {
 
     return (
         <>
-
             {!next &&
+
             <Form onSubmit={submitUsername}>
+
                 <Row>
                     <Col>
                         <Form.Group className="mb-3">
@@ -148,6 +163,17 @@ const ResetPassword = (props) => {
 
                     </Col>
                 </Row>
+
+
+                { error &&
+                <Box
+                    fontWeight="400"
+                    component="large"
+                    color={theme.palette.error}
+                >
+                    <Alert severity={"warning"}>{error}</Alert>
+                </Box>
+                }
 
                 <Grid container component={Box} marginTop="1rem">
                     <Grid item xs={6} component={Box} textAlign="left">
@@ -204,7 +230,7 @@ const ResetPassword = (props) => {
                                 {/*New Password*/}
                                 <FormControl fullWidth
                                              variant="outlined"
-                                             type="text"
+                                             type="password"
                                              name="newPassword"
                                              value={newPassword}
                                              className={"mt-3"}
@@ -232,7 +258,7 @@ const ResetPassword = (props) => {
                                 {/*Confirm new password*/}
                                 <FormControl fullWidth
                                              variant="outlined"
-                                             type="text"
+                                             type="password"
                                              name="confirmNewPassword"
                                              value={newPasswordConfirmed}
                                              className={"mt-3"}
@@ -261,6 +287,24 @@ const ResetPassword = (props) => {
                         </Col>
                     </Row>
 
+                    { showAlert &&
+                    <Box
+                        fontWeight="400"
+                        component="large"
+                        color={theme.palette.success}
+                    >
+                        <Alert severity={"success"}>Successfully changed password for {username}</Alert>
+                    </Box> }
+
+                    { errorConfirmation &&
+                    <Box
+                        fontWeight="400"
+                        component="large"
+                        color={theme.palette.error}
+                    >
+                        <Alert severity={"warning"}>{errorConfirmation}</Alert>
+                    </Box> }
+
                     <Grid container component={Box} marginTop="1rem">
                         <Grid item xs={6} component={Box} textAlign="left">
                             <Button color="primary" variant="text" onClick={() => {
@@ -275,6 +319,7 @@ const ResetPassword = (props) => {
                             </Button>
                         </Grid>
                     </Grid>
+
                 </Form>
             }
         </>
