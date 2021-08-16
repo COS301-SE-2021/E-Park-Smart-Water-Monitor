@@ -9,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.FindDeviceResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevicesResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetParkDevicesResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.ReceiveDeviceDataResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.CreateUserResponse;
@@ -153,11 +150,31 @@ public class DeviceControllerTest {
     @Test
     public void setMetricFreqIdNull(){
         SetMetricFrequencyRequest request = new SetMetricFrequencyRequest(null,2);
-        ResponseEntity<GetParkDevicesResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
-                .postForEntity("/api/devices/setMetricFrequency", request, GetParkDevicesResponse.class);
+        ResponseEntity<SetMetricFrequencyResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/setMetricFrequency", request, SetMetricFrequencyResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Device with that name does not exist", response.getBody().getStatus());
+        assertEquals("No device id specified.", response.getBody().getStatus());
         assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void setMetricFreqDeviceDNE(){
+        SetMetricFrequencyRequest request = new SetMetricFrequencyRequest(UUID.randomUUID(),2);
+        ResponseEntity<SetMetricFrequencyResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/setMetricFrequency", request, SetMetricFrequencyResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("No device configurations set.", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void setMetricFreq(){
+        SetMetricFrequencyRequest request = new SetMetricFrequencyRequest(UUID.fromString("cc76aed0-426e-412d-8f9a-f23f857267aa"),2);
+        ResponseEntity<SetMetricFrequencyResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/setMetricFrequency", request, SetMetricFrequencyResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Successfully changed metric frequency to: 2.0 hours.", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
     }
 
 }
