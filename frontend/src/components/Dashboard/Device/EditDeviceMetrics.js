@@ -48,6 +48,8 @@ const EditDeviceMetricsBody = (props) => {
             }
         ).then((res)=>{
 
+            console.log(JSON.stringify(res.data))
+
             let freq = res.data.device.deviceData.deviceConfiguration.filter((elem)=>{
                 return elem.settingType==="reportingFrequency"
             })
@@ -72,7 +74,7 @@ const EditDeviceMetricsBody = (props) => {
 
         axios.post('http://localhost:8080/api/devices/setMetricFrequency', obj
         ).then((res)=>{
-            
+
             toggleLoading()
             props.closeModal()
 
