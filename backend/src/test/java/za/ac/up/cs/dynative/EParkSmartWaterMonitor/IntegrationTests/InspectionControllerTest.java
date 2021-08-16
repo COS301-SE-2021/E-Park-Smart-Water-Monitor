@@ -9,8 +9,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests.GetAllInspections;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.AddInspectionRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.AddInspectionResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetAllInspectionsResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetParkSitesResponse;
+
+import java.util.Date;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,5 +46,33 @@ public class InspectionControllerTest {
     }
 
     //post: /api/inspections/addInspection
+    @Test
+    public void addInspectionDeviceIdNull(){
+        AddInspectionRequest request = new AddInspectionRequest(null, new Date(), "Integration Testing");
+        ResponseEntity<AddInspectionResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/inspections/addInspection",request,AddInspectionResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Failed to add inspection! No deviceId specified!", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
 
+    @Test
+    public void addInspectionDeviceDNE(){
+        AddInspectionRequest request = new AddInspectionRequest(UUID.randomUUID(), new Date(), "Integration Testing");
+        ResponseEntity<AddInspectionResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/inspections/addInspection",request,AddInspectionResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Failed to add inspection! Failure to get device!", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void addInspection(){
+        AddInspectionRequest request = new AddInspectionRequest(UUID.fromString("cc76aed0-426e-412d-8f9a-f23f857267aa"), new Date(1638309600), "Integration Testing"+ new Date().toString());
+        ResponseEntity<AddInspectionResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/inspections/addInspection",request,AddInspectionResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Inspection successfully added!", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
+    }
 }
