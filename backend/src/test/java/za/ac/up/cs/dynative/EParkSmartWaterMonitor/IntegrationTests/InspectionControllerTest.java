@@ -10,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests.GetAllInspections;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.AddInspectionRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetDeviceInspectionsRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.AddInspectionResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetAllInspectionsResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetDeviceInspectionsResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetParkSitesResponse;
@@ -35,6 +37,26 @@ public class InspectionControllerTest {
     //post: /api/inspections/setComments
 
     //post: /api/inspections/getDeviceInspections
+    @Test
+    public void getDeviceInspectionIdNull(){
+        GetDeviceInspectionsRequest request = new GetDeviceInspectionsRequest(null);
+        ResponseEntity<GetDeviceInspectionsResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/inspections/getDeviceInspections",request,GetDeviceInspectionsResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Failed to get inspection! Invalid deviceId!", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void getDeviceInspection(){
+        GetDeviceInspectionsRequest request = new GetDeviceInspectionsRequest(UUID.fromString("cc76aed0-426e-412d-8f9a-f23f857267aa"));
+        ResponseEntity<GetDeviceInspectionsResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/inspections/getDeviceInspections",request,GetDeviceInspectionsResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Inspections retrieved successfully!", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
+        assertNotNull(response.getBody().getInspectionList());
+    }
 
     //get: /api/inspections/getAllInspections
     @Test
