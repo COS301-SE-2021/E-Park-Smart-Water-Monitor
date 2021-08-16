@@ -1,6 +1,9 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.IntegrationTests;
 
 import org.junit.Test;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UserControllerTest {
 
     @Autowired
@@ -24,6 +28,7 @@ public class UserControllerTest {
 
     //post: /api/user/createUser
     @Test
+    @Order(1)
     public void createUserIncompleteDetails() {
         UUID parkId = UUID.randomUUID();
         String idNumber = "2356897410000";
@@ -101,6 +106,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(2)
     public void createUserDuplicate() {
         CreateUserRequest request = new CreateUserRequest(UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80"), "9871233577124", "nita.nell92@gmail.com", "dynative", "IntTesting123123", "surname", "ChiChiTestingADMIN", "ADMIN", "0728480427");
         ResponseEntity<CreateUserResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
@@ -111,6 +117,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(3)
     public void createUserInvalid() {
         //test 1:
         CreateUserRequest request = new CreateUserRequest(UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80"), "98712337124", "nita.nell92@gmail.com", "dynative", "IntTesting123123", "surname", "ChiChiTestingADMIN", "ADMIN", "0728480427");
@@ -138,6 +145,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(4)
     public void createUserParkDNE() {
         CreateUserRequest request = new CreateUserRequest(UUID.fromString("4c0a1f95-551b-4885-b3fe-5d27c71ebd80"), "9871233577124", "nita.nell92@gmail.com", "dynative", "IntTesting123123", "surname", "IntTesting123123", "ADMIN", "0728480427");
         ResponseEntity<CreateUserResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
@@ -160,6 +168,7 @@ public class UserControllerTest {
 
     //post: /api/user/deleteUser
     @Test
+    @Order(5)
     public void createDeleteUser() {
         CreateUserRequest request = new CreateUserRequest(UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80"), "9871233577124", "nita.nell92@gmail.com", "dynative", "IntTesting123123", "surname", "IntTesting123123", "ADMIN", "0728480427");
         ResponseEntity<CreateUserResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
@@ -188,6 +197,7 @@ public class UserControllerTest {
     }*/
 
     @Test
+    @Order(6)
     public void deleteUserIdNull() {
         DeleteUserRequest requestD = new DeleteUserRequest(null);
         ResponseEntity<DeleteUserResponse> responseD = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
@@ -198,6 +208,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(7)
     public void deleteUserDNE() {
         DeleteUserRequest requestD = new DeleteUserRequest(UUID.randomUUID());
         ResponseEntity<DeleteUserResponse> responseD = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
@@ -209,6 +220,7 @@ public class UserControllerTest {
 
     //post: /api/user/editUser
     @Test
+    @Order(8)
     public void editUserDNE() {
         EditUserRequest request = new EditUserRequest("ch", "12", "", "", "", "", "", "");
         ResponseEntity<EditUserResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
@@ -219,6 +231,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(9)
     public void editUserDup() {
         EditUserRequest request = new EditUserRequest("Michaela", "12", "", "", "", "ChiChiTestingADMIN", "", "");
         ResponseEntity<EditUserResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
@@ -229,6 +242,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(10)
     public void editUserInvalid() {
         //test 1
         EditUserRequest request = new EditUserRequest("Michaela", "12", "", "", "", "Michaela.com", "", "33");
@@ -272,6 +286,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(11)
     public void editUserSuccess() {
         //test 1
         EditUserRequest request = new EditUserRequest("Michaela", "", "", "", "", "Michaela.com", "", "");
@@ -292,6 +307,7 @@ public class UserControllerTest {
 
     //post: /api/user/getUser
     @Test
+    @Order(12)
     public void getUserDNE() {
         FindUserByIdRequest request = new FindUserByIdRequest(null);
         ResponseEntity<FindUserByIdResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
@@ -302,6 +318,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(13)
     public void getUserSuccess() {
         FindUserByIdRequest request = new FindUserByIdRequest(UUID.fromString("6716af93-1563-42b0-b1b9-5373cd19c0b4"));
         ResponseEntity<FindUserByIdResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
@@ -315,6 +332,7 @@ public class UserControllerTest {
 
     //post: /api/user/login
     @Test
+    @Order(14)
     public void loginIncomplete() {
         //test 1
         LoginRequest request = new LoginRequest("", "");
@@ -339,6 +357,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(15)
     public void LoginUserDNE() {
         LoginRequest request = new LoginRequest("hello", "1");
         ResponseEntity<LoginResponse> response = restTemplate.postForEntity("/api/user/login", request, LoginResponse.class);
@@ -348,6 +367,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(16)
     public void LoginUserWrongPassword() {
         LoginRequest request = new LoginRequest("ChiChiTestingADMIN", "dynativ");
         ResponseEntity<LoginResponse> response = restTemplate.postForEntity("/api/user/login", request, LoginResponse.class);
@@ -357,6 +377,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(17)
     public void LoginSuccess() {
         LoginRequest request = new LoginRequest("ChiChiTestingADMIN", "dynativeNext");
         ResponseEntity<LoginResponse> response = restTemplate.postForEntity("/api/user/login", request, LoginResponse.class);
@@ -367,6 +388,7 @@ public class UserControllerTest {
 
     //post: /api/user/resetPassword
     @Test
+    @Order(18)
     public void resetPasswordUserDNE() {
         ResetPasswordRequest request = new ResetPasswordRequest("hello");
         ResponseEntity<ResetPasswordResponse> response = restTemplate.postForEntity("/api/user/resetPassword", request, ResetPasswordResponse.class);
@@ -375,6 +397,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(19)
     public void resetPasswordGetCodeSuccess() {
         ResetPasswordRequest request = new ResetPasswordRequest("Michaela");
         ResponseEntity<ResetPasswordResponse> response = restTemplate.postForEntity("/api/user/resetPassword", request, ResetPasswordResponse.class);
@@ -384,6 +407,7 @@ public class UserControllerTest {
 
     //post: /api/user/resetPasswordFinalize
     @Test
+    @Order(20)
     public void resetPasswordFinalizeUserDNE() {
         ResetPasswordFinalizeRequest request = new ResetPasswordFinalizeRequest("hello", "234", "abc", "abc");
         ResponseEntity<ResetPasswordFinalizeResponse> response = restTemplate.postForEntity("/api/user/resetPasswordFinalize", request, ResetPasswordFinalizeResponse.class);
@@ -393,6 +417,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(21)
     public void resetPasswordFinalizeCodeWrong() {
         ResetPasswordFinalizeRequest request = new ResetPasswordFinalizeRequest("Michaela", "234", "abc", "abc");
         ResponseEntity<ResetPasswordFinalizeResponse> response = restTemplate.postForEntity("/api/user/resetPasswordFinalize", request, ResetPasswordFinalizeResponse.class);
@@ -402,6 +427,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(22)
     public void resetPasswordCombineWrongCode() {
         //step 1:
         ResetPasswordRequest request = new ResetPasswordRequest("Michaela");
@@ -418,6 +444,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(23)
     public void resetPasswordCombineWrongPassword() {
         //step 1:
         ResetPasswordRequest request = new ResetPasswordRequest("Michaela");
@@ -434,6 +461,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @Order(24)
     public void resetPasswordCombineSuccess() {
         //step 1:
         ResetPasswordRequest request = new ResetPasswordRequest("Michaela");
