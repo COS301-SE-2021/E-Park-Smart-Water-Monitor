@@ -8,7 +8,7 @@ import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import {CardContent} from "@material-ui/core";
+import {CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import EditDeviceMetrics from "./EditDeviceMetrics";
 import Modal from "../../Modals/Modal";
@@ -18,6 +18,7 @@ import {BatteryStd, CheckCircle} from "@material-ui/icons";
 import Clear from "@material-ui/icons/Clear";
 import axios from "axios";
 import ResetPassword from "../../Auth/ResetPassword";
+import LoadingContext from "../../../Context/LoadingContext";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -32,12 +33,12 @@ function DeviceDetails(props) {
   const [pingMessage, setPingMessage] = useState("") // will show a loader while waiting for ping response
 
     const user = useContext(UserContext)
+    const toggleLoading = useContext(LoadingContext).toggleLoading
 
     useEffect(() => {
 
         // access will be updated depending on the user priveleges
         setAccess(true)
-        filterMetrics()
 
         if(user.role && user.role === "RANGER" )
         {
@@ -47,6 +48,11 @@ function DeviceDetails(props) {
         if(props.device != null)
         {
             setDevice(props.device);
+            if(device)
+            {
+                filterMetrics()
+            }
+
         }else{
             console.log("no device prop added")
         }
@@ -82,11 +88,11 @@ function DeviceDetails(props) {
     }
 
     const ping = ()=>{
-        setShowPing(true)
+        toggleLoading()
         setPingMessage("")
         // call the device readings to see if device is active
         let obj = {
-            deviceName: name,
+            deviceName: device.deviceName,
             numResults: 1, // will get the ping results
             sorted: true
         }
@@ -96,7 +102,8 @@ function DeviceDetails(props) {
                 }
             }
         ).then((res)=>{
-
+            toggleLoading()
+            setShowPing(true)
             console.log(JSON.stringify(res.data))
             if(res.data.success === true){
                 //ping successful
@@ -107,6 +114,7 @@ function DeviceDetails(props) {
             }
 
         }).catch((res)=>{
+            toggleLoading()
             console.log("response getDeviceData:"+JSON.stringify(res))
         });
     }
@@ -119,9 +127,36 @@ function DeviceDetails(props) {
             <EditDeviceMetrics deviceDetails={ device } closeModal={()=>{ setShowEdit(false) }}/>
         </Modal> }
 
-        <Modal title="Reset Password" onClose={() => setShowPing(false)} show={showPing}>
-            <Ping closeModal={()=>{ setShowPing(false) }}/>
+        <Modal title="Ping Response" onClose={() => setShowPing(false)} show={ showPing }>
+            <div>{ pingMessage }</div>
         </Modal>
+
+
+        <Dialog
+            open={showPing}
+            onClose={() => {
+                return setShowPing(false)
+            }}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+            <DialogContent
+                className={"mb-0"}
+            >
+                <h4 className="mb-4">Ping Response</h4>
+                <DialogContentText id="alert-dialog-description">
+                    {pingMessage}
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => {
+                    return setShowPing(false)
+                }} color="primary" autoFocus>
+                    Accept
+                </Button>
+            </DialogActions>
+        </Dialog>
+
 
         <Card
             classes={{
@@ -181,7 +216,7 @@ function DeviceDetails(props) {
                                     <Button
                                         variant={"contained"}
                                         size={"small"}
-                                        onClick={ ()=>{setShowPing(true)} }
+                                        onClick={ ping }
                                     >
                                         Ping
                                     </Button>

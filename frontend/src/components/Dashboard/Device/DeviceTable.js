@@ -35,10 +35,6 @@ function DeviceTable(props) {
       setHover(!hover)
     }
 
-
-
-
-
     useEffect(() => {
 
         let hoverStyle;
@@ -127,7 +123,7 @@ function DeviceTable(props) {
             ></CardHeader>
 
             <div className="table-container">
-                <TableContainer>
+                <TableContainer maxHeight={"400px"}>
                     <Box
                         component={Table}
                         alignItems="center"
