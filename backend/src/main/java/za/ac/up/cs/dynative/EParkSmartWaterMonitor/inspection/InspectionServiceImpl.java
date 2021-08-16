@@ -167,8 +167,7 @@ public class InspectionServiceImpl implements InspectionService {
     }
 
     @Override
-    public GetAllInspectionsResponse getAllInspections()
-    {
+    public GetAllInspectionsResponse getAllInspections() {
         List<Park> parks  = parkRepo.findAll();
         GetAllInspectionsResponse response = new GetAllInspectionsResponse();
         for (int i = 0; i <parks.size() ; i++) {
