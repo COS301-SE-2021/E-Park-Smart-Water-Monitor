@@ -94,7 +94,7 @@ public class NotificationsControllerTest {
         ResponseEntity<SMSResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
                 .postForEntity("/api/notifications/sms",request, SMSResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("The following users have invalid phone numbers: Please correct and try again.\"", response.getBody().getStatus());
-        assertEquals(false, response.getBody().getSuccess());
+        assertEquals("Messages sent successfully", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
     }
 }
