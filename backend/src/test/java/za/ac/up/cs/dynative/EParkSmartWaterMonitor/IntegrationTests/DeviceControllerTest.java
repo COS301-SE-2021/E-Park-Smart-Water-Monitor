@@ -8,8 +8,14 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.FindDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.FindDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.CreateUserResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.GetAllDevicesResponse;
+
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,8 +25,6 @@ public class DeviceControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
-
-    //post: /api/devices/addDevice
 
     //get: /api/devices/getAllDevices
     @Test
@@ -34,6 +38,36 @@ public class DeviceControllerTest {
     }
 
     //post: /api/devices/getById
+    @Test
+    public void getDeviceIdNull(){
+        FindDeviceRequest request = new FindDeviceRequest(null);
+        ResponseEntity<FindDeviceResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/getById", request, FindDeviceResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("No device ID specified", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void getDeviceDNE(){
+        FindDeviceRequest request = new FindDeviceRequest(UUID.randomUUID());
+        ResponseEntity<FindDeviceResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/getById", request, FindDeviceResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Device not found", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void getDevice(){
+        FindDeviceRequest request = new FindDeviceRequest(UUID.fromString("cc76aed0-426e-412d-8f9a-f23f857267aa"));
+        ResponseEntity<FindDeviceResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/getById", request, FindDeviceResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Device found", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
+        assertNotNull(response.getBody().getDevice());
+    }
 
     //post: /api/devices/getDeviceData
 
