@@ -17,6 +17,7 @@ import Divider from "@material-ui/core/Divider";
 import {BatteryStd, CheckCircle} from "@material-ui/icons";
 import Clear from "@material-ui/icons/Clear";
 import axios from "axios";
+import ResetPassword from "../../Auth/ResetPassword";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -28,6 +29,7 @@ function DeviceDetails(props) {
   const [showEdit, setShowEdit] = useState(false)
   const [showPing, setShowPing] = useState(false)
   const [metrics, setMetrics] = useState("")
+  const [pingMessage, setPingMessage] = useState("") // will show a loader while waiting for ping response
 
     const user = useContext(UserContext)
 
@@ -81,10 +83,11 @@ function DeviceDetails(props) {
 
     const ping = ()=>{
         setShowPing(true)
+        setPingMessage("")
         // call the device readings to see if device is active
         let obj = {
             deviceName: name,
-            numResults: 1,
+            numResults: 1, // will get the ping results
             sorted: true
         }
         axios.post('http://localhost:8080/api/devices/getDeviceData', obj, {
@@ -95,8 +98,13 @@ function DeviceDetails(props) {
         ).then((res)=>{
 
             console.log(JSON.stringify(res.data))
-
-
+            if(res.data.success === true){
+                //ping successful
+                setPingMessage(res.data.status)
+            }else
+            {
+                setPingMessage(res.data.status)
+            }
 
         }).catch((res)=>{
             console.log("response getDeviceData:"+JSON.stringify(res))
@@ -106,9 +114,14 @@ function DeviceDetails(props) {
   return (
     <>
 
-        { device && <Modal title="Edit Device Frequency" onClose={() => setShowEdit(false)} show={ showEdit }>
+        { device &&
+        <Modal title="Edit Device Frequency" onClose={() => setShowEdit(false)} show={ showEdit }>
             <EditDeviceMetrics deviceDetails={ device } closeModal={()=>{ setShowEdit(false) }}/>
         </Modal> }
+
+        <Modal title="Reset Password" onClose={() => setShowPing(false)} show={showPing}>
+            <Ping closeModal={()=>{ setShowPing(false) }}/>
+        </Modal>
 
         <Card
             classes={{
