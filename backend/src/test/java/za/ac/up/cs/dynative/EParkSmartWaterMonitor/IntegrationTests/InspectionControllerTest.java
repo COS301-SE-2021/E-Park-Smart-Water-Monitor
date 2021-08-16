@@ -12,10 +12,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests.GetAllInspections;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.AddInspectionRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetDeviceInspectionsRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetWaterSiteInspectionsRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.AddInspectionResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetAllInspectionsResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetDeviceInspectionsResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetWaterSiteInspectionsResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.SetInspectionStatusRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetParkSitesResponse;
@@ -33,6 +31,35 @@ public class InspectionControllerTest {
     private TestRestTemplate restTemplate;
 
     //post: /api/inspections/setStatus
+    @Test
+    public void setStatusIdNull(){
+        SetInspectionStatusRequest request = new SetInspectionStatusRequest(null,"");
+        ResponseEntity<SetInspectionStatusResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/inspections/setStatus",request,SetInspectionStatusResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Failed to set inspection status! Invalid inspectionId!", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void setStatusInspectionDNE(){
+        SetInspectionStatusRequest request = new SetInspectionStatusRequest(UUID.randomUUID(),"");
+        ResponseEntity<SetInspectionStatusResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/inspections/setStatus",request,SetInspectionStatusResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Failed to set inspection status! Inspection not found!", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void setStatusInspection(){
+        SetInspectionStatusRequest request = new SetInspectionStatusRequest(UUID.fromString("7cd82d9d-8a1f-4ca5-b334-6522f2fc845b"),"completed");
+        ResponseEntity<SetInspectionStatusResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/inspections/setStatus",request,SetInspectionStatusResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Inspection status successfully set!", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
+    }
 
     //post: /api/inspections/getSiteInspections
     @Test
