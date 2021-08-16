@@ -8,7 +8,7 @@ import Row from "react-bootstrap/Row";
 import axios from "axios";
 import { Range, getTrackBackground } from "react-range";
 import AdminContext from "../../Admin/AdminContext";
-import {PuffLoader} from "react-spinners";
+import {PuffLoader, ScaleLoader} from "react-spinners";
 import Modal from "../../Modals/Modal";
 import {css} from "@emotion/react";
 import LoadingContext from "../../../Context/LoadingContext";
@@ -34,7 +34,7 @@ const overlay = css`
 const useStyles = makeStyles(componentStyles);
 
 const EditDeviceMetricsBody = (props) => {
-    const [value, setValue] = useState(0)
+    const [value, setValue] = useState("")
     const [show, setShow] = useState(false)
     const [loading, setLoading] = useState(false)
 
@@ -48,7 +48,10 @@ const EditDeviceMetricsBody = (props) => {
             }
         ).then((res)=>{
 
-            setValue(res.data.device.deviceData.deviceConfiguration[0].value)
+            let freq = res.data.device.deviceData.deviceConfiguration.filter((elem)=>{
+                return elem.settingType==="reportingFrequency"
+            })
+            setValue(freq[0].value)
 
         }).catch((res)=>{
             console.log("response getById:"+JSON.stringify(res))
@@ -69,7 +72,7 @@ const EditDeviceMetricsBody = (props) => {
 
         axios.post('http://localhost:8080/api/devices/setMetricFrequency', obj
         ).then((res)=>{
-
+            
             toggleLoading()
             props.closeModal()
 
@@ -87,17 +90,25 @@ const EditDeviceMetricsBody = (props) => {
             <Form onSubmit={ submit }>
                 <Row>
                     <Col>
-                        <Form.Label>Hourly Frequency: { value }</Form.Label>
-                        <input
-                            style={{ width:"100%" }}
-                            type="range"
-                            min="0" max="48"
-                            value={value}
-                            onChange={e => setValue(e.target.value)}
-                            step="0.1"/>
-                        <Form.Text className="text-muted">
-                            eg. {value} would map to a reading every {value*60} mins
-                        </Form.Text>
+                        { value &&
+                            <>
+                                <Form.Label>Hourly Frequency: {value}</Form.Label>
+                                <input
+                                style={{width:"100%"}}
+                                type="range"
+                                min="0" max="48"
+                                value={value}
+                                onChange={e => setValue(e.target.value)}
+                                step="0.1"/>
+
+                                <Form.Text className="text-muted">
+                                eg. {value} would map to a reading every {value*60} mins
+                                </Form.Text>
+                            </>
+                        }
+                        { !value &&
+                            <ScaleLoader size={50} color={"#5E72E4"} speedMultiplier={1.5} />
+                        }
                     </Col>
                 </Row>
 
