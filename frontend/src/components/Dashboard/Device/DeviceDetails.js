@@ -25,6 +25,7 @@ function DeviceDetails(props) {
   const [device, setDevice] = useState(null)
   const [access, setAccess] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
+  const [metrics, setMetrics] = useState("")
 
     const user = useContext(UserContext)
 
@@ -32,6 +33,7 @@ function DeviceDetails(props) {
 
         // access will be updated depending on the user priveleges
         setAccess(true)
+        filterMetrics()
 
         if(user.role && user.role === "RANGER" )
         {
@@ -46,6 +48,34 @@ function DeviceDetails(props) {
         }
 
     },[props.device])
+
+    const gridItem = (name)=>{
+      return (<Grid
+          item
+          xs={5}
+          xl={5}
+          component={Box}
+          marginBottom="1rem!important"
+          classes={{ root: classes.gridItemRoot }}
+      >
+          {name}
+      </Grid>)
+    }
+
+    const filterMetrics = ()=>{
+      let filteredMetrics = device.deviceData.deviceConfiguration.map((elem)=>{
+          if(elem.settingType === "phSensitivity"){
+              return {settingType: "PH Sensitivity", value: elem.value}
+          }else if(elem.settingType === "reportingFrequency"){
+              return {settingType: "Reporting Frequency", value: elem.value}
+          }else if(elem.settingType === "temperatureSensitivity"){
+              return {settingType: "Temperature Sensitivity", value: elem.value}
+          }else if(elem.settingType === "waterDepthSensitivity"){
+              return {settingType: "Water Depth Sensitivity", value: elem.value}
+          }
+      })
+        setMetrics(filteredMetrics)
+    }
 
   return (
     <>
@@ -106,6 +136,17 @@ function DeviceDetails(props) {
                                     width="1rem!important"
                                     height="1rem!important"
                                 />
+                                <Box
+                                    paddingLeft="1.25rem"
+                                >
+                                    <Button
+                                        variant={"contained"}
+                                        size={"small"}
+                                        onClick={ ()=>{setShowEdit(true)} }
+                                    >
+                                        Ping
+                                    </Button>
+                                </Box>
 
                             </Box>
                         </Grid>
@@ -125,16 +166,9 @@ function DeviceDetails(props) {
                     >
                         <b>General</b>
                     </Grid>
-                    <Grid
-                        item
-                        xs={6}
-                        xl={6}
-                        component={Box}
-                        marginBottom="1rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        Coordinates
-                    </Grid>
+                    {gridItem("Coordinates")}
+
+
                     <Grid
                         item
                         xs={6}
@@ -145,16 +179,7 @@ function DeviceDetails(props) {
                     >
                         Lat: { device && device.deviceData && device.deviceData.latitude } <br/> Long: { device && device.deviceData && device.deviceData.longitude }
                     </Grid>
-                    <Grid
-                        item
-                        xs={6}
-                        xl={6}
-                        component={Box}
-                        marginBottom="1rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        Uptime
-                    </Grid>
+                    {gridItem("Uptime")}
                     <Grid
                         item
                         xs={6}
@@ -165,16 +190,7 @@ function DeviceDetails(props) {
                     >
                         { device && device.deviceData && device.deviceData.upTime }
                     </Grid>
-                    <Grid
-                        item
-                        xs={6}
-                        xl={6}
-                        component={Box}
-                        marginBottom="1rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        Lifetime
-                    </Grid>
+                    {gridItem("Lifetime")}
                     <Grid
                         item
                         xs={6}
@@ -200,7 +216,7 @@ function DeviceDetails(props) {
                             marginLeft="1.25rem!important"
                             marginRight="1.25rem!important"
                         />
-                        <b>Metrics</b>
+
                     </Grid>
                     <Grid
                         item
@@ -214,10 +230,12 @@ function DeviceDetails(props) {
                             display="flex"
                             justifyContent="space-between"
                             alignItems="right"
+                            marginRight="1.25rem"
                         >
+                            <b>Metrics</b>
                             { access &&
                             <Button
-                                variant={"outlined"}
+                                variant={"contained"}
                                 size={"small"}
                                 onClick={ ()=>{setShowEdit(true)} }
                             >
@@ -227,6 +245,16 @@ function DeviceDetails(props) {
                         </Box>
                     </Grid>
 
+                    {/*All metric data*/}
+
+                    { metrics && metrics.map((item)=>{
+                        return (
+                            <>
+                                { gridItem(item.settingType) }
+                                { gridItem(item.value) }
+                            </>
+                        )
+                    })}
                 </Grid>
 
 
