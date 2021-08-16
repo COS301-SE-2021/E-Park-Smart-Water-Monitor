@@ -68,7 +68,7 @@ public class InspectionControllerTest {
 
     @Test
     public void addInspection(){
-        AddInspectionRequest request = new AddInspectionRequest(UUID.fromString("cc76aed0-426e-412d-8f9a-f23f857267aa"), new Date(1638309600), "Integration Testing"+ new Date().toString());
+        AddInspectionRequest request = new AddInspectionRequest(UUID.fromString("cc76aed0-426e-412d-8f9a-f23f857267aa"), new Date(), "Integration Testing:  "+ new Date().toString());
         ResponseEntity<AddInspectionResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
                 .postForEntity("/api/inspections/addInspection",request,AddInspectionResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
