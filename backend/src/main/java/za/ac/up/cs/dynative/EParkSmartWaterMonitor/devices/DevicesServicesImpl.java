@@ -27,9 +27,15 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.Measurem
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.NotificationService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.SMSRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.UserService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.GetAllDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
@@ -48,6 +54,8 @@ public class DevicesServicesImpl implements DevicesService
 
     private DeviceRepo deviceRepo;
     private ParkService parkService;
+    private UserService userService;
+    private NotificationService notificationService;
     private WaterSiteService waterSiteService;
     private MeasurementRepo measurementRepo;
     private IotClient iotClient;
@@ -58,7 +66,11 @@ public class DevicesServicesImpl implements DevicesService
     public DevicesServicesImpl(@Qualifier("WaterSourceDeviceRepo") DeviceRepo deviceRepo,
                                @Qualifier("ParkService") ParkService parkService,
                                @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService,
-                               @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo)
+                               @Qualifier("NotificationServiceImpl") NotificationService notificationService,
+                               @Qualifier("UserService") UserService userService,
+                               @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo
+
+    )
     {
         this.deviceRepo = deviceRepo;
         this.parkService = parkService;
@@ -437,6 +449,25 @@ public class DevicesServicesImpl implements DevicesService
             {
                 targetDevice.getDeviceData().setLastSeen(dataNotificationRequest.getData().get(0).getWaterSourceData().getMeasurements().get(0).getDateTime());
             }
+            DataNotification dataSet=dataNotificationRequest.getData().get(i);
+            for (int x = 0; x < dataSet.getWaterSourceData().getMeasurements().size(); x++)
+            {
+                Measurement targetMeasurement = dataSet.getWaterSourceData().getMeasurements().get(x);
+                double lowerLimit = targetDevice.getDeviceData().getSensorLowerLimit(targetMeasurement.getType());
+                double upperLimit = targetDevice.getDeviceData().getSensorUpperLimit(targetMeasurement.getType());
+
+                if ((targetMeasurement.getEstimateValue())>upperLimit||(targetMeasurement.getEstimateValue())<lowerLimit)
+                {
+//                    Park devicePark=
+//                    SMSRequest alertSmsRequest;
+//                    EmailRequest alertEmailRequest;
+//                    notificationService.sendMail();
+//                    notificationService.sendSMS();
+
+                }
+
+            }
+
         }
         System.out.println(dataNotificationRequest.toString());
 
