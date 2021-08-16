@@ -13,6 +13,9 @@ import Button from "@material-ui/core/Button";
 import EditDeviceMetrics from "./EditDeviceMetrics";
 import Modal from "../../Modals/Modal";
 import {UserContext} from "../../../Context/UserContext";
+import Divider from "@material-ui/core/Divider";
+import {BatteryStd, CheckCircle} from "@material-ui/icons";
+import Clear from "@material-ui/icons/Clear";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -74,12 +77,35 @@ function DeviceDetails(props) {
                             </Box>
                         </Grid>
                         <Grid item xs="auto">
+                            {/*battery*/}
                             <Box
-                                justifyContent="flex-end"
                                 display="flex"
-                                flexWrap="wrap"
+                                justifyContent="space-between"
+                                alignItems="center"
+                                paddingLeft="1.25rem"
+                                paddingRight="1.25rem"
+                                // paddingBottom="1rem"
+                                // className={classes.outlineNone}
                             >
+                                <Box>
+                                    { device && device.deviceData && device.deviceData.battery }%
+                                </Box>
+                                <Box
+                                    component={BatteryStd}
+                                    width="1rem!important"
+                                    height="1rem!important"
+                                />
+                                <Box
+                                    paddingLeft="1.25rem"
+                                >
+                                    { device && device.deviceData && device.deviceData.deviceStatus }
+                                </Box>
 
+                                <Box
+                                    component={CheckCircle}
+                                    width="1rem!important"
+                                    height="1rem!important"
+                                />
 
                             </Box>
                         </Grid>
@@ -91,13 +117,13 @@ function DeviceDetails(props) {
                 <Grid container>
                     <Grid
                         item
-                        xs={6}
-                        xl={6}
+                        xs={12}
+                        xl={12}
                         component={Box}
                         marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        Name
+                        <b>General</b>
                     </Grid>
                     <Grid
                         item
@@ -107,7 +133,7 @@ function DeviceDetails(props) {
                         marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        { device && device.deviceName }
+                        Coordinates
                     </Grid>
                     <Grid
                         item
@@ -117,77 +143,7 @@ function DeviceDetails(props) {
                         marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        Status
-                    </Grid>
-                    <Grid
-                        item
-                        xs={6}
-                        xl={6}
-                        component={Box}
-                        marginBottom="1rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        { device && device.deviceData && device.deviceData.deviceStatus }
-                    </Grid>
-                    <Grid
-                        item
-                        xs={6}
-                        xl={6}
-                        component={Box}
-                        marginBottom="1rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        Battery
-                    </Grid>
-                    <Grid
-                        item
-                        xs={6}
-                        xl={6}
-                        component={Box}
-                        marginBottom="1rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        { device && device.deviceData && device.deviceData.battery }%
-                    </Grid>
-                    <Grid
-                        item
-                        xs={6}
-                        xl={6}
-                        component={Box}
-                        marginBottom="1rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        Latitude
-                    </Grid>
-                    <Grid
-                        item
-                        xs={6}
-                        xl={6}
-                        component={Box}
-                        marginBottom="1rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        { device && device.deviceData && device.deviceData.latitude }
-                    </Grid>
-                    <Grid
-                        item
-                        xs={6}
-                        xl={6}
-                        component={Box}
-                        marginBottom="1rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        Longitude
-                    </Grid>
-                    <Grid
-                        item
-                        xs={6}
-                        xl={6}
-                        component={Box}
-                        marginBottom="1rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        { device && device.deviceData && device.deviceData.longitude }
+                        Lat: { device && device.deviceData && device.deviceData.latitude } <br/> Long: { device && device.deviceData && device.deviceData.longitude }
                     </Grid>
                     <Grid
                         item
@@ -230,16 +186,47 @@ function DeviceDetails(props) {
                         { device && device.deviceData && device.deviceData.lifeTime }
                     </Grid>
                     {/*Metric information*/}
-                    
-                    { access &&
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={ ()=>{setShowEdit(true)} }
+                    <Grid
+                        item
+                        xs={12}
+                        xl={12}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
                     >
-                        Metrics
-                    </Button>
-                    }
+                        <Box
+                            component={Divider}
+                            marginBottom="1rem!important"
+                            marginLeft="1.25rem!important"
+                            marginRight="1.25rem!important"
+                        />
+                        <b>Metrics</b>
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        xl={12}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="right"
+                        >
+                            { access &&
+                            <Button
+                                variant={"outlined"}
+                                size={"small"}
+                                onClick={ ()=>{setShowEdit(true)} }
+                            >
+                                Edit Metrics
+                            </Button>
+                            }
+                        </Box>
+                    </Grid>
+
                 </Grid>
 
 
