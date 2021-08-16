@@ -28,6 +28,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.NotificationService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.SMSRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
@@ -434,8 +435,7 @@ public class DevicesServicesImpl implements DevicesService
     }
 
     @Override
-    public void getDataNotification(DataNotificationRequest dataNotificationRequest)
-    {
+    public void getDataNotification(DataNotificationRequest dataNotificationRequest) throws InvalidRequestException {
         List<Device> deviceList = deviceRepo.findDeviceByDeviceName(dataNotificationRequest.getData().get(0).getDeviceName());
         int problematicMeasurements=0;
         if (deviceList.size()<1)
@@ -448,6 +448,7 @@ public class DevicesServicesImpl implements DevicesService
             if (i==0)
             {
                 targetDevice.getDeviceData().setLastSeen(dataNotificationRequest.getData().get(0).getWaterSourceData().getMeasurements().get(0).getDateTime());
+                deviceRepo.save(targetDevice);
             }
             DataNotification dataSet=dataNotificationRequest.getData().get(i);
             for (int x = 0; x < dataSet.getWaterSourceData().getMeasurements().size(); x++)
@@ -458,11 +459,35 @@ public class DevicesServicesImpl implements DevicesService
 
                 if ((targetMeasurement.getEstimateValue())>upperLimit||(targetMeasurement.getEstimateValue())<lowerLimit)
                 {
-//                    List<User> usersRelatingToDevice= user
-//                    SMSRequest alertSmsRequest;
-//                    EmailRequest alertEmailRequest;
-//                    notificationService.sendMail();
-//                    notificationService.sendSMS();
+                    ArrayList<User> usersRelatingToDevice= userService.findUsersRelatedToDevice(targetDevice.getDeviceName());
+
+                    if (usersRelatingToDevice.size()==0)
+                        return;
+
+                    ArrayList<String> emailList = new ArrayList<>();
+                    List<String> smsList=new ArrayList<>();
+                    for (int j = 0; j <usersRelatingToDevice.size() ; j++)
+                    {
+                        emailList.add(usersRelatingToDevice.get(j).getEmail());
+                        smsList.add(usersRelatingToDevice.get(j).getCellNumber());
+                    }
+
+                    String message = "An inspection has been scheduled please investigate.";
+                    SMSRequest alertSmsRequest= new SMSRequest(usersRelatingToDevice,"Device "+targetDevice.getDeviceName()+" is showing measurements that are out of the allowed bounds, an inspection has been scheduled please investigate.");
+                    EmailRequest alertEmailRequest = new EmailRequest(
+                            "EPark Smart Water Monitoring System",
+                            targetDevice.getDeviceName()+" Alert" ,
+                            emailList,
+                            null,
+                            null,
+                            Topic.ALERT,
+                            targetDevice.getDeviceName(),
+                            message,
+                            "Is displaying values that are out of bounds."
+                            );
+
+                    notificationService.sendMail(alertEmailRequest);
+                    notificationService.sendSMS(alertSmsRequest);
 
                 }
 

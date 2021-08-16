@@ -5,6 +5,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface UserService {
@@ -13,7 +14,7 @@ public interface UserService {
     LoginResponse loginUser(LoginRequest request) throws InvalidRequestException;
     GetAllUsersResponse getAllUsers();
     User findUserByUserName(String username);
-    List<User> findUsersRelatedToDevice(String dName);
+    ArrayList<User> findUsersRelatedToDevice(String dName);
     DeleteUserResponse deleteUser(DeleteUserRequest deleteUserRequest);
     FindUserByIdResponse findUserById(FindUserByIdRequest findUserByIdRequest);
     ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest) throws InvalidRequestException;

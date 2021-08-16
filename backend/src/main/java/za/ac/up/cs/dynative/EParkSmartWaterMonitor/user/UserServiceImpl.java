@@ -342,7 +342,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findUsersRelatedToDevice(String dName) {
+    public ArrayList<User> findUsersRelatedToDevice(String dName) {
        return userRepo.findUsersWorkingAtDevicePark(dName);
     }
 
