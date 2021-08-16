@@ -9,11 +9,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetParkSitesResponse;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -54,6 +55,13 @@ public class ParkControllerTest {
     }
 
     //get: /api/park/getAllParksAndSites
+    @Test
+    public void getAllParksAndSites(){
+        ResponseEntity<GetAllParksAndSitesResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .getForEntity("/api/park/getAllParksAndSites",GetAllParksAndSitesResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response);
+    }
 
     //get: /api/park/getAllParks
 
