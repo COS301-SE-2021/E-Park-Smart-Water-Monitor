@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.FindDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetParkDevicesRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.ReceiveDeviceDataRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.FindDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetParkDevicesResponse;
@@ -19,6 +20,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserReque
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.CreateUserResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.GetAllDevicesResponse;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -129,8 +131,30 @@ public class DeviceControllerTest {
     }
 
     //post: /api/devices/receiveDeviceData
+    /*@Test
+    public void receiveDeviceDataNameNull(){
+        ReceiveDeviceDataRequest request = new ReceiveDeviceDataRequest("",new ArrayList<>());
+        ResponseEntity<GetParkDevicesResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/receiveDeviceData", request, GetParkDevicesResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Device with that name does not exist", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }*/
+
+    @Test
+    public void receiveDeviceData(){
+        ReceiveDeviceDataRequest request = new ReceiveDeviceDataRequest("IntTesting123123",new ArrayList<>());
+        ResponseEntity<GetParkDevicesResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/receiveDeviceData", request, GetParkDevicesResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Device with that name does not exist", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
 
     //post: /api/devices/setMetricFrequency
+    @Test
+    public void setMetricFreqIdNull(){
 
+    }
 
 }
