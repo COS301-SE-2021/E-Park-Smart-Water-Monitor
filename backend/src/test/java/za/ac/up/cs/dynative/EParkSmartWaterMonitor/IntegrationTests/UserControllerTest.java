@@ -325,7 +325,7 @@ public class UserControllerTest {
                 .postForEntity("/api/user/getUser", request, FindUserByIdResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("REEE.com", response.getBody().getUser().getName());
-        assertEquals("rolanstrydom@icloud.com", response.getBody().getUser().getEmail());
+        assertEquals("nita.nell92@gmail.com", response.getBody().getUser().getEmail());
         assertEquals("Michaela", response.getBody().getUser().getUsername());
         assertEquals(true, response.getBody().getSuccess());
     }
