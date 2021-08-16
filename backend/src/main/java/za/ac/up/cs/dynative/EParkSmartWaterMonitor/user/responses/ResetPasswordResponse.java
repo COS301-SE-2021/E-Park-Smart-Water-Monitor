@@ -13,4 +13,6 @@ public class ResetPasswordResponse {
     public ResetPasswordResponse(String code){
         this.code= code;
     }
+
+    public ResetPasswordResponse(){}
 }

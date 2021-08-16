@@ -365,7 +365,14 @@ public class UserControllerTest {
         assertNotEquals("", response.getBody().getJwt());
     }
 
-
     //post: /api/user/resetPassword
     //post: /api/user/resetPasswordFinalize
+
+    @Test
+    public void resetPasswordUserDNE(){
+        ResetPasswordRequest request = new ResetPasswordRequest("hello");
+        ResponseEntity<ResetPasswordResponse> response = restTemplate.postForEntity("/api/user/resetPassword", request, ResetPasswordResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("User not found", response.getBody().getCode());
+    }
 }

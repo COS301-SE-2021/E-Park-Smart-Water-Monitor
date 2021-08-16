@@ -15,4 +15,7 @@ public class ResetPasswordRequest {
     public ResetPasswordRequest(@JsonProperty("username") String username){
         this.username = username;
     }
+
+    public ResetPasswordRequest(){
+    }
 }
