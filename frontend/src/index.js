@@ -21,14 +21,14 @@ const override = css`
 `;
 
 
-const overlay = `
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
-`;
+const overlay = {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    zIndex: '10'
+}
 
 const App = () => {
     const [loading, setLoading] = useState(false)
@@ -40,9 +40,9 @@ const App = () => {
     return (<ThemeProvider theme={theme}>
         <UserProvider>
             <Modal onClose={() => setLoading(false)} show={loading}>
-                <div className="sweet-loading" style={ overlay }>
+                {/*<div className="sweet-loading" style={ overlay }>*/}
                     <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
-                </div>
+                {/*</div>*/}
             </Modal>
             <CssBaseline />
             {/*Loading Modal*/}

@@ -18,8 +18,8 @@ const ResetPassword = (props) => {
     const [username, setUsername] = useState("")
     const [code, setCode] = useState(false)
     const [error, setError] = useState(false)
+    const [next, setNext] = useState(false)
 
-    const user = useContext(UserContext)
     const loader = useContext(LoadingContext)
     const toggleLoading = loader.toggleLoading
 
@@ -33,13 +33,15 @@ const ResetPassword = (props) => {
         }
 
         axios.post('http://localhost:8080/api/user/resetPassword', obj).then((res) => {
-            
+
             toggleLoading();
 
             if(res.data.code === "User not found"){
                 setError(res.data.code)
             }else{
                 setCode(res.data.code)
+                setNext(true)
+                console.log("next")
             }
 
         }).catch((res) => {
@@ -50,6 +52,10 @@ const ResetPassword = (props) => {
         });
     }
 
+    useEffect(()=>{
+
+    }, [next]);
+
     const submitNewPassword = (e) => {
         e.preventDefault()
         console.log("submitting new password")
@@ -58,15 +64,15 @@ const ResetPassword = (props) => {
 
     return (
         <>
-            <Form onSubmit={ submitUsername }>
+            {!next &&
+            <Form onSubmit={submitUsername}>
                 <Row>
                     <Col>
-                        <Form.Group className="mb-3" >
+                        <Form.Group className="mb-3">
 
                             <FormControl fullWidth
                                  variant="outlined"
-
-                                         type="text"
+                                 type="text"
                                  pattern={"[a-zA-Z0-9:_-]+"}
                                  name="username"
                                  value={username}
@@ -100,7 +106,9 @@ const ResetPassword = (props) => {
 
                 <Grid container component={Box} marginTop="1rem">
                     <Grid item xs={6} component={Box} textAlign="left">
-                        <Button background-color="danger" color="primary" variant="text" onClick={ ()=>{props.closeModal()} }>
+                        <Button background-color="danger" color="primary" variant="text" onClick={() => {
+                            props.closeModal()
+                        }}>
                             Cancel
                         </Button>
                     </Grid>
@@ -112,28 +120,62 @@ const ResetPassword = (props) => {
                 </Grid>
             </Form>
 
-            {
-                code &&
+            }
+
+            {   next &&
                 <Form onSubmit={ submitNewPassword }>
                     <Row>
                         <Col>
-                            <Form.Group className="mb-3" >
-                                <Form.Label>Username</Form.Label>
-                                <Form.Control required={"required"} type="text" placeholder="Username" pattern={"[a-zA-Z0-9:_-]+"} name="username" value={username} onChange={e => setUsername(e.target.value)}/>
+                            <Form.Group className="mb-3">
+
+                                <FormControl fullWidth
+                                             variant="outlined"
+                                             type="text"
+                                             pattern={"[a-zA-Z0-9:_-]+"}
+                                             name="username"
+                                             value={username}
+                                             onChange={e => setUsername(e.target.value)}
+                                >
+                                    <InputLabel>
+                                        Username
+                                    </InputLabel>
+                                    <OutlinedInput
+                                        type="text"
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <Box
+                                                    component={AccountCircleIcon}
+                                                    width="1.25rem!important"
+                                                    height="1.25rem!important"
+                                                />
+                                            </InputAdornment>
+                                        }
+
+                                        labelWidth={65}
+                                    />
+                                </FormControl>
                                 <Form.Text className="text-muted">
-                                    Use a dash or fullstop instead of a space
+                                    A confirmation email will be sent to the account matching this username.
                                 </Form.Text>
                             </Form.Group>
 
                         </Col>
                     </Row>
 
-                    <Button background-color="primary" variant="primary" onClick={ ()=>{props.closeModal()} }>
-                        Cancel
-                    </Button>
-                    <Button background-color="primary" variant="primary" type="submit">
-                        Submit
-                    </Button>
+                    <Grid container component={Box} marginTop="1rem">
+                        <Grid item xs={6} component={Box} textAlign="left">
+                            <Button color="primary" variant="text" onClick={() => {
+                                props.closeModal()
+                            }}>
+                                Cancel
+                            </Button>
+                        </Grid>
+                        <Grid item xs={6} component={Box} textAlign="right">
+                            <Button color="primary" variant="contained" type="submit">
+                                Submit
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </Form>
             }
         </>

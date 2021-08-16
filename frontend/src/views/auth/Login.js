@@ -105,14 +105,6 @@ function Login() {
             }}
           ></CardHeader>
           <CardContent classes={{ root: classes.cardContent }}>
-            <Box
-              color={theme.palette.gray[600]}
-              textAlign="center"
-              marginBottom="1rem"
-              // marginTop=".5rem"
-              fontSize="1rem"
-            >
-            </Box>
             <FormControl
               variant="filled"
               component={Box}
@@ -151,16 +143,6 @@ function Login() {
                 }
               />
             </FormControl>
-            {/*<FormControlLabel*/}
-            {/*  value="end"*/}
-            {/*  control={<Checkbox color="primary" />}*/}
-            {/*  label="Remeber me"*/}
-            {/*  labelPlacement="end"*/}
-            {/*  classes={{*/}
-            {/*    root: classes.formControlLabelRoot,*/}
-            {/*    label: classes.formControlLabelLabel,*/}
-            {/*  }}*/}
-            {/*/>*/}
 
             <Box textAlign="center" marginTop="1.5rem" marginBottom="1.5rem">
               { loading &&
@@ -203,7 +185,7 @@ function Login() {
                       )}
                       className={classes.footerLinks}
                   >
-                      Need Login Details
+                      Obtain Login Details
                   </a>
               </Grid>
           </Grid>
