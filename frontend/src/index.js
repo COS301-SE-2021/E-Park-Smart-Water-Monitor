@@ -43,9 +43,7 @@ const App = () => {
     return (<ThemeProvider theme={theme}>
         <UserProvider>
             <Modal onClose={() => setLoading(false)} show={loading}>
-                {/*<div className="sweet-loading" style={ overlay }>*/}
-                    <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
-                {/*</div>*/}
+                <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
             </Modal>
             <CssBaseline />
             {/*Loading Modal*/}

@@ -11,6 +11,7 @@ import AdminContext from "../../Admin/AdminContext";
 import {PuffLoader} from "react-spinners";
 import Modal from "../../Modals/Modal";
 import {css} from "@emotion/react";
+import LoadingContext from "../../../Context/LoadingContext";
 const { Form } = require( "react-bootstrap" );
 
 
@@ -37,10 +38,7 @@ const EditDeviceMetricsBody = (props) => {
     const [show, setShow] = useState(false)
     const [loading, setLoading] = useState(false)
 
-    const toggleLoading = ()=>{
-        setShow(show=>!show)
-        setLoading(loading=>!loading)
-    }
+    const toggleLoading = useContext(LoadingContext).toggleLoading
 
     useEffect(() => {
 
@@ -84,14 +82,8 @@ const EditDeviceMetricsBody = (props) => {
     }
 
 
-
     return (
         <>
-            <Modal onClose={() => setShow(false)} show={show}>
-                <div style={ overlay }>
-                    <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
-                </div>
-            </Modal>
             <Form onSubmit={ submit }>
                 <Row>
                     <Col>

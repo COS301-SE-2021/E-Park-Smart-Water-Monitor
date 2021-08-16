@@ -11,7 +11,7 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
-import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
+import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
@@ -46,6 +46,16 @@ const EditDeviceBody = (props) => {
     const user = useContext(UserContext)
     const loader = useContext(LoadingContext)
     const toggleLoading = loader.toggleLoading
+
+    function MapEvents() {
+        const map = useMapEvents({
+            click: (e) => {
+                setLatitude(e.latlng.lat)
+                setLongitude(e.latlng.lng)
+            }
+        })
+        return null
+    }
 
     useEffect(() => {
 
@@ -147,6 +157,7 @@ const EditDeviceBody = (props) => {
                                         location
                                     </Popup>
                                 </Marker>
+                                <MapEvents/>
                             </MapContainer>}
                         </div>
                     </Col>

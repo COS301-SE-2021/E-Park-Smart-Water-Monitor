@@ -33,21 +33,12 @@ const AddDeviceBody = (props) => {
     // use the context supplied from the admin component to get the parks and sites
     const context = useContext(AdminContext)
     const user = useContext(UserContext)
-    const loader = useContext(LoadingContext)
-    const toggleLoading = loader.toggleLoading
+    const toggleLoading = useContext(LoadingContext).toggleLoading
     const parksAndSites = context.parksAndSites;
 
 
     // getting the clicked location on
     function MapEvents() {
-        const map = useMapEvents({
-            click: (e) => {
-                setLatitude(e.latlng.lat)
-                setLongitude(e.latlng.lng)
-            }
-        })
-        return null
-    }    function MapEvents() {
         const map = useMapEvents({
             click: (e) => {
                 setLatitude(e.latlng.lat)

@@ -48,7 +48,6 @@ function Login() {
 
 
     const login = () => {
-        loader.toggleLoading()
         setLoading(true)
         setError("")
         let obj = {
@@ -58,9 +57,8 @@ function Login() {
 
         axios.post('http://localhost:8080/api/user/login', obj
         ).then((res)=>{
-            loader.toggleLoading()
             setLoading(false)
-            console.log("login response: "+JSON.stringify(res))
+            // console.log("login response: "+JSON.stringify(res))
             let x = res.data;
             if(x.success){
                 user.setToken(x.jwt) // allow for authorisation of a user for the other pages
