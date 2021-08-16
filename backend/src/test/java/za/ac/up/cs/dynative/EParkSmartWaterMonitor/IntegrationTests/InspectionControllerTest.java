@@ -8,12 +8,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests.GetAllInspections;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.*;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetParkSitesResponse;
 
 import java.util.Date;
 import java.util.UUID;
