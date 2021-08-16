@@ -11,9 +11,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests.GetAllInspections;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.AddInspectionRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetDeviceInspectionsRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.GetWaterSiteInspectionsRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.AddInspectionResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetAllInspectionsResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetDeviceInspectionsResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.GetWaterSiteInspectionsResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetParkSitesResponse;
@@ -33,6 +35,26 @@ public class InspectionControllerTest {
     //post: /api/inspections/setStatus
 
     //post: /api/inspections/getSiteInspections
+    @Test
+    public void getWaterSiteInspectionIdNull(){
+        GetWaterSiteInspectionsRequest request = new GetWaterSiteInspectionsRequest(null);
+        ResponseEntity<GetWaterSiteInspectionsResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/inspections/getSiteInspections",request,GetWaterSiteInspectionsResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Failed to get inspection! Invalid waterSiteId!", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void getWaterSiteInspection(){
+        GetWaterSiteInspectionsRequest request = new GetWaterSiteInspectionsRequest(UUID.fromString("91d05eb1-2a35-4e44-9726-631d83121edb"));
+        ResponseEntity<GetWaterSiteInspectionsResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/inspections/getSiteInspections",request,GetWaterSiteInspectionsResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Inspections retrieved successfully!", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
+        assertNotNull(response);
+    }
 
     //post: /api/inspections/setComments
 
