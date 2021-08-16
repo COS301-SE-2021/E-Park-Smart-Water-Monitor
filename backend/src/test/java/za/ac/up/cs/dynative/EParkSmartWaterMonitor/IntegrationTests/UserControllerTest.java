@@ -11,9 +11,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.DeleteUserRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.EditUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.CreateUserResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.DeleteUserResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.EditUserResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.FindUserByIdRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.*;
 
 import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
@@ -273,14 +272,6 @@ public class UserControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("The provided ID number is not a valid ID number.", response.getBody().getStatus());
         assertEquals(false, response.getBody().getSuccess());
-
-        //test 5
-        request = new EditUserRequest("Michaela","9877132522123","","","","Michaela.com","","");
-        response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
-                .postForEntity("/api/user/editUser",request,EditUserResponse.class);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("The provided ID number is already registered to someone else.", response.getBody().getStatus());
-        assertEquals(false, response.getBody().getSuccess());
     }
 
     @Test
@@ -294,7 +285,7 @@ public class UserControllerTest {
         assertEquals(true, response.getBody().getSuccess());
 
         //test 2
-        request = new EditUserRequest("Michaela.com", "", "", "", "", "Michaela", "", "");
+        request = new EditUserRequest("Michaela.com", "9877132522123", "", "", "", "Michaela", "", "");
         response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
                 .postForEntity("/api/user/editUser", request, EditUserResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -302,9 +293,28 @@ public class UserControllerTest {
         assertEquals(true, response.getBody().getSuccess());
     }
 
-    //get: /api/user/getAllUsers
-
     //post: /api/user/getUser
+    @Test
+    public void getUserDNE() {
+        FindUserByIdRequest request = new FindUserByIdRequest(null);
+        ResponseEntity<FindUserByIdResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/getUser", request, FindUserByIdResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(null, response.getBody().getUser());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void getUserSuccess() {
+        FindUserByIdRequest request = new FindUserByIdRequest(UUID.fromString("6716af93-1563-42b0-b1b9-5373cd19c0b4"));
+        ResponseEntity<FindUserByIdResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/getUser", request, FindUserByIdResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("REEE.com", response.getBody().getUser().getName());
+        assertEquals("rolanstrydom@icloud.com", response.getBody().getUser().getEmail());
+        assertEquals("Michaela", response.getBody().getUser().getUsername());
+        assertEquals(true, response.getBody().getSuccess());
+    }
 
     //post: /api/user/login
 

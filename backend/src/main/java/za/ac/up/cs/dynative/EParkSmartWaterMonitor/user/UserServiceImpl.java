@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public EditUserResponse editUser(EditUserRequest request) {
+    public EditUserResponse editUser(EditUserRequest request){
         EditUserResponse response = new EditUserResponse();
         List<User> usersWithUsername = userRepo.findUserByUsername(request.getUsername());
         User userToChange=null;
