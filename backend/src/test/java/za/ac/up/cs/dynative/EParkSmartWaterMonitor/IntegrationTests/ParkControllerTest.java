@@ -8,12 +8,10 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.EditParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.EditParkResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetParkSitesResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.*;
 
 import java.util.UUID;
 
@@ -114,7 +112,34 @@ public class ParkControllerTest {
     }
 
     //post: /api/park/addPark
+    @Test
+    public void AddParkIncomplete() {
+        CreateParkRequest request = new CreateParkRequest("",-25.65475,28.9698512347);
+        ResponseEntity<CreateParkResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/park/addPark", request, CreateParkResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("No park name specified!", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
 
-    //delete: /api/park/deletePark
+    @Test
+    public void AddParkDup() {
+        CreateParkRequest request = new CreateParkRequest("Kruger National Park",-25.65475,28.9698512347);
+        ResponseEntity<CreateParkResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/park/addPark", request, CreateParkResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Park Kruger National Park already exists!", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void AddPark() {
+        CreateParkRequest request = new CreateParkRequest("IntTesting123123",-25.65475,28.9698512347);
+        ResponseEntity<CreateParkResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/park/addPark", request, CreateParkResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Park IntTesting123123 Added!", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
+    }
 
 }
