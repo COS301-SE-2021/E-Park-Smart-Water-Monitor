@@ -366,13 +366,38 @@ public class UserControllerTest {
     }
 
     //post: /api/user/resetPassword
-    //post: /api/user/resetPasswordFinalize
-
     @Test
     public void resetPasswordUserDNE(){
         ResetPasswordRequest request = new ResetPasswordRequest("hello");
         ResponseEntity<ResetPasswordResponse> response = restTemplate.postForEntity("/api/user/resetPassword", request, ResetPasswordResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("User not found", response.getBody().getCode());
+    }
+
+    @Test
+    public void resetPasswordGetCodeSuccess(){
+        ResetPasswordRequest request = new ResetPasswordRequest("Michaela");
+        ResponseEntity<ResetPasswordResponse> response = restTemplate.postForEntity("/api/user/resetPassword", request, ResetPasswordResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotEquals("User not found", response.getBody().getCode());
+    }
+
+    //post: /api/user/resetPasswordFinalize
+    @Test
+    public void resetPasswordFinalizeUserDNE(){
+        ResetPasswordFinalizeRequest request = new ResetPasswordFinalizeRequest("hello","234","abc","abc");
+        ResponseEntity<ResetPasswordFinalizeResponse> response = restTemplate.postForEntity("/api/user/resetPasswordFinalize", request, ResetPasswordFinalizeResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("User not found", response.getBody().getMessage());
+        assertEquals(false, response.getBody().isSuccess());
+    }
+
+    @Test
+    public void resetPasswordFinalizeCodeWrong(){
+        ResetPasswordFinalizeRequest request = new ResetPasswordFinalizeRequest("Michaela","234","abc","abc");
+        ResponseEntity<ResetPasswordFinalizeResponse> response = restTemplate.postForEntity("/api/user/resetPasswordFinalize", request, ResetPasswordFinalizeResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("There seems to be a typo in the code or provided password", response.getBody().getMessage());
+        assertEquals(false, response.getBody().isSuccess());
     }
 }
