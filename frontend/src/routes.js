@@ -18,6 +18,8 @@ import Tv from "@material-ui/icons/Tv";
 import VpnKey from "@material-ui/icons/VpnKey";
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
+
+
 var routes = [
   {
     path: "/index",
@@ -64,18 +66,6 @@ var routes = [
   },
   {
     title: "Profile",
-  },
-  // {
-  //   href:
-  //     "https://www.creative-tim.com/learning-lab/material-ui/overview/argon-dashboard?ref=admui-admin-sidebar",
-  //   name: "Getting started",
-  //   icon: FlashOn,
-  // },
-  {
-    href:
-      "https://www.creative-tim.com/learning-lab/material-ui/alerts/argon-dashboard?ref=admui-admin-sidebar",
-    name: "Components",
-    icon: Dns,
   },
 ];
 export default routes;

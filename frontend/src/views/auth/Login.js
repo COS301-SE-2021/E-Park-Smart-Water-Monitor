@@ -62,10 +62,14 @@ function Login() {
             let x = res.data;
             if(x.success){
                 user.setToken(x.jwt) // allow for authorisation of a user for the other pages
-                user.setRole(x.userRole) // allow for authorisation of a user for the other pages
-                user.setEmail(x.userEmail) // allow for authorisation of a user for the other pages
-                user.setName(x.name) // allow for authorisation of a user for the other pages
-                user.setName(x.name) // allow for authorisation of a user for the other pages
+                user.setRole(x.userRole)
+                user.setEmail(x.userEmail)
+                user.setName(x.name)
+                user.setSurname(x.surname)
+                user.setCellNumber(x.cellNumber)
+                user.setIDNumber(x.userIdNumber)
+                user.setParkID(x.parkId)
+                user.setParkName(x.parkName)
                 history.push("/dashboard/index");
             }else{
                 setError("Login details incorrect")

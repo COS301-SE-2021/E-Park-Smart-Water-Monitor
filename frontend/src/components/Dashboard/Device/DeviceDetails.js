@@ -80,15 +80,7 @@ function DeviceDetails(props) {
                                 flexWrap="wrap"
                             >
 
-                                { access &&
-                                    <Button
-                                        color="primary"
-                                        variant="contained"
-                                        onClick={ ()=>{setShowEdit(true)} }
-                                    >
-                                        Metrics
-                                    </Button>
-                                }
+
                             </Box>
                         </Grid>
                     </Grid>
@@ -237,6 +229,17 @@ function DeviceDetails(props) {
                     >
                         { device && device.deviceData && device.deviceData.lifeTime }
                     </Grid>
+                    {/*Metric information*/}
+                    
+                    { access &&
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        onClick={ ()=>{setShowEdit(true)} }
+                    >
+                        Metrics
+                    </Button>
+                    }
                 </Grid>
 
 
