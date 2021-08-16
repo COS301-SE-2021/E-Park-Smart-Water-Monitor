@@ -136,6 +136,26 @@ public class UserControllerTest {
         assertEquals(false,response.getBody().getSuccess());
     }
 
+    @Test
+    public void createUserParkDNE() {
+        CreateUserRequest request = new CreateUserRequest(UUID.fromString("4c0a1f95-551b-4885-b3fe-5d27c71ebd80"), "9871233577124", "nita.nell92@gmail.com", "dynative", "IntTesting123123", "surname", "IntTesting123123", "ADMIN", "0728480427");
+        ResponseEntity<CreateUserResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/createUser", request, CreateUserResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("No park with this id exists.", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void createUser() {
+        CreateUserRequest request = new CreateUserRequest(UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80"), "9871233577124", "nita.nell92@gmail.com", "dynative", "IntTesting123123", "surname", "IntTesting123123", "ADMIN", "0728480427");
+        ResponseEntity<CreateUserResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/createUser", request, CreateUserResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Successfully create user: IntTesting123123 surname and added them to park: Kruger National Park", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
+    }
+
     //post: /api/user/deleteUser
 
     //post: /api/user/editUser
