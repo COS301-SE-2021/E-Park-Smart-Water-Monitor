@@ -8,8 +8,12 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.repositories.UserRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.DeleteUserRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.CreateUserResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.DeleteUserResponse;
+
 import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -146,7 +150,8 @@ public class UserControllerTest {
         assertEquals(false, response.getBody().getSuccess());
     }
 
-    @Test
+    //do not run this with createDeleteUser()
+    /*@Test
     public void createUser() {
         CreateUserRequest request = new CreateUserRequest(UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80"), "9871233577124", "nita.nell92@gmail.com", "dynative", "IntTesting123123", "surname", "IntTesting123123", "ADMIN", "0728480427");
         ResponseEntity<CreateUserResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
@@ -154,9 +159,36 @@ public class UserControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Successfully create user: IntTesting123123 surname and added them to park: Kruger National Park", response.getBody().getStatus());
         assertEquals(true, response.getBody().getSuccess());
-    }
+    }*/
 
     //post: /api/user/deleteUser
+    @Test
+    public void createDeleteUser() {
+        CreateUserRequest request = new CreateUserRequest(UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80"), "9871233577124", "nita.nell92@gmail.com", "dynative", "IntTesting123123", "surname", "IntTesting123123", "ADMIN", "0728480427");
+        ResponseEntity<CreateUserResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/createUser", request, CreateUserResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Successfully create user: IntTesting123123 surname and added them to park: Kruger National Park", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
+
+        DeleteUserRequest requestD = new DeleteUserRequest(response.getBody().getId());
+        ResponseEntity<DeleteUserResponse> responseD = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/deleteUser", requestD, DeleteUserResponse.class);
+        assertEquals(HttpStatus.OK, responseD.getStatusCode());
+        assertEquals("Sucessfully deleteD user: IntTesting123123 surname", responseD.getBody().getStatus());
+        assertEquals(true, responseD.getBody().getSuccess());
+    }
+
+    //do not run this with createDeleteUser()
+    /*@Test
+    public void deleteUser() {
+        DeleteUserRequest request = new DeleteUserRequest(UUID.fromString("cbaa58eb-4e9b-44ec-8837-2ffde8604c5a"));
+        ResponseEntity<DeleteUserResponse> responseD = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/deleteUser", request, DeleteUserResponse.class);
+        assertEquals(HttpStatus.OK, responseD.getStatusCode());
+        assertEquals("Sucessfully deleteD user: IntTesting123123 surname", responseD.getBody().getStatus());
+        assertEquals(true, responseD.getBody().getSuccess());
+    }*/
 
     //post: /api/user/editUser
 

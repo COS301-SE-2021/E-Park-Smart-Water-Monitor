@@ -118,6 +118,7 @@ public class UserServiceImpl implements UserService {
                                 + surname
                                 + " and added them to park: "
                                 + park.getParkName());
+                        response.setId(user.getId());
                         response.setSuccess(true);
                     } else {
                         response.setSuccess(false);
