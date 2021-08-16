@@ -14,6 +14,8 @@ import {PuffLoader} from "react-spinners";
 import Modal from "./components/Modals/Modal";
 import {css} from "@emotion/react";
 
+
+
 const override = css`
   display: block;
   margin: 0 auto;
@@ -44,6 +46,7 @@ const App = () => {
                     <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
                 {/*</div>*/}
             </Modal>
+            
             <CssBaseline />
             {/*Loading Modal*/}
             <LoadingProvider value={ { toggleLoading: toggleLoading } } >
