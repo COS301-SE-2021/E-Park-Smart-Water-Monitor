@@ -27,6 +27,7 @@ import AddDeviceBody from "../../components/Admin/Device/AddDeviceBody";
 import Modal from "../../components/Modals/Modal";
 import ResetPassword from "../../components/Auth/ResetPassword";
 import {Alert} from "react-bootstrap";
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -40,6 +41,7 @@ function Login() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
     const [showReset, setShowReset] = useState(false)
+    const [dialogShow, setDialogShow] = useState(false)
 
     const user = useContext(UserContext)
     const loader = useContext(LoadingContext)
@@ -78,11 +80,38 @@ function Login() {
 
     }
 
+    const handleDialogClose = () => {
+        return ()=>{setDialogShow(false)}
+    };
+
     return (
     <>
         <Modal title="Reset Password" onClose={() => setShowReset(false)} show={showReset}>
             <ResetPassword closeModal={()=>{ setShowReset(false) }}/>
         </Modal>
+
+        <Dialog
+            open={dialogShow}
+            // onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        >
+
+            <DialogContent>
+                <h4 className="mb-4">Need Login details?</h4>
+                <DialogContentText id="alert-dialog-description">
+                    Contact your administrator about obtaining your username to access the E-Park Water Monitoring system.
+                    <br/>
+                    <br/>
+                    On receiving your username, click forgot password to set your own password.
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleDialogClose()} color="primary" autoFocus>
+                    Accept
+                </Button>
+            </DialogActions>
+        </Dialog>
 
       <Grid item xs={12} lg={5} md={7}>
         <Card classes={{ root: classes.cardRoot }}>
@@ -183,7 +212,7 @@ function Login() {
                   <a
                       href="#admui"
                       onClick={(e) => e.preventDefault(
-                          setShowReset(true)
+                          setDialogShow(true)
                       )}
                       className={classes.footerLinks}
                   >
