@@ -8,11 +8,12 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.repositories.UserRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.DeleteUserRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.EditUserRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.CreateUserResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.DeleteUserResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.EditUserResponse;
 
 import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
@@ -211,6 +212,95 @@ public class UserControllerTest {
     }
 
     //post: /api/user/editUser
+    @Test
+    public void editUserDNE(){
+        EditUserRequest request = new EditUserRequest("ch","12","","","","","","");
+        ResponseEntity<EditUserResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/editUser",request,EditUserResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("User with that username does not exist.", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void editUserDup(){
+        EditUserRequest request = new EditUserRequest("Michaela","12","","","","ChiChiTestingADMIN","","");
+        ResponseEntity<EditUserResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/editUser",request,EditUserResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Username is already in use.", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void editUserInvalid(){
+        //test 1
+        EditUserRequest request = new EditUserRequest("Michaela","12","","","","Michaela.com","","33");
+        ResponseEntity<EditUserResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/editUser",request,EditUserResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Cell-number provided is not valid.", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+
+        //test 2
+        request = new EditUserRequest("Michaela","12","rolanstrydom@icloud.com","","","Michaela.com","","0797310173");
+        response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/editUser",request,EditUserResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("The provided email is already in use.", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+
+        //test 3
+        request = new EditUserRequest("Michaela","12","rolanstrydom@icloud.com","","","Michaela.com","","0797310173");
+        response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/editUser",request,EditUserResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("The provided email is already in use.", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+
+        //test 4
+        request = new EditUserRequest("Michaela","12","rolanstrydcloud.com","","","Michaela.com","","0797310173");
+        response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/editUser",request,EditUserResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("The provided email is not a valid email-address.", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+
+        //test 5
+        request = new EditUserRequest("Michaela","12","","","","Michaela.com","","");
+        response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/editUser",request,EditUserResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("The provided ID number is not a valid ID number.", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+
+        //test 5
+        request = new EditUserRequest("Michaela","9877132522123","","","","Michaela.com","","");
+        response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/editUser",request,EditUserResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("The provided ID number is already registered to someone else.", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void editUserSuccess() {
+        //test 1
+        EditUserRequest request = new EditUserRequest("Michaela", "", "", "", "", "Michaela.com", "", "");
+        ResponseEntity<EditUserResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/editUser", request, EditUserResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("User details updated.", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
+
+        //test 2
+        request = new EditUserRequest("Michaela.com", "", "", "", "", "Michaela", "", "");
+        response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/editUser", request, EditUserResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("User details updated.", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
+    }
 
     //get: /api/user/getAllUsers
 
