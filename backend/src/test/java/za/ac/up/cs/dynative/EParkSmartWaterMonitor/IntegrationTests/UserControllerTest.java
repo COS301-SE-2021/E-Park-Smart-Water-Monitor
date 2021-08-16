@@ -190,6 +190,26 @@ public class UserControllerTest {
         assertEquals(true, responseD.getBody().getSuccess());
     }*/
 
+    @Test
+    public void deleteUserIdNull(){
+        DeleteUserRequest requestD = new DeleteUserRequest(null);
+        ResponseEntity<DeleteUserResponse> responseD = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/deleteUser", requestD, DeleteUserResponse.class);
+        assertEquals(HttpStatus.OK, responseD.getStatusCode());
+        assertEquals("Failed to delete user no id specified!", responseD.getBody().getStatus());
+        assertEquals(false, responseD.getBody().getSuccess());
+    }
+
+    @Test
+    public void deleteUserDNE(){
+        DeleteUserRequest requestD = new DeleteUserRequest(UUID.randomUUID());
+        ResponseEntity<DeleteUserResponse> responseD = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/user/deleteUser", requestD, DeleteUserResponse.class);
+        assertEquals(HttpStatus.OK, responseD.getStatusCode());
+        assertEquals("Failed to delete user: No user with this id exists!", responseD.getBody().getStatus());
+        assertEquals(false, responseD.getBody().getSuccess());
+    }
+
     //post: /api/user/editUser
 
     //get: /api/user/getAllUsers
