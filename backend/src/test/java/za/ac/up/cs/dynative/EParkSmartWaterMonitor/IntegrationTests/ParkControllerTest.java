@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetParkSitesResponse;
 
 import java.util.UUID;
@@ -64,6 +65,13 @@ public class ParkControllerTest {
     }
 
     //get: /api/park/getAllParks
+    @Test
+    public void getAllParks(){
+        ResponseEntity<GetAllParksResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .getForEntity("/api/park/getAllParks",GetAllParksResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response);
+    }
 
     //post: /api/park/editPark
 
