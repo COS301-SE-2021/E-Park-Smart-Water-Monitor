@@ -10,9 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.CreateUserResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
-
 import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -99,6 +96,43 @@ public class UserControllerTest {
                 .postForEntity("/api/user/createUser", request,CreateUserResponse.class);
         assertEquals(HttpStatus.OK,response.getStatusCode());
         assertEquals("User's details are incomplete",response.getBody().getStatus());
+        assertEquals(false,response.getBody().getSuccess());
+    }
+
+    @Test
+    public void createUserDuplicate(){
+        CreateUserRequest request= new CreateUserRequest(UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80"),"9871233577124","nita.nell92@gmail.com","dynative","IntTesting123123","surname","ChiChiTestingADMIN","ADMIN","0728480427");
+        ResponseEntity<CreateUserResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
+                .postForEntity("/api/user/createUser", request,CreateUserResponse.class);
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals("A user with this username already exists.",response.getBody().getStatus());
+        assertEquals(false,response.getBody().getSuccess());
+    }
+
+    @Test
+    public void createUserInvalid(){
+        //test 1:
+        CreateUserRequest request= new CreateUserRequest(UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80"),"98712337124","nita.nell92@gmail.com","dynative","IntTesting123123","surname","ChiChiTestingADMIN","ADMIN","0728480427");
+        ResponseEntity<CreateUserResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
+                .postForEntity("/api/user/createUser", request,CreateUserResponse.class);
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals("The provided ID number is not a valid ID number.",response.getBody().getStatus());
+        assertEquals(false,response.getBody().getSuccess());
+
+        //test 2:
+        request= new CreateUserRequest(UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80"),"9871233577124","nita.nell92gmail.com","dynative","IntTesting123123","surname","ChiChiTestingADMIN","ADMIN","0728480427");
+        response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
+                .postForEntity("/api/user/createUser", request,CreateUserResponse.class);
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals("The provided email is not a valid email-address.",response.getBody().getStatus());
+        assertEquals(false,response.getBody().getSuccess());
+
+        //test 3:
+        request= new CreateUserRequest(UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80"),"9871233577124","nita.nell92@gmail.com","dynative","IntTesting123123","surname","ChiChiTestingADMIN","ADMIN","08480427");
+        response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
+                .postForEntity("/api/user/createUser", request,CreateUserResponse.class);
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals("Cell-number provided is not valid.",response.getBody().getStatus());
         assertEquals(false,response.getBody().getSuccess());
     }
 
