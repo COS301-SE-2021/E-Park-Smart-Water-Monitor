@@ -202,7 +202,7 @@ public class DevicesServicesImpl implements DevicesService {
     }
 
     @Override
-    public GetParkDevicesResponse getParkDevices(GetParkDevicesRequest request)  {
+    public GetParkDevicesResponse getParkDevices(GetParkDevicesRequest request)  {  //This is not correct :(
         GetParkDevicesResponse getParkDevicesResponse = new GetParkDevicesResponse();
         if (request==null){
             getParkDevicesResponse.setSite(null);

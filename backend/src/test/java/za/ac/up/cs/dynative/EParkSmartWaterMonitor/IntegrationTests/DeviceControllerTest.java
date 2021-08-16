@@ -10,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.FindDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetParkDevicesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.FindDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevicesResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetParkDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.CreateUserResponse;
@@ -105,6 +107,26 @@ public class DeviceControllerTest {
     }*/
 
     //post: /api/devices/getParkDevices
+    @Test
+    public void getParkDevicesIdNull(){
+        GetParkDevicesRequest request = new GetParkDevicesRequest(null);
+        ResponseEntity<GetParkDevicesResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/getParkDevices", request, GetParkDevicesResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("No Park ID specified", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void getParkDevices(){
+        GetParkDevicesRequest request = new GetParkDevicesRequest(UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80"));
+        ResponseEntity<GetParkDevicesResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/getParkDevices", request, GetParkDevicesResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Successfully got the Park's devices", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
+        assertNotNull(response.getBody().getSite());
+    }
 
     //post: /api/devices/receiveDeviceData
 
