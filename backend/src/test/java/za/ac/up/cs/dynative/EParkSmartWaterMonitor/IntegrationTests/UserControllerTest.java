@@ -8,10 +8,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.DeleteUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.EditUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.FindUserByIdRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.*;
 
 import java.util.UUID;
@@ -317,6 +314,57 @@ public class UserControllerTest {
     }
 
     //post: /api/user/login
+    @Test
+    public void loginIncomplete(){
+        //test 1
+        LoginRequest request = new LoginRequest("","");
+        ResponseEntity<LoginResponse> response = restTemplate.postForEntity("/api/user/login", request, LoginResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(false, response.getBody().getSuccess());
+        assertEquals("", response.getBody().getJwt());
+
+        //test 2
+        request = new LoginRequest("hello","");
+        response = restTemplate.postForEntity("/api/user/login", request, LoginResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(false, response.getBody().getSuccess());
+        assertEquals("", response.getBody().getJwt());
+
+        //test 3
+        request = new LoginRequest("","dd");
+        response = restTemplate.postForEntity("/api/user/login", request, LoginResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(false, response.getBody().getSuccess());
+        assertEquals("", response.getBody().getJwt());
+    }
+
+    @Test
+    public void LoginUserDNE(){
+        LoginRequest request = new LoginRequest("hello","1");
+        ResponseEntity<LoginResponse> response = restTemplate.postForEntity("/api/user/login", request, LoginResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(false, response.getBody().getSuccess());
+        assertEquals("", response.getBody().getJwt());
+    }
+
+    @Test
+    public void LoginUserWrongPassword(){
+        LoginRequest request = new LoginRequest("ChiChiTestingADMIN","dynativ");
+        ResponseEntity<LoginResponse> response = restTemplate.postForEntity("/api/user/login", request, LoginResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(false, response.getBody().getSuccess());
+        assertEquals("", response.getBody().getJwt());
+    }
+
+    @Test
+    public void LoginSuccess(){
+        LoginRequest request = new LoginRequest("ChiChiTestingADMIN","dynativeNext");
+        ResponseEntity<LoginResponse> response = restTemplate.postForEntity("/api/user/login", request, LoginResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(true, response.getBody().getSuccess());
+        assertNotEquals("", response.getBody().getJwt());
+    }
+
 
     //post: /api/user/resetPassword
     //post: /api/user/resetPasswordFinalize
