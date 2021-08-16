@@ -458,7 +458,7 @@ public class DevicesServicesImpl implements DevicesService
 
                 if ((targetMeasurement.getEstimateValue())>upperLimit||(targetMeasurement.getEstimateValue())<lowerLimit)
                 {
-//                    Park devicePark=
+//                    List<User> usersRelatingToDevice= user
 //                    SMSRequest alertSmsRequest;
 //                    EmailRequest alertEmailRequest;
 //                    notificationService.sendMail();
