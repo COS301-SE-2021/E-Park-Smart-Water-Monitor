@@ -10,10 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.SMSRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.responses.EmailResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetParkSitesResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.responses.SMSResponse;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,5 +75,26 @@ public class NotificationsControllerTest {
     }
 
     //post: /api/notifications/sms
+    @Test
+    public void sendSmsRecipientsDNE(){
+        List<UUID> recipients = new ArrayList<>();
+        SMSRequest request= new SMSRequest(recipients,"hi");
+        ResponseEntity<SMSResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/notifications/sms",request, SMSResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("No recipients specified", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
 
+    @Test
+    public void sendSmsSuccess(){
+        List<UUID> recipients = new ArrayList<>();
+        recipients.add(UUID.fromString("bb1b6dce-cd4b-45d7-a84b-7eb6d2b82b19"));
+        SMSRequest request= new SMSRequest(recipients,"this is an integration test 🍑");
+        ResponseEntity<SMSResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/notifications/sms",request, SMSResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("The following users have invalid phone numbers: Please correct and try again.\"", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
 }
