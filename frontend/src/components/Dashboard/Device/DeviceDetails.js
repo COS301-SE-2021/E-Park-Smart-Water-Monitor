@@ -16,6 +16,7 @@ import {UserContext} from "../../../Context/UserContext";
 import Divider from "@material-ui/core/Divider";
 import {BatteryStd, CheckCircle} from "@material-ui/icons";
 import Clear from "@material-ui/icons/Clear";
+import axios from "axios";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -25,6 +26,7 @@ function DeviceDetails(props) {
   const [device, setDevice] = useState(null)
   const [access, setAccess] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
+  const [showPing, setShowPing] = useState(false)
   const [metrics, setMetrics] = useState("")
 
     const user = useContext(UserContext)
@@ -75,6 +77,30 @@ function DeviceDetails(props) {
           }
       })
         setMetrics(filteredMetrics)
+    }
+
+    const ping = ()=>{
+        setShowPing(true)
+        // call the device readings to see if device is active
+        let obj = {
+            deviceName: name,
+            numResults: 1,
+            sorted: true
+        }
+        axios.post('http://localhost:8080/api/devices/getDeviceData', obj, {
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
+            }
+        ).then((res)=>{
+
+            console.log(JSON.stringify(res.data))
+
+
+
+        }).catch((res)=>{
+            console.log("response getDeviceData:"+JSON.stringify(res))
+        });
     }
 
   return (
@@ -142,7 +168,7 @@ function DeviceDetails(props) {
                                     <Button
                                         variant={"contained"}
                                         size={"small"}
-                                        onClick={ ()=>{setShowEdit(true)} }
+                                        onClick={ ()=>{setShowPing(true)} }
                                     >
                                         Ping
                                     </Button>
@@ -246,7 +272,6 @@ function DeviceDetails(props) {
                     </Grid>
 
                     {/*All metric data*/}
-
                     { metrics && metrics.map((item)=>{
                         return (
                             <>

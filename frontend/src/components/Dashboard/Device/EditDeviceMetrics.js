@@ -12,6 +12,7 @@ import {PuffLoader, ScaleLoader} from "react-spinners";
 import Modal from "../../Modals/Modal";
 import {css} from "@emotion/react";
 import LoadingContext from "../../../Context/LoadingContext";
+import {UserContext} from "../../../Context/UserContext";
 const { Form } = require( "react-bootstrap" );
 
 
@@ -39,12 +40,18 @@ const EditDeviceMetricsBody = (props) => {
     const [loading, setLoading] = useState(false)
 
     const toggleLoading = useContext(LoadingContext).toggleLoading
+    const user = useContext(UserContext)
 
     useEffect(() => {
 
         // get the device details by id
         axios.post('http://localhost:8080/api/devices/getById', {
                 deviceID: props.deviceDetails.deviceId
+            },
+            {
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
             }
         ).then((res)=>{
 
