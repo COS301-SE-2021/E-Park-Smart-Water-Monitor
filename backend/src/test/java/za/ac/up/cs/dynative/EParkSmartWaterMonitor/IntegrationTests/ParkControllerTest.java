@@ -8,7 +8,9 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.EditParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.EditParkResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetParkSitesResponse;
@@ -74,6 +76,42 @@ public class ParkControllerTest {
     }
 
     //post: /api/park/editPark
+    @Test
+    public void editParkIdNull(){
+        EditParkRequest request = new EditParkRequest(null,"","","");
+        ResponseEntity<EditParkResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/park/editPark",request,EditParkResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("No park id specified", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void editParkDNE(){
+        EditParkRequest request = new EditParkRequest(UUID.randomUUID(),"","","");
+        ResponseEntity<EditParkResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/park/editPark",request,EditParkResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("No park with that id exists.", response.getBody().getStatus());
+        assertEquals(false, response.getBody().getSuccess());
+    }
+
+    @Test
+    public void editPark(){
+        EditParkRequest request = new EditParkRequest(UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80"),"Kruger","","");
+        ResponseEntity<EditParkResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/park/editPark",request,EditParkResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Park details changed.", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
+
+        request = new EditParkRequest(UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80"),"Kruger National Park","","");
+        response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/park/editPark",request,EditParkResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Park details changed.", response.getBody().getStatus());
+        assertEquals(true, response.getBody().getSuccess());
+    }
 
     //post: /api/park/addPark
 
