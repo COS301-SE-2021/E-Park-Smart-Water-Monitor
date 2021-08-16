@@ -471,24 +471,30 @@ public class DevicesServicesImpl implements DevicesService {
                         .build());
 
                 try {
-                    TimeUnit.SECONDS.sleep(2);
+                    TimeUnit.SECONDS.sleep(60);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                    return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
                 }
 
                 GetDeviceDataResponse deviceDataResponse = getDeviceData(new GetDeviceDataRequest(deviceName,1, true));
                 String latestDeviceTime = deviceDataResponse.getInnerResponses().get(0).getMeasurements().get(0).getDeviceDateTime();
 
                 String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+                String latestServerTime = new SimpleDateFormat(dateTimeFormat).format(new Date());
+
                 try {
-                    Date latestDateTime = new SimpleDateFormat(dateTimeFormat).parse(new Date().toString());
-                    Date latestDeviceDateTime = new SimpleDateFormat(dateTimeFormat).parse(latestDeviceTime);
+                    Date latestServerTimeDate = new SimpleDateFormat(dateTimeFormat).parse(latestServerTime);
+                    Date latestDeviceTimeDate = new SimpleDateFormat(dateTimeFormat).parse(latestDeviceTime);
+
+                    if (Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 1
+                            || Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 0)  {
+                        return new PingDeviceResponse("Device " + deviceName +" says hello.", false, deviceName, deviceDataResponse.getInnerResponses().get(0));
+                    }
                 } catch (ParseException e) {
                     e.printStackTrace();
+                    return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
                 }
-
-
-
                 return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
             }
             return new PingDeviceResponse("Device does not exist.", false, deviceName, null);
