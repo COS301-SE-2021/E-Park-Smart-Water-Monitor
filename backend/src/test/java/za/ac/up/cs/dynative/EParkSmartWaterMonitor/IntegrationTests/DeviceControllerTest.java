@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.FindDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.GetNumDevicesRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.FindDeviceResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetNumDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.CreateUserResponse;
@@ -69,9 +71,38 @@ public class DeviceControllerTest {
         assertNotNull(response.getBody().getDevice());
     }
 
-    //post: /api/devices/getDeviceData
-
     //post: /api/devices/getNumDevices
+    @Test
+    public void getNumDevicesIdNull(){
+        GetNumDevicesRequest request = new GetNumDevicesRequest(null);
+        ResponseEntity<GetNumDevicesResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/getNumDevices", request, GetNumDevicesResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(-3, response.getBody().getNumDevices());
+        assertEquals(false, response.getBody().isSuccess());
+    }
+
+    @Test
+    public void getNumDevicesParkDNE(){
+        GetNumDevicesRequest request = new GetNumDevicesRequest(UUID.randomUUID());
+        ResponseEntity<GetNumDevicesResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/getNumDevices", request, GetNumDevicesResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(-2, response.getBody().getNumDevices());
+        assertEquals(false, response.getBody().isSuccess());
+    }
+
+   /* @Test
+    public void getNumDevices(){
+        UUID id = UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80");
+        GetNumDevicesRequest request = new GetNumDevicesRequest(id);
+        ResponseEntity<GetNumDevicesResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+                .postForEntity("/api/devices/getNumDevices", request, GetNumDevicesResponse.class);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotEquals(-2, response.getBody().getNumDevices());
+        assertNotEquals(-3, response.getBody().getNumDevices());
+        assertEquals(true, response.getBody().isSuccess());
+    }*/
 
     //post: /api/devices/getParkDevices
 
