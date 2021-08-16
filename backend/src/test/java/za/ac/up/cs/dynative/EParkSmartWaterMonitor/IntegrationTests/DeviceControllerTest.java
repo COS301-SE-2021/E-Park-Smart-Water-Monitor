@@ -10,9 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.GetAllParksAndSitesResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.CreateUserRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.CreateUserResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.GetAllDevicesResponse;
 
 import java.util.ArrayList;
@@ -176,5 +173,4 @@ public class DeviceControllerTest {
         assertEquals("Successfully changed metric frequency to: 2.0 hours.", response.getBody().getStatus());
         assertEquals(true, response.getBody().getSuccess());
     }
-
 }
