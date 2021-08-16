@@ -59,6 +59,7 @@ public class InspectionControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Inspection status successfully set!", response.getBody().getStatus());
         assertEquals(true, response.getBody().getSuccess());
+        assertNotNull(response);
     }
 
     //post: /api/inspections/getSiteInspections
