@@ -48,12 +48,12 @@ const ParkTable = (props) => {
 
     useEffect( () => {
 
-        let hoverStyle;
-        if (hover) {
-            hoverStyle = {cursor: 'pointer'}
-        } else {
-            hoverStyle = {cursor: 'default'}
-        }
+        // let hoverStyle;
+        // if (hover) {
+        //     hoverStyle = {cursor: 'pointer'}
+        // } else {
+        //     hoverStyle = {cursor: 'default'}
+        // }
 
 
         let obj = null;
@@ -67,7 +67,7 @@ const ParkTable = (props) => {
             obj = res.data.allParks.map((park) =>
                 <TableRow key={park.id}
                           onClick={handleParkSelection(park)} // send through the whole park object
-                          style={hoverStyle}
+                          // style={hoverStyle}
                           onMouseEnter={toggleHover}
                           onMouseLeave={toggleHover}
                 >

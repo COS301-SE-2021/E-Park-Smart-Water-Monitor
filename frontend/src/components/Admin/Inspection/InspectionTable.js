@@ -121,16 +121,17 @@ const InspectionTable = () => {
                                                 variant="h2"
                                                 marginBottom="0!important"
                                             >
-                                                Inspections
+                                                Inspections for {user.parkName}
                                             </Box>
 
                                         </Grid>
-                                        <Grid item xs={12} md={3}>
-                                            <Box>
-                                                {/*<Select required={"required"} className="mb-3" name="park" options={ parkOptions } value={ park } onChange={e => setPark(e)}/>*/}
-                                                <Select required={"required"} className="mb-3" name="park" />
-                                            </Box>
-                                        </Grid>
+                                        {/*Dropdown select for different parks*/}
+                                        {/*<Grid item xs={12} md={3}>*/}
+                                        {/*    <Box>*/}
+                                        {/*        /!*<Select required={"required"} className="mb-3" name="park" options={ parkOptions } value={ park } onChange={e => setPark(e)}/>*!/*/}
+                                        {/*        <Select required={"required"} className="mb-3" name="park" />*/}
+                                        {/*    </Box>*/}
+                                        {/*</Grid>*/}
                                     </Grid>
                                 }
                                 classes={{ root: classes.cardHeaderRoot }}

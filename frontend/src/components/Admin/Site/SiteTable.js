@@ -87,6 +87,7 @@ const SiteTable = (props) => {
 
 
     },[])
+
     // when updates or deletes are made to a watersite, get the watersites for the selected park again
     useEffect(() => {
         setTable()
@@ -102,7 +103,7 @@ const SiteTable = (props) => {
                 }
             }
         ).then((res)=>{
-            alert("reloaded")
+
             const m = res.data.site.map((site) =>
                 <TableRow key={ site.id } >
                     <TableCell
@@ -141,58 +142,11 @@ const SiteTable = (props) => {
             )
             setResponse(m);
         }).catch((res)=>{
-            console.log("error occured getting watersites: "+JSON.stringify(res))
+            console.log("error occurred getting watersites: "+JSON.stringify(res))
         });
 
     }
 
-
-    // useEffect(() => {
-    //
-    //     // get all sites from the park object sent from the dropdown component
-    //
-    //     if(park && park.parkWaterSites)
-    //     {
-    //         const m = park.parkWaterSites.map((site) =>
-    //             <TableRow key={ site.id } >
-    //                 <TableCell
-    //                     classes={{
-    //                         root:
-    //                             classes.tableCellRoot +
-    //                             " " +
-    //                             classes.tableCellRootBodyHead,
-    //                     }}
-    //                     scope="row"
-    //                     style={{verticalAlign:'middle', width:'80%'}}
-    //                 >
-    //                     {site.waterSiteName}
-    //                 </TableCell>
-    //                 <TableCell classes={{ root: classes.tableCellRoot }}
-    //                            style={{verticalAlign:'middle'}}>
-    //                     <Tooltip title="Edit" arrow>
-    //                         <IconButton aria-label="edit"
-    //                                     onClick={() => { setShowEdit(true); setSite(site)}}
-    //                         >
-    //                             <EditIcon />
-    //                         </IconButton>
-    //                     </Tooltip>
-    //                 </TableCell>
-    //                 <TableCell classes={{ root: classes.tableCellRoot }}
-    //                            style={{verticalAlign:'middle'}}>
-    //                     <Tooltip title="Delete" arrow>
-    //                         <IconButton aria-label="delete"
-    //                                     onClick={ removeSite(site.id) }
-    //                         >
-    //                             <DeleteIcon />
-    //                         </IconButton>
-    //                     </Tooltip>
-    //                 </TableCell>
-    //             </TableRow>
-    //         );
-    //         setResponse(m);
-    //     }
-    //
-    // },[park]) // the park selected from dropdown is changed
 
     return (
         <>
@@ -235,7 +189,7 @@ const SiteTable = (props) => {
                                                 variant="h2"
                                                 marginBottom="0!important"
                                             >
-                                                Watersites for park
+                                                Watersites for {user.parkName}
 
                                                 {/*Reload Button*/}
                                                 {/*<Box*/}

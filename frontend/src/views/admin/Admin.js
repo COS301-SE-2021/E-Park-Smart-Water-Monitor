@@ -120,19 +120,6 @@ function Admin() {
                                 <InspectionTable/>
                             </Grid>
 
-                            {parksAndSites &&
-                            <Grid
-                                item
-                                xs={12}
-                                xl={5}
-                                component={Box}
-                                marginBottom="3rem!important"
-                                classes={{root: classes.gridItemRoot}}
-
-                            >
-                                <ParkTable select={selectPark}/>
-                            </Grid>}
-
                             {/* Sites altered on the change of park */}
                             {parksAndSites &&
                             <Grid
@@ -147,18 +134,18 @@ function Admin() {
                             </Grid>
                             }
 
-                            {!parksAndSites &&
+                            {parksAndSites &&
                             <Grid
                                 item
                                 xs={12}
-                                xl={12}
+                                xl={5}
                                 component={Box}
                                 marginBottom="3rem!important"
                                 classes={{root: classes.gridItemRoot}}
+
                             >
-                                Loading Parks...
-                            </Grid>
-                            }
+                                <ParkTable select={selectPark}/>
+                            </Grid>}
 
                         </Grid>
                     </Container>
