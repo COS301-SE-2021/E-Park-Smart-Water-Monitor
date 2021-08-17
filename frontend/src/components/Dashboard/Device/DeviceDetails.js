@@ -127,33 +127,15 @@ function DeviceDetails(props) {
 
         <Modal title="Ping Response" onClose={() => setShowPing(false)} show={ showPing }>
             <div>{ pingMessage }</div>
-        </Modal>
-
-
-        <Dialog
-            open={showPing}
-            onClose={() => {
-                return setShowPing(false)
-            }}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-        >
-            <DialogContent
-                className={"mb-0"}
+            <Button
+                variant={"contained"}
+                size={"small"}
+                onClick={ () => setShowPing(false) }
+                style={{marginTop:"1rem"}}
             >
-                <h4 className="mb-4">Ping Response</h4>
-                <DialogContentText id="alert-dialog-description">
-                    {pingMessage}
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => {
-                    return setShowPing(false)
-                }} color="primary" autoFocus>
-                    Accept
-                </Button>
-            </DialogActions>
-        </Dialog>
+                Accept
+            </Button>
+        </Modal>
 
 
         <Card
