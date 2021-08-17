@@ -74,6 +74,9 @@ function DeviceTable(props) {
                     <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
                         { device.deviceData.battery }%
                     </TableCell>
+                    <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
+                        { device.deviceData.lastSeen ? device.deviceData.lastSeen.substr(0,10) : "Not Connected"}
+                    </TableCell>
                 </TableRow>
 
 
@@ -160,6 +163,16 @@ function DeviceTable(props) {
                                     }}
                                 >
                                     Battery Level
+                                </TableCell>
+                                <TableCell
+                                    classes={{
+                                        root:
+                                            classes.tableCellRoot +
+                                            " " +
+                                            classes.tableCellRootHead,
+                                    }}
+                                >
+                                    Last Seen
                                 </TableCell>
                             </TableRow>
                         </TableHead>
