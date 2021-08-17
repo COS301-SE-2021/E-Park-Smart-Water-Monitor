@@ -25,6 +25,8 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import {Email, People, Pets, Smartphone} from "@material-ui/icons";
 import Person from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
+import EditProfileContext from "../../Context/EditProfileContext";
+import LoadingContext from "../../Context/LoadingContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -37,6 +39,9 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
 
   const user = useContext(UserContext)
 
+  const editProfile = useContext(EditProfileContext)
+  const toggleEditProfile = editProfile.toggleEditProfile
+
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -45,9 +50,8 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
     setAnchorEl(null);
   };
 
-  const editProfile = ()=>{
-    // show modal to edit the editable fields by a user
-    // such as the email, cellphone num, username, name
+  const editProfileAction = ()=> {
+    toggleEditProfile()
   }
 
   const menuId = "responsive-menu-id";
@@ -209,7 +213,7 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
             <Button
                 variant={"outlined"}
                 size={"small"}
-                onClick={editProfile}
+                onClick={editProfileAction}
             >Edit Profile</Button>
           </Box>
         </Drawer>
@@ -286,7 +290,7 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
             <Button
                 variant={"outlined"}
                 size={"small"}
-                onClick={editProfile}
+                onClick={editProfileAction}
             >Edit Profile</Button>
           </Box>
 
