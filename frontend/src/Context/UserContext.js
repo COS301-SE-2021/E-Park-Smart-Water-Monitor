@@ -14,6 +14,7 @@ export const UserProvider = ({ children }) => {
     const [IDNumber, setIDNumber] = useState("");
     const [parkID, setParkID] = useState("");
     const [parkName, setParkName] = useState("");
+    const [username, setUsername] = useState("");
 
     const isLogin = () => {
         // let token = sessionStorage.getItem('token')
@@ -38,6 +39,7 @@ export const UserProvider = ({ children }) => {
                 IDNumber,
                 parkID,
                 parkName,
+                username,
                 // functions
                 setToken,
                 setRole,
@@ -48,6 +50,7 @@ export const UserProvider = ({ children }) => {
                 setIDNumber,
                 setParkID,
                 setParkName,
+                setUsername,
                 isLogin,
                 Logout
             }}

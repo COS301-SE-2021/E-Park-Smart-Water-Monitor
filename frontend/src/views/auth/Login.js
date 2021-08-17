@@ -70,6 +70,7 @@ function Login() {
                 user.setIDNumber(x.userIdNumber)
                 user.setParkID(x.parkId)
                 user.setParkName(x.parkName)
+                user.setUsername(x.username)
                 history.push("/dashboard/index");
             }else{
                 setError("Login details incorrect")
