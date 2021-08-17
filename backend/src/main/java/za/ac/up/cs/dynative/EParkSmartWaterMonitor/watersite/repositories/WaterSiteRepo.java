@@ -20,4 +20,7 @@ public interface WaterSiteRepo extends Neo4jRepository<WaterSite, UUID>
 
     @Query("match (n:WaterSite)-[*0..1]->(d:Device {deviceId:$id}) return n")
     Optional<WaterSite> findWaterSiteByDeviceId(@Param("id") UUID id);
+
+    @Query("MATCH (n:WaterSite)-[r]->(d:Device{deviceId:$id}) return n")
+    WaterSite getWaterSiteByRelatedDevice(@Param("id") UUID id);
 }

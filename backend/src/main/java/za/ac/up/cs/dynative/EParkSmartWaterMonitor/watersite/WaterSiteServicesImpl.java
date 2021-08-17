@@ -2,6 +2,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.FindWaterSiteByDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.FindWaterSiteByDeviceResponse;
@@ -219,4 +220,9 @@ public class WaterSiteServicesImpl implements WaterSiteService
         else
             return new FindWaterSiteByDeviceResponse("Watersite not found",false,null);
     }
+    public WaterSite getWaterSiteByRelatedDevice(UUID id)
+    {
+        return  waterSiteRepo.getWaterSiteByRelatedDevice(id);
+    }
+
 }

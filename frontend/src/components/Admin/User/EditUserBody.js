@@ -1,28 +1,28 @@
-import React, {useEffect, useState} from "react";
-
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
-import componentStyles from "assets/theme/views/admin/admin";
-import "../../assets/css/addUser.css";
+import React, {useContext, useEffect, useState} from "react";
+import "../../../assets/css/addUser.css";
 import Select from 'react-select';
-// Be sure to include styles at some point, probably during your bootstrapping
-// import 'react-select/dist/react-select.css';
-
-//import {Form} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
-import {Marker, Popup} from "react-leaflet";
+import AdminContext from "../AdminContext";
 const { Form } = require( "react-bootstrap" );
 
+const styles = {
+    col_left: {
+        paddingRight:'3px'
+    },
+    col_right: {
+        paddingLeft:0
+    },
+    input: {
+        paddingLeft: 0,
+        paddingRight: 0
+    }
+}
 
-
-const useStyles = makeStyles(componentStyles);
 
 const EditUserBody = (props) => {
-    const classes = useStyles();
-    const theme = useTheme();
     const [park, setPark] = useState("")
     const [idNumber, setIDNumber] = useState("")
     const [email, setEmail] = useState("")
@@ -34,6 +34,9 @@ const EditUserBody = (props) => {
     const [cellNumber, setCellNumber] = useState("")
     const [parkOptions, setParkOptions] = useState("")
     const [error, setError] = useState("")
+
+    const context = useContext(AdminContext)
+    const toggleLoading = context.toggleLoading
 
     let userRoles = [
         { value: 'ADMIN', label: 'Admin' },
@@ -57,8 +60,7 @@ const EditUserBody = (props) => {
             let p = props.userDetails
 
             let cell = p.cellNumber;
-            cell = cell.substr(4)
-            cell = '0'+cell
+            cell = cell.substr(3)
 
             setPark(p.park)
             setIDNumber(p.idNumber)
@@ -72,27 +74,12 @@ const EditUserBody = (props) => {
         }
     },[props.userDetails])
 
-    // parks not yet implemented as an editable property
-    // // get the parks to populate the select item
-    // useEffect(() => {
-    //     // get the parks for populating the select component
-    //     axios.get('http://localhost:8080/api/park/getAllParks'
-    //     ).then((res)=>{
-    //
-    //         let options = res.data.allParks.map((p)=>{
-    //             return {value: p.id, label: p.parkName}
-    //         })
-    //
-    //         setParkOptions(options)
-    //
-    //     }).catch((res)=>{
-    //         console.log(JSON.stringify(res))
-    //     });
-    // },[])
 
-
+    // submit the edit of the user
     const submit = (e) => {
         e.preventDefault()
+
+        toggleLoading()
 
         if(props && props.userDetails)
         {
@@ -119,7 +106,7 @@ const EditUserBody = (props) => {
                 surname: surname,
                 newUsername: temp_username,
                 role: role.value,
-                cellNumber: cellNumber
+                cellNumber: "+27"+cellNumber
             }
 
 
@@ -127,12 +114,14 @@ const EditUserBody = (props) => {
             ).then((res)=>{
 
                 console.log("response:"+JSON.stringify(res))
-                if(res.data.success == "false")
+                if(res.data.success === "false")
                 {
                     setError(res.data.status)
                     console.log("error with editing user")
                 }else{
-                    window.location.reload(); //need to get the new data from the db to populate the table again
+                    toggleLoading()
+                    props.closeModal()
+                    props.reloadUserTable()
                 }
 
             }).catch((res)=>{
@@ -151,15 +140,9 @@ const EditUserBody = (props) => {
                 <Row>
                     <Col>
                         <Form.Label>Role</Form.Label>
-                        <Select required={"required"} isClearable={true} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => setRole(e)}/>
+                        <Select required={"required"} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => setRole(e)}/>
                     </Col>
                 </Row>
-                {/*<Row>*/}
-                {/*    <Col>*/}
-                {/*        <Form.Label>Park</Form.Label>*/}
-                {/*        <Select required={"required"} isClearable={true} className="mb-3" name="park" options={ parkOptions } value={park} onChange={e => setPark(e)}/>*/}
-                {/*    </Col>*/}
-                {/*</Row>*/}
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="email" >
@@ -169,11 +152,6 @@ const EditUserBody = (props) => {
                                 An email will be sent to the user informing them of their registration on the system.
                             </Form.Text>
                         </Form.Group>
-
-                        {/*<Form.Group className="mb-3" controlId="password">*/}
-                        {/*    <Form.Label>Password</Form.Label>*/}
-                        {/*    <Form.Control required={"required"} type="password" placeholder="Password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>*/}
-                        {/*</Form.Group>*/}
                     </Col>
                 </Row>
                 <Row>
@@ -196,7 +174,7 @@ const EditUserBody = (props) => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>National Identification Number</Form.Label>
-                            <Form.Control required={"required"} type="text" placeholder="ID Number" name="id_number" value={idNumber} onChange={e => setIDNumber(e.target.value)}/>
+                            <Form.Control required={"required"} type="text" minLength={13} maxLength={13} pattern="[0-9]*" placeholder="ID Number" name="id_number" value={idNumber} onChange={e => setIDNumber(e.target.value)}/>
                         </Form.Group>
 
                     </Col>
@@ -206,7 +184,38 @@ const EditUserBody = (props) => {
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Cell Number</Form.Label>
-                            <Form.Control required={"required"} type="text" placeholder="Cell Number" name="cell_number" value={cellNumber} onChange={e => setCellNumber(e.target.value)}/>
+                            <Row                                    >
+                                <Col
+                                    xs={3}
+                                    style={styles.col_left}
+                                >
+                                    {/*Shows the +27 for the user so they know only to type the rest of the number*/}
+                                    <Form.Control
+                                        type="text"
+                                        editable={false}
+                                        placeholder="+27"
+                                        value="+27"
+                                        disabled={true}
+                                    />
+                                </Col>
+                                <Col
+                                    xs={9}
+                                    style={styles.col_right}
+                                >
+                                    <Form.Control
+                                        required={"required"}
+                                        type="text"
+                                        minLength={9}
+                                        maxLength={9}
+                                        pattern="[0-9]*"
+                                        placeholder="eg. 721619098"
+                                        name="cell_number"
+                                        value={cellNumber}
+                                        onChange={e => setCellNumber(e.target.value)}/>
+                                </Col>
+                            </Row>
+
+                            {/*<Form.Control required={"required"} type="text" minLength={10} maxLength={10} pattern="[0-9]*" placeholder="Cell Number" name="cell_number" value={cellNumber} onChange={e => setCellNumber(e.target.value)}/>*/}
                         </Form.Group>
                     </Col>
                 </Row>

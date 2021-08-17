@@ -10,6 +10,8 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import {CardContent} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import EditDeviceMetrics from "./EditDeviceMetrics";
+import Modal from "../../Modals/Modal";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -18,6 +20,7 @@ function DeviceDetails(props) {
   const classes = useStyles();
   const [device, setDevice] = useState(null)
   const [access, setAccess] = useState(false)
+  const [showEdit, setShowEdit] = useState(false)
 
 
     useEffect(() => {
@@ -31,10 +34,16 @@ function DeviceDetails(props) {
         }else{
             console.log("no device prop added")
         }
+
     },[props.device])
 
   return (
     <>
+
+        { device && <Modal title="Edit Device Frequency" onClose={() => setShowEdit(false)} show={ showEdit }>
+            <EditDeviceMetrics deviceDetails={ device } closeModal={()=>{ setShowEdit(false) }}/>
+        </Modal> }
+
         <Card
             classes={{
                 root: classes.cardRoot,
@@ -64,7 +73,11 @@ function DeviceDetails(props) {
                                 flexWrap="wrap"
                             >
                                 { access &&
-                                    <Button color="primary" variant="contained">
+                                    <Button
+                                        color="primary"
+                                        variant="contained"
+                                        onClick={ ()=>{setShowEdit(true)} }
+                                    >
                                         Metrics
                                     </Button>
                                 }

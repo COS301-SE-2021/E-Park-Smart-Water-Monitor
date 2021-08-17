@@ -6,19 +6,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Typography from "@material-ui/core/Typography";
-
 import Map from "components/Dashboard/Map.js"
-import BarChart from "components/Dashboard/BarChart.js"
 import LineChart from "components/Dashboard/LineChart.js"
-import DeviceTable from "../../components/Dashboard/DeviceTable";
-import DeviceDetails from "../../components/Dashboard/DeviceDetails";
+import DeviceTable from "../../components/Dashboard/Device/DeviceTable";
+import DeviceDetails from "../../components/Dashboard/Device/DeviceDetails";
 
 
 // core components

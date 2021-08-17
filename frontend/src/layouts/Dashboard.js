@@ -64,7 +64,7 @@ const Dashboard = () => {
           routes={routes}
           logo={{
             innerLink: "/dashboard/index",
-            imgSrc: require("../assets/img/brand/ERP-logo.png").default,
+            imgSrc: require("../assets/img/brand/erp-logo-blue.png").default,
             imgAlt: "...",
           }}
           dropdown={<NavbarDropdown />}
