@@ -38,8 +38,6 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
 
   const user = useContext(UserContext)
 
-  const editProfile = useContext(EditProfileContext).showEditProfile(true);
-
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -207,7 +205,7 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
             <Button
                 variant={"outlined"}
                 size={"small"}
-                onClick={editProfile}
+                //onClick={}  //TODO
             >Edit Profile</Button>
           </Box>
         </Drawer>
@@ -284,7 +282,7 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
             <Button
                 variant={"outlined"}
                 size={"small"}
-                onClick={editProfile}
+                //onClick={}  //TODO
             >Edit Profile</Button>
           </Box>
 
