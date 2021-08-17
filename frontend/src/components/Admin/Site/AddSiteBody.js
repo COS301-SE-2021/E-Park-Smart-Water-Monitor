@@ -8,24 +8,72 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Button, Form} from "react-bootstrap";
 import Select from "react-select";
-import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
+import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import LoadingContext from "../../../Context/LoadingContext";
+import {UserContext} from "../../../Context/UserContext";
+import axios from "axios";
 
-const useStyles = makeStyles(componentStyles);
 const mapStyles = {
     width: `100%`,
     height: `100%`
 };
 
-const AddSiteBody = () => {
-    const classes = useStyles();
-    const theme = useTheme();
+const AddSiteBody = (props) => {
     const [name, setName] = useState("")
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
+    const [shape, setShape] = useState("")
+    const [length, setLength] = useState("")
+    const [width, setWidth] = useState("")
+    const [radius, setRadius] = useState("")
 
-    const loader = useContext(LoadingContext)
-    const toggleLoading = loader.toggleLoading
+    const toggleLoading = useContext(LoadingContext).toggleLoading
+    const user = useContext(UserContext)
+
+    function MapEvents() {
+        const map = useMapEvents({
+            click: (e) => {
+                setLatitude(e.latlng.lat)
+                setLongitude(e.latlng.lng)
+            }
+        })
+        return null
+    }
+
+    const createPark = (e) => {
+        toggleLoading()
+        e.preventDefault()
+        let obj = {
+            parkId: user.parkID,
+            siteName: name,
+            latitude: latitude,
+            longitude: longitude,
+            shape: shape,
+            length: length,
+            width: width,
+            radius: radius
+        }
+
+        console.log("Adding watersite: "+JSON.stringify(obj))
+        axios.post('http://localhost:8080/api/sites/addSite',
+            obj, {
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
+            }
+        ).then((res) => {
+
+            toggleLoading();
+            props.closeModal()
+            props.reloadParkTable();
+
+        }).catch((res) => {
+
+            toggleLoading()
+            console.log("error adding park: "+JSON.stringify(res))
+
+        });
+    }
 
     return (
         <>
@@ -72,6 +120,7 @@ const AddSiteBody = () => {
                                         location
                                     </Popup>
                                 </Marker>
+                                <MapEvents/>
                             </MapContainer>}
                         </div>
                     </Col>
