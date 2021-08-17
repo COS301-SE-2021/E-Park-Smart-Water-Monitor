@@ -44,6 +44,10 @@ public class CreatePark {
     double lat2= -27.991767;
     double lon1=28.737437;
     double lon2=28.007437;
+    String shape="circle";
+    double length = 0;
+    double width=0;
+    double radius=1.785;
     String name1="UnitTest 1";
     String name2="UnitTest 2";
     Set<WaterSite> siteSet1;
@@ -95,8 +99,8 @@ public class CreatePark {
     @Test
     @DisplayName("Creating a park with an existing name")
     public void createParkAE()  {
-        site1= new WaterSite(id1,name1,lat1,lon1);
-        site2= new WaterSite(id2,name2,lat2,lon2);
+        site1= new WaterSite(id1,name1,lat1,lon1,shape,length,width,radius);
+        site2= new WaterSite(id2,name2,lat2,lon2,shape,length,width,radius);
         siteSet1= new HashSet<>();
         siteSet2= new HashSet<>();
         siteSet1.add(site1);
