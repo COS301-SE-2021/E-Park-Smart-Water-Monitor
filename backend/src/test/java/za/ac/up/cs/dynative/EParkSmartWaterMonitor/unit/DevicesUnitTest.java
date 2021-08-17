@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-//@SpringBootTest
+@SpringBootTest
 public class DevicesUnitTest extends UnitTestBaseClass {
     @Test
     public void testAddDevice() throws JsonProcessingException, InvalidRequestException {
