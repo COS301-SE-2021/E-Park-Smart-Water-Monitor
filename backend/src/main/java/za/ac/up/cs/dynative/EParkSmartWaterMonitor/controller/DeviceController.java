@@ -74,7 +74,7 @@ public class DeviceController {
         return new ResponseEntity<>(devicesService.getDeviceData(getDeviceDataRequest),HttpStatus.OK);
     }
 
-    @PostMapping("/setMetricFrequency")
+    @PutMapping("/setMetricFrequency")
     public ResponseEntity<Object> setMetricFrequency(@RequestBody SetMetricFrequencyRequest setMetricFrequencyRequest) {
         return new ResponseEntity<>(devicesService.setMetricFrequency(setMetricFrequencyRequest), HttpStatus.OK);
     }

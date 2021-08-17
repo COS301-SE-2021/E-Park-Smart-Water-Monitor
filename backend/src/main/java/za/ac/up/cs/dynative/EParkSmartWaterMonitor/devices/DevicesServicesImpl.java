@@ -493,24 +493,27 @@ public class DevicesServicesImpl implements DevicesService
                 }
 
                 GetDeviceDataResponse deviceDataResponse = getDeviceData(new GetDeviceDataRequest(deviceName, 1, true));
-                String latestDeviceTime = deviceDataResponse.getInnerResponses().get(0).getMeasurements().get(0).getDeviceDateTime();
 
-                String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-                String latestServerTime = new SimpleDateFormat(dateTimeFormat).format(new Date());
+                if (deviceDataResponse.getInnerResponses() != null) {
+                    String latestDeviceTime = deviceDataResponse.getInnerResponses().get(0).getMeasurements().get(0).getDeviceDateTime();
 
-                try {
-                    Date latestServerTimeDate = new SimpleDateFormat(dateTimeFormat).parse(latestServerTime);
-                    Date latestDeviceTimeDate = new SimpleDateFormat(dateTimeFormat).parse(latestDeviceTime);
+                    String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+                    String latestServerTime = new SimpleDateFormat(dateTimeFormat).format(new Date());
 
-                    if (Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 1
-                            || Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 0) {
-                        findDeviceResponse.getDevice().getDeviceData().setLastSeen(latestDeviceTimeDate);
-                        deviceRepo.save(findDeviceResponse.getDevice());
-                        return new PingDeviceResponse("Device " + deviceName + " says hello.", true, deviceName, deviceDataResponse.getInnerResponses().get(0));
+                    try {
+                        Date latestServerTimeDate = new SimpleDateFormat(dateTimeFormat).parse(latestServerTime);
+                        Date latestDeviceTimeDate = new SimpleDateFormat(dateTimeFormat).parse(latestDeviceTime);
+
+                        if (Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 1
+                                || Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 0) {
+                            findDeviceResponse.getDevice().getDeviceData().setLastSeen(latestDeviceTimeDate);
+                            deviceRepo.save(findDeviceResponse.getDevice());
+                            return new PingDeviceResponse("Device " + deviceName + " says hello.", true, deviceName, deviceDataResponse.getInnerResponses().get(0));
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
                     }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
                 }
                 return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
             }
