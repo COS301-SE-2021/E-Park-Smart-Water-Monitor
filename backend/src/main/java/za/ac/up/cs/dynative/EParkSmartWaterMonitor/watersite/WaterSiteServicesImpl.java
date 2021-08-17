@@ -206,11 +206,6 @@ public class WaterSiteServicesImpl implements WaterSiteService
     }
 
     @Override
-    public WaterSite getWaterSiteByRelatedDevice(UUID id)
-    {
-        return  waterSiteRepo.getWaterSiteByRelatedDevice(id);
-    }
-
     public FindWaterSiteByDeviceResponse findWaterSiteByDeviceId(FindWaterSiteByDeviceRequest request) {
         if (request == null) {
             return new FindWaterSiteByDeviceResponse("Request is null",false,null);
@@ -225,4 +220,9 @@ public class WaterSiteServicesImpl implements WaterSiteService
         else
             return new FindWaterSiteByDeviceResponse("Watersite not found",false,null);
     }
+    public WaterSite getWaterSiteByRelatedDevice(UUID id)
+    {
+        return  waterSiteRepo.getWaterSiteByRelatedDevice(id);
+    }
+
 }

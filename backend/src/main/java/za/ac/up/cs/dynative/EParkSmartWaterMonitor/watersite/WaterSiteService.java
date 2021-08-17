@@ -19,7 +19,8 @@ public interface WaterSiteService {
     SaveSiteResponse saveSite(SaveSiteRequest request);
     DeleteWaterSiteResponse deleteWaterSite(DeleteWaterSiteRequest deleteWaterSiteRequest);
     EditWaterSiteResponse editWaterSite(EditWaterSiteRequest editWaterSiteRequest);
-    WaterSite getWaterSiteByRelatedDevice( UUID id);
     FindWaterSiteByDeviceResponse findWaterSiteByDeviceId(FindWaterSiteByDeviceRequest findWaterSiteByDeviceRequest);
+    WaterSite getWaterSiteByRelatedDevice( UUID id);
+    FindWaterSiteByDeviceResponse (FindWaterSiteByDeviceRequest findWaterSiteByDeviceRequest);
 }
 

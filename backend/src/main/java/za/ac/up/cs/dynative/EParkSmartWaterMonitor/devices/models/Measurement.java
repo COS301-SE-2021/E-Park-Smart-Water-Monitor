@@ -118,15 +118,15 @@ public class Measurement {
         return estimateValue;
     }
 
-    public void setEstimateValue(String estimateValue) {
-        estimateValue = estimateValue;
+    public void setEstimateValue(Double estimateValue) {
+        this.estimateValue = estimateValue;
     }
 
     public double getEstimateError() {
         return estimateError;
     }
 
-    public void setEstimateError(String estimateError) {
-        estimateError = estimateError;
+    public void setEstimateError(Double estimateError) {
+        this.estimateError = estimateError;
     }
 }
