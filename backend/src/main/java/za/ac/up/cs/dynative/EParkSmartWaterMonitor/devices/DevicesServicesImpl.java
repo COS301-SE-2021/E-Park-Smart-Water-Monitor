@@ -18,6 +18,7 @@ import software.amazon.awssdk.services.iot.model.CreateThingResponse;
 import software.amazon.awssdk.services.iotdataplane.IotDataPlaneClient;
 import software.amazon.awssdk.services.iotdataplane.model.UpdateThingShadowRequest;
 import software.amazon.awssdk.services.iotdataplane.model.UpdateThingShadowResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.DataNotification;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Measurement;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.sensorConfiguration;
@@ -26,9 +27,16 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.Measurem
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.NotificationService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.SMSRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.UserService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.GetAllDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
@@ -42,10 +50,13 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.DeleteWat
 import java.util.*;
 
 @Service("DeviceServiceImpl")
-public class DevicesServicesImpl implements DevicesService {
+public class DevicesServicesImpl implements DevicesService
+{
 
     private DeviceRepo deviceRepo;
     private ParkService parkService;
+    private UserService userService;
+    private NotificationService notificationService;
     private WaterSiteService waterSiteService;
     private MeasurementRepo measurementRepo;
     private IotClient iotClient;
@@ -56,7 +67,11 @@ public class DevicesServicesImpl implements DevicesService {
     public DevicesServicesImpl(@Qualifier("WaterSourceDeviceRepo") DeviceRepo deviceRepo,
                                @Qualifier("ParkService") ParkService parkService,
                                @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService,
-                               @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo)
+                               @Qualifier("NotificationServiceImpl") NotificationService notificationService,
+                               @Qualifier("UserService") UserService userService,
+                               @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo
+
+    )
     {
         this.deviceRepo = deviceRepo;
         this.parkService = parkService;
@@ -442,6 +457,70 @@ public class DevicesServicesImpl implements DevicesService {
             }
         }
         return new SetMetricFrequencyResponse("No device configurations set.", false);
+    }
+
+    @Override
+    public void getDataNotification(DataNotificationRequest dataNotificationRequest) throws InvalidRequestException {
+        List<Device> deviceList = deviceRepo.findDeviceByDeviceName(dataNotificationRequest.getData().get(0).getDeviceName());
+        int problematicMeasurements=0;
+        if (deviceList.size()<1)
+            return;
+
+        Device targetDevice = deviceList.get(0);
+
+        for (int i = 0; i < dataNotificationRequest.getData().size(); i++)
+        {
+            if (i==0)
+            {
+                targetDevice.getDeviceData().setLastSeen(dataNotificationRequest.getData().get(0).getWaterSourceData().getMeasurements().get(0).getDateTime());
+                deviceRepo.save(targetDevice);
+            }
+            DataNotification dataSet=dataNotificationRequest.getData().get(i);
+            for (int x = 0; x < dataSet.getWaterSourceData().getMeasurements().size(); x++)
+            {
+                Measurement targetMeasurement = dataSet.getWaterSourceData().getMeasurements().get(x);
+                double lowerLimit = targetDevice.getDeviceData().getSensorLowerLimit(targetMeasurement.getType());
+                double upperLimit = targetDevice.getDeviceData().getSensorUpperLimit(targetMeasurement.getType());
+
+                if ((targetMeasurement.getEstimateValue())>upperLimit||(targetMeasurement.getEstimateValue())<lowerLimit)
+                {
+                    ArrayList<User> usersRelatingToDevice= userService.findUsersRelatedToDevice(targetDevice.getDeviceName());
+
+                    if (usersRelatingToDevice.size()==0)
+                        return;
+
+                    ArrayList<String> emailList = new ArrayList<>();
+                    List<String> smsList=new ArrayList<>();
+                    for (int j = 0; j <usersRelatingToDevice.size() ; j++)
+                    {
+                        emailList.add(usersRelatingToDevice.get(j).getEmail());
+                        smsList.add(usersRelatingToDevice.get(j).getCellNumber());
+                    }
+
+                    String message = "An inspection has been scheduled please investigate.";
+                    SMSRequest alertSmsRequest= new SMSRequest(usersRelatingToDevice,"Device "+targetDevice.getDeviceName()+" is showing measurements that are out of the allowed bounds, an inspection has been scheduled please investigate.");
+                    EmailRequest alertEmailRequest = new EmailRequest(
+                            "EPark Smart Water Monitoring System",
+                            targetDevice.getDeviceName()+" Alert" ,
+                            emailList,
+                            null,
+                            null,
+                            Topic.ALERT,
+                            targetDevice.getDeviceName(),
+                            message,
+                            "Is displaying values that are out of bounds."
+                            );
+
+                    notificationService.sendMail(alertEmailRequest);
+                    notificationService.sendSMS(alertSmsRequest);
+
+                }
+
+            }
+
+        }
+        System.out.println(dataNotificationRequest.toString());
+
     }
 
 }
