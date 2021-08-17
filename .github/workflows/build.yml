@@ -24,7 +24,6 @@ jobs:
           java-version: '11'
       #Set up Maven cache
       - name: Cache Maven packages
-        working-directory: ./backend
         #This action allows caching dependencies and build outputs to improve workflow execution time.
         uses: actions/cache@v1
         with:
