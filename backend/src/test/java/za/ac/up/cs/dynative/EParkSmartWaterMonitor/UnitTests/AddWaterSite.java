@@ -35,6 +35,10 @@ public class AddWaterSite {
     double lat2= -27.991767;
     double lon1=28.737437;
     double lon2=28.007437;
+    String shape="circle";
+    double length = 0;
+    double width=0;
+    double radius=1.785;
     String name1="UnitTest 1";
     String name2="UnitTest 2";
 
@@ -48,7 +52,7 @@ public class AddWaterSite {
     @Test
     @DisplayName("Add a water site but the park id is null")
     public void AddSiteIDNull(){
-        AddSiteRequest request= new AddSiteRequest(null,name1,lat1,lon1);
+        AddSiteRequest request= new AddSiteRequest(null,name1,lat1,lon1,shape,length,width,radius);
         Throwable t= assertThrows(InvalidRequestException.class,()->waterSiteServices.addSite(request));
         assertEquals("No park id specified",t.getMessage());
     }
@@ -58,7 +62,7 @@ public class AddWaterSite {
     public void AddSiteDNE() throws InvalidRequestException {
         Mockito.when(parkService.findByParkId(Mockito.any())).thenReturn(null);
 
-        AddSiteRequest request2= new AddSiteRequest(id2,name1,lat1,lon1);
+        AddSiteRequest request2= new AddSiteRequest(id2,name1,lat1,lon1,shape,length,width,radius);
         Throwable t= assertThrows(InvalidRequestException.class,()->waterSiteServices.addSite(request2));
         assertEquals("Park not found",t.getMessage());
     }
@@ -70,7 +74,7 @@ public class AddWaterSite {
         FindByParkIdResponse response =new FindByParkIdResponse(true,p);
         Mockito.when(parkService.findByParkId(Mockito.any())).thenReturn(response);
 
-        AddSiteRequest request2=new AddSiteRequest(id2,name2,lat2,lon2);
+        AddSiteRequest request2=new AddSiteRequest(id2,name2,lat2,lon2,shape,length,width,radius);
         AddSiteResponse response2= waterSiteServices.addSite(request2);
         assertNotNull(response2);
         assertEquals("Successfully added: " + request2.getSiteName(),response2.getStatus());
