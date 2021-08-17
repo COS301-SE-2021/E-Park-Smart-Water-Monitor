@@ -21,6 +21,7 @@ import AddInspectionBody from "./AddInspectionBody";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 import Button from "@material-ui/core/Button";
+import {BatteryStd, Replay} from "@material-ui/icons";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -84,7 +85,7 @@ const InspectionTable = () => {
                 }
             }
         })
-      }, [show])
+      }, [])
 
     return (
         <>
@@ -122,6 +123,7 @@ const InspectionTable = () => {
                                             >
                                                 Inspections
                                             </Box>
+
                                         </Grid>
                                         <Grid item xs={12} md={3}>
                                             <Box>
@@ -221,15 +223,15 @@ const InspectionTable = () => {
                         marginBottom="3rem!important"
                         classes={{ root: classes.gridItemRoot }}
                         style={{ display: "flex", justifyContent: "flex-end", marginTop: "5px"}}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            size="medium"
-                            style={{width:'200px'}}
-                            onClick={() => setShow(!show)}
-                        >
-                            Refresh Table
-                        </Button>
+                        {/*<Button*/}
+                        {/*    variant="contained"*/}
+                        {/*    color="primary"*/}
+                        {/*    size="medium"*/}
+                        {/*    style={{width:'200px'}}*/}
+                        {/*    onClick={() => setShow(!show)}*/}
+                        {/*>*/}
+                        {/*    Refresh Table*/}
+                        {/*</Button>*/}
                     </Grid>
                 </Grid>
 

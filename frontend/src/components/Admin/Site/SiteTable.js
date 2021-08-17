@@ -28,6 +28,8 @@ import {Tooltip} from "@material-ui/core";
 import AdminContext from "../AdminContext";
 import Select from "react-select";
 import LoadingContext from "../../../Context/LoadingContext";
+import {UserContext} from "../../../Context/UserContext";
+import {Replay} from "@material-ui/icons";
 
 
 
@@ -45,8 +47,8 @@ const SiteTable = (props) => {
 
     const context = useContext(AdminContext)
     const parksAndSites = context.parksAndSites
-    const loader = useContext(LoadingContext)
-    const toggleLoading = loader.toggleLoading
+    const toggleLoading = useContext(LoadingContext).toggleLoading
+    const user = useContext(UserContext)
 
     const reloadSiteTable = () => {
         setValue(value => value+1)
@@ -59,6 +61,10 @@ const SiteTable = (props) => {
             toggleLoading()
             axios.get('http://localhost:8080/api/sites/deleteWaterSite', {
                 id: id
+            }, {
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
             }).then((res)=> {
                 toggleLoading()
                 reloadSiteTable()
@@ -77,20 +83,26 @@ const SiteTable = (props) => {
         setParkOptions(options)
         setPark(options[0])
 
+        // get the sites dependent on what the user parkId is
+
 
     },[])
-
     // when updates or deletes are made to a watersite, get the watersites for the selected park again
     useEffect(() => {
+        setTable()
+    },[value])
 
-        axios.get('http://localhost:8080/api/park/getParksWaterSites', {
-                parkId: park.value
+    const setTable = () =>{
+        axios.post('http://localhost:8080/api/park/getParkWaterSites', {
+                parkId: user.parkID
+            },
+            {
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
             }
         ).then((res)=>{
-
-
-            alert(JSON.stringify(res))
-
+            alert("reloaded")
             const m = res.data.site.map((site) =>
                 <TableRow key={ site.id } >
                     <TableCell
@@ -126,71 +138,61 @@ const SiteTable = (props) => {
                         </Tooltip>
                     </TableCell>
                 </TableRow>
-            );
+            )
             setResponse(m);
+        }).catch((res)=>{
+            console.log("error occured getting watersites: "+JSON.stringify(res))
         });
 
-    },[value])
+    }
+
 
     // useEffect(() => {
-    //     if(park && park.value) {
     //
-    //         // find the park object in the parksAndSites
-    //         // object using the park ID to retreive the
-    //         // relevant sites to display
-    //         let selectedPark = parksAndSites.parks.filter( p => p.id === park.value )
-    //         // assignSiteOptions(selectedPark[0])
+    //     // get all sites from the park object sent from the dropdown component
     //
+    //     if(park && park.parkWaterSites)
+    //     {
+    //         const m = park.parkWaterSites.map((site) =>
+    //             <TableRow key={ site.id } >
+    //                 <TableCell
+    //                     classes={{
+    //                         root:
+    //                             classes.tableCellRoot +
+    //                             " " +
+    //                             classes.tableCellRootBodyHead,
+    //                     }}
+    //                     scope="row"
+    //                     style={{verticalAlign:'middle', width:'80%'}}
+    //                 >
+    //                     {site.waterSiteName}
+    //                 </TableCell>
+    //                 <TableCell classes={{ root: classes.tableCellRoot }}
+    //                            style={{verticalAlign:'middle'}}>
+    //                     <Tooltip title="Edit" arrow>
+    //                         <IconButton aria-label="edit"
+    //                                     onClick={() => { setShowEdit(true); setSite(site)}}
+    //                         >
+    //                             <EditIcon />
+    //                         </IconButton>
+    //                     </Tooltip>
+    //                 </TableCell>
+    //                 <TableCell classes={{ root: classes.tableCellRoot }}
+    //                            style={{verticalAlign:'middle'}}>
+    //                     <Tooltip title="Delete" arrow>
+    //                         <IconButton aria-label="delete"
+    //                                     onClick={ removeSite(site.id) }
+    //                         >
+    //                             <DeleteIcon />
+    //                         </IconButton>
+    //                     </Tooltip>
+    //                 </TableCell>
+    //             </TableRow>
+    //         );
+    //         setResponse(m);
     //     }
-    // },[park])
-
-
-    useEffect(() => {
-
-        // get all sites from the park object sent from the dropdown component
-
-        if(park && park.parkWaterSites)
-        {
-            const m = park.parkWaterSites.map((site) =>
-                <TableRow key={ site.id } >
-                    <TableCell
-                        classes={{
-                            root:
-                                classes.tableCellRoot +
-                                " " +
-                                classes.tableCellRootBodyHead,
-                        }}
-                        scope="row"
-                        style={{verticalAlign:'middle', width:'80%'}}
-                    >
-                        {site.waterSiteName}
-                    </TableCell>
-                    <TableCell classes={{ root: classes.tableCellRoot }}
-                               style={{verticalAlign:'middle'}}>
-                        <Tooltip title="Edit" arrow>
-                            <IconButton aria-label="edit"
-                                        onClick={() => { setShowEdit(true); setSite(site)}}
-                            >
-                                <EditIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </TableCell>
-                    <TableCell classes={{ root: classes.tableCellRoot }}
-                               style={{verticalAlign:'middle'}}>
-                        <Tooltip title="Delete" arrow>
-                            <IconButton aria-label="delete"
-                                        onClick={ removeSite(site.id) }
-                            >
-                                <DeleteIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </TableCell>
-                </TableRow>
-            );
-            setResponse(m);
-        }
-
-    },[park]) // the park selected from dropdown is changed
+    //
+    // },[park]) // the park selected from dropdown is changed
 
     return (
         <>
@@ -234,14 +236,25 @@ const SiteTable = (props) => {
                                                 marginBottom="0!important"
                                             >
                                                 Watersites for park
+
+                                                {/*Reload Button*/}
+                                                {/*<Box*/}
+                                                {/*    component={Replay}*/}
+                                                {/*    width="1rem!important"*/}
+                                                {/*    height="1rem!important"*/}
+                                                {/*    marginLeft="1.25rem"*/}
+                                                {/*    onClick={()=>{return reloadSiteTable}}*/}
+                                                {/*/>*/}
                                             </Box>
+
                                         </Grid>
-                                        <Grid item xs="auto"  xs={"12"} md={"6"}>
-                                            <Box>
-                                                {/*dropdown*/}
-                                                <Select required={"required"} className="mb-3" name="park" options={ parkOptions } value={ park } onChange={e => setPark(e)}/>
-                                            </Box>
-                                        </Grid>
+                                        {/*Select Park Dropdown*/}
+                                        {/*<Grid item xs="auto"  xs={"12"} md={"6"}>*/}
+                                        {/*    <Box>*/}
+                                        {/*        /!*dropdown*!/*/}
+                                        {/*        <Select required={"required"} className="mb-3" name="park" options={ parkOptions } value={ park } onChange={e => setPark(e)}/>*/}
+                                        {/*    </Box>*/}
+                                        {/*</Grid>*/}
                                     </Grid>
                                 }
                                 classes={{ root: classes.cardHeaderRoot }}
