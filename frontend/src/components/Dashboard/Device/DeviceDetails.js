@@ -14,7 +14,7 @@ import EditDeviceMetrics from "./EditDeviceMetrics";
 import Modal from "../../Modals/Modal";
 import {UserContext} from "../../../Context/UserContext";
 import Divider from "@material-ui/core/Divider";
-import {BatteryStd, CheckCircle} from "@material-ui/icons";
+import {BatteryStd, CheckCircle, Visibility} from "@material-ui/icons";
 import Clear from "@material-ui/icons/Clear";
 import axios from "axios";
 import ResetPassword from "../../Auth/ResetPassword";
@@ -47,11 +47,9 @@ function DeviceDetails(props) {
 
         if(props.device != null)
         {
+            console.log(JSON.stringify(props.device))
             setDevice(props.device);
-            if(device)
-            {
-                filterMetrics()
-            }
+            filterMetrics()
 
         }else{
             console.log("no device prop added")
@@ -73,7 +71,7 @@ function DeviceDetails(props) {
     }
 
     const filterMetrics = ()=>{
-        let filteredMetrics = device.deviceData.deviceConfiguration.map((elem)=>{
+        let filteredMetrics = props.device.deviceData.deviceConfiguration.map((elem)=>{
           if(elem.settingType === "WATER_QUALITY"){
               return {settingType: "Water Quality", value: elem.value}
           }else if(elem.settingType === "reportingFrequency"){
@@ -124,38 +122,20 @@ function DeviceDetails(props) {
 
         { device &&
         <Modal title="Edit Device Frequency" onClose={() => setShowEdit(false)} show={ showEdit }>
-            <EditDeviceMetrics deviceDetails={ device } closeModal={()=>{ setShowEdit(false) }}/>
+            <EditDeviceMetrics reloadDeviceTable={props.reloadDeviceTable} deviceDetails={ device } closeModal={()=>{ setShowEdit(false) }}/>
         </Modal> }
 
         <Modal title="Ping Response" onClose={() => setShowPing(false)} show={ showPing }>
             <div>{ pingMessage }</div>
-        </Modal>
-
-
-        <Dialog
-            open={showPing}
-            onClose={() => {
-                return setShowPing(false)
-            }}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-        >
-            <DialogContent
-                className={"mb-0"}
+            <Button
+                variant={"contained"}
+                size={"small"}
+                onClick={ () => setShowPing(false) }
+                style={{marginTop:"1rem"}}
             >
-                <h4 className="mb-4">Ping Response</h4>
-                <DialogContentText id="alert-dialog-description">
-                    {pingMessage}
-                </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => {
-                    return setShowPing(false)
-                }} color="primary" autoFocus>
-                    Accept
-                </Button>
-            </DialogActions>
-        </Dialog>
+                Accept
+            </Button>
+        </Modal>
 
 
         <Card
@@ -238,11 +218,29 @@ function DeviceDetails(props) {
                         marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
+                        <Box minWidth="2.25rem" display="flex" alignItems="center">
+                            <Box
+                                component={Visibility}
+                                width="1.25rem!important"
+                                height="1.25rem!important"
+                                marginRight="1.25rem!important"
+                                className={classes["text" + "PrimaryLight"]}
+                            />
+                             { device && device.deviceData.lastSeen ? "Last Seen "+device.deviceData.lastSeen.substr(0,10) + "   at   "+device.deviceData.lastSeen.substr(11,8) : "Not Connected" }
+                        </Box>
+
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        xl={12}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
                         <b>General</b>
                     </Grid>
                     {gridItem("Coordinates")}
-
-
                     <Grid
                         item
                         xs={6}
@@ -275,6 +273,7 @@ function DeviceDetails(props) {
                     >
                         { device && device.deviceData && device.deviceData.lifeTime }
                     </Grid>
+
                     {/*Metric information*/}
                     <Grid
                         item

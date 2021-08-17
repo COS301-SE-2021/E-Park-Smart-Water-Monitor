@@ -59,7 +59,7 @@ const EditSiteBody = (props) => {
             }
         ).then((res) => {
 
-            
+
             toggleLoading();
             props.closeModal()
             props.reloadSiteTable();

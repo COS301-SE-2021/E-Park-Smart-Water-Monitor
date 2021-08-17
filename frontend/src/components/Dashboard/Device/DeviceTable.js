@@ -24,10 +24,10 @@ function DeviceTable(props) {
   const [response, setResponse] = useState(null)
   const [hover, setHover] = useState(true)
 
-    const handleDeviceSelection = (device_id) => {
+    const handleDeviceSelection = (device) => {
         // so that it doesn't run on render
-        return function () {
-            props.onSelectDevice(device_id);
+        return () =>{
+            props.load_device(device);
         }
     }
 
@@ -49,7 +49,7 @@ function DeviceTable(props) {
             const m = props.devices.map((device) =>
                 <TableRow
                     key={device.deviceId}
-                    onClick={ handleDeviceSelection(device.deviceId) }
+                    onClick={ handleDeviceSelection(device) }
                     style={hoverStyle}
                     onMouseEnter={toggleHover}
                     onMouseLeave={toggleHover}
@@ -73,6 +73,9 @@ function DeviceTable(props) {
                     </TableCell>
                     <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
                         { device.deviceData.battery }%
+                    </TableCell>
+                    <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
+                        { device.deviceData.lastSeen ? device.deviceData.lastSeen.substr(0,10) : "Not Connected"}
                     </TableCell>
                 </TableRow>
 
@@ -160,6 +163,16 @@ function DeviceTable(props) {
                                     }}
                                 >
                                     Battery Level
+                                </TableCell>
+                                <TableCell
+                                    classes={{
+                                        root:
+                                            classes.tableCellRoot +
+                                            " " +
+                                            classes.tableCellRootHead,
+                                    }}
+                                >
+                                    Last Seen
                                 </TableCell>
                             </TableRow>
                         </TableHead>
