@@ -79,11 +79,12 @@ const EditDeviceMetricsBody = (props) => {
             value: value
         }
 
-        axios.post('http://localhost:8080/api/devices/setMetricFrequency', obj
+        axios.put('http://localhost:8080/api/devices/setMetricFrequency', obj
         ).then((res)=>{
 
             toggleLoading()
             props.closeModal()
+            props.reloadDeviceTable()
 
         }).catch((res)=>{
 

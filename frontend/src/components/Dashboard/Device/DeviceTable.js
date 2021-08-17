@@ -24,10 +24,10 @@ function DeviceTable(props) {
   const [response, setResponse] = useState(null)
   const [hover, setHover] = useState(true)
 
-    const handleDeviceSelection = (device_id) => {
+    const handleDeviceSelection = (device) => {
         // so that it doesn't run on render
-        return function () {
-            props.onSelectDevice(device_id);
+        return () =>{
+            props.load_device(device);
         }
     }
 
@@ -49,7 +49,7 @@ function DeviceTable(props) {
             const m = props.devices.map((device) =>
                 <TableRow
                     key={device.deviceId}
-                    onClick={ handleDeviceSelection(device.deviceId) }
+                    onClick={ handleDeviceSelection(device) }
                     style={hoverStyle}
                     onMouseEnter={toggleHover}
                     onMouseLeave={toggleHover}

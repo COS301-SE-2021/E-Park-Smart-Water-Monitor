@@ -33,6 +33,7 @@ function Dashboard() {
   const [devices, setDevices] = useState([])
   const [device, setDevice] = useState(null)
   const [inspections, setInspections] = useState([])
+  const [value, setValue] = useState(0)
 
   const user = useContext(UserContext)
 
@@ -40,7 +41,9 @@ function Dashboard() {
     parseOptions(Chart, chartOptions());
   }
 
-  let temp_jwt = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJDSEljaGkyIiwicm9sZXMiOiJGSUVMRF9FTkdJTkVFUiIsImV4cCI6MTYyODkzMTkxN30.MEfrCH6mcP2x9LB9-SQxFtB03hrYQPhPNgydbuVqTpP_6mQeISqAiXx2RpjN4fdfbWBNNUqGlJhZhNelmQcQfQ"
+  const reloadDeviceTable = () => {
+    setValue(value => value+1)
+  }
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/devices/getAllDevices',{
@@ -65,7 +68,7 @@ function Dashboard() {
     }).catch((res)=>{
       console.log(JSON.stringify(res))
     });
-  }, []) // second param [] is a list of dependency to watch and run useEffect
+  }, [value]) // second param [] is a list of dependency to watch and run useEffect
 
   useEffect(() => {
     if (device != null) {
@@ -79,17 +82,10 @@ function Dashboard() {
     }
   }, [device])
 
-  const load_device = (device_id) =>
+  const load_device = (device) =>
   {
-    // get the device from the monolith of devices to render the specific details
-    for(let i =0; i<devices.length;i++)
-    {
-      if(devices[i].deviceId === device_id)
-      {
-        setDevice(devices[i])
-      }
-    }
-
+    // console.log(JSON.stringify(device))
+    setDevice(device)
   }
 
   return (
@@ -113,7 +109,7 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            { devices && <Map onSelectDevice={load_device} devices={ devices }></Map> }
+            { devices && <Map load_device={load_device} devices={ devices }></Map> }
           </Grid>
         </Grid>
 
@@ -127,7 +123,7 @@ function Dashboard() {
               classes={{ root: classes.gridItemRoot }}
           >
 
-            { devices && <DeviceTable onSelectDevice={load_device} devices={ devices }></DeviceTable> }
+            { devices && <DeviceTable load_device={load_device} devices={ devices }></DeviceTable> }
 
           </Grid>
 
@@ -139,7 +135,7 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            { device && <DeviceDetails device={ device }></DeviceDetails> }
+            { device && <DeviceDetails reloadDeviceTable={reloadDeviceTable} device={ device }></DeviceDetails> }
           </Grid>
         </Grid>
 

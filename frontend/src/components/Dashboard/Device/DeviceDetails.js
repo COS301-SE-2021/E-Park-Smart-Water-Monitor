@@ -47,11 +47,9 @@ function DeviceDetails(props) {
 
         if(props.device != null)
         {
+            console.log(JSON.stringify(props.device))
             setDevice(props.device);
-            if(device)
-            {
-                filterMetrics()
-            }
+            filterMetrics()
 
         }else{
             console.log("no device prop added")
@@ -73,7 +71,7 @@ function DeviceDetails(props) {
     }
 
     const filterMetrics = ()=>{
-        let filteredMetrics = device.deviceData.deviceConfiguration.map((elem)=>{
+        let filteredMetrics = props.device.deviceData.deviceConfiguration.map((elem)=>{
           if(elem.settingType === "WATER_QUALITY"){
               return {settingType: "Water Quality", value: elem.value}
           }else if(elem.settingType === "reportingFrequency"){
@@ -124,7 +122,7 @@ function DeviceDetails(props) {
 
         { device &&
         <Modal title="Edit Device Frequency" onClose={() => setShowEdit(false)} show={ showEdit }>
-            <EditDeviceMetrics deviceDetails={ device } closeModal={()=>{ setShowEdit(false) }}/>
+            <EditDeviceMetrics reloadDeviceTable={props.reloadDeviceTable} deviceDetails={ device } closeModal={()=>{ setShowEdit(false) }}/>
         </Modal> }
 
         <Modal title="Ping Response" onClose={() => setShowPing(false)} show={ showPing }>
