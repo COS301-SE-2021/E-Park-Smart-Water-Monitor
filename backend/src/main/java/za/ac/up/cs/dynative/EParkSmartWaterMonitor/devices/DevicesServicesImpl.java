@@ -486,13 +486,13 @@ public class DevicesServicesImpl implements DevicesService
                         .build());
 
                 try {
-                    TimeUnit.SECONDS.sleep(45  );
+                    TimeUnit.SECONDS.sleep(45);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
                 }
 
-                GetDeviceDataResponse deviceDataResponse = getDeviceData(new GetDeviceDataRequest(deviceName,1, true));
+                GetDeviceDataResponse deviceDataResponse = getDeviceData(new GetDeviceDataRequest(deviceName, 1, true));
                 String latestDeviceTime = deviceDataResponse.getInnerResponses().get(0).getMeasurements().get(0).getDeviceDateTime();
 
                 String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
@@ -503,8 +503,10 @@ public class DevicesServicesImpl implements DevicesService
                     Date latestDeviceTimeDate = new SimpleDateFormat(dateTimeFormat).parse(latestDeviceTime);
 
                     if (Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 1
-                            || Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 0)  {
-                        return new PingDeviceResponse("Device " + deviceName +" says hello.", true, deviceName, deviceDataResponse.getInnerResponses().get(0));
+                            || Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 0) {
+                        findDeviceResponse.getDevice().getDeviceData().setLastSeen(latestDeviceTimeDate);
+                        deviceRepo.save(findDeviceResponse.getDevice());
+                        return new PingDeviceResponse("Device " + deviceName + " says hello.", true, deviceName, deviceDataResponse.getInnerResponses().get(0));
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -515,6 +517,8 @@ public class DevicesServicesImpl implements DevicesService
             return new PingDeviceResponse("Device does not exist.", false, deviceName, null);
         }
         return new PingDeviceResponse("No device ID specified.", false, deviceName, null);
+    }
+
     public void getDataNotification(DataNotificationRequest dataNotificationRequest) throws InvalidRequestException {
         List<Device> deviceList = deviceRepo.findDeviceByDeviceName(dataNotificationRequest.getData().get(0).getDeviceName());
         int problematicMeasurements=0;
