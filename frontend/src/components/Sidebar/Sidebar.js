@@ -22,7 +22,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import componentStyles from "assets/theme/components/sidebar.js";
 import {UserContext} from "../../Context/UserContext";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import {Email, People, Pets, Smartphone} from "@material-ui/icons";
+import {Contacts, Email, EmojiPeople, People, Pets, Smartphone} from "@material-ui/icons";
 import Person from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
 import EditProfileContext from "../../Context/EditProfileContext";
@@ -179,6 +179,7 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
     }
 
     items.push(profileItem(`${user.name} ${user.surname}`,Person))
+    items.push(profileItem(user.username,Contacts))
     items.push(profileItem(user.role,People))
     items.push(profileItem(user.email,Email))
     items.push(profileItem(user.cellNumber,Smartphone))
