@@ -114,7 +114,7 @@ const EditUserBody = (props) => {
             }
 
 
-            axios.post('http://localhost:8080/api/user/editUser', obj, {
+            axios.put('http://localhost:8080/api/user/editUser', obj, {
                     headers: {
                         'Authorization': "Bearer " + user.token
                     }
