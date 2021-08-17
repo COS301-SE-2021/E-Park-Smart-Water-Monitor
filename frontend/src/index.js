@@ -12,6 +12,7 @@ import {UserProvider} from "./Context/UserContext";
 import {LoadingProvider} from "./Context/LoadingContext";
 import {PuffLoader} from "react-spinners";
 import Modal from "./components/Modals/Modal";
+import EditProfile from "./components/EditProfile/EditProfile";
 import {css} from "@emotion/react";
 import {Alert} from "@material-ui/lab";
 

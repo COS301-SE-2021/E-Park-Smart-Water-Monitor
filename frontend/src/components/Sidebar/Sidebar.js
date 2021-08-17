@@ -25,6 +25,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import {Email, People, Pets, Smartphone} from "@material-ui/icons";
 import Person from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
+import EditProfileContext from "../../Context/EditProfileContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -37,6 +38,8 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
 
   const user = useContext(UserContext)
 
+  const editProfile = useContext(EditProfileContext).showEditProfile(true);
+
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -44,11 +47,6 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-
-  const editProfile = ()=>{
-    // show modal to edit the editable fields by a user
-    // such as the email, cellphone num, username, name
-  }
 
   const menuId = "responsive-menu-id";
   // creates the links that appear in the left menu / Sidebar
