@@ -20,6 +20,7 @@ import axios from "axios";
 import AddInspectionBody from "./AddInspectionBody";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -45,7 +46,17 @@ const InspectionTable = () => {
 
                 if(res.data && res.data.inspections)
                 {
-                    let m = res.data.inspections[0].map((inspection) => (
+                    // get the inspections for the user logged in
+                    let parkIndex = -1;
+                    for(let i = 0; i < res.data.parkId.length; i++)
+                    {
+                        if(res.data.parkId[i] == user.parkID){
+                            parkIndex = i;
+                        }
+                    }
+
+
+                    let m = res.data.inspections[parkIndex].map((inspection) => (
                         <TableRow key={inspection.id}>
                             <TableCell
                                 classes={{
@@ -73,7 +84,7 @@ const InspectionTable = () => {
                 }
             }
         })
-      }, [])
+      }, [show])
 
     return (
         <>
@@ -210,15 +221,15 @@ const InspectionTable = () => {
                         marginBottom="3rem!important"
                         classes={{ root: classes.gridItemRoot }}
                         style={{ display: "flex", justifyContent: "flex-end", marginTop: "5px"}}>
-                        {/*<Button*/}
-                        {/*    variant="contained"*/}
-                        {/*    color="primary"*/}
-                        {/*    size="medium"*/}
-                        {/*    style={{width:'200px'}}*/}
-                        {/*    onClick={() => setShow(true)}*/}
-                        {/*>*/}
-                        {/*    Add Inspection*/}
-                        {/*</Button>*/}
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="medium"
+                            style={{width:'200px'}}
+                            onClick={() => setShow(!show)}
+                        >
+                            Refresh Table
+                        </Button>
                     </Grid>
                 </Grid>
 
