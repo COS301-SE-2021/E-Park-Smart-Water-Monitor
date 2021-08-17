@@ -23,7 +23,6 @@ const override = css`
   border-color: red;
 `;
 
-
 const overlay = {
     width: '100%',
     height: '100%',
@@ -35,6 +34,7 @@ const overlay = {
 
 const App = () => {
     const [loading, setLoading] = useState(false)
+    const [showEditProfile, setShowEditProfile] = useState(false)
 
     const toggleLoading = ()=>{
         setLoading(loading=>!loading)
@@ -44,6 +44,9 @@ const App = () => {
         <UserProvider>
             <Modal onClose={() => setLoading(false)} show={loading}>
                 <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
+            </Modal>
+            <Modal onClose={() => setShowEditProfile(false)} show={showEditProfile}>
+                <EditProfile onClose={()=>{setShowEditProfile(false)}}></EditProfile>
             </Modal>
             <CssBaseline />
             {/*Loading Modal*/}
