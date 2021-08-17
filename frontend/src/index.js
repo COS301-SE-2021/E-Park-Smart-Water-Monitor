@@ -56,7 +56,7 @@ const App = () => {
             </Modal>
             <CssBaseline />
             {/*Loading Modal*/}
-            <EditProfileProvider value={ { toggleEditProfile: toggleEditProfile() } } >
+            <EditProfileProvider value={ { toggleEditProfile: toggleEditProfile } } >
                 <LoadingProvider value={ { toggleLoading: toggleLoading } } >
                     <Routing/>
                 </LoadingProvider>

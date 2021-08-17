@@ -211,7 +211,7 @@ const EditUserBody = (props) => {
                 </Row>
 
                 <Button variant="primary" type="submit"
-                        onClick={toggleEditProfile()}>
+                        onClick={toggleEditProfile}>
                     Edit
                 </Button>
             </Form>
