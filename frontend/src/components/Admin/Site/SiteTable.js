@@ -153,7 +153,7 @@ const SiteTable = (props) => {
                 component={Box}
                 classes={{ root: classes.containerRoot }}
             >
-                <Modal title="Add Site" onClose={() => setShow(false)} show={show}>
+                <Modal title="Add Watersite" onClose={() => setShow(false)} show={show}>
                     <AddSiteBody reloadSiteTable={ reloadSiteTable } closeModal={()=>{ setShow(false) }}/>
                 </Modal>
 

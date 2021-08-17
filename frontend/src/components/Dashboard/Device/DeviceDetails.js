@@ -73,17 +73,17 @@ function DeviceDetails(props) {
     }
 
     const filterMetrics = ()=>{
-      let filteredMetrics = device.deviceData.deviceConfiguration.map((elem)=>{
-          if(elem.settingType === "phSensitivity"){
-              return {settingType: "PH Sensitivity", value: elem.value}
+        let filteredMetrics = device.deviceData.deviceConfiguration.map((elem)=>{
+          if(elem.settingType === "WATER_QUALITY"){
+              return {settingType: "Water Quality", value: elem.value}
           }else if(elem.settingType === "reportingFrequency"){
               return {settingType: "Reporting Frequency", value: elem.value}
-          }else if(elem.settingType === "temperatureSensitivity"){
-              return {settingType: "Temperature Sensitivity", value: elem.value}
-          }else if(elem.settingType === "waterDepthSensitivity"){
-              return {settingType: "Water Depth Sensitivity", value: elem.value}
+          }else if(elem.settingType === "WATER_TEMP"){
+              return {settingType: "Water Temperature", value: elem.value}
+          }else if(elem.settingType === "WATER_LEVEL"){
+              return {settingType: "Water Depth", value: elem.value}
           }
-      })
+        })
         setMetrics(filteredMetrics)
     }
 
