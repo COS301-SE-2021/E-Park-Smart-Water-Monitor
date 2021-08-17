@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -30,6 +30,15 @@ const AddSiteBody = (props) => {
     const toggleLoading = useContext(LoadingContext).toggleLoading
     const user = useContext(UserContext)
 
+    let shapeOptions = [
+        { value: 'circle', label: 'Circle' },
+        { value: 'rectangle', label: 'Rectangle' }
+    ];
+
+    useEffect(() => {
+        setShape(shapeOptions[0])
+    },[])
+
     function MapEvents() {
         const map = useMapEvents({
             click: (e) => {
@@ -40,7 +49,7 @@ const AddSiteBody = (props) => {
         return null
     }
 
-    const createPark = (e) => {
+    const createSite = (e) => {
         toggleLoading()
         e.preventDefault()
         let obj = {
@@ -48,7 +57,7 @@ const AddSiteBody = (props) => {
             siteName: name,
             latitude: latitude,
             longitude: longitude,
-            shape: shape,
+            shape: shape.value,
             length: length,
             width: width,
             radius: radius
@@ -63,31 +72,76 @@ const AddSiteBody = (props) => {
             }
         ).then((res) => {
 
+            console.log("added site: "+JSON.stringify(res))
             toggleLoading();
             props.closeModal()
-            props.reloadParkTable();
+            props.reloadSiteTable();
 
         }).catch((res) => {
 
             toggleLoading()
-            console.log("error adding park: "+JSON.stringify(res))
+            console.log("error adding site: "+JSON.stringify(res))
 
         });
     }
 
     return (
         <>
-            <Form>
+            <Form onSubmit={createSite}>
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" >
-                            <Form.Label>Park Name</Form.Label>
-                            <Form.Control required={"required"} type="text" placeholder="Park Name" name="name" value={name} onChange={e => setName(e.target.value)}/>
+                            <Form.Label>Watersite Name</Form.Label>
+                            <Form.Control required={"required"} type="text" placeholder="Watersite Name" name="name" value={name} onChange={e => setName(e.target.value)}/>
                         </Form.Group>
 
                     </Col>
                 </Row>
 
+                <Row>
+                    <Col>
+                        <Form.Label>Shape</Form.Label>
+                        <Select required={"required"} className="mb-3" name="role" options={ shapeOptions } value={ shape } onChange={e => setShape(e)}/>
+                    </Col>
+                </Row>
+                { shape.value === "rectangle" &&
+                    <>
+                        <Row>
+                            <Col>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Length (km)</Form.Label>
+                                    <Form.Control required={"required"} min="0" type="number" step={1}
+                                                  placeholder="length" name="length" value={length}
+                                                  onChange={e => setLength(e.target.value)}/>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Width (km)</Form.Label>
+                                    <Form.Control required={"required"} min="0" type="number" step="1"
+                                                  placeholder="width" name="width" value={width}
+                                                  onChange={e => setWidth(e.target.value)}/>
+                                </Form.Group>
+                            </Col>
+                        </Row>
+                    </>
+                }
+                { shape.value === "circle" &&
+                    <Row>
+                        <Col>
+                            <Form.Group className="mb-3">
+                                <Form.Label>Radius (km)</Form.Label>
+                                <Form.Control required={"required"} type="number" min="0" step={1} placeholder="radius"
+                                              name="radius" value={radius}
+                                              onChange={e => setRadius(e.target.value)}/>
+                            </Form.Group>
+                        </Col>
+                    </Row>
+                }
+
+                {/*Location details*/}
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" >
@@ -104,7 +158,6 @@ const AddSiteBody = (props) => {
                         </Form.Group>
                     </Col>
                 </Row>
-
                 <Row>
                     <Col>
                         <div style={ { height: 250 } } className="mb-3" >

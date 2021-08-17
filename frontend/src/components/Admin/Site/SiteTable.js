@@ -60,15 +60,20 @@ const SiteTable = (props) => {
     const removeSite = (id) => {
         return ()=>{
             toggleLoading()
-            axios.get('http://localhost:8080/api/sites/deleteWaterSite', {
-                id: id
-            }, {
+            axios.delete('http://localhost:8080/api/sites/deleteWaterSite',
+            {
                 headers: {
                     'Authorization': "Bearer " + user.token
+                },
+                data: {
+                    id: id,
                 }
             }).then((res)=> {
                 toggleLoading()
                 reloadSiteTable()
+            }).catch((res)=>{
+                toggleLoading()
+                console.log(JSON.stringify(res))
             })
         }
     }

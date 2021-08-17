@@ -123,7 +123,7 @@ function DeviceTable(props) {
             ></CardHeader>
 
             <div className="table-container">
-                <TableContainer maxHeight={"400px"}>
+                <TableContainer style={{maxHeight:"400px",overflowY:"auto"}}>
                     <Box
                         component={Table}
                         alignItems="center"
@@ -164,7 +164,6 @@ function DeviceTable(props) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            { response }
                             { response }
                         </TableBody>
                     </Box>
