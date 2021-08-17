@@ -14,7 +14,7 @@ import EditDeviceMetrics from "./EditDeviceMetrics";
 import Modal from "../../Modals/Modal";
 import {UserContext} from "../../../Context/UserContext";
 import Divider from "@material-ui/core/Divider";
-import {BatteryStd, CheckCircle} from "@material-ui/icons";
+import {BatteryStd, CheckCircle, Visibility} from "@material-ui/icons";
 import Clear from "@material-ui/icons/Clear";
 import axios from "axios";
 import ResetPassword from "../../Auth/ResetPassword";
@@ -236,11 +236,29 @@ function DeviceDetails(props) {
                         marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
+                        <Box minWidth="2.25rem" display="flex" alignItems="center">
+                            <Box
+                                component={Visibility}
+                                width="1.25rem!important"
+                                height="1.25rem!important"
+                                marginRight="1.25rem!important"
+                                className={classes["text" + "PrimaryLight"]}
+                            />
+                             { device && device.deviceData.lastSeen ? "Last Seen "+device.deviceData.lastSeen.substr(0,10) + "   at   "+device.deviceData.lastSeen.substr(11,8) : "Not Connected" }
+                        </Box>
+
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        xl={12}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
                         <b>General</b>
                     </Grid>
                     {gridItem("Coordinates")}
-
-
                     <Grid
                         item
                         xs={6}
@@ -273,6 +291,7 @@ function DeviceDetails(props) {
                     >
                         { device && device.deviceData && device.deviceData.lifeTime }
                     </Grid>
+
                     {/*Metric information*/}
                     <Grid
                         item
