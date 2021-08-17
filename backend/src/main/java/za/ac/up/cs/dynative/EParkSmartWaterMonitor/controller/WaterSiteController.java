@@ -47,7 +47,7 @@ public class WaterSiteController {
         return new ResponseEntity<>(waterSiteService.deleteWaterSite(deleteWaterSiteRequest), HttpStatus.OK);
     }
 
-    @PostMapping("/editWaterSite")
+    @PutMapping("/editWaterSite")
     public ResponseEntity<Object> editWaterSite(@RequestBody EditWaterSiteRequest editWaterSiteRequest) {
         return new ResponseEntity<>(waterSiteService.editWaterSite(editWaterSiteRequest), HttpStatus.OK);
     }

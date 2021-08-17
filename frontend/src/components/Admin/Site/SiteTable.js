@@ -30,6 +30,7 @@ import Select from "react-select";
 import LoadingContext from "../../../Context/LoadingContext";
 import {UserContext} from "../../../Context/UserContext";
 import {Replay} from "@material-ui/icons";
+import AddParkBody from "../Park/AddParkBody";
 
 
 
@@ -82,9 +83,6 @@ const SiteTable = (props) => {
 
         setParkOptions(options)
         setPark(options[0])
-
-        // get the sites dependent on what the user parkId is
-
 
     },[])
 
@@ -156,7 +154,7 @@ const SiteTable = (props) => {
                 classes={{ root: classes.containerRoot }}
             >
                 <Modal title="Add Site" onClose={() => setShow(false)} show={show}>
-                    <AddSiteBody/>
+                    <AddSiteBody reloadSiteTable={ reloadSiteTable } closeModal={()=>{ setShow(false) }}/>
                 </Modal>
 
                 { site && <Modal title="Edit Site" onClose={() => setShowEdit(false)} show={ showEdit }>
