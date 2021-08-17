@@ -26,6 +26,7 @@ import {Email, People, Pets, Smartphone} from "@material-ui/icons";
 import Person from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
 import EditProfileContext from "../../Context/EditProfileContext";
+import LoadingContext from "../../Context/LoadingContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -38,6 +39,9 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
 
   const user = useContext(UserContext)
 
+  const editProfile = useContext(EditProfileContext)
+  const toggleEditProfile = editProfile.toggleEditProfile
+
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -45,6 +49,10 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  const editProfileAction = ()=> {
+    toggleEditProfile()
+  }
 
   const menuId = "responsive-menu-id";
   // creates the links that appear in the left menu / Sidebar
@@ -205,7 +213,7 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
             <Button
                 variant={"outlined"}
                 size={"small"}
-                //onClick={}  //TODO
+                onClick={editProfileAction}
             >Edit Profile</Button>
           </Box>
         </Drawer>
@@ -282,7 +290,7 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
             <Button
                 variant={"outlined"}
                 size={"small"}
-                //onClick={}  //TODO
+                onClick={editProfileAction}
             >Edit Profile</Button>
           </Box>
 

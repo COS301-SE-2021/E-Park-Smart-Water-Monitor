@@ -10,6 +10,7 @@ import axios from "axios";
 import Routing from "./Routing";
 import {UserProvider} from "./Context/UserContext";
 import {LoadingProvider} from "./Context/LoadingContext";
+import {EditProfileProvider} from "./Context/EditProfileContext";
 import {PuffLoader} from "react-spinners";
 import Modal from "./components/Modals/Modal";
 import EditProfile from "./components/EditProfile/EditProfile";
@@ -35,10 +36,14 @@ const overlay = {
 
 const App = () => {
     const [loading, setLoading] = useState(false)
-    // const [showEditProfile, setShowEditProfile] = useState(false)
+    const [showEditProfile, setShowEditProfile] = useState(false)
 
     const toggleLoading = ()=>{
         setLoading(loading=>!loading)
+    }
+
+    const toggleEditProfile = ()=>{
+        setShowEditProfile(showEditProfile=>!showEditProfile)
     }
 
     return (<ThemeProvider theme={theme}>
@@ -46,14 +51,16 @@ const App = () => {
             <Modal onClose={() => setLoading(false)} show={loading}>
                 <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
             </Modal>
-            {/*<Modal onClose={() => setShowEditProfile(false)} show={showEditProfile}>*/}
-            {/*    <EditProfile onClose={()=>{setShowEditProfile(false)}}></EditProfile>*/}
-            {/*</Modal>*/}
+            <Modal onClose={() => setShowEditProfile(false)} show={showEditProfile}>
+                <EditProfile onClose={()=>{setShowEditProfile(false)}}></EditProfile>
+            </Modal>
             <CssBaseline />
             {/*Loading Modal*/}
-            <LoadingProvider value={ { toggleLoading: toggleLoading } } >
-                <Routing/>
-            </LoadingProvider>
+            <EditProfileProvider value={ { toggleEditProfile: toggleEditProfile() } } >
+                <LoadingProvider value={ { toggleLoading: toggleLoading } } >
+                    <Routing/>
+                </LoadingProvider>
+            </EditProfileProvider>
         </UserProvider>
     </ThemeProvider>)
 

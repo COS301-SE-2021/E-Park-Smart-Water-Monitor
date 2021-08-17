@@ -1,329 +1,222 @@
 import React, {useContext, useEffect, useState} from "react";
-import {Form} from 'react-bootstrap';
-import Button from "@material-ui/core/Button";
-import Row from "react-bootstrap/Row";
+import "../../assets/css/addUser.css";
+import Select from 'react-select';
+import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import axios from "axios";
-import LoadingContext from "../../Context/LoadingContext";
+import AdminContext from "../Admin/AdminContext";
 import {UserContext} from "../../Context/UserContext";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import InputLabel from "@material-ui/core/InputLabel";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import FormControl from "@material-ui/core/FormControl";
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import Dialpad from '@material-ui/icons/Dialpad';
-import Lock from '@material-ui/icons/Lock';
-import {Alert} from "@material-ui/lab";
-import {useTheme} from "@material-ui/core/styles";
+import LoadingContext from "../../Context/LoadingContext";
+import EditProfileContext from "../../Context/EditProfileContext";
+const { Form } = require( "react-bootstrap" );
 
-const EditProfile = (props) => {
-    const theme = useTheme();
+const styles = {
+    col_left: {
+        paddingRight:'3px'
+    },
+    col_right: {
+        paddingLeft:0
+    },
+    input: {
+        paddingLeft: 0,
+        paddingRight: 0
+    }
+}
 
+const EditUserBody = (props) => {
+    const [idNumber, setIDNumber] = useState("")
+    const [email, setEmail] = useState("")
+    const [name, setName] = useState("")
+    const [surname, setSurname] = useState("")
     const [username, setUsername] = useState("")
-    const [code, setCode] = useState(false) // code on our side, can be used to match
-    const [resetCode, setResetCode] = useState(false) // the code they type in to verify on backend on second API call
-    const [error, setError] = useState(false)
-    const [errorConfirmation, setErrorConfirmation] = useState(false)
-    const [next, setNext] = useState(false)
-    const [newPassword, setNewPassword] = useState(false)
-    const [newPasswordConfirmed, setNewPasswordConfirmed] = useState(false)
-    const [showAlert, setShowAlert] = useState(false)
+    const [cellNumber, setCellNumber] = useState("")
+    const [error, setError] = useState("")
 
+    const context = useContext(AdminContext)
+    const user = useContext(UserContext)
     const loader = useContext(LoadingContext)
     const toggleLoading = loader.toggleLoading
 
-    // send the username to the system to get an email
-    const submitUsername = (e) => {
+
+    useEffect(() => {
+
+        // add the props to the variables so that the user can change the values in the components
+        if(props && props.userDetails)
+        {
+            let p = props.userDetails
+
+            let cell = p.cellNumber;
+            cell = cell.substr(3)
+            setIDNumber(p.idNumber)
+            setEmail(p.email)
+            setName(p.name)
+            setSurname(p.surname)
+            setUsername(p.username)
+            setCellNumber(cell)
+        }
+    },[props.userDetails])
+
+    const editProfile = useContext(EditProfileContext)
+    const toggleEditProfile = editProfile.toggleEditProfile
+
+    // submit the edit of the user
+    const submit = (e) => {
         e.preventDefault()
+
         toggleLoading()
 
-        let obj = {
-            username : username
-        }
-
-        axios.post('http://localhost:8080/api/user/resetPassword', obj).then((res) => {
-
-            toggleLoading();
-
-            console.log(JSON.stringify(res.data))
-
-            if(res.data.code === "User not found"){
-                setError(res.data.code)
-            }else{
-                setCode(res.data.code)
-                setNext(true)
-                console.log("code: "+code)
-                console.log("next")
+        if(props && props.userDetails)
+        {
+            // accomodate for provided email is already in use error
+            let temp_email = email
+            if(email === props.userDetails.email) {
+                //clear the value
+                temp_email = ""
             }
 
-        }).catch((res) => {
-
-            toggleLoading()
-            console.log("error sending username to reset password: "+JSON.stringify(res))
-
-        });
-    }
-
-    useEffect(()=>{
-
-    }, [next]);
-
-    const submitNewPassword = (e) => {
-        e.preventDefault()
-
-        setErrorConfirmation("")
-
-        if(newPassword !== newPasswordConfirmed)
-        {
-            setErrorConfirmation("Passwords do not match")
-        }else{
-            toggleLoading()
-            console.log("submitting new password")
+            let temp_username = username
+            if(username === props.userDetails.username)
+            {
+                //clear the value
+                temp_username = ""
+            }
 
             let obj = {
-                username: username,
-                resetCode: resetCode,
-                newPassword: newPassword,
-                newPasswordConfirmed: newPasswordConfirmed
+                username: props.userDetails.username,
+                idNumber: idNumber,
+                email: temp_email ,
+                name: name,
+                surname: surname,
+                newUsername: temp_username,
+                cellNumber: "+27"+cellNumber
             }
 
-            axios.post('http://localhost:8080/api/user/resetPasswordFinalize', obj).then((res) => {
 
-                toggleLoading();
-                console.log(JSON.stringify(res))
+            axios.post('http://localhost:8080/api/user/editUser', obj, {
+                    headers: {
+                        'Authorization': "Bearer " + user.token
+                    }
+                }
+            ).then((res)=>{
 
-                if(res.data.success === false)
+                console.log("response:"+JSON.stringify(res))
+                if(res.data.success === "false")
                 {
-                    setErrorConfirmation(res.data.message)
+                    setError(res.data.status)
+                    console.log("error with editing user")
                 }else{
-                    setShowAlert(true)
-                    setTimeout(()=>{
-                        setShowAlert(false)
-                        props.closeModal()
-                    }, 5000)
+                    toggleLoading()
+                    props.closeModal()
+                    props.reloadUserTable()
                 }
 
-
-            }).catch((res) => {
-
-                toggleLoading()
-                console.log("error sending username to reset password: "+JSON.stringify(res))
-
+            }).catch((res)=>{
+                console.log("response:"+JSON.stringify(res))
             });
         }
 
 
-
-
-
     }
+
+
 
     return (
         <>
-            {!next &&
-
-            <Form onSubmit={submitUsername}>
-
+            <Form onSubmit={ submit }>
                 <Row>
                     <Col>
-                        <Form.Group className="mb-3">
-
-                            <FormControl fullWidth
-                                 variant="outlined"
-                                 type="text"
-                                 pattern={"[a-zA-Z0-9:_-]+"}
-                                 name="username"
-                                 value={username}
-                                 onChange={e => setUsername(e.target.value)}
-                            >
-                                <InputLabel>
-                                    Username
-                                </InputLabel>
-                                <OutlinedInput
-                                    type="text"
-                                    endAdornment={
-                                        <InputAdornment position="end">
-                                            <Box
-                                                component={AccountCircleIcon}
-                                                width="1.25rem!important"
-                                                height="1.25rem!important"
-                                            />
-                                        </InputAdornment>
-                                    }
-
-                                    labelWidth={65}
-                                />
-                            </FormControl>
+                        <Form.Group className="mb-3" controlId="email" >
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control required={"required"} type="email" placeholder="Enter email" name="email" value={email} onChange={e => setEmail(e.target.value)}/>
                             <Form.Text className="text-muted">
-                                A confirmation email will be sent to the account matching this username.
+                                An email will be sent to the user informing them of their registration on the system.
                             </Form.Text>
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3" >
+                            <Form.Label>Firstname</Form.Label>
+                            <Form.Control required={"required"} type="text" placeholder="Firstname" name="name" value={name} onChange={e => setName(e.target.value)}/>
+                        </Form.Group>
+
+                    </Col>
+                    <Col>
+                        <Form.Group className="mb-3" >
+                            <Form.Label>Surname</Form.Label>
+                            <Form.Control required={"required"} type="text" placeholder="Surname" name="surname" value={surname} onChange={e => setSurname(e.target.value)}/>
+                        </Form.Group>
+
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3" >
+                            <Form.Label>National Identification Number</Form.Label>
+                            <Form.Control required={"required"} type="text" minLength={13} maxLength={13} pattern="[0-9]*" placeholder="ID Number" name="id_number" value={idNumber} onChange={e => setIDNumber(e.target.value)}/>
                         </Form.Group>
 
                     </Col>
                 </Row>
 
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3" >
+                            <Form.Label>Cell Number</Form.Label>
+                            <Row                                    >
+                                <Col
+                                    xs={3}
+                                    style={styles.col_left}
+                                >
+                                    {/*Shows the +27 for the user so they know only to type the rest of the number*/}
+                                    <Form.Control
+                                        type="text"
+                                        editable={false}
+                                        placeholder="+27"
+                                        value="+27"
+                                        disabled={true}
+                                    />
+                                </Col>
+                                <Col
+                                    xs={9}
+                                    style={styles.col_right}
+                                >
+                                    <Form.Control
+                                        required={"required"}
+                                        type="text"
+                                        minLength={9}
+                                        maxLength={9}
+                                        pattern="[0-9]*"
+                                        placeholder="eg. 721619098"
+                                        name="cell_number"
+                                        value={cellNumber}
+                                        onChange={e => setCellNumber(e.target.value)}/>
+                                </Col>
+                            </Row>
 
-                { error &&
-                <Box
-                    fontWeight="400"
-                    component="large"
-                    color={theme.palette.error}
-                >
-                    <Alert severity={"warning"}>{error}</Alert>
-                </Box>
-                }
+                            {/*<Form.Control required={"required"} type="text" minLength={10} maxLength={10} pattern="[0-9]*" placeholder="Cell Number" name="cell_number" value={cellNumber} onChange={e => setCellNumber(e.target.value)}/>*/}
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Form.Group className="mb-3" >
+                            <Form.Label>Username</Form.Label>
+                            <Form.Control required={"required"} type="text" placeholder="Username" name="username" value={username} onChange={e => setUsername(e.target.value)}/>
+                        </Form.Group>
 
-                <Grid container component={Box} marginTop="1rem">
-                    <Grid item xs={6} component={Box} textAlign="left">
-                        <Button background-color="danger" color="primary" variant="text" onClick={() => {
-                            props.closeModal()
-                        }}>
-                            Cancel
-                        </Button>
-                    </Grid>
-                    <Grid item xs={6} component={Box} textAlign="right">
-                        <Button color="primary" variant="contained" type="submit">
-                            Submit
-                        </Button>
-                    </Grid>
-                </Grid>
+                    </Col>
+                </Row>
+
+                <Button variant="primary" type="submit"
+                        onClick={toggleEditProfile()}>
+                    Edit
+                </Button>
             </Form>
-
-            }
-
-            {   next &&
-                <Form onSubmit={ submitNewPassword }>
-                    <Row>
-                        <Col>
-                            <Form.Group className="mb-3">
-
-                                Find the reset code in the email box for the user {username}
-                                <FormControl fullWidth
-                                             variant="outlined"
-                                             type="text"
-                                             name="code"
-                                             value={resetCode}
-                                             className={"mt-3"}
-                                             onChange={e => setResetCode(e.target.value)}
-                                >
-                                    <InputLabel>
-                                        Code
-                                    </InputLabel>
-                                    <OutlinedInput
-                                        type="text"
-                                        endAdornment={
-                                            <InputAdornment position="end">
-                                                <Box
-                                                    component={Dialpad}
-                                                    width="1.25rem!important"
-                                                    height="1.25rem!important"
-                                                />
-                                            </InputAdornment>
-                                        }
-
-                                        labelWidth={40}
-                                    />
-                                </FormControl>
-
-                                {/*New Password*/}
-                                <FormControl fullWidth
-                                             variant="outlined"
-                                             type="password"
-                                             name="newPassword"
-                                             value={newPassword}
-                                             className={"mt-3"}
-                                             onChange={e => setNewPassword(e.target.value)}
-                                >
-                                    <InputLabel>
-                                        New Password
-                                    </InputLabel>
-                                    <OutlinedInput
-                                        type="text"
-                                        endAdornment={
-                                            <InputAdornment position="end">
-                                                <Box
-                                                    component={Lock}
-                                                    width="1.25rem!important"
-                                                    height="1.25rem!important"
-                                                />
-                                            </InputAdornment>
-                                        }
-
-                                        labelWidth={100}
-                                    />
-                                </FormControl>
-
-                                {/*Confirm new password*/}
-                                <FormControl fullWidth
-                                             variant="outlined"
-                                             type="password"
-                                             name="confirmNewPassword"
-                                             value={newPasswordConfirmed}
-                                             className={"mt-3"}
-                                             onChange={e => setNewPasswordConfirmed(e.target.value)}
-                                >
-                                    <InputLabel>
-                                        Confirm New Password
-                                    </InputLabel>
-                                    <OutlinedInput
-                                        type="text"
-                                        endAdornment={
-                                            <InputAdornment position="end">
-                                                <Box
-                                                    component={Lock}
-                                                    width="1.25rem!important"
-                                                    height="1.25rem!important"
-                                                />
-                                            </InputAdornment>
-                                        }
-
-                                        labelWidth={160}
-                                    />
-                                </FormControl>
-                            </Form.Group>
-
-                        </Col>
-                    </Row>
-
-                    { showAlert &&
-                    <Box
-                        fontWeight="400"
-                        component="large"
-                        color={theme.palette.success}
-                    >
-                        <Alert severity={"success"}>Successfully changed password for {username}</Alert>
-                    </Box> }
-
-                    { errorConfirmation &&
-                    <Box
-                        fontWeight="400"
-                        component="large"
-                        color={theme.palette.error}
-                    >
-                        <Alert severity={"warning"}>{errorConfirmation}</Alert>
-                    </Box> }
-
-                    <Grid container component={Box} marginTop="1rem">
-                        <Grid item xs={6} component={Box} textAlign="left">
-                            <Button color="primary" variant="text" onClick={() => {
-                                props.closeModal()
-                            }}>
-                                Cancel
-                            </Button>
-                        </Grid>
-                        <Grid item xs={6} component={Box} textAlign="right">
-                            <Button color="primary" variant="contained" type="submit">
-                                Submit
-                            </Button>
-                        </Grid>
-                    </Grid>
-
-                </Form>
-            }
         </>
     );
 };
 
-export default EditProfile;
+export default EditUserBody;
