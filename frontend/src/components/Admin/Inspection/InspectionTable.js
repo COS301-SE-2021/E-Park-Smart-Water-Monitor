@@ -28,14 +28,37 @@ const useStyles = makeStyles(componentStyles);
 const InspectionTable = () => {
     const classes = useStyles();
     const [show, setShow] = useState(false);
+    const [status, setStatus] = useState(false);
 
     const [inspections, setInspections] = useState([])
     const [response, setResponse] = useState([])
 
+    const statusOptions = [
+        { value: "NOT STARTED", label: "Not Started" },
+        { value: "DONE", label: "Done" }
+    ]
+
 
     const user = useContext(UserContext)
-    const loader = useContext(LoadingContext)
-    const toggleLoading = loader.toggleLoading
+    const toggleLoading = useContext(LoadingContext).toggleLoading
+
+    const changeStatus = (id)=>{
+
+        toggleLoading()
+        let obj = {
+            inspectionId: id,
+            status: status.value
+        }
+        axios.post('http://localhost:8080/api/inspections/setStatus', obj,{
+            headers: {
+                'Authorization': "Bearer " + user.token
+            }
+        }).then((res) => {
+            console.log(JSON.stringify(res))
+            toggleLoading()
+        });
+
+    }
 
     useEffect(() => {
         axios.get('http://localhost:8080/api/inspections/getAllInspections', {
@@ -73,11 +96,20 @@ const InspectionTable = () => {
                                 { inspection.dateDue?.split("T")[0] }
                             </TableCell>
                             <TableCell classes={{ root: classes.tableCellRoot }}>
+
+                                {/*Dropdown select for different parks*/}
+                                {/*<Grid item xs={12} >*/}
+                                {/*    <Box>*/}
+                                {/*        <Select required={"required"} className="mb-3" name="park" options={ statusOptions } value={ status } onChange={e => { setStatus(e); changeStatus()}}/>*/}
+                                {/*        /!*<Select required={"required"} className="mb-3" name="park" />*!/*/}
+                                {/*    </Box>*/}
+                                {/*</Grid>*/}
                                 { inspection.status }
                             </TableCell>
                             <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
                                 { inspection.description }
                             </TableCell>
+
                         </TableRow>
                     ))
 
