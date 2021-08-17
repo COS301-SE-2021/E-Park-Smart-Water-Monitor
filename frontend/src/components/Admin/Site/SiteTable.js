@@ -1,7 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
-
 import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -16,23 +14,16 @@ import Typography from "@material-ui/core/Typography";
 import componentStyles from "assets/theme/views/admin/admin";
 import Button from "@material-ui/core/Button";
 import Modal from "../../Modals/Modal";
-import disableScroll from "disable-scroll";
 import AddSiteBody from "./AddSiteBody";
 import axios from "axios";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import EditDeviceBody from "../Device/EditDeviceBody";
 import EditSiteBody from "./EditSiteBody";
 import {Tooltip} from "@material-ui/core";
 import AdminContext from "../AdminContext";
-import Select from "react-select";
 import LoadingContext from "../../../Context/LoadingContext";
 import {UserContext} from "../../../Context/UserContext";
-import {Replay} from "@material-ui/icons";
-import AddParkBody from "../Park/AddParkBody";
-
-
 
 const useStyles = makeStyles(componentStyles);
 
@@ -162,8 +153,8 @@ const SiteTable = (props) => {
                     <AddSiteBody reloadSiteTable={ reloadSiteTable } closeModal={()=>{ setShow(false) }}/>
                 </Modal>
 
-                { site && <Modal title="Edit Site" onClose={() => setShowEdit(false)} show={ showEdit }>
-                    <EditSiteBody siteDetails={ site } closeModal={()=>{ setShowEdit(false) }}/>
+                { site && <Modal title="Edit Watersite" onClose={() => setShowEdit(false)} show={ showEdit }>
+                    <EditSiteBody reloadSiteTable={ reloadSiteTable }  siteDetails={ site } closeModal={()=>{ setShowEdit(false) }}/>
                 </Modal> }
 
 

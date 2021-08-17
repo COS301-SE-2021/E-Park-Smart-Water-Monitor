@@ -18,22 +18,9 @@ const EditSiteBody = (props) => {
     const [name, setName] = useState("")
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
-    const [shape, setShape] = useState("")
-    const [length, setLength] = useState("")
-    const [width, setWidth] = useState("")
-    const [radius, setRadius] = useState("")
 
     const toggleLoading = useContext(LoadingContext).toggleLoading
     const user = useContext(UserContext)
-
-    let shapeOptions = [
-        { value: 'circle', label: 'Circle' },
-        { value: 'rectangle', label: 'Rectangle' }
-    ];
-
-    useEffect(() => {
-        setShape(shapeOptions[0])
-    },[])
 
     function MapEvents() {
         const map = useMapEvents({
@@ -45,22 +32,26 @@ const EditSiteBody = (props) => {
         return null
     }
 
-    const createSite = (e) => {
+    useEffect(() => {
+        if(props && props.siteDetails)
+        {
+            setName(props.siteDetails.waterSiteName)
+            setLatitude(props.siteDetails.latitude)
+            setLongitude(props.siteDetails.longitude)
+        }
+    },[])
+
+    const editSite = (e) => {
         toggleLoading()
         e.preventDefault()
         let obj = {
-            parkId: user.parkID,
+            id: props.siteDetails.id,
             siteName: name,
             latitude: latitude,
             longitude: longitude,
-            shape: shape.value,
-            length: length,
-            width: width,
-            radius: radius
         }
 
-        console.log("Adding watersite: "+JSON.stringify(obj))
-        axios.post('http://localhost:8080/api/sites/addSite',
+        axios.put('http://localhost:8080/api/sites/editWaterSite',
             obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
@@ -68,7 +59,7 @@ const EditSiteBody = (props) => {
             }
         ).then((res) => {
 
-            console.log("added site: "+JSON.stringify(res))
+            
             toggleLoading();
             props.closeModal()
             props.reloadSiteTable();
@@ -76,21 +67,20 @@ const EditSiteBody = (props) => {
         }).catch((res) => {
 
             toggleLoading()
-            console.log("error adding site: "+JSON.stringify(res))
+            console.log("error editing site: "+JSON.stringify(res))
 
         });
     }
 
     return (
         <>
-            <Form onSubmit={createSite}>
+            <Form onSubmit={editSite}>
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" >
                             <Form.Label>Watersite Name</Form.Label>
                             <Form.Control required={"required"} type="text" placeholder="Watersite Name" name="name" value={name} onChange={e => setName(e.target.value)}/>
                         </Form.Group>
-
                     </Col>
                 </Row>
 
