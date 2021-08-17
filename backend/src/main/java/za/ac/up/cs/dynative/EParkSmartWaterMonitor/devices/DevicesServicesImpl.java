@@ -471,7 +471,7 @@ public class DevicesServicesImpl implements DevicesService {
                         .build());
 
                 try {
-                    TimeUnit.SECONDS.sleep(60);
+                    TimeUnit.SECONDS.sleep(45  );
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
