@@ -10,7 +10,6 @@ import {UserContext} from "../../Context/UserContext";
 import LoadingContext from "../../Context/LoadingContext";
 import EditProfileContext from "../../Context/EditProfileContext";
 const { Form } = require( "react-bootstrap" );
-
 const styles = {
     col_left: {
         paddingRight:'3px'
@@ -24,12 +23,9 @@ const styles = {
     }
 }
 
-const EditProfile = () => {
+const EditProfile = (props) => {
     const context = useContext(AdminContext)
     const user = useContext(UserContext)
-
-    const loader = useContext(LoadingContext)
-    const toggleLoading = loader.toggleLoading
 
     const [idNumber, setIDNumber] = useState(user.IDNumber)
     const [email, setEmail] = useState(user.email)
@@ -42,15 +38,18 @@ const EditProfile = () => {
     const [cellNumber, setCellNumber] = useState(cell)
     const [error, setError] = useState("")
 
+
     const editProfile = useContext(EditProfileContext)
     const toggleEditProfile = editProfile.toggleEditProfile
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
     // submit the edit of the user
     const submit = (e) => {
         e.preventDefault()
 
-        // toggleLoading()
-        
+        //toggleLoading()
+
         let temp_email = email
         if(email === user.email) {
             temp_email = ""
@@ -79,6 +78,9 @@ const EditProfile = () => {
                 }
             }
         ).then((res)=>{
+            props.closeModall()
+            //toggleLoading()
+
 
             console.log("response:"+JSON.stringify(res))
             if(res.data.success === "false")
@@ -87,12 +89,20 @@ const EditProfile = () => {
                 console.log("error with editing user")
             }else{
                 //toggleLoading()
+                //toggleEditProfile()
+                if (temp_username===""){
+                    temp_username=username
+                }
+                if (temp_email===""){
+                    temp_email=email
+                }
                 user.setName(name)
                 user.setUsername(temp_username)
                 user.setEmail(temp_email)
                 user.setSurname(surname)
                 user.setCellNumber("+27"+cellNumber)
                 user.setIDNumber(idNumber)
+                //toggleEditProfile()
             }
 
         }).catch((res)=>{
@@ -189,7 +199,7 @@ const EditProfile = () => {
 
                 <Button variant="primary" type="submit"
                         onClick={toggleEditProfile}>
-                    Edit
+                    Save
                 </Button>
             </Form>
         </>

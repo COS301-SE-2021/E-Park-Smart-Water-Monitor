@@ -51,8 +51,9 @@ const App = () => {
             <Modal onClose={() => setLoading(false)} show={loading}>
                 <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
             </Modal>
-            <Modal title="Edit Profile" onClose={() => setShowEditProfile(false)} show={showEditProfile}>
-                <EditProfile onClose={()=>{setShowEditProfile(false)}}></EditProfile>
+            <Modal title="Edit Profile" onClose={() => setShowEditProfile(false)} show={showEditProfile} >
+                <EditProfile  closeModall={() =>setShowEditProfile(false) }/>
+
             </Modal>
             <CssBaseline />
             {/*Loading Modal*/}
