@@ -183,6 +183,37 @@ public class InspectionServiceImpl implements InspectionService {
     }
 
     @Override
+    public SetInspectionDescriptionResponse setInspectionDescription(SetInspectionDescriptionRequest request)
+    {
+        SetInspectionDescriptionResponse response = new SetInspectionDescriptionResponse();
+
+        if (request.getInspectionId() == null) {
+            response.setStatus("Failed to set inspection description! Invalid inspectionId!");
+            response.setSuccess(false);
+
+            return response;
+        }
+
+        Inspection inspection = inspectionRepo.findInspectionById(request.getInspectionId());
+
+        if (inspection == null) {
+            response.setStatus("Failed to set inspection description! Inspection not found!");
+            response.setSuccess(false);
+
+            return response;
+        }
+
+        inspection.setDescription(request.getDescription());
+
+        inspectionRepo.save(inspection);
+
+        response.setStatus("Inspection comments successfully set!");
+        response.setSuccess(true);
+
+        return response;
+    }
+
+    @Override
     public GetAllInspectionsResponse getAllInspections()
     {
         List<Park> parks  = parkRepo.findAll();
