@@ -72,17 +72,27 @@ function DeviceDetails(props) {
 
     const filterMetrics = ()=>{
         let filteredMetrics = props.device.deviceData.deviceConfiguration.map((elem)=>{
-          if(elem.settingType === "WATER_QUALITY"){
-              return {settingType: "Water Quality", value: elem.value}
-          }else if(elem.settingType === "reportingFrequency"){
-              return {settingType: "Reporting Frequency", value: elem.value}
-          }else if(elem.settingType === "WATER_TEMP"){
-              return {settingType: "Water Temperature", value: elem.value}
-          }else if(elem.settingType === "WATER_LEVEL"){
-              return {settingType: "Water Depth", value: elem.value}
-          }
+            if(elem.settingType === "reportingFrequency"){
+                return {settingType: "Reporting Frequency", value: elem.value}
+            }
         })
-        setMetrics(filteredMetrics)
+        return filteredMetrics
+    }
+
+    const filterMeasurementSet = (measurements) => {
+      if(measurements) {
+          let filteredMetrics = measurements.map((elem) => {
+              if (elem.type === "WATER_QUALITY") {
+                  return {type: "Water Quality", value: elem.value, measurement: "PH"}
+              } else if (elem.type === "WATER_TEMP") {
+                  return {type: "Water Temperature", value: elem.value, measurement: "°C"}
+              } else if (elem.type === "WATER_LEVEL") {
+                  return {type: "Water Depth", value: elem.value, measurement: "cm"}
+              }
+          })
+          return filteredMetrics
+      }
+      return []
     }
 
     const ping = ()=>{
@@ -238,21 +248,13 @@ function DeviceDetails(props) {
                         marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        <b>General</b>
+                        <b>Coordinates</b>
                     </Grid>
-                    {gridItem("Coordinates")}
-                    <Grid
-                        item
-                        xs={6}
-                        xl={6}
-                        component={Box}
-                        marginBottom="1rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        Lat: { device && device.deviceData && device.deviceData.latitude } <br/> Long: { device && device.deviceData && device.deviceData.longitude }
-                    </Grid>
+                    {gridItem("Latitude")}
+                    { device && device.deviceData && gridItem(device.deviceData.latitude)}
+                    {gridItem("Longitude")}
+                    { device && device.deviceData && gridItem(device.deviceData.longitude)}
 
-                    {/*Metric information*/}
                     <Grid
                         item
                         xs={12}
@@ -267,7 +269,6 @@ function DeviceDetails(props) {
                             marginLeft="1.25rem!important"
                             marginRight="1.25rem!important"
                         />
-
                     </Grid>
                     <Grid
                         item
@@ -295,18 +296,61 @@ function DeviceDetails(props) {
                             }
                         </Box>
                     </Grid>
-
                     {/*All metric data*/}
-                    { metrics && metrics.map((item)=>{
+
+                    { filterMetrics().map((m)=>{
+                            if(m){return (
+                                <>
+                                    { gridItem(m.settingType) }
+                                    { gridItem(m.value) }
+                                </>
+                            )}
+                        })
+                    }
+                    {/*<b>Metrics</b>*/}
+
+                    {/*Latest Device Readings*/}
+                    <Grid
+                        item
+                        xs={12}
+                        xl={12}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        <Box
+                            component={Divider}
+                            marginBottom="1rem!important"
+                            marginLeft="1.25rem!important"
+                            marginRight="1.25rem!important"
+                        />
+                    </Grid>
+
+                    <Grid
+                        item
+                        xs={12}
+                        xl={12}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        <b>Latest Device Readings</b>
+                    </Grid>
+
+                    { device && device.measurementSet && filterMeasurementSet(device.measurementSet).map((item)=>{
                         return (
                             <>
-                                { gridItem(item.settingType) }
-                                { gridItem(item.value) }
+                            { gridItem(item.type) }
+                            { gridItem(item.value+" "+item.measurement) }
                             </>
                         )
-                    })}
-                </Grid>
+                    })
+                    }
+                    { device && device.measurementSet.length===0 &&
+                        gridItem("No measurements recorded.")
+                    }
 
+                </Grid>
 
             </CardContent>
         </Card>

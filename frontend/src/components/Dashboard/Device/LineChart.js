@@ -30,7 +30,7 @@ import Button from "@material-ui/core/Button";
 
 import componentStyles from "assets/theme/views/dashboard/dashboard.js";
 import {ScaleLoader} from "react-spinners";
-import {Add, ArrowDropDown, ArrowDropUp} from "@material-ui/icons";
+import {Add, ArrowDropDown, ArrowDropUp, Remove} from "@material-ui/icons";
 const useStyles = makeStyles(componentStyles);
 
 function LineChart(props) {
@@ -40,7 +40,8 @@ function LineChart(props) {
   const [readingType, setReadingType] = React.useState("waterlevel");
   const [chartExample1Data, setChartExample1Data] = React.useState("data1");
   const [projectionsData, setProjectionsData] = React.useState(""); // this will be a function like "data1" passed
-  const [numPredictions, setNumPredictions] = React.useState(0); // this will be a function like "data1" passed
+  const [numPredictions, setNumPredictions] = React.useState(5); // this will be a function like "data1" passed
+  const [reset, setReset] = React.useState(false); // this will be a function like "data1" passed
     // in the chartOptions1 in the chart.js file
 
     if (window.Chart) {
@@ -53,6 +54,17 @@ function LineChart(props) {
         setChartExample1Data("data" + index);
       };
 
+    const increaseNumProjections = () =>{
+        if(numPredictions < 10){
+            setNumPredictions(numPredictions=>numPredictions+1)
+        }
+    }
+    const decreaseNumProjections = () =>{
+        if(numPredictions > 0){
+            setNumPredictions(numPredictions=>numPredictions-1)
+        }
+    }
+
 
     const user = useContext(UserContext)
     const toggleLoading = useContext(LoadingContext).toggleLoading
@@ -60,7 +72,7 @@ function LineChart(props) {
     // GET THE PROJECTION DATA
     useEffect(()=>{
         setProjectionsData("")
-        setNumPredictions(5)
+        setReset(false)
         let obj = {
             id: props.device.deviceId,
             type: readingType,
@@ -73,21 +85,26 @@ function LineChart(props) {
                 }
             }
         ).then((res)=>{
+            setReset(true)
             console.log(JSON.stringify(res.data))
             let data = res.data.optimisticProjections // just one of the lines
             let labels = res.data.labelDates
 
             let x = res.data
-
-            let indexToSplit = x.labelDates.length;
-            let first = x.optimisticProjections.slice(0, indexToSplit);
-            let second = x.optimisticProjections.slice(indexToSplit);
-            console.log({first, second});
-
-            let predictions = []
             for(let i =0; i<numPredictions;i++){
                 labels.push("Prediction "+(i+1))
             }
+
+            let roundingValue = 3
+            let optimisticProjections = x.optimisticProjections.map(function(each_element){
+                return Number(each_element.toFixed(roundingValue));
+            });
+            let realisticProjections = x.realisticProjections.map(function(each_element){
+                return Number(each_element.toFixed(roundingValue));
+            });
+            let concervativeProjections = x.concervativeProjections.map(function(each_element){
+                return Number(each_element.toFixed(roundingValue));
+            });
 
             setProjectionsData( () => {
                 return {
@@ -95,14 +112,13 @@ function LineChart(props) {
                     datasets: [
                         {
                             label: "Optimistic",
-                            data: x.optimisticProjections,
-                            // borderDash: [11],
+                            data: optimisticProjections,
                             fill: false,
 
                         },
                         {
                             label: "Realistic",
-                            data: x.realisticProjections,
+                            data: realisticProjections,
                             backgroundColor: "orange",
                             borderColor: "orange",
                             borderDash: [12],
@@ -110,7 +126,7 @@ function LineChart(props) {
                         },
                         {
                             label: "Conservative",
-                            data: x.concervativeProjections,
+                            data: concervativeProjections,
                             backgroundColor: "red",
                             borderColor: "red",
                             borderDash: [12],
@@ -125,109 +141,11 @@ function LineChart(props) {
         }).catch((res)=>{
             console.log("response projections:"+JSON.stringify(res))
         });
-    },[props.device])
+    },[props.device, numPredictions])
 
-    // let x_axis = measurements.innerResponses.map((item)=>{
-    //     return item.measurements[0].value
-    // })
-    // let y_axis = measurements.innerResponses.map((item)=>{
-    //     let date = item.measurements[0].dateTime
-    //     return `${date.substring(0,10)} ${date.substring(14,19)}`
-    // })
-    // const newChartData = function chartData() {
-    //     return {
-    //         labels: y_axis,
-    //         datasets: [{
-    //             type: 'line',
-    //             label: 'Level',
-    //             data: x_axis,
-    //             borderColor: "#11CDEF",
-    //             backgroundColor: "#11CDEF",
-    //             fill:false
-    //         // }, {
-    //         //     type: 'line',
-    //         //     label: 'Temperature',
-    //         //     data: [50, 40, 45, 50, 50, 50, 45, 90],
-    //         //     borderColor: "orange",
-    //         //     backgroundColor: "orange",
-    //         //     fill: false
-    //          }
-    //         ],
-    //         options: {
-    //             scales: {
-    //                 yAxes: [{
-    //                     ticks: {
-    //                         stepSize: 1
-    //                     }
-    //                 }]
-    //             }
-    //         }
-    //         // labels: ['January', 'February', 'March', 'April']
-    //     }
-    // }
 
   return (
     <>
-    {/*    <Card*/}
-    {/*        classes={{*/}
-    {/*            root: classes.cardRoot + " " + classes.cardRootBgGradient,*/}
-    {/*        }}*/}
-    {/*    >*/}
-    {/*        <CardHeader*/}
-    {/*            subheader={*/}
-    {/*                <Grid*/}
-    {/*                    container*/}
-    {/*                    component={Box}*/}
-    {/*                    alignItems="center"*/}
-    {/*                    justifyContent="space-between"*/}
-    {/*                >*/}
-    {/*                    <Grid item xs="auto">*/}
-    {/*                        <Box*/}
-    {/*                            component={Typography}*/}
-    {/*                            variant="h6"*/}
-    {/*                            letterSpacing=".0625rem"*/}
-    {/*                            marginBottom=".25rem!important"*/}
-    {/*                            className={classes.textUppercase}*/}
-    {/*                        >*/}
-    {/*                            <Box component="span" color={theme.palette.gray[400]}>*/}
-    {/*                                Overview*/}
-    {/*                            </Box>*/}
-    {/*                        </Box>*/}
-    {/*                        <Box*/}
-    {/*                            component={Typography}*/}
-    {/*                            variant="h2"*/}
-    {/*                            marginBottom="0!important"*/}
-    {/*                        >*/}
-    {/*                            /!*<Box component="span" color={theme.palette.white.main}>*!/*/}
-    {/*                            <Box component="span">*/}
-    {/*                                Device Readings*/}
-    {/*                            </Box>*/}
-    {/*                        </Box>*/}
-    {/*                    </Grid>*/}
-    {/*                    <Grid item xs="auto">*/}
-    {/*                        <Box*/}
-    {/*                            justifyContent="flex-end"*/}
-    {/*                            display="flex"*/}
-    {/*                            flexWrap="wrap"*/}
-    {/*                        >*/}
-    {/*                        </Box>*/}
-    {/*                    </Grid>*/}
-    {/*                </Grid>*/}
-    {/*            }*/}
-    {/*            classes={{ root: classes.cardHeaderRoot }}*/}
-    {/*        ></CardHeader>*/}
-    {/*        <CardContent>*/}
-    {/*            <Box position="relative" height="350px">*/}
-    {/*                <Line*/}
-    {/*                    data={chartExample1[chartExample1Data]}*/}
-    {/*                    // data={newChartData}*/}
-    {/*                    options={chartExample1.options}*/}
-    {/*                    options={chartOptions}*/}
-    {/*                    // getDatasetAtEvent={(e) => console.log(e)}*/}
-    {/*                />*/}
-    {/*            </Box>*/}
-    {/*        </CardContent>*/}
-    {/*    </Card>*/}
         <Card
             classes={{
                 root: classes.cardRoot + " " + classes.cardRootBgGradient,
@@ -265,18 +183,29 @@ function LineChart(props) {
                         </Grid>
                         <Grid item xs="auto">
                             <Box
+                                component={Typography}
+                                variant="h6"
+                                letterSpacing=".0625rem"
+                                marginBottom=".25rem!important"
+                                className={classes.textUppercase}
+                            >
+                                <Box component="span" color={theme.palette.gray[400]}>
+                                    Number of Predictions
+                                </Box>
+                            </Box>
+
+                            <Box
                                 justifyContent="flex-end"
                                 display="flex"
                                 flexWrap="wrap"
                             >
-
-
                                 <Button
                                     variant="contained"
                                     color="primary"
+                                    size="small"
                                     component={Box}
                                     marginRight="1rem!important"
-                                    onClick={() => toggleNavs(1)}
+                                    onClick={() => {toggleNavs(1); decreaseNumProjections()}  }
                                     classes={{
                                         root:
                                             activeNav === 1
@@ -284,21 +213,27 @@ function LineChart(props) {
                                                 : classes.buttonRootUnselected,
                                     }}
                                 >
-                                    minus
+                                    <Box
+                                        component={Remove}
+                                        width="1.25rem!important"
+                                        height="1.25rem!important"
+                                        className={classes["text"]}
+                                    />
                                 </Button>
                                 <Box
                                     component={Typography}
                                     variant="h2"
                                     marginBottom="0!important"
                                 >
-                                    <Box component="span" color={theme.palette.white.main}>
-                                        Predictions
+                                    <Box component="span" marginRight="1rem" color={theme.palette.white.main}>
+                                        { numPredictions }
                                     </Box>
                                 </Box>
                                 <Button
                                     variant="contained"
                                     color="primary"
-                                    onClick={() => toggleNavs(2)}
+                                    size="small"
+                                    onClick={() => {toggleNavs(2); increaseNumProjections()} }
                                     classes={{
                                         root:
                                             activeNav === 2
@@ -320,7 +255,7 @@ function LineChart(props) {
                 classes={{ root: classes.cardHeaderRoot }}
             ></CardHeader>
             <CardContent>
-            { projectionsData &&
+            { reset &&
                 <Box position="relative" height="350px">
                     <Line
                         data={projectionsData} // your own chart info obtained from request
@@ -329,7 +264,7 @@ function LineChart(props) {
                     />
                 </Box>
             }
-            { !projectionsData &&
+            { !reset &&
                 <ScaleLoader size={50} color={"#5E72E4"} speedMultiplier={1.5} />
             }
             </CardContent>

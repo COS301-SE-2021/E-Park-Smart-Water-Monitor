@@ -87,6 +87,7 @@ function Admin() {
         return (
             <>
                 <AdminHeader/>
+                <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
             </>
         )
     }
