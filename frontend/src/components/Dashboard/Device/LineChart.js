@@ -30,7 +30,7 @@ import Button from "@material-ui/core/Button";
 
 import componentStyles from "assets/theme/views/dashboard/dashboard.js";
 import {ScaleLoader} from "react-spinners";
-import {Add, ArrowDropDown, ArrowDropUp} from "@material-ui/icons";
+import {Add, ArrowDropDown, ArrowDropUp, Remove} from "@material-ui/icons";
 const useStyles = makeStyles(componentStyles);
 
 function LineChart(props) {
@@ -265,6 +265,18 @@ function LineChart(props) {
                         </Grid>
                         <Grid item xs="auto">
                             <Box
+                                component={Typography}
+                                variant="h6"
+                                letterSpacing=".0625rem"
+                                marginBottom=".25rem!important"
+                                className={classes.textUppercase}
+                            >
+                                <Box component="span" color={theme.palette.gray[400]}>
+                                    Number of Predictions
+                                </Box>
+                            </Box>
+
+                            <Box
                                 justifyContent="flex-end"
                                 display="flex"
                                 flexWrap="wrap"
@@ -274,6 +286,7 @@ function LineChart(props) {
                                 <Button
                                     variant="contained"
                                     color="primary"
+                                    size="small"
                                     component={Box}
                                     marginRight="1rem!important"
                                     onClick={() => toggleNavs(1)}
@@ -284,20 +297,18 @@ function LineChart(props) {
                                                 : classes.buttonRootUnselected,
                                     }}
                                 >
-                                    minus
+                                    <Box
+                                        component={Remove}
+                                        width="1.25rem!important"
+                                        height="1.25rem!important"
+                                        className={classes["text"]}
+                                    />
                                 </Button>
-                                <Box
-                                    component={Typography}
-                                    variant="h2"
-                                    marginBottom="0!important"
-                                >
-                                    <Box component="span" color={theme.palette.white.main}>
-                                        Predictions
-                                    </Box>
-                                </Box>
+
                                 <Button
                                     variant="contained"
                                     color="primary"
+                                    size="small"
                                     onClick={() => toggleNavs(2)}
                                     classes={{
                                         root:
