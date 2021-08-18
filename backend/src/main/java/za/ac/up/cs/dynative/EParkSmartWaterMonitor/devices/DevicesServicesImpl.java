@@ -9,6 +9,7 @@ import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.regions.Region;
@@ -77,7 +78,7 @@ public class DevicesServicesImpl implements DevicesService
     private DynamoDB dynamoDB;
 
     public DevicesServicesImpl(@Qualifier("WaterSourceDeviceRepo") DeviceRepo deviceRepo,
-                               @Qualifier("InspectionServiceImpl") InspectionService inspectionService,
+                               @Lazy @Qualifier("InspectionServiceImpl") InspectionService inspectionService,
                                @Qualifier("ParkService") ParkService parkService,
                                @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService,
                                @Qualifier("NotificationServiceImpl") NotificationService notificationService,
