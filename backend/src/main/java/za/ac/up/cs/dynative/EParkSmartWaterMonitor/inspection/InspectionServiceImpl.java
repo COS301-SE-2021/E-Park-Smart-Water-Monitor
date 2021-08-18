@@ -207,7 +207,7 @@ public class InspectionServiceImpl implements InspectionService {
 
         inspectionRepo.save(inspection);
 
-        response.setStatus("Inspection comments successfully set!");
+        response.setStatus("Inspection description successfully set!");
         response.setSuccess(true);
 
         return response;
