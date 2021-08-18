@@ -19,15 +19,15 @@ const statusOptions = [
 
 const Comments = (props) => {
 
-    const [comments, setComments] = useState("")
-    const [newComments, setNewComment] = useState("")
+    const [commentss, setCommentss] = useState("")
+    const [newComments, setNewComments] = useState("")
 
     const user = useContext(UserContext)
     const loader = useContext(LoadingContext)
     const toggleLoading = loader.toggleLoading
 
     useEffect(() => {
-        setComments(props.inspectionDetails.comments)
+        setCommentss(props.inspectionDetails.comments)
     },[])
 
 
@@ -35,10 +35,12 @@ const Comments = (props) => {
         toggleLoading()
       event.preventDefault()
 
+        let comm= commentss +user.username+":\n "+ newComments+ "\n\n"
+
       //set comments
       var body = {
         inspectionId: props.inspectionDetails.id,
-        comments: comments + "/n/n" +user.username+":/n "+newComments,
+        comments: comm,
       }
       console.log("body: ", body)
         //toggleLoading()
@@ -60,15 +62,15 @@ const Comments = (props) => {
     return (
         <>
             <Form onSubmit={handleSubmit}>
-
+                {commentss}
+                <br/>
+                <br/>
                 <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Comments</Form.Label>
-                    <Form.Control type="text" Required={"required"} value={comments} onChange={e => setComments(e.target.value)}/>
+                    <Form.Label>Add a comment:</Form.Label>
+                    <Form.Control type="text" Required={"required"} placeholder="..." onChange={e => setNewComments(e.target.value)}/>
                 </Form.Group>
-                {/*<Form.Label>Status</Form.Label>*/}
-                {/*<Select required={"required"} className="mb-3" name="park" options={ statusOptions } value={status} onChange={e => setStatus(e)}/>*/}
                 <Button background-color="primary" variant="primary" type="submit" >
-                    Submit
+                    Comment
                 </Button>
             </Form>
         </>
