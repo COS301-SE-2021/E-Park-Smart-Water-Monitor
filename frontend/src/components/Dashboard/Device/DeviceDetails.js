@@ -248,40 +248,13 @@ function DeviceDetails(props) {
                         marginBottom="1rem!important"
                         classes={{ root: classes.gridItemRoot }}
                     >
-                        <b>General</b>
+                        <b>Coordinates</b>
                     </Grid>
-                    {gridItem("Coordinates")}
-                    <Grid
-                        item
-                        xs={6}
-                        xl={6}
-                        component={Box}
-                        marginBottom="1rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        Lat: { device && device.deviceData && device.deviceData.latitude } <br/> Long: { device && device.deviceData && device.deviceData.longitude }
-                    </Grid>
-                    {/*All metric data*/}
-                    { filterMetrics().map((m)=>{
-                            if(m){return (
-                                <>
-                                    { gridItem(m.settingType) }
-                                    { gridItem(m.value) }
-                                </>
-                            )}
-                        })
-                    }
-                    {/*<b>Metrics</b>*/}
-                    { access &&
-                    <Button
-                        variant={"contained"}
-                        size={"small"}
-                        onClick={ ()=>{setShowEdit(true)} }
-                    >
-                        Edit Metrics
-                    </Button>
-                    }
-                    {/*Latest Device Readings*/}
+                    {gridItem("Latitude")}
+                    { device && device.deviceData && gridItem(device.deviceData.latitude)}
+                    {gridItem("Longitude")}
+                    { device && device.deviceData && gridItem(device.deviceData.longitude)}
+
                     <Grid
                         item
                         xs={12}
@@ -311,9 +284,48 @@ function DeviceDetails(props) {
                             alignItems="right"
                             marginRight="1.25rem"
                         >
-
+                            <b>Metrics</b>
+                            { access &&
+                            <Button
+                                variant={"contained"}
+                                size={"small"}
+                                onClick={ ()=>{setShowEdit(true)} }
+                            >
+                                Edit Metrics
+                            </Button>
+                            }
                         </Box>
                     </Grid>
+                    {/*All metric data*/}
+
+                    { filterMetrics().map((m)=>{
+                            if(m){return (
+                                <>
+                                    { gridItem(m.settingType) }
+                                    { gridItem(m.value) }
+                                </>
+                            )}
+                        })
+                    }
+                    {/*<b>Metrics</b>*/}
+
+                    {/*Latest Device Readings*/}
+                    <Grid
+                        item
+                        xs={12}
+                        xl={12}
+                        component={Box}
+                        marginBottom="1rem!important"
+                        classes={{ root: classes.gridItemRoot }}
+                    >
+                        <Box
+                            component={Divider}
+                            marginBottom="1rem!important"
+                            marginLeft="1.25rem!important"
+                            marginRight="1.25rem!important"
+                        />
+                    </Grid>
+
                     <Grid
                         item
                         xs={12}
@@ -333,6 +345,9 @@ function DeviceDetails(props) {
                             </>
                         )
                     })
+                    }
+                    { device && device.measurementSet.length===0 &&
+                        gridItem("No measurements recorded.")
                     }
 
                 </Grid>
