@@ -36,12 +36,12 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Configure AWS Credentials
+        run:
           mkdir -p ~/.aws
           touch ~/.aws/credentials
-
           echo "[default]
           aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key = ${{ secrets.AWS_SECRET_KEY_ID }}
+          aws_secret_access_key = ${{ secrets.AWS_SECRET_KEY_ID }}" >  ~/.aws/credentials 
       #Run Tests
       - name: Run Build Tests
         working-directory: ./backend
