@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import AdminHeader from "../../components/Headers/AdminHeader";
 import UserTable from "../../components/Admin/User/UserTable";
 import Grid from "@material-ui/core/Grid";
@@ -16,6 +16,7 @@ import {BeatLoader, DotLoader, PuffLoader} from "react-spinners";
 import {css} from "@emotion/react";
 import AddParkBody from "../../components/Admin/Park/AddParkBody";
 import Modal from "../../components/Modals/Modal";
+import {UserContext} from "../../Context/UserContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -42,6 +43,8 @@ function Admin() {
     const [show, setShow] = useState(false)
     const [value, setValue] = useState(0)
 
+    const user = useContext(UserContext)
+
     const selectPark = (details) => {
         setPark(details)
     }
@@ -63,7 +66,12 @@ function Admin() {
     // to child components easily in future
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/park/getAllParksAndSites').then((res)=>{
+
+        axios.get('http://localhost:8080/api/park/getAllParksAndSites', {
+            headers: {
+                'Authorization': "Bearer " + user.token
+            }
+        }).then((res)=>{
             if(res)
             {
                 setParksAndSites(res.data)
@@ -112,19 +120,6 @@ function Admin() {
                                 <InspectionTable/>
                             </Grid>
 
-                            {parksAndSites &&
-                            <Grid
-                                item
-                                xs={12}
-                                xl={5}
-                                component={Box}
-                                marginBottom="3rem!important"
-                                classes={{root: classes.gridItemRoot}}
-
-                            >
-                                <ParkTable select={selectPark}/>
-                            </Grid>}
-
                             {/* Sites altered on the change of park */}
                             {parksAndSites &&
                             <Grid
@@ -139,18 +134,18 @@ function Admin() {
                             </Grid>
                             }
 
-                            {!parksAndSites &&
+                            {parksAndSites &&
                             <Grid
                                 item
                                 xs={12}
-                                xl={12}
+                                xl={5}
                                 component={Box}
                                 marginBottom="3rem!important"
                                 classes={{root: classes.gridItemRoot}}
+
                             >
-                                Loading Parks...
-                            </Grid>
-                            }
+                                <ParkTable select={selectPark}/>
+                            </Grid>}
 
                         </Grid>
                     </Container>

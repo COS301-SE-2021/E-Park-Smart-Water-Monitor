@@ -1,10 +1,13 @@
-import React,{useState} from "react";
+import React, {useContext, useState} from "react";
 import {Button, Form} from 'react-bootstrap';
 
 import { makeStyles } from "@material-ui/core/styles";
 import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addDevice.css";
 import axios from "axios";
+import AdminContext from "../AdminContext";
+import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -14,6 +17,10 @@ const AddInspectionBody = (props) => {
     const [site, setSite] = useState("91d05eb1-2a35-4e44-9726-631d83121edb")
     const [description, setDescription] = useState("")
     const [date, setDate] = useState(null)
+
+    const user = useContext(UserContext)
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
     const selectDevice = (event) => {
       setDevice(event.target.value)
@@ -37,16 +44,24 @@ const AddInspectionBody = (props) => {
 
       var body = {
         deviceId: props.device_id,
-        siteId: site,
         dateDue: date,
         description: description,
       }
 
       console.log("body: ", body)
 
-
-      axios.post('http://localhost:8080/api/inspections/addInspection', body).then((res)=>{
-        console.log(res)
+        toggleLoading()
+      axios.post('http://localhost:8080/api/inspections/addInspection', body, {
+          headers: {
+              'Authorization': "Bearer " + user.token
+          }
+      }).then((res)=>{
+            console.log(res)
+            props.closeModal()
+            toggleLoading()
+      }).catch( (res)=> {
+            console.log(JSON.stringify(res))
+            toggleLoading()
       });
     }
 

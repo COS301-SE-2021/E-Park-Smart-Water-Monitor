@@ -1,15 +1,15 @@
 import React, {useContext, useEffect, useState} from "react";
-import "../../../assets/css/addUser.css";
+import "../../assets/css/addUser.css";
 import Select from 'react-select';
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
-import AdminContext from "../AdminContext";
-import {UserContext} from "../../../Context/UserContext";
-import LoadingContext from "../../../Context/LoadingContext";
+import AdminContext from "../Admin/AdminContext";
+import {UserContext} from "../../Context/UserContext";
+import LoadingContext from "../../Context/LoadingContext";
+import EditProfileContext from "../../Context/EditProfileContext";
 const { Form } = require( "react-bootstrap" );
-
 const styles = {
     col_left: {
         paddingRight:'3px'
@@ -23,123 +23,94 @@ const styles = {
     }
 }
 
-
-const EditUserBody = (props) => {
-    const [park, setPark] = useState("")
-    const [idNumber, setIDNumber] = useState("")
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [name, setName] = useState("")
-    const [surname, setSurname] = useState("")
-    const [username, setUsername] = useState("")
-    const [role, setRole] = useState("")
-    const [cellNumber, setCellNumber] = useState("")
-    const [parkOptions, setParkOptions] = useState("")
-    const [error, setError] = useState("")
-
+const EditProfile = (props) => {
     const context = useContext(AdminContext)
     const user = useContext(UserContext)
-    const loader = useContext(LoadingContext)
-    const toggleLoading = loader.toggleLoading
 
-    let userRoles = [
-        { value: 'ADMIN', label: 'Admin' },
-        { value: 'FIELD_ENGINEER', label: 'Field Engineer' },
-        { value: 'RANGER', label: 'Ranger' }
-    ];
+    const [idNumber, setIDNumber] = useState(user.IDNumber)
+    const [email, setEmail] = useState(user.email)
+    const [name, setName] = useState(user.name)
+    const [surname, setSurname] = useState(user.surname)
+    const [username, setUsername] = useState(user.username)
+    //remove the +27
+    let cell = user.cellNumber;
+    cell = cell.substr(3)
+    const [cellNumber, setCellNumber] = useState(cell)
+    const [error, setError] = useState("")
 
-    useEffect(() => {
 
-        // add the props to the variables so that the user can change the values in the components
-        if(props && props.userDetails)
-        {
-            // set the role to be the same object notation with value and label
-            let oldRole = props.userDetails.role
-            for(let i =0; i< userRoles.length; i++){
-                if(oldRole == userRoles[i].value){
-                    setRole(userRoles[i])
-                }
-            }
-
-            let p = props.userDetails
-
-            let cell = p.cellNumber;
-            cell = cell.substr(3)
-
-            setPark(p.park)
-            setIDNumber(p.idNumber)
-            setEmail(p.email)
-            setPassword(p.password)
-            setName(p.name)
-            setSurname(p.surname)
-            setUsername(p.username)
-            // setRole(p.role)
-            setCellNumber(cell)
-        }
-    },[props.userDetails])
+    const editProfile = useContext(EditProfileContext)
+    const toggleEditProfile = editProfile.toggleEditProfile
 
 
     // submit the edit of the user
     const submit = (e) => {
         e.preventDefault()
 
-        toggleLoading()
+        props.togglee()
 
-        if(props && props.userDetails)
-        {
-            // accomodate for provided email is already in use error
-            let temp_email = email
-            if(email === props.userDetails.email)
-            {
-                //clear the value
-                temp_email = ""
-            }
-
-            let temp_username = username
-            if(username === props.userDetails.username)
-            {
-                //clear the value
-                temp_username = ""
-            }
-
-            let obj = {
-                username: props.userDetails.username,
-                idNumber: idNumber,
-                email: temp_email ,
-                name: name,
-                surname: surname,
-                newUsername: temp_username,
-                role: role.value,
-                cellNumber: "+27"+cellNumber
-            }
-
-
-            axios.put('http://localhost:8080/api/user/editUser', obj, {
-                    headers: {
-                        'Authorization': "Bearer " + user.token
-                    }
-                }
-            ).then((res)=>{
-
-                console.log("response:"+JSON.stringify(res))
-                if(res.data.success === "false")
-                {
-                    setError(res.data.status)
-                    console.log("error with editing user")
-                }else{
-                    toggleLoading()
-                    props.closeModal()
-                    props.reloadUserTable()
-                }
-
-            }).catch((res)=>{
-                console.log("response:"+JSON.stringify(res))
-            });
+        let temp_email = email
+        if(email === user.email) {
+            temp_email = ""
         }
+
+        let temp_username = username
+        if(username === user.username)
+        {
+            temp_username = ""
+        }
+
+        let obj = {
+            username: user.username,
+            idNumber: idNumber,
+            email: temp_email ,
+            name: name,
+            surname: surname,
+            role: user.role,
+            newUsername: temp_username,
+            cellNumber: "+27"+cellNumber
+        }
+
+        axios.put('http://localhost:8080/api/user/editUser', obj, {
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
+            }
+        ).then((res)=>{
+            props.closeModall()
+            props.togglee()
+            //toggleLoading()
+
+
+            console.log("response:"+JSON.stringify(res))
+            if(res.data.success === "false")
+            {
+                setError(res.data.status)
+                console.log("error with editing user")
+            }else{
+                //toggleLoading()
+                //toggleEditProfile()
+                if (temp_username===""){
+                    temp_username=username
+                }
+                if (temp_email===""){
+                    temp_email=email
+                }
+                user.setName(name)
+                user.setUsername(temp_username)
+                user.setEmail(temp_email)
+                user.setSurname(surname)
+                user.setCellNumber("+27"+cellNumber)
+                user.setIDNumber(idNumber)
+                //toggleEditProfile()
+            }
+
+        }).catch((res)=>{
+            console.log("response:"+JSON.stringify(res))
+        });
 
 
     }
-
 
 
     return (
@@ -147,18 +118,9 @@ const EditUserBody = (props) => {
             <Form onSubmit={ submit }>
                 <Row>
                     <Col>
-                        <Form.Label>Role</Form.Label>
-                        <Select required={"required"} className="mb-3" name="role" options={ userRoles } value={role} onChange={e => setRole(e)}/>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
                         <Form.Group className="mb-3" controlId="email" >
                             <Form.Label>Email address</Form.Label>
                             <Form.Control required={"required"} type="email" placeholder="Enter email" name="email" value={email} onChange={e => setEmail(e.target.value)}/>
-                            <Form.Text className="text-muted">
-                                An email will be sent to the user informing them of their registration on the system.
-                            </Form.Text>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -222,8 +184,6 @@ const EditUserBody = (props) => {
                                         onChange={e => setCellNumber(e.target.value)}/>
                                 </Col>
                             </Row>
-
-                            {/*<Form.Control required={"required"} type="text" minLength={10} maxLength={10} pattern="[0-9]*" placeholder="Cell Number" name="cell_number" value={cellNumber} onChange={e => setCellNumber(e.target.value)}/>*/}
                         </Form.Group>
                     </Col>
                 </Row>
@@ -237,15 +197,13 @@ const EditUserBody = (props) => {
                     </Col>
                 </Row>
 
-
-
-
-                <Button variant="primary" type="submit" >
-                    Edit
+                <Button variant="primary" type="submit"
+                        onClick={toggleEditProfile}>
+                    Save
                 </Button>
             </Form>
         </>
     );
 };
 
-export default EditUserBody;
+export default EditProfile;

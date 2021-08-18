@@ -11,7 +11,7 @@ import CardContent from "@material-ui/core/CardContent";
 // core components
 import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
-import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
+import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import axios from 'axios'
 
 const useStyles = makeStyles(componentStyles);
@@ -29,7 +29,10 @@ function Map(props) {
     useEffect(() => {
         if (props.devices) {
             const m = props.devices.map((device) =>
-                <Marker key={device.deviceId} position={[device.deviceData.latitude, device.deviceData.longitude]}>
+                <Marker
+                    key={device.deviceId}
+                    position={[device.deviceData.latitude, device.deviceData.longitude]}
+                >
                     <Popup>
                         {device.deviceName}
                     </Popup>
@@ -73,11 +76,12 @@ function Map(props) {
           <div style={ { height: 350 } }>
             {/*rietvlei centre*/}
             <MapContainer style={mapStyles} center={[-25.88536975144579, 28.277796392845673]} zoom={14} scrollWheelZoom={false}>
-              <TileLayer
-                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              { response }
+                  <TileLayer
+                      attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                { response }
+
             </MapContainer>
           </div>
 

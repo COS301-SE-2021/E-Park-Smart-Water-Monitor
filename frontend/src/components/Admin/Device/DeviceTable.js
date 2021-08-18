@@ -27,6 +27,8 @@ import IconButton from "@material-ui/core/IconButton";
 import {Tooltip} from "@material-ui/core";
 import AddInspectionBody from "../Inspection/AddInspectionBody";
 import AdminContext from "../AdminContext";
+import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
 
 
 
@@ -44,8 +46,9 @@ const DeviceTable = () => {
     const [device, setDevice] = useState({});
     const [value, setValue] = useState(0);
 
-    const context = useContext(AdminContext)
-    const toggleLoading = context.toggleLoading
+    const user = useContext(UserContext)
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
     const reloadDeviceTable = () => {
         setValue(value => value+1)
@@ -60,6 +63,10 @@ const DeviceTable = () => {
                 data: {
                          id: id
                       }
+            },{
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
             }).then((res)=> {
                 toggleLoading()
                 setValue(value => value+1 ) // returns an updated value
@@ -143,7 +150,7 @@ const DeviceTable = () => {
                 </Modal> }
 
                 <Modal title="Add Inspection" onClose={() => setShowInspection(false)} show={ showInspection }>
-                    <AddInspectionBody device_id={ device.deviceId }/>
+                    <AddInspectionBody device_id={ device.deviceId } closeModal={ () => setShowInspection(false) }/>
                 </Modal>
 
                 <Grid container component={Box}>

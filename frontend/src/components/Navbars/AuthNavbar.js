@@ -50,70 +50,70 @@ export default function AuthNavbar() {
       component={List}
       className={classes.flexDirectionColumn}
     >
-      <ListItem
-        component={Link}
-        to="/admin/dashboard"
-        onClick={handleMenuClose}
-        classes={{
-          root: classes.listItemRoot,
-        }}
-      >
-        <Box
-          component={Dashboard}
-          width="1.25rem!important"
-          height="1.25rem!important"
-          marginRight=".5rem!important"
-        />
-        Dashboard
-      </ListItem>
-      <ListItem
-        component={Link}
-        to="/auth/register"
-        onClick={handleMenuClose}
-        classes={{
-          root: classes.listItemRoot,
-        }}
-      >
-        <Box
-          component={AccountCircle}
-          width="1.25rem!important"
-          height="1.25rem!important"
-          marginRight=".5rem!important"
-        />
-        Register
-      </ListItem>
-      <ListItem
-        component={Link}
-        to="/auth/login"
-        onClick={handleMenuClose}
-        classes={{
-          root: classes.listItemRoot,
-        }}
-      >
-        <Box
-          component={VpnKey}
-          width="1.25rem!important"
-          height="1.25rem!important"
-          marginRight=".5rem!important"
-        />
-        Login
-      </ListItem>
-      <ListItem
-        component={Link}
-        to="/admin/user-profile"
-        onClick={handleMenuClose}
-        classes={{
-          root: classes.listItemRoot,
-        }}
-      >
-        <Box
-          component={Person}
-          width="1.25rem!important"
-          height="1.25rem!important"
-          marginRight=".5rem!important"
-        />
-        Profile
-      </ListItem>
+      {/*<ListItem*/}
+      {/*  component={Link}*/}
+      {/*  to="/admin/dashboard"*/}
+      {/*  onClick={handleMenuClose}*/}
+      {/*  classes={{*/}
+      {/*    root: classes.listItemRoot,*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <Box*/}
+      {/*    component={Dashboard}*/}
+      {/*    width="1.25rem!important"*/}
+      {/*    height="1.25rem!important"*/}
+      {/*    marginRight=".5rem!important"*/}
+      {/*  />*/}
+      {/*  Dashboard*/}
+      {/*</ListItem>*/}
+      {/*<ListItem*/}
+      {/*  component={Link}*/}
+      {/*  to="/auth/register"*/}
+      {/*  onClick={handleMenuClose}*/}
+      {/*  classes={{*/}
+      {/*    root: classes.listItemRoot,*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <Box*/}
+      {/*    component={AccountCircle}*/}
+      {/*    width="1.25rem!important"*/}
+      {/*    height="1.25rem!important"*/}
+      {/*    marginRight=".5rem!important"*/}
+      {/*  />*/}
+      {/*  Register*/}
+      {/*</ListItem>*/}
+      {/*<ListItem*/}
+      {/*  component={Link}*/}
+      {/*  to="/auth/login"*/}
+      {/*  onClick={handleMenuClose}*/}
+      {/*  classes={{*/}
+      {/*    root: classes.listItemRoot,*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <Box*/}
+      {/*    component={VpnKey}*/}
+      {/*    width="1.25rem!important"*/}
+      {/*    height="1.25rem!important"*/}
+      {/*    marginRight=".5rem!important"*/}
+      {/*  />*/}
+      {/*  Login*/}
+      {/*</ListItem>*/}
+      {/*<ListItem*/}
+      {/*  component={Link}*/}
+      {/*  to="/admin/user-profile"*/}
+      {/*  onClick={handleMenuClose}*/}
+      {/*  classes={{*/}
+      {/*    root: classes.listItemRoot,*/}
+      {/*  }}*/}
+      {/*>*/}
+      {/*  <Box*/}
+      {/*    component={Person}*/}
+      {/*    width="1.25rem!important"*/}
+      {/*    height="1.25rem!important"*/}
+      {/*    marginRight=".5rem!important"*/}
+      {/*  />*/}
+      {/*  Profile*/}
+      {/*</ListItem>*/}
     </Box>
   );
   return (
@@ -135,73 +135,73 @@ export default function AuthNavbar() {
               className={classes.headerImg}
               src={require("assets/img/brand/ERP-logo.png").default}
             />
-            <Hidden mdUp implementation="css">
-              <IconButton
-                edge="start"
-                color="inherit"
-                onClick={handleMenuOpen}
-                aria-controls={menuId}
-                aria-haspopup="true"
-              >
-                <Box
-                  component={MenuIcon}
-                  color={theme.palette.white.main}
-                  width="2rem!important"
-                  height="2rem!important"
-                />
-              </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                id={menuId}
-                keepMounted
-                transformOrigin={{ vertical: "top", horizontal: "right" }}
-                open={isMenuOpen}
-                onClose={handleMenuClose}
-                classes={{ paper: classes.menuPaper }}
-              >
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  paddingLeft="1.25rem"
-                  paddingRight="1.25rem"
-                  paddingBottom="1rem"
-                  className={classes.outlineNone}
-                >
-                  <Box
-                    alt="..."
-                    height="36px"
-                    component="img"
-                    className={classes.headerImg}
-                    src={require("assets/img/brand/argon-react.png").default}
-                  />
-                  <IconButton
-                    edge="start"
-                    color="inherit"
-                    onClick={handleMenuClose}
-                    aria-controls={menuId}
-                    aria-haspopup="true"
-                  >
-                    <Box
-                      component={Clear}
-                      width="2rem!important"
-                      height="2rem!important"
-                    />
-                  </IconButton>
-                </Box>
-                <Box
-                  component={Divider}
-                  marginBottom="1rem!important"
-                  marginLeft="1.25rem!important"
-                  marginRight="1.25rem!important"
-                />
-                {ListObject}
-              </Menu>
-            </Hidden>
-            <Hidden smDown implementation="css">
-              {ListObject}
-            </Hidden>
+            {/*<Hidden mdUp implementation="css">*/}
+            {/*  <IconButton*/}
+            {/*    edge="start"*/}
+            {/*    color="inherit"*/}
+            {/*    onClick={handleMenuOpen}*/}
+            {/*    aria-controls={menuId}*/}
+            {/*    aria-haspopup="true"*/}
+            {/*  >*/}
+            {/*    <Box*/}
+            {/*      component={MenuIcon}*/}
+            {/*      color={theme.palette.white.main}*/}
+            {/*      width="2rem!important"*/}
+            {/*      height="2rem!important"*/}
+            {/*    />*/}
+            {/*  </IconButton>*/}
+            {/*  <Menu*/}
+            {/*    anchorEl={anchorEl}*/}
+            {/*    anchorOrigin={{ vertical: "top", horizontal: "right" }}*/}
+            {/*    id={menuId}*/}
+            {/*    keepMounted*/}
+            {/*    transformOrigin={{ vertical: "top", horizontal: "right" }}*/}
+            {/*    open={isMenuOpen}*/}
+            {/*    onClose={handleMenuClose}*/}
+            {/*    classes={{ paper: classes.menuPaper }}*/}
+            {/*  >*/}
+            {/*    <Box*/}
+            {/*      display="flex"*/}
+            {/*      justifyContent="space-between"*/}
+            {/*      alignItems="center"*/}
+            {/*      paddingLeft="1.25rem"*/}
+            {/*      paddingRight="1.25rem"*/}
+            {/*      paddingBottom="1rem"*/}
+            {/*      className={classes.outlineNone}*/}
+            {/*    >*/}
+            {/*      <Box*/}
+            {/*        alt="..."*/}
+            {/*        height="36px"*/}
+            {/*        component="img"*/}
+            {/*        className={classes.headerImg}*/}
+            {/*        src={require("assets/img/brand/argon-react.png").default}*/}
+            {/*      />*/}
+            {/*      <IconButton*/}
+            {/*        edge="start"*/}
+            {/*        color="inherit"*/}
+            {/*        onClick={handleMenuClose}*/}
+            {/*        aria-controls={menuId}*/}
+            {/*        aria-haspopup="true"*/}
+            {/*      >*/}
+            {/*        <Box*/}
+            {/*          component={Clear}*/}
+            {/*          width="2rem!important"*/}
+            {/*          height="2rem!important"*/}
+            {/*        />*/}
+            {/*      </IconButton>*/}
+            {/*    </Box>*/}
+            {/*    <Box*/}
+            {/*      component={Divider}*/}
+            {/*      marginBottom="1rem!important"*/}
+            {/*      marginLeft="1.25rem!important"*/}
+            {/*      marginRight="1.25rem!important"*/}
+            {/*    />*/}
+            {/*    {ListObject}*/}
+            {/*  </Menu>*/}
+            {/*</Hidden>*/}
+            {/*<Hidden smDown implementation="css">*/}
+            {/*  {ListObject}*/}
+            {/*</Hidden>*/}
           </Container>
         </Toolbar>
       </AppBar>

@@ -8,9 +8,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Button, Form} from "react-bootstrap";
 import Select from "react-select";
-import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
+import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import axios from "axios";
 import AdminContext from "../AdminContext";
+import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
 
 const useStyles = makeStyles(componentStyles);
 const mapStyles = {
@@ -24,8 +26,19 @@ const EditParkBody = (props) => {
     const [longitude, setLongitude] = useState(28.280765508)
     const [error, setError] = useState("")
 
-    const context = useContext(AdminContext)
-    const toggleLoading = context.toggleLoading
+    const user = useContext(UserContext)
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
+
+    function MapEvents() {
+        const map = useMapEvents({
+            click: (e) => {
+                setLatitude(e.latlng.lat)
+                setLongitude(e.latlng.lng)
+            }
+        })
+        return null
+    }
 
     useEffect(() => {
         if(props && props.parkDetails)
@@ -50,7 +63,11 @@ const EditParkBody = (props) => {
                 longitude: longitude
             }
 
-            axios.post('http://localhost:8080/api/park/editPark', obj
+            axios.post('http://localhost:8080/api/park/editPark', obj, {
+                    headers: {
+                        'Authorization': "Bearer " + user.token
+                    }
+                }
             ).then((res)=>{
 
                 console.log("response:"+JSON.stringify(res))
@@ -117,6 +134,7 @@ const EditParkBody = (props) => {
                                         location
                                     </Popup>
                                 </Marker>
+                                <MapEvents/>
                             </MapContainer>}
                         </div>
                     </Col>
