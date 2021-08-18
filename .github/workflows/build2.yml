@@ -37,15 +37,15 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Configure AWS Credentials
         run:
-          cd ~
-          ls -a
-          mkdir ~/.aws
-          ls -a
+          cd ~ ;
+          ls -a ;
+          mkdir ~/.aws ;
+          ls -a ;
       #Run Tests
-      - name: Run Build Tests
-        working-directory: ./backend
-        run: mvn -B test
+#       - name: Run Build Tests
+#         working-directory: ./backend
+#         run: mvn -B test
 
-      - name: Run Tests
-        working-directory: ./backend
-        run: mvn -B clean verify
+#       - name: Run Tests
+#         working-directory: ./backend
+#         run: mvn -B clean verify
