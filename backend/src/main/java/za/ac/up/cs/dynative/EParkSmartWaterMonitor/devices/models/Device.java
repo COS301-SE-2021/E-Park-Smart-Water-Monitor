@@ -55,7 +55,8 @@ public class Device
 
     public void wipeData()
     {
-        measurementSet.clear();
+//        measurementSet.clear();
+        measurementSet.removeAll(measurementSet);
     }
 
     public String getDeviceName()

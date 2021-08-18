@@ -452,7 +452,7 @@ public class DevicesServicesImpl implements DevicesService
                 List<Measurement> latestMeasurements= dataNotificationRequest.getData().get(0).getWaterSourceData().getMeasurements();
                 targetDevice.getDeviceData().setLastSeen(latestMeasurements.get(0).getDateTime());
                 targetDevice.wipeData();
-
+                measurementRepo.removeOldMeasurementSet(targetDevice.getDeviceName());
                 for (Measurement targetedMeasurement: latestMeasurements)
                 {
                     targetDevice.addDeviceDataProduced(targetedMeasurement);
