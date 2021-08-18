@@ -45,6 +45,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdReq
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.UserService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.repositories.UserRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.GetAllDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
@@ -64,7 +65,7 @@ import java.util.concurrent.TimeUnit;
 @Service("DeviceServiceImpl")
 public class DevicesServicesImpl implements DevicesService
 {
-
+    @Autowired
     private DeviceRepo deviceRepo;
     private ParkService parkService;
     private InspectionService inspectionService;
@@ -76,8 +77,9 @@ public class DevicesServicesImpl implements DevicesService
     private IotDataPlaneClient iotDataPlaneClient;
     private AmazonDynamoDB dynamoDBClient;
     private DynamoDB dynamoDB;
-
-    public DevicesServicesImpl(@Qualifier("WaterSourceDeviceRepo") DeviceRepo deviceRepo,
+    @Autowired
+    public DevicesServicesImpl(
+                                @Qualifier("WaterSourceDeviceRepo") DeviceRepo deviceRepo,
                                @Lazy @Qualifier("InspectionServiceImpl") InspectionService inspectionService,
                                @Qualifier("ParkService") ParkService parkService,
                                @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService,
@@ -88,7 +90,10 @@ public class DevicesServicesImpl implements DevicesService
     )
     {
         this.deviceRepo = deviceRepo;
+        this.inspectionService=inspectionService;
+        this.userService=userService;
         this.parkService = parkService;
+        this.notificationService=notificationService;
         this.measurementRepo = measurementRepo;
         this.waterSiteService = waterSiteService;
         this.iotClient = IotClient.builder().region(Region.US_EAST_2).build();
@@ -562,8 +567,7 @@ public class DevicesServicesImpl implements DevicesService
 
                 if ((targetMeasurement.getEstimateValue())>upperLimit||(targetMeasurement.getValue())<lowerLimit)
                 {
-                    ArrayList<User> usersRelatingToDevice= userService.findUsersRelatedToDevice(targetDevice.getDeviceName());
-
+                    List<User> usersRelatingToDevice = userService.findUsersRelatedToDevice(targetDevice.getDeviceName());
                     if (usersRelatingToDevice.size()==0)
                         return;
 
@@ -576,7 +580,7 @@ public class DevicesServicesImpl implements DevicesService
                     }
 
                     String message = "An inspection has been scheduled please investigate.";
-                    SMSRequest alertSmsRequest= new SMSRequest(usersRelatingToDevice,"Device "+targetDevice.getDeviceName()+" is showing measurements that are out of the allowed bounds, an inspection has been scheduled please investigate.");
+                    SMSRequest alertSmsRequest= new SMSRequest(new ArrayList<>(usersRelatingToDevice),"Device "+targetDevice.getDeviceName()+" is showing measurements that are out of the allowed bounds, an inspection has been scheduled please investigate.");
                     EmailRequest alertEmailRequest = new EmailRequest(
                             "EPark Smart Water Monitoring System",
                             targetDevice.getDeviceName()+" Alert" ,
@@ -595,7 +599,7 @@ public class DevicesServicesImpl implements DevicesService
                     Date InspectionDueDate =new Date(oneWeekLater);
                     AddInspectionRequest inspectionRequestForAlert = new AddInspectionRequest(targetDevice.getDeviceId(),InspectionDueDate, targetDevice.getDeviceName()+" automated Inspection - levels out of bounds");
                     inspectionService.addInspection(inspectionRequestForAlert);
-
+                    return;
 
 
                 }

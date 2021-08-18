@@ -287,6 +287,7 @@ public class UserServiceImpl implements UserService {
 
         assert userRepo != null;
         List<User> users = userRepo.findUserByUsername(username);
+        System.out.println(users.get(0).toString());
         if (users.size() <= 1) {
                 User user=null;
             if (users.size()==1){
@@ -342,7 +343,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ArrayList<User> findUsersRelatedToDevice(String dName) {
+    public List<User> findUsersRelatedToDevice(String dName) {
        return userRepo.findUsersWorkingAtDevicePark(dName);
     }
 
