@@ -26,6 +26,7 @@ import {Tooltip} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import ForumIcon from '@material-ui/icons/Forum';
 import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import EditInspection from "./EditInspection";
 
@@ -124,10 +125,16 @@ const InspectionTable = () => {
                             <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
                                 { inspection.description }
                             </TableCell>
-                            <TableCell  classes={{ root: classes.tableCellRoot }}>
+                            <TableCell classes={{root: classes.tableCellRoot}}
+                                       style={{verticalAlign: 'middle',width:"6.2%"}}>
+                                <Tooltip title="Comments" arrow>
+                                    <ForumIcon aria-label="forum"
+                                              onClick={ () => { setShowEditInspection(true); setInspec(inspection)} }>
+                                    </ForumIcon>
+                                </Tooltip>
                             </TableCell>
                             <TableCell classes={{root: classes.tableCellRoot}}
-                                       style={{verticalAlign: 'middle', width: '5.2%'}}>
+                                       style={{verticalAlign: 'middle',width:"5.3%"}}>
                                 <Tooltip title="Edit" arrow>
                                     <EditIcon aria-label="edit"
                                         onClick={ () => { setShowEditInspection(true); setInspec(inspection)} }>

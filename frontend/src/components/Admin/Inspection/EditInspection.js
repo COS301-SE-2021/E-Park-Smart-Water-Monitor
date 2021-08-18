@@ -68,10 +68,10 @@ const EditInspection = (props) => {
         //set comment
         var body = {
             inspectionId: props.inspectionDetails.id,
-            comments: description,
+            description: description,
         }
         console.log("body: ", body)
-        axios.post('http://localhost:8080/api/inspections/setComments', body, {
+        axios.post('http://localhost:8080/api/inspections/setDescription', body, {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
