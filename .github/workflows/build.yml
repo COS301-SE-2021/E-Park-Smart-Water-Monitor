@@ -12,7 +12,7 @@ on:
 jobs:
   #Test's job
   tests:
-    name: Unit tests
+    name: Unit And Integration tests
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
     env: 
