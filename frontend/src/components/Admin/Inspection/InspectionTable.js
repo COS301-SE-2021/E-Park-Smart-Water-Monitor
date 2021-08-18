@@ -29,6 +29,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import ForumIcon from '@material-ui/icons/Forum';
 import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import EditInspection from "./EditInspection";
+import Comments from "./Comments";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -42,6 +43,7 @@ const InspectionTable = () => {
     const [response, setResponse] = useState([])
     const [value, setValue] =useState(0)
     const [inspec, setInspec] =useState({})
+    const [showComments, setShowComments] =useState(false)
 
     const reloadInspectionTable = () => {
         setValue(value => value+1)
@@ -55,6 +57,11 @@ const InspectionTable = () => {
     const toggleshowEditInspection = ()=>{
         setShowEditInspection(showEditInspection=>!showEditInspection)
     }
+
+    const toggleshowComments = ()=>{
+        setShowComments(showComments=>!showComments)
+    }
+
     const user = useContext(UserContext)
     const toggleLoading = useContext(LoadingContext).toggleLoading
 
@@ -129,7 +136,7 @@ const InspectionTable = () => {
                                        style={{verticalAlign: 'middle',width:"6.2%"}}>
                                 <Tooltip title="Comments" arrow>
                                     <ForumIcon aria-label="forum"
-                                              onClick={ () => { setShowEditInspection(true); setInspec(inspection)} }>
+                                              onClick={ () => {setShowComments(true); setInspec(inspection)} }>
                                     </ForumIcon>
                                 </Tooltip>
                             </TableCell>
@@ -161,6 +168,9 @@ const InspectionTable = () => {
             >
                 <Modal title= "Edit Inspection" onClose={() => setShowEditInspection(false)} show={showEditInspection}>
                     <EditInspection reloadInspectionTable={ reloadInspectionTable } inspectionDetails={inspec} tog={() =>toggleshowEditInspection() }/>
+                </Modal>
+                <Modal title= "Inspection Comments" onClose={() => setShowComments(false)} show={showComments}>
+                    <Comments reloadInspectionTable={ reloadInspectionTable } inspectionDetails={inspec} tog={() =>toggleshowComments() }/>
                 </Modal>
                 <Grid container component={Box} marginTop="3rem">
                     <Grid

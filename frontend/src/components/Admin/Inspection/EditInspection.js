@@ -65,7 +65,7 @@ const EditInspection = (props) => {
             console.log(JSON.stringify(res))
       });
 
-        //set comment
+        //set description
         var body = {
             inspectionId: props.inspectionDetails.id,
             description: description,
@@ -83,7 +83,6 @@ const EditInspection = (props) => {
         }).catch( (res)=> {
             console.log(JSON.stringify(res))
         });
-
     }
 
     return (
