@@ -57,7 +57,7 @@ jobs:
           echo "CAT-ing doc";
           cat credentials;
           cd /opt/hostedtoolcache/jdk/11.0.12/x64/conf/security;
-          ls -a;
+          cat -n java.security
 
 
 
