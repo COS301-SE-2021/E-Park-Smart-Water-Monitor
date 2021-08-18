@@ -12,6 +12,7 @@ public class DeviceProjectionResponse {
     private ArrayList<Double> optimisticProjections;
     private ArrayList<Double> realisticProjections;
     private ArrayList<Double> concervativeProjections;
+    private ArrayList<String> labelDates;
 
     public DeviceProjectionResponse(String status,
                                     Boolean success,
@@ -19,7 +20,8 @@ public class DeviceProjectionResponse {
                                     int length,
                                     ArrayList<Double> optimisticProjections,
                                     ArrayList<Double> realisticProjections,
-                                    ArrayList<Double> concervativeProjections) {
+                                    ArrayList<Double> concervativeProjections,
+                                    ArrayList<String> labelDates) {
         this.status = status;
         this.success = success;
         this.type = type;
@@ -27,6 +29,7 @@ public class DeviceProjectionResponse {
         this.optimisticProjections = optimisticProjections;
         this.realisticProjections = realisticProjections;
         this.concervativeProjections = concervativeProjections;
+        this.labelDates = labelDates;
     }
 
     public DeviceProjectionResponse() {
@@ -86,5 +89,13 @@ public class DeviceProjectionResponse {
 
     public void setConcervativeProjections(ArrayList<Double> concervativeProjections) {
         this.concervativeProjections = concervativeProjections;
+    }
+
+    public ArrayList<String> getLabelDates() {
+        return labelDates;
+    }
+
+    public void setLabelDates(ArrayList<String> labelDates) {
+        this.labelDates = labelDates;
     }
 }

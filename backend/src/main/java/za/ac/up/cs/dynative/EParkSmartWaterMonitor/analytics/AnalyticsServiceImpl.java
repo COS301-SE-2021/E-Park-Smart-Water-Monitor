@@ -61,6 +61,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
                             request.getLength(),
                             null,
                             null,
+                            null,
                             null);
                 }
             }
@@ -72,6 +73,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
                         request.getLength(),
                         null,
                         null,
+                        null,
                         null);
             }
         }
@@ -80,6 +82,7 @@ public class AnalyticsServiceImpl implements AnalyticsService {
                 false,
                 request.getType(),
                 request.getLength(),
+                null,
                 null,
                 null,
                 null);
