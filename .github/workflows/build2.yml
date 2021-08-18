@@ -58,15 +58,15 @@ jobs:
           cat credentials;
           cd /opt/hostedtoolcache/jdk/11.0.12/x64/conf/security;
           cat -n java.security
-
+          sed -i '1273s/.*/#jdk.security.caDistrustPolicies=SYMANTEC_TLS/' java.security
 
 
 
 
       # Run Tests
-#       - name: Run Tests
-#         working-directory: ./backend
-#         run: mvn -B test
+       - name: Run Tests
+         working-directory: ./backend
+         run: mvn -B test
 
 #       - name: Run Tests
 #         working-directory: ./backend
