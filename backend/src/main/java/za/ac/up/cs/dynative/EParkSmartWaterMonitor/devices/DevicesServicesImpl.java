@@ -473,7 +473,7 @@ public class DevicesServicesImpl implements DevicesService
                 double lowerLimit = targetDevice.getDeviceData().getSensorLowerLimit(targetMeasurement.getType());
                 double upperLimit = targetDevice.getDeviceData().getSensorUpperLimit(targetMeasurement.getType());
 
-                if ((targetMeasurement.getEstimateValue())>upperLimit||(targetMeasurement.getEstimateValue())<lowerLimit)
+                if ((targetMeasurement.getEstimateValue())>upperLimit||(targetMeasurement.getValue())<lowerLimit)
                 {
                     ArrayList<User> usersRelatingToDevice= userService.findUsersRelatedToDevice(targetDevice.getDeviceName());
 
