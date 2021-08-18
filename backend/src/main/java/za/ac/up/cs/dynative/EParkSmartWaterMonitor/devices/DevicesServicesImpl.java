@@ -435,19 +435,28 @@ public class DevicesServicesImpl implements DevicesService
     }
 
     @Override
-    public void getDataNotification(DataNotificationRequest dataNotificationRequest) throws InvalidRequestException {
+    public void getDataNotification(DataNotificationRequest dataNotificationRequest) throws InvalidRequestException
+    {
         List<Device> deviceList = deviceRepo.findDeviceByDeviceName(dataNotificationRequest.getData().get(0).getDeviceName());
         int problematicMeasurements=0;
         if (deviceList.size()<1)
             return;
 
         Device targetDevice = deviceList.get(0);
+        System.out.println(targetDevice.toString());
 
         for (int i = 0; i < dataNotificationRequest.getData().size(); i++)
         {
             if (i==0)
             {
-                targetDevice.getDeviceData().setLastSeen(dataNotificationRequest.getData().get(0).getWaterSourceData().getMeasurements().get(0).getDateTime());
+                List<Measurement> latestMeasurements= dataNotificationRequest.getData().get(0).getWaterSourceData().getMeasurements();
+                targetDevice.getDeviceData().setLastSeen(latestMeasurements.get(0).getDateTime());
+                targetDevice.wipeData();
+
+                for (Measurement targetedMeasurement: latestMeasurements)
+                {
+                    targetDevice.addDeviceDataProduced(targetedMeasurement);
+                }
                 deviceRepo.save(targetDevice);
             }
             DataNotification dataSet=dataNotificationRequest.getData().get(i);
