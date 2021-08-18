@@ -30,7 +30,8 @@ jobs:
       - name: Set up secrets
         run:
           cd /home/runner/work/E-Park-Smart-Water-Monitor/E-Park-Smart-Water-Monitor;
-          echo "${{secrets.A_PROPERTIES}}" > /backend/src/main/resources/application.properties
+          ls;
+#          echo "${{secrets.A_PROPERTIES}}" > /backend/src/main/resources/application.properties
       - name: Cache Maven packages
         #Allow caching dependencies.
         uses: actions/cache@v1
