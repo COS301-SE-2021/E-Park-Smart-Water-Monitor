@@ -156,7 +156,7 @@ const InspectionTable = () => {
                 }
             }
         })
-      }, [])
+      }, [value])
 
     return (
         <>

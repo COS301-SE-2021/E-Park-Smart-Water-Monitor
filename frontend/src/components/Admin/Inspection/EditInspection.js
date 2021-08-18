@@ -60,7 +60,8 @@ const EditInspection = (props) => {
           }
       }).then((res)=>{
             console.log(res)
-            //props.tog()
+            props.reloadInspectionTable()
+          //props.tog()
       }).catch( (res)=> {
             console.log(JSON.stringify(res))
       });
@@ -77,7 +78,7 @@ const EditInspection = (props) => {
             }
         }).then((res)=>{
             console.log(res)
-            //props.reloadInspectionTable()
+            props.reloadInspectionTable()
             props.tog()
             toggleLoading()
         }).catch( (res)=> {

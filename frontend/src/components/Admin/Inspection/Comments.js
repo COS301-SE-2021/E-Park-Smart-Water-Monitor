@@ -52,6 +52,7 @@ const Comments = (props) => {
             console.log(res)
             props.tog()
             toggleLoading()
+            props.reloadInspectionTable()
       }).catch( (res)=> {
             console.log(JSON.stringify(res))
       });
