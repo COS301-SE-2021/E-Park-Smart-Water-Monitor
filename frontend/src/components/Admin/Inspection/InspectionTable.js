@@ -22,6 +22,11 @@ import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 import Button from "@material-ui/core/Button";
 import {BatteryStd, Replay} from "@material-ui/icons";
+import {Tooltip} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -108,6 +113,16 @@ const InspectionTable = () => {
                             </TableCell>
                             <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
                                 { inspection.description }
+                            </TableCell>
+                            <TableCell  classes={{ root: classes.tableCellRoot }}>
+                            </TableCell>
+                            <TableCell classes={{root: classes.tableCellRoot}}
+                                       style={{verticalAlign: 'middle', width: '5.2%'}}>
+                                <Tooltip title="Edit" arrow>
+                                    <EditIcon aria-label="edit">
+                                        <AssignmentTurnedInIcon />
+                                    </EditIcon>
+                                </Tooltip>
                             </TableCell>
 
                         </TableRow>
