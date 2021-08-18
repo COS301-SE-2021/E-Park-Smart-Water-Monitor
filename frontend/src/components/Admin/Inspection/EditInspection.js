@@ -46,7 +46,6 @@ const EditInspection = (props) => {
     const handleSubmit = (event) => {
         toggleLoading()
       event.preventDefault()
-        alert(description)
 
       //set status
       var body = {
@@ -54,14 +53,14 @@ const EditInspection = (props) => {
         status: status.value,
       }
       console.log("body: ", body)
-        toggleLoading()
+        //toggleLoading()
       axios.post('http://localhost:8080/api/inspections/setStatus', body, {
           headers: {
               'Authorization': "Bearer " + user.token
           }
       }).then((res)=>{
             console.log(res)
-            props.tog()
+            //props.tog()
       }).catch( (res)=> {
             console.log(JSON.stringify(res))
       });
@@ -72,14 +71,13 @@ const EditInspection = (props) => {
             comments: description,
         }
         console.log("body: ", body)
-        toggleLoading()
         axios.post('http://localhost:8080/api/inspections/setComments', body, {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
         }).then((res)=>{
             console.log(res)
-            props.reloadInspectionTable()
+            //props.reloadInspectionTable()
             props.tog()
             toggleLoading()
         }).catch( (res)=> {
