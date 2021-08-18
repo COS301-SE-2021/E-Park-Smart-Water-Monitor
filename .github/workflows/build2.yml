@@ -56,7 +56,7 @@ jobs:
           echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY}}" >>  ~/.aws/credentials ;
           echo "CAT-ing doc";
           cat credentials;
-          cd /opt/hostedtoolcache/jdk/11.0.12/x64;
+          cd /opt/hostedtoolcache/jdk/11.0.12/x64/conf/security;
           ls -a;
 
 
