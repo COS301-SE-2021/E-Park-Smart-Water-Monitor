@@ -7,6 +7,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.SdkBytes;
@@ -29,6 +30,10 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.Measurem
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.InspectionService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models.Inspection;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.InspectionRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.AddInspectionRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.NotificationService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
@@ -61,6 +66,7 @@ public class DevicesServicesImpl implements DevicesService
 
     private DeviceRepo deviceRepo;
     private ParkService parkService;
+    private InspectionService inspectionService;
     private UserService userService;
     private NotificationService notificationService;
     private WaterSiteService waterSiteService;
@@ -71,6 +77,7 @@ public class DevicesServicesImpl implements DevicesService
     private DynamoDB dynamoDB;
 
     public DevicesServicesImpl(@Qualifier("WaterSourceDeviceRepo") DeviceRepo deviceRepo,
+                               @Qualifier("InspectionServiceImpl") InspectionService inspectionService,
                                @Qualifier("ParkService") ParkService parkService,
                                @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService,
                                @Qualifier("NotificationServiceImpl") NotificationService notificationService,
@@ -529,12 +536,20 @@ public class DevicesServicesImpl implements DevicesService
             return;
 
         Device targetDevice = deviceList.get(0);
+        System.out.println(targetDevice.toString());
 
         for (int i = 0; i < dataNotificationRequest.getData().size(); i++)
         {
             if (i==0)
             {
-                targetDevice.getDeviceData().setLastSeen(dataNotificationRequest.getData().get(0).getWaterSourceData().getMeasurements().get(0).getDateTime());
+                List<Measurement> latestMeasurements= dataNotificationRequest.getData().get(0).getWaterSourceData().getMeasurements();
+                targetDevice.getDeviceData().setLastSeen(latestMeasurements.get(0).getDateTime());
+                targetDevice.wipeData();
+                measurementRepo.removeOldMeasurementSet(targetDevice.getDeviceName());
+                for (Measurement targetedMeasurement: latestMeasurements)
+                {
+                    targetDevice.addDeviceDataProduced(targetedMeasurement);
+                }
                 deviceRepo.save(targetDevice);
             }
             DataNotification dataSet=dataNotificationRequest.getData().get(i);
@@ -544,7 +559,7 @@ public class DevicesServicesImpl implements DevicesService
                 double lowerLimit = targetDevice.getDeviceData().getSensorLowerLimit(targetMeasurement.getType());
                 double upperLimit = targetDevice.getDeviceData().getSensorUpperLimit(targetMeasurement.getType());
 
-                if ((targetMeasurement.getEstimateValue())>upperLimit||(targetMeasurement.getEstimateValue())<lowerLimit)
+                if ((targetMeasurement.getEstimateValue())>upperLimit||(targetMeasurement.getValue())<lowerLimit)
                 {
                     ArrayList<User> usersRelatingToDevice= userService.findUsersRelatedToDevice(targetDevice.getDeviceName());
 
@@ -575,6 +590,12 @@ public class DevicesServicesImpl implements DevicesService
 
                     notificationService.sendMail(alertEmailRequest);
                     notificationService.sendSMS(alertSmsRequest);
+                    long oneWeekLater = System.currentTimeMillis() + (86400 * 7 * 1000);
+                    Date InspectionDueDate =new Date(oneWeekLater);
+                    AddInspectionRequest inspectionRequestForAlert = new AddInspectionRequest(targetDevice.getDeviceId(),InspectionDueDate, targetDevice.getDeviceName()+" automated Inspection - levels out of bounds");
+                    inspectionService.addInspection(inspectionRequestForAlert);
+
+
 
                 }
 
