@@ -36,7 +36,6 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Configure AWS Credentials
         run:
-          env;
           ls -a;
           cd ~ ;
           echo "ls directories before";
@@ -59,6 +58,8 @@ jobs:
           cd /opt/hostedtoolcache/jdk/11.0.12/x64/conf/security;
           cat -n java.security;
           sed -i '1273s/.*/#jdk.security.caDistrustPolicies=SYMANTEC_TLS/' java.security;
+          cd /home/runner/work/E-Park-Smart-Water-Monitor/E-Park-Smart-Water-Monitor;
+          ls -a;
 
       # Run Tests
       - name: Run Tests
