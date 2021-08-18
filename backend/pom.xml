@@ -148,7 +148,7 @@
     </dependencies>
 
 	<build>
-		<testSourceDirectory>src/test/java/za/ac/up/cs/dynative/EParkSmartWaterMonitor/**</testSourceDirectory>
+		<testSourceDirectory>src/test/java/za/ac/up/cs/dynative/EParkSmartWaterMonitor</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -157,7 +157,8 @@
 				<configuration>
 					<testSourceDirectory>${project.build.testSourceDirectory}</testSourceDirectory>
 					<includes>
-						<include>**.java</include>
+						<include>UnitTests/**.java</include>
+						<include>IntegrationTests/**.java</include>
 					</includes>
 				</configuration>
 			</plugin>
