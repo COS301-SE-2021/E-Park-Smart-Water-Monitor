@@ -44,7 +44,9 @@ const EditInspection = (props) => {
 
 
     const handleSubmit = (event) => {
+        toggleLoading()
       event.preventDefault()
+        alert(description)
 
       //set status
       var body = {
@@ -60,13 +62,29 @@ const EditInspection = (props) => {
       }).then((res)=>{
             console.log(res)
             props.tog()
-            toggleLoading()
       }).catch( (res)=> {
             console.log(JSON.stringify(res))
-            toggleLoading()
       });
 
         //set comment
+        var body = {
+            inspectionId: props.inspectionDetails.id,
+            comments: description,
+        }
+        console.log("body: ", body)
+        toggleLoading()
+        axios.post('http://localhost:8080/api/inspections/setComments', body, {
+            headers: {
+                'Authorization': "Bearer " + user.token
+            }
+        }).then((res)=>{
+            console.log(res)
+            props.reloadInspectionTable()
+            props.tog()
+            toggleLoading()
+        }).catch( (res)=> {
+            console.log(JSON.stringify(res))
+        });
 
     }
 
@@ -76,11 +94,11 @@ const EditInspection = (props) => {
 
                 <Form.Group controlId="formBasicPassword">
                     <Form.Label>Description</Form.Label>
-                    <Form.Control type="text" Required={"required"} value={description} onChange={e => setDescription(e)}/>
+                    <Form.Control type="text" Required={"required"} value={description} onChange={e => setDescription(e.target.value)}/>
                 </Form.Group>
                 <Form.Label>Status</Form.Label>
                 <Select required={"required"} className="mb-3" name="park" options={ statusOptions } value={status} onChange={e => setStatus(e)}/>
-                <Button background-color="primary" variant="primary" type="submit">
+                <Button background-color="primary" variant="primary" type="submit" >
                     Submit
                 </Button>
             </Form>
