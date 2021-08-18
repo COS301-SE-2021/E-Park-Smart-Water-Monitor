@@ -41,14 +41,13 @@ const EditProfile = (props) => {
 
     const editProfile = useContext(EditProfileContext)
     const toggleEditProfile = editProfile.toggleEditProfile
-    const loader = useContext(LoadingContext)
-    const toggleLoading = loader.toggleLoading
+
 
     // submit the edit of the user
     const submit = (e) => {
         e.preventDefault()
 
-        //toggleLoading()
+        props.togglee()
 
         let temp_email = email
         if(email === user.email) {
@@ -79,6 +78,7 @@ const EditProfile = (props) => {
             }
         ).then((res)=>{
             props.closeModall()
+            props.togglee()
             //toggleLoading()
 
 
