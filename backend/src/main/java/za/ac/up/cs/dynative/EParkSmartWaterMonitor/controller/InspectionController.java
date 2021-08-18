@@ -46,9 +46,9 @@ public class InspectionController {
         return new ResponseEntity<>(inspectionService.setInspectionComments(request), HttpStatus.OK);
     }
     @PostMapping("/setDescription")
-    public ResponseEntity<Object> setInspectionDescription(@RequestBody SetInspectionCommentsRequest request)
+    public ResponseEntity<Object> setInspectionDescription(@RequestBody SetInspectionDescriptionRequest request)
     {
-        return new ResponseEntity<>(inspectionService.setInspectionComments(request), HttpStatus.OK);
+        return new ResponseEntity<>(inspectionService.setInspectionDescription(request), HttpStatus.OK);
     }
 
     @GetMapping("/getAllInspections")
