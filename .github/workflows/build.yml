@@ -36,6 +36,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Configure AWS Credentials
         run:
+          env;
           ls -a;
           cd ~ ;
           echo "ls directories before";
