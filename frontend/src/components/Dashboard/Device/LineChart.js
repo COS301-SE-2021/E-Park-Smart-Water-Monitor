@@ -29,14 +29,18 @@ import Button from "@material-ui/core/Button";
 
 
 import componentStyles from "assets/theme/views/dashboard/dashboard.js";
+import {ScaleLoader} from "react-spinners";
+import {Add, ArrowDropDown, ArrowDropUp} from "@material-ui/icons";
 const useStyles = makeStyles(componentStyles);
 
 function LineChart(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [activeNav, setActiveNav] = React.useState(1);
+  const [readingType, setReadingType] = React.useState("waterlevel");
   const [chartExample1Data, setChartExample1Data] = React.useState("data1");
   const [projectionsData, setProjectionsData] = React.useState(""); // this will be a function like "data1" passed
+  const [numPredictions, setNumPredictions] = React.useState(0); // this will be a function like "data1" passed
     // in the chartOptions1 in the chart.js file
 
     if (window.Chart) {
@@ -48,80 +52,119 @@ function LineChart(props) {
         setActiveNav(index);
         setChartExample1Data("data" + index);
       };
-    
+
 
     const user = useContext(UserContext)
     const toggleLoading = useContext(LoadingContext).toggleLoading
 
     // GET THE PROJECTION DATA
     useEffect(()=>{
-
+        setProjectionsData("")
+        setNumPredictions(5)
         let obj = {
             id: props.device.deviceId,
-            type: "waterlevel",
-            length: 5
+            type: readingType,
+            length: numPredictions
         }
+        console.log(JSON.stringify(obj))
         axios.post('http://localhost:8080/api/analytics/deviceProjection', obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }
             }
         ).then((res)=>{
-            toggleLoading()
             console.log(JSON.stringify(res.data))
+            let data = res.data.optimisticProjections // just one of the lines
+            let labels = res.data.labelDates
 
+            let x = res.data
+
+            let indexToSplit = x.labelDates.length;
+            let first = x.optimisticProjections.slice(0, indexToSplit);
+            let second = x.optimisticProjections.slice(indexToSplit);
+            console.log({first, second});
+
+            let predictions = []
+            for(let i =0; i<numPredictions;i++){
+                labels.push("Prediction "+(i+1))
+            }
+
+            setProjectionsData( () => {
+                return {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "Optimistic",
+                            data: x.optimisticProjections,
+                            // borderDash: [11],
+                            fill: false,
+
+                        },
+                        {
+                            label: "Realistic",
+                            data: x.realisticProjections,
+                            backgroundColor: "orange",
+                            borderColor: "orange",
+                            borderDash: [12],
+                            fill: false,
+                        },
+                        {
+                            label: "Conservative",
+                            data: x.concervativeProjections,
+                            backgroundColor: "red",
+                            borderColor: "red",
+                            borderDash: [12],
+                            fill: false,
+                        },
+                    ],
+                };
+            })
+
+            console.log(projectionsData)
 
         }).catch((res)=>{
-            toggleLoading()
-            console.log("response getDeviceData:"+JSON.stringify(res))
+            console.log("response projections:"+JSON.stringify(res))
         });
     },[props.device])
 
-
-
-
-    let x_axis = measurements.innerResponses.map((item)=>{
-        return item.measurements[0].value
-    })
-
-
-    let y_axis = measurements.innerResponses.map((item)=>{
-        let date = item.measurements[0].dateTime
-        return `${date.substring(0,10)} ${date.substring(14,19)}`
-    })
-
-    const newChartData = function chartData() {
-        return {
-            labels: y_axis,
-            datasets: [{
-                type: 'line',
-                label: 'Level',
-                data: x_axis,
-                borderColor: "#11CDEF",
-                backgroundColor: "#11CDEF",
-                fill:false
-            // }, {
-            //     type: 'line',
-            //     label: 'Temperature',
-            //     data: [50, 40, 45, 50, 50, 50, 45, 90],
-            //     borderColor: "orange",
-            //     backgroundColor: "orange",
-            //     fill: false
-             }
-            ],
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            stepSize: 1
-                        }
-                    }]
-                }
-            }
-            // labels: ['January', 'February', 'March', 'April']
-        }
-    }
-
+    // let x_axis = measurements.innerResponses.map((item)=>{
+    //     return item.measurements[0].value
+    // })
+    // let y_axis = measurements.innerResponses.map((item)=>{
+    //     let date = item.measurements[0].dateTime
+    //     return `${date.substring(0,10)} ${date.substring(14,19)}`
+    // })
+    // const newChartData = function chartData() {
+    //     return {
+    //         labels: y_axis,
+    //         datasets: [{
+    //             type: 'line',
+    //             label: 'Level',
+    //             data: x_axis,
+    //             borderColor: "#11CDEF",
+    //             backgroundColor: "#11CDEF",
+    //             fill:false
+    //         // }, {
+    //         //     type: 'line',
+    //         //     label: 'Temperature',
+    //         //     data: [50, 40, 45, 50, 50, 50, 45, 90],
+    //         //     borderColor: "orange",
+    //         //     backgroundColor: "orange",
+    //         //     fill: false
+    //          }
+    //         ],
+    //         options: {
+    //             scales: {
+    //                 yAxes: [{
+    //                     ticks: {
+    //                         stepSize: 1
+    //                     }
+    //                 }]
+    //             }
+    //         }
+    //         // labels: ['January', 'February', 'March', 'April']
+    //     }
+    // }
 
   return (
     <>
@@ -216,7 +259,7 @@ function LineChart(props) {
                                 marginBottom="0!important"
                             >
                                 <Box component="span" color={theme.palette.white.main}>
-                                    Sales value
+                                    {props.device.deviceName} Waterlevel Readings
                                 </Box>
                             </Box>
                         </Grid>
@@ -226,6 +269,8 @@ function LineChart(props) {
                                 display="flex"
                                 flexWrap="wrap"
                             >
+
+
                                 <Button
                                     variant="contained"
                                     color="primary"
@@ -239,8 +284,17 @@ function LineChart(props) {
                                                 : classes.buttonRootUnselected,
                                     }}
                                 >
-                                    Optimistic
+                                    minus
                                 </Button>
+                                <Box
+                                    component={Typography}
+                                    variant="h2"
+                                    marginBottom="0!important"
+                                >
+                                    <Box component="span" color={theme.palette.white.main}>
+                                        Predictions
+                                    </Box>
+                                </Box>
                                 <Button
                                     variant="contained"
                                     color="primary"
@@ -252,7 +306,12 @@ function LineChart(props) {
                                                 : classes.buttonRootUnselected,
                                     }}
                                 >
-                                    Realistic
+                                    <Box
+                                        component={Add}
+                                        width="1.25rem!important"
+                                        height="1.25rem!important"
+                                        className={classes["text"]}
+                                    />
                                 </Button>
                             </Box>
                         </Grid>
@@ -261,14 +320,20 @@ function LineChart(props) {
                 classes={{ root: classes.cardHeaderRoot }}
             ></CardHeader>
             <CardContent>
+            { projectionsData &&
                 <Box position="relative" height="350px">
                     <Line
-                        data={chartExample1[chartExample1Data]}
+                        data={projectionsData} // your own chart info obtained from request
                         options={chartExample1.options}
                         getDatasetAtEvent={(e) => console.log(e)}
                     />
                 </Box>
+            }
+            { !projectionsData &&
+                <ScaleLoader size={50} color={"#5E72E4"} speedMultiplier={1.5} />
+            }
             </CardContent>
+
         </Card>
     </>
   );
