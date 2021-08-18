@@ -43,12 +43,12 @@ jobs:
           mkdir ~/.aws ;
           echo "ls directories after";
           ls -a ;
-          cd ~/.aws
+          cd ~/.aws;
           echo "aws before touch";
-          ls -a
+          ls -a;
           touch ~/.aws/credentials ;
           echo "aws after touch";
-          ls -a
+          ls -a;
           
           echo "[default] 
           aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
