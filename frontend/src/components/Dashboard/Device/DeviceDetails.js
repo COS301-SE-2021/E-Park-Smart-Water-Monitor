@@ -251,28 +251,6 @@ function DeviceDetails(props) {
                     >
                         Lat: { device && device.deviceData && device.deviceData.latitude } <br/> Long: { device && device.deviceData && device.deviceData.longitude }
                     </Grid>
-                    {gridItem("Uptime")}
-                    <Grid
-                        item
-                        xs={6}
-                        xl={6}
-                        component={Box}
-                        marginBottom="1rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        { device && device.deviceData && device.deviceData.upTime }
-                    </Grid>
-                    {gridItem("Lifetime")}
-                    <Grid
-                        item
-                        xs={6}
-                        xl={6}
-                        component={Box}
-                        marginBottom="1rem!important"
-                        classes={{ root: classes.gridItemRoot }}
-                    >
-                        { device && device.deviceData && device.deviceData.lifeTime }
-                    </Grid>
 
                     {/*Metric information*/}
                     <Grid
