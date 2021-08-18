@@ -297,6 +297,11 @@ function LineChart() {
         }]
     }
 
+    // GET THE PROJECTION DATA
+
+
+
+
     let x_axis = measurements.innerResponses.map((item)=>{
         return item.measurements[0].value
     })
