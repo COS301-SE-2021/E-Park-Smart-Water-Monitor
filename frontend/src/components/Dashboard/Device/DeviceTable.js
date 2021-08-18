@@ -16,6 +16,10 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 
 import "../../../index.css"
+import {Refresh} from "@material-ui/icons";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import {Tooltip} from "@material-ui/core";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -23,6 +27,7 @@ function DeviceTable(props) {
   const classes = useStyles();
   const [response, setResponse] = useState(null)
   const [hover, setHover] = useState(true)
+  const [value, setValue] = useState(0)
 
     const handleDeviceSelection = (device) => {
         // so that it doesn't run on render
@@ -30,6 +35,12 @@ function DeviceTable(props) {
             props.load_device(device);
         }
     }
+
+    const reloadDeviceTable = () =>{
+      setValue(value=>value+1)
+    }
+
+
 
     const toggleHover = ()=>{
       setHover(!hover)
@@ -85,7 +96,7 @@ function DeviceTable(props) {
         }else{
             console.log("no device prop added")
         }
-    },[props.devices])
+    },[props.devices, value])
 
   return (
     <>
@@ -118,6 +129,16 @@ function DeviceTable(props) {
                                 display="flex"
                                 flexWrap="wrap"
                             >
+
+                                <Tooltip title="Refresh Devices" arrow>
+                                    <Box
+                                        component={Refresh}
+                                        width="1.25rem!important"
+                                        height="1.25rem!important"
+                                        className={classes["text"]}
+                                        onClick={()=>{ reloadDeviceTable() }}
+                                    />
+                                </Tooltip>
                             </Box>
                         </Grid>
                     </Grid>
