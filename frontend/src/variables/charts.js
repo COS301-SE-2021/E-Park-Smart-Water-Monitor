@@ -185,7 +185,7 @@ function chartOptions() {
           },
           line: {
             tension: 0.4,
-            borderWidth: 4,
+            borderWidth: 2,
             borderColor: colors.theme["primary"],
             backgroundColor: colors.transparent,
             borderCapStyle: "rounded",
@@ -292,9 +292,9 @@ let chartExample1 = {
           },
           ticks: {
             callback: function (value) {
-              // if (!(value % 10)) {
+              if (!(value % 0.5)) {
                 return value + "cm";
-              // }
+              }
             },
           },
         },
