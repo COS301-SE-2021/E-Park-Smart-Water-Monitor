@@ -30,7 +30,7 @@ jobs:
       - name: Set up secrets
         run:
           cd /home/runner/work/E-Park-Smart-Water-Monitor/E-Park-Smart-Water-Monitor;
-          cd backend;
+          cd backend/src/main/resources;
           ls;
 #          echo "${{secrets.A_PROPERTIES}}" > /backend/src/main/resources/application.properties
 #      - name: Cache Maven packages
