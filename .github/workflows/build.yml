@@ -27,6 +27,10 @@ jobs:
         with:
           java-version: '11'
       #Set up Maven cache
+      - name: Set up secrets
+        run:
+          cd /home/runner/work/E-Park-Smart-Water-Monitor/E-Park-Smart-Water-Monitor;
+          echo "${{secrets.A_PROPERTIES}}" > /backend/src/main/resources/application.properties
       - name: Cache Maven packages
         #Allow caching dependencies.
         uses: actions/cache@v1
@@ -54,12 +58,8 @@ jobs:
           echo "aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials;
           echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY}}" >>  ~/.aws/credentials ;
           echo "CAT-ing doc";
-          cat credentials;
           cd /opt/hostedtoolcache/jdk/11.0.12/x64/conf/security;
-          cat -n java.security;
           sed -i '1273s/.*/#jdk.security.caDistrustPolicies=SYMANTEC_TLS/' java.security;
-          cd /home/runner/work/E-Park-Smart-Water-Monitor/E-Park-Smart-Water-Monitor;
-          ls -a;
 
       # Run Tests
       - name: Run Tests
