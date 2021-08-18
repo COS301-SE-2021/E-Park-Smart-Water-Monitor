@@ -37,11 +37,16 @@ public class TemperatureProjectionStrategy implements ProjectionStrategyInterfac
         Map<String, List<Measurement>> groupedTemperatureMeasurements;
         ArrayList<Double> dailyAverageTemperature = new ArrayList<>();
         ArrayList<Measurement> temperatureData = new ArrayList<>();
+        ArrayList<String> labelDates = new ArrayList<>();
 
         latestTemperatureData(temperatureData);
 
         groupedTemperatureMeasurements = temperatureData.stream().collect(Collectors.groupingBy(Measurement::getDeviceDate));
-        groupedTemperatureMeasurements.forEach((key, value) -> dailyAverageTemperature.add(average(value)));
+        groupedTemperatureMeasurements.forEach((key, value) -> {
+            dailyAverageTemperature.add(average(value));
+            labelDates.add(value.get(0).getDeviceDateTime().substring(0,10));
+        });
+        labelDates.sort(String::compareTo);
 
         System.out.println("dailyAverages=" + dailyAverageTemperature);
 
@@ -60,7 +65,8 @@ public class TemperatureProjectionStrategy implements ProjectionStrategyInterfac
                 deviceProjectionRequest.getLength(),
                 null,
                 dailyAverageTemperature,
-                null);
+                null,
+                labelDates);
     }
 
     private void polynomialRegressionPrediction(ArrayList<Double> dailyAverageTemperature, double[] coefficients) {

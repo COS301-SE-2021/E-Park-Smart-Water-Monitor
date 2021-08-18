@@ -10,10 +10,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetDeviceDa
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetDeviceInnerResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface {
@@ -53,12 +50,19 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
         ArrayList<Double> conservativePredictions;
         ArrayList<Measurement> waterLevelData = new ArrayList<>();
         ArrayList<Measurement> temperatureData = new ArrayList<>();
+        ArrayList<String> labelDates = new ArrayList<>();
         WaterSite waterSite = waterSiteByDeviceResponse.getWaterSite();
 
         extractWaterLevelData(waterLevelData);
         latestTemperatureData(temperatureData);
+
         groupedWaterLevelMeasurements = waterLevelData.stream().collect(Collectors.groupingBy(Measurement::getDeviceDate));
-        groupedWaterLevelMeasurements.forEach((key, value) -> dailyAverageWaterLevel.add(average(value)));
+        groupedWaterLevelMeasurements.forEach((key, value) -> {
+            dailyAverageWaterLevel.add(average(value));
+            labelDates.add(value.get(0).getDeviceDateTime().substring(0,10));
+        });
+        labelDates.sort(String::compareTo);
+
 
         groupedTemperatureMeasurements = temperatureData.stream().collect(Collectors.groupingBy(Measurement::getDeviceDate));
         groupedTemperatureMeasurements.forEach((key, value) -> dailyAverageTemperature.add(average(value)));
@@ -98,7 +102,8 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
                 deviceProjectionRequest.getLength(),
                 optimisticPredictions,
                 dailyAverageWaterLevel,
-                conservativePredictions);
+                conservativePredictions,
+                labelDates);
     }
 
     private void conservativeProjection(ArrayList<Double> optimisticPredictions,
