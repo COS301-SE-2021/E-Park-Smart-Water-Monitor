@@ -53,14 +53,14 @@ const EditInspection = (props) => {
         status: status.value,
       }
       console.log("body: ", body)
-        toggleLoading()
+        //toggleLoading()
       axios.post('http://localhost:8080/api/inspections/setStatus', body, {
           headers: {
               'Authorization': "Bearer " + user.token
           }
       }).then((res)=>{
             console.log(res)
-            props.tog()
+            //props.tog()
       }).catch( (res)=> {
             console.log(JSON.stringify(res))
       });
