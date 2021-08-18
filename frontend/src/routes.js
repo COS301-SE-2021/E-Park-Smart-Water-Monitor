@@ -37,14 +37,14 @@ var routes = [
     component: Admin,
     layout: "/admin",
   },
-  // {
-  //   path: "/user-profile",
-  //   name: "Profile",
-  //   icon: Person,
-  //   iconColor: "WarningLight",
-  //   component: Profile,
-  //   layout: "/admin",
-  // },
+  {
+    path: "/device",
+    name: "Device",
+    icon: Person,
+    iconColor: "WarningLight",
+    component: Device,
+    layout: "/dashboard",
+  },
   // {
   //   path: "/index",
   //   name: "Login",
