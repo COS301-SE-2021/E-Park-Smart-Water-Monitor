@@ -1,6 +1,6 @@
 
 #Workflow name
-name: Test script
+name: Unit and Integration Tests
 on:
   #Manually trigger workflow runs
   workflow_dispatch:
