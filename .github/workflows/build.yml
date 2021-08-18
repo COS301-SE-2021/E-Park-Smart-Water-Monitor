@@ -30,39 +30,40 @@ jobs:
       - name: Set up secrets
         run:
           cd /home/runner/work/E-Park-Smart-Water-Monitor/E-Park-Smart-Water-Monitor;
+          cd backend;
           ls;
 #          echo "${{secrets.A_PROPERTIES}}" > /backend/src/main/resources/application.properties
-      - name: Cache Maven packages
-        #Allow caching dependencies.
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      - name: Configure AWS Credentials
-        run:
-          ls -a;
-          cd ~ ;
-          echo "ls directories before";
-          ls -a ;
-          mkdir ~/.aws ;
-          echo "ls directories after";
-          ls -a ;
-          cd ~/.aws;
-          echo "aws before touch";
-          ls -a;
-          touch ~/.aws/credentials ;
-          echo "aws after touch";
-          ls -a;
-          
-          echo "[default]" >> ~/.aws/credentials;
-          echo "aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials;
-          echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY}}" >>  ~/.aws/credentials ;
-          echo "CAT-ing doc";
-          cd /opt/hostedtoolcache/jdk/11.0.12/x64/conf/security;
-          sed -i '1273s/.*/#jdk.security.caDistrustPolicies=SYMANTEC_TLS/' java.security;
-
-      # Run Tests
-      - name: Run Tests
-        working-directory: ./backend
-        run: mvn -B test
+#      - name: Cache Maven packages
+#        #Allow caching dependencies.
+#        uses: actions/cache@v1
+#        with:
+#          path: ~/.m2
+#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#          restore-keys: ${{ runner.os }}-m2
+#      - name: Configure AWS Credentials
+#        run:
+#          ls -a;
+#          cd ~ ;
+#          echo "ls directories before";
+#          ls -a ;
+#          mkdir ~/.aws ;
+#          echo "ls directories after";
+#          ls -a ;
+#          cd ~/.aws;
+#          echo "aws before touch";
+#          ls -a;
+#          touch ~/.aws/credentials ;
+#          echo "aws after touch";
+#          ls -a;
+#
+#          echo "[default]" >> ~/.aws/credentials;
+#          echo "aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials;
+#          echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY}}" >>  ~/.aws/credentials ;
+#          echo "CAT-ing doc";
+#          cd /opt/hostedtoolcache/jdk/11.0.12/x64/conf/security;
+#          sed -i '1273s/.*/#jdk.security.caDistrustPolicies=SYMANTEC_TLS/' java.security;
+#
+#      # Run Tests
+#      - name: Run Tests
+#        working-directory: ./backend
+#        run: mvn -B test
