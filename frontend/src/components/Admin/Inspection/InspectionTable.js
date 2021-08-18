@@ -22,6 +22,12 @@ import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 import Button from "@material-ui/core/Button";
 import {BatteryStd, Replay} from "@material-ui/icons";
+import {Tooltip} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
+import EditInspection from "./EditInspection";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -31,14 +37,23 @@ const InspectionTable = () => {
     const [status, setStatus] = useState(false);
 
     const [inspections, setInspections] = useState([])
+    const [showEditInspection, setShowEditInspection] = useState(false)
     const [response, setResponse] = useState([])
+    const [value, setValue] =useState(0)
+    const [inspec, setInspec] =useState({})
+
+    const reloadInspectionTable = () => {
+        setValue(value => value+1)
+    }
 
     const statusOptions = [
         { value: "NOT STARTED", label: "Not Started" },
         { value: "DONE", label: "Done" }
     ]
 
-
+    const toggleshowEditInspection = ()=>{
+        setShowEditInspection(showEditInspection=>!showEditInspection)
+    }
     const user = useContext(UserContext)
     const toggleLoading = useContext(LoadingContext).toggleLoading
 
@@ -109,6 +124,16 @@ const InspectionTable = () => {
                             <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
                                 { inspection.description }
                             </TableCell>
+                            <TableCell  classes={{ root: classes.tableCellRoot }}>
+                            </TableCell>
+                            <TableCell classes={{root: classes.tableCellRoot}}
+                                       style={{verticalAlign: 'middle', width: '5.2%'}}>
+                                <Tooltip title="Edit" arrow>
+                                    <EditIcon aria-label="edit"
+                                        onClick={ () => { setShowEditInspection(true); setInspec(inspection)} }>
+                                    </EditIcon>
+                                </Tooltip>
+                            </TableCell>
 
                         </TableRow>
                     ))
@@ -127,7 +152,9 @@ const InspectionTable = () => {
                 marginTop="-3rem"
                 classes={{ root: classes.containerRoot }}
             >
-
+                <Modal title= "Edit Inspection" onClose={() => setShowEditInspection(false)} show={showEditInspection}>
+                    <EditInspection reloadInspectionTable={ reloadInspectionTable } inspectionDetails={inspec} tog={() =>toggleshowEditInspection() }/>
+                </Modal>
                 <Grid container component={Box} marginTop="3rem">
                     <Grid
                         item
