@@ -14,7 +14,7 @@ public interface UserService {
     LoginResponse loginUser(LoginRequest request) throws InvalidRequestException;
     GetAllUsersResponse getAllUsers();
     User findUserByUserName(String username);
-    ArrayList<User> findUsersRelatedToDevice(String dName);
+    List<User> findUsersRelatedToDevice(String dName);
     DeleteUserResponse deleteUser(DeleteUserRequest deleteUserRequest);
     FindUserByIdResponse findUserById(FindUserByIdRequest findUserByIdRequest);
     ResetPasswordResponse resetPassword(ResetPasswordRequest resetPasswordRequest) throws InvalidRequestException;

@@ -53,6 +53,12 @@ public class Device
         measurementSet.add(data);
     }
 
+    public void wipeData()
+    {
+//        measurementSet.clear();
+        measurementSet.removeAll(measurementSet);
+    }
+
     public String getDeviceName()
     {
         return deviceName;
