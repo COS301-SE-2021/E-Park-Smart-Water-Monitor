@@ -1,17 +1,14 @@
-import React, {useEffect, useState} from "react";
-
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
-import componentStyles from "assets/theme/views/admin/admin";
+import React, {useContext, useEffect, useState} from "react";
 import "../../../assets/css/addDevice.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Button, Form} from "react-bootstrap";
 import Select from "react-select";
-import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
+import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
+import LoadingContext from "../../../Context/LoadingContext";
+import {UserContext} from "../../../Context/UserContext";
 import axios from "axios";
 
-const useStyles = makeStyles(componentStyles);
 const mapStyles = {
     width: `100%`,
     height: `100%`
@@ -21,65 +18,73 @@ const EditSiteBody = (props) => {
     const [name, setName] = useState("")
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
-    const [error, setError] = useState("")
+
+    const toggleLoading = useContext(LoadingContext).toggleLoading
+    const user = useContext(UserContext)
+
+    function MapEvents() {
+        const map = useMapEvents({
+            click: (e) => {
+                setLatitude(e.latlng.lat)
+                setLongitude(e.latlng.lng)
+            }
+        })
+        return null
+    }
 
     useEffect(() => {
-        if(props && props.parkDetails)
+        if(props && props.siteDetails)
         {
-            setName(props.parkDetails.parkName)
-            setLatitude(props.parkDetails.latitude)
-            setLongitude(props.parkDetails.longitude)
+            setName(props.siteDetails.waterSiteName)
+            setLatitude(props.siteDetails.latitude)
+            setLongitude(props.siteDetails.longitude)
         }
     },[])
 
-    const submit = (e) => {
+    const editSite = (e) => {
+        toggleLoading()
         e.preventDefault()
-
-        if(props && props.parkDetails)
-        {
-
-            let obj = {
-                parkId: props.parkDetails.id,
-                parkName: name,
-                latitude: latitude,
-                longitude: longitude
-            }
-
-            alert(JSON.stringify(obj))
-
-
-            axios.post('http://localhost:8080/api/park/editPark', obj
-            ).then((res)=>{
-
-                console.log("response:"+JSON.stringify(res))
-                if(res.data.success == "false")
-                {
-                    setError(res.data.status)
-                    console.log("error with editing park")
-                }else{
-                    window.location.reload(); //need to get the new data from the db to populate the table again
-                }
-
-            }).catch((res)=>{
-                console.log("response:"+JSON.stringify(res))
-            });
+        let obj = {
+            id: props.siteDetails.id,
+            siteName: name,
+            latitude: latitude,
+            longitude: longitude,
         }
 
-    }
+        axios.put('http://localhost:8080/api/sites/editWaterSite',
+            obj, {
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
+            }
+        ).then((res) => {
 
+
+            toggleLoading();
+            props.closeModal()
+            props.reloadSiteTable();
+
+        }).catch((res) => {
+
+            toggleLoading()
+            console.log("error editing site: "+JSON.stringify(res))
+
+        });
+    }
 
     return (
         <>
-            <Form onSubmit={ submit }>
+            <Form onSubmit={editSite}>
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" >
-                            <Form.Label>Park Name</Form.Label>
-                            <Form.Control required={"required"} type="text" placeholder="Park Name" name="name" value={name} onChange={e => setName(e.target.value)}/>
+                            <Form.Label>Watersite Name</Form.Label>
+                            <Form.Control required={"required"} type="text" placeholder="Watersite Name" name="name" value={name} onChange={e => setName(e.target.value)}/>
                         </Form.Group>
                     </Col>
                 </Row>
 
+                {/*Location details*/}
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" >
@@ -96,7 +101,6 @@ const EditSiteBody = (props) => {
                         </Form.Group>
                     </Col>
                 </Row>
-
                 <Row>
                     <Col>
                         <div style={ { height: 250 } } className="mb-3" >
@@ -112,14 +116,14 @@ const EditSiteBody = (props) => {
                                         location
                                     </Popup>
                                 </Marker>
+                                <MapEvents/>
                             </MapContainer>}
                         </div>
                     </Col>
                 </Row>
 
-
                 <Button background-color="primary" variant="primary" type="submit">
-                    Edit
+                    Submit
                 </Button>
             </Form>
         </>

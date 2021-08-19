@@ -33,9 +33,9 @@ public class Device
 
         ArrayList<sensorConfiguration> deviceConfiguration = new ArrayList<>();
         deviceConfiguration.add(new sensorConfiguration("reportingFrequency",4.0));
-        deviceConfiguration.add(new sensorConfiguration("temperatureSensitivity",1.0));
-        deviceConfiguration.add(new sensorConfiguration("waterDepthSensitivity",1.0));
-        deviceConfiguration.add(new sensorConfiguration("phSensitivity",1.0));
+        deviceConfiguration.add(new sensorConfiguration("WATER_TEMP",1.0));
+        deviceConfiguration.add(new sensorConfiguration("WATER_LEVEL",1.0));
+        deviceConfiguration.add(new sensorConfiguration("WATER_QUALITY",1.0));
 
         this.deviceData = new DeviceData(longitude,latitude,100,"FINE",100,1,deviceConfiguration);
 
@@ -51,6 +51,12 @@ public class Device
             measurementSet = new HashSet<>();
         }
         measurementSet.add(data);
+    }
+
+    public void wipeData()
+    {
+//        measurementSet.clear();
+        measurementSet.removeAll(measurementSet);
     }
 
     public String getDeviceName()

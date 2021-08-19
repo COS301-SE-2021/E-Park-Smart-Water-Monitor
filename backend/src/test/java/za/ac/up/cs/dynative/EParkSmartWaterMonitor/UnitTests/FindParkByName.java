@@ -37,6 +37,10 @@ public class FindParkByName {
     double lat2= -27.991767;
     double lon1=28.737437;
     double lon2=28.007437;
+    String shape="circle";
+    double length = 0;
+    double width=0;
+    double radius=1.785;
     String name1="UnitTest 1";
     String name2="UnitTest 2";
     Set<WaterSite> siteSet1;

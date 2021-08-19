@@ -16,6 +16,10 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 
 import "../../../index.css"
+import {Refresh} from "@material-ui/icons";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import {Tooltip} from "@material-ui/core";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -23,21 +27,24 @@ function DeviceTable(props) {
   const classes = useStyles();
   const [response, setResponse] = useState(null)
   const [hover, setHover] = useState(true)
+  const [value, setValue] = useState(0)
 
-    const handleDeviceSelection = (device_id) => {
+    const handleDeviceSelection = (device) => {
         // so that it doesn't run on render
-        return function () {
-            props.onSelectDevice(device_id);
+        return () =>{
+            props.load_device(device);
         }
     }
+
+    const reloadDeviceTable = () =>{
+      setValue(value=>value+1)
+    }
+
+
 
     const toggleHover = ()=>{
       setHover(!hover)
     }
-
-
-
-
 
     useEffect(() => {
 
@@ -53,7 +60,7 @@ function DeviceTable(props) {
             const m = props.devices.map((device) =>
                 <TableRow
                     key={device.deviceId}
-                    onClick={ handleDeviceSelection(device.deviceId) }
+                    onClick={ handleDeviceSelection(device) }
                     style={hoverStyle}
                     onMouseEnter={toggleHover}
                     onMouseLeave={toggleHover}
@@ -78,6 +85,9 @@ function DeviceTable(props) {
                     <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
                         { device.deviceData.battery }%
                     </TableCell>
+                    <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
+                        { device.deviceData.lastSeen ? device.deviceData.lastSeen.substr(0,10) : "Not Connected"}
+                    </TableCell>
                 </TableRow>
 
 
@@ -86,7 +96,7 @@ function DeviceTable(props) {
         }else{
             console.log("no device prop added")
         }
-    },[props.devices])
+    },[props.devices, value])
 
   return (
     <>
@@ -119,6 +129,16 @@ function DeviceTable(props) {
                                 display="flex"
                                 flexWrap="wrap"
                             >
+
+                                <Tooltip title="Refresh Devices" arrow>
+                                    <Box
+                                        component={Refresh}
+                                        width="1.25rem!important"
+                                        height="1.25rem!important"
+                                        className={classes["text"]}
+                                        onClick={()=>{ reloadDeviceTable() }}
+                                    />
+                                </Tooltip>
                             </Box>
                         </Grid>
                     </Grid>
@@ -127,7 +147,7 @@ function DeviceTable(props) {
             ></CardHeader>
 
             <div className="table-container">
-                <TableContainer>
+                <TableContainer style={{maxHeight:"400px",overflowY:"auto"}}>
                     <Box
                         component={Table}
                         alignItems="center"
@@ -165,10 +185,19 @@ function DeviceTable(props) {
                                 >
                                     Battery Level
                                 </TableCell>
+                                <TableCell
+                                    classes={{
+                                        root:
+                                            classes.tableCellRoot +
+                                            " " +
+                                            classes.tableCellRootHead,
+                                    }}
+                                >
+                                    Last Seen
+                                </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            { response }
                             { response }
                         </TableBody>
                     </Box>

@@ -15,7 +15,7 @@ public interface DeviceRepo extends Neo4jRepository<Device, UUID> {
     List<Device> findWaterSourceDeviceByDeviceName(String deviceName);
     List<Device> findDeviceByDeviceName(String deviceName);
 
-    @Query("MATCH (:Park{id: $id})-->(watersite)-->(w) RETURN w")
+    @Query("MATCH (:Park{id: $id})-->(watersite)-->(d:Device) RETURN d")
     List<Device> getAllParkDevices(@Param("id") UUID id);
 
     @Query("MATCH (:Park{id: $id})-->(watersite)-->(w)-->(d)RETURN w,d")

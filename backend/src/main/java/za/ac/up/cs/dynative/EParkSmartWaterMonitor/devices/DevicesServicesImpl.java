@@ -7,7 +7,9 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.regions.Region;
@@ -16,8 +18,11 @@ import software.amazon.awssdk.services.iot.model.AttributePayload;
 import software.amazon.awssdk.services.iot.model.CreateThingRequest;
 import software.amazon.awssdk.services.iot.model.CreateThingResponse;
 import software.amazon.awssdk.services.iotdataplane.IotDataPlaneClient;
+import software.amazon.awssdk.services.iotdataplane.model.PublishRequest;
+import software.amazon.awssdk.services.iotdataplane.model.PublishResponse;
 import software.amazon.awssdk.services.iotdataplane.model.UpdateThingShadowRequest;
 import software.amazon.awssdk.services.iotdataplane.model.UpdateThingShadowResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.DataNotification;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Measurement;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.sensorConfiguration;
@@ -26,9 +31,21 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.repositories.Measurem
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.InspectionService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models.Inspection;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.InspectionRepo;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.AddInspectionRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.NotificationService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.SMSRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.UserService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.repositories.UserRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.GetAllDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
@@ -36,26 +53,44 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.CanAttachW
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.CanAttachWaterSourceDeviceResponse;
 
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service("DeviceServiceImpl")
-public class DevicesServicesImpl implements DevicesService {
-
+public class DevicesServicesImpl implements DevicesService
+{
+    @Autowired
     private DeviceRepo deviceRepo;
     private ParkService parkService;
+    private InspectionService inspectionService;
+    private UserService userService;
+    private NotificationService notificationService;
     private WaterSiteService waterSiteService;
     private MeasurementRepo measurementRepo;
     private IotClient iotClient;
     private IotDataPlaneClient iotDataPlaneClient;
     private AmazonDynamoDB dynamoDBClient;
     private DynamoDB dynamoDB;
-
-    public DevicesServicesImpl(@Qualifier("WaterSourceDeviceRepo") DeviceRepo deviceRepo,
+    @Autowired
+    public DevicesServicesImpl(
+                                @Qualifier("WaterSourceDeviceRepo") DeviceRepo deviceRepo,
+                               @Lazy @Qualifier("InspectionServiceImpl") InspectionService inspectionService,
                                @Qualifier("ParkService") ParkService parkService,
                                @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService,
-                               @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo) {
+                               @Qualifier("NotificationServiceImpl") NotificationService notificationService,
+                               @Qualifier("UserService") UserService userService,
+                               @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo
+
+    )
+    {
         this.deviceRepo = deviceRepo;
+        this.inspectionService=inspectionService;
+        this.userService=userService;
         this.parkService = parkService;
+        this.notificationService=notificationService;
         this.measurementRepo = measurementRepo;
         this.waterSiteService = waterSiteService;
         this.iotClient = IotClient.builder().region(Region.US_EAST_2).build();
@@ -94,9 +129,16 @@ public class DevicesServicesImpl implements DevicesService {
                         .attributePayload(attributePayload)
                         .build();
                 CreateThingResponse createThingResponse = iotClient.createThing(createThingRequest);
-                Device newDevice = new Device(UUID.fromString(createThingResponse.thingId()),addDeviceRequest.getDeviceName(),addDeviceRequest.getDeviceType(), addDeviceRequest.getDeviceModel(), addDeviceRequest.getLongitude(), addDeviceRequest.getLatitude());
-                AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse =
-                        waterSiteService.attachWaterSourceDevice(new AttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId(), newDevice));
+
+                Device newDevice = new Device(UUID.fromString(createThingResponse.thingId()),
+                        addDeviceRequest.getDeviceName(),
+                        addDeviceRequest.getDeviceType(),
+                        addDeviceRequest.getDeviceModel(),
+                        addDeviceRequest.getLongitude(),
+                        addDeviceRequest.getLatitude());
+
+                AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse = waterSiteService.attachWaterSourceDevice(new AttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId(), newDevice));
+
                 String payload = "{\"state\": {\"reported\": {";
                 payload += newDevice.getDeviceData().toString();
                 payload += "}}}";
@@ -250,13 +292,20 @@ public class DevicesServicesImpl implements DevicesService {
             Table waterSourceDataTable = dynamoDB.getTable("WaterSourceData");
             QuerySpec spec = new QuerySpec()
                     .withKeyConditionExpression("deviceName = :id")
+                    .withScanIndexForward(true)
                     .withValueMap(new ValueMap()
-                            .withString(":id",request.getDeviceName()));
+                            .withString(":id",request.getDeviceName()))
+                    .withScanIndexForward(!request.isSorted());
+
             ItemCollection<QueryOutcome> items = waterSourceDataTable.query(spec);
             Iterator<Item> iterator = items.iterator();
             Item item;
             int counter = 0;
-            while (iterator.hasNext() && counter < request.getNumResults()) {
+            int numResults = request.getNumResults();
+            if (numResults == 0) {
+                numResults = Integer.MAX_VALUE;
+            }
+            while (iterator.hasNext() && counter < numResults) {
                 item = iterator.next();
                 counter++;
                 ObjectMapper mapper = new ObjectMapper();
@@ -368,10 +417,26 @@ public class DevicesServicesImpl implements DevicesService {
             if (device.get().getDeviceData().getDeviceConfiguration() != null) {
                 for (sensorConfiguration config : device.get().getDeviceData().getDeviceConfiguration()) {
                     if (config.getSettingType().equals("reportingFrequency")) {
+                        if (request.getValue() >= 0) {
                         config.setValue(request.getValue());
                         deviceRepo.save(device.get());
+
+                        String payload = "{\"state\": {\"reported\": {";
+                        payload += device.get().getDeviceData().toString();
+                        payload += "}}}";
+
+                        SdkBytes shadowPayload = SdkBytes.fromUtf8String(payload);
+
+                        UpdateThingShadowRequest updateThingShadowRequest = UpdateThingShadowRequest.builder()
+                                .thingName(device.get().getDeviceName())
+                                .shadowName(device.get().getDeviceName()+"_Shadow")
+                                .payload(shadowPayload)
+                                .build();
+                        UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
+
                         return new SetMetricFrequencyResponse("Successfully changed metric frequency to: " +
                                 request.getValue() + " hours.", true);
+                        }
                     }
                 }
             }
@@ -380,6 +445,139 @@ public class DevicesServicesImpl implements DevicesService {
             }
         }
         return new SetMetricFrequencyResponse("No device configurations set.", false);
+    }
+
+    @Override
+    public PingDeviceResponse pingDevice(PingDeviceRequest request) {
+        String deviceName = "";
+        if (request.getDeviceID() != null) {
+            FindDeviceResponse findDeviceResponse = findDevice(new FindDeviceRequest(request.getDeviceID()));
+
+            if (findDeviceResponse.getDevice() != null) {
+                deviceName = findDeviceResponse.getDevice().getDeviceName();
+                String payload = "{\"DeviceName\": \"";
+                payload += deviceName;
+                payload += "\"}";
+
+                SdkBytes publishPayload = SdkBytes.fromUtf8String(payload);
+                PublishResponse publishResponse = iotDataPlaneClient.publish(PublishRequest
+                        .builder()
+                        .topic("iot/ping")
+                        .payload(publishPayload)
+                        .qos(1)
+                        .build());
+
+                try {
+                    TimeUnit.SECONDS.sleep(45);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
+                }
+
+                GetDeviceDataResponse deviceDataResponse = getDeviceData(new GetDeviceDataRequest(deviceName, 1, true));
+
+                if (deviceDataResponse.getInnerResponses() != null) {
+                    String latestDeviceTime = deviceDataResponse.getInnerResponses().get(0).getMeasurements().get(0).getDeviceDateTime();
+
+                    String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+                    String latestServerTime = new SimpleDateFormat(dateTimeFormat).format(new Date());
+
+                    try {
+                        Date latestServerTimeDate = new SimpleDateFormat(dateTimeFormat).parse(latestServerTime);
+                        Date latestDeviceTimeDate = new SimpleDateFormat(dateTimeFormat).parse(latestDeviceTime);
+
+                        if (Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 1
+                                || Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 0) {
+                            findDeviceResponse.getDevice().getDeviceData().setLastSeen(latestDeviceTimeDate);
+                            deviceRepo.save(findDeviceResponse.getDevice());
+                            return new PingDeviceResponse("Device " + deviceName + " says hello.", true, deviceName, deviceDataResponse.getInnerResponses().get(0));
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
+                    }
+                }
+                return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
+            }
+            return new PingDeviceResponse("Device does not exist.", false, deviceName, null);
+        }
+        return new PingDeviceResponse("No device ID specified.", false, deviceName, null);
+    }
+
+    public void getDataNotification(DataNotificationRequest dataNotificationRequest) throws InvalidRequestException {
+        List<Device> deviceList = deviceRepo.findDeviceByDeviceName(dataNotificationRequest.getData().get(0).getDeviceName());
+        int problematicMeasurements=0;
+        if (deviceList.size()<1)
+            return;
+
+        Device targetDevice = deviceList.get(0);
+        System.out.println(targetDevice.toString());
+
+        for (int i = 0; i < dataNotificationRequest.getData().size(); i++)
+        {
+            if (i==0)
+            {
+                List<Measurement> latestMeasurements= dataNotificationRequest.getData().get(0).getWaterSourceData().getMeasurements();
+                targetDevice.getDeviceData().setLastSeen(latestMeasurements.get(0).getDateTime());
+                targetDevice.wipeData();
+                measurementRepo.removeOldMeasurementSet(targetDevice.getDeviceName());
+                for (Measurement targetedMeasurement: latestMeasurements)
+                {
+                    targetDevice.addDeviceDataProduced(targetedMeasurement);
+                }
+                deviceRepo.save(targetDevice);
+            }
+            DataNotification dataSet=dataNotificationRequest.getData().get(i);
+            for (int x = 0; x < dataSet.getWaterSourceData().getMeasurements().size(); x++)
+            {
+                Measurement targetMeasurement = dataSet.getWaterSourceData().getMeasurements().get(x);
+                double lowerLimit = targetDevice.getDeviceData().getSensorLowerLimit(targetMeasurement.getType());
+                double upperLimit = targetDevice.getDeviceData().getSensorUpperLimit(targetMeasurement.getType());
+
+                if ((targetMeasurement.getEstimateValue())>upperLimit||(targetMeasurement.getValue())<lowerLimit)
+                {
+                    List<User> usersRelatingToDevice = userService.findUsersRelatedToDevice(targetDevice.getDeviceName());
+                    if (usersRelatingToDevice.size()==0)
+                        return;
+
+                    ArrayList<String> emailList = new ArrayList<>();
+                    List<String> smsList=new ArrayList<>();
+                    for (int j = 0; j <usersRelatingToDevice.size() ; j++)
+                    {
+                        emailList.add(usersRelatingToDevice.get(j).getEmail());
+                        smsList.add(usersRelatingToDevice.get(j).getCellNumber());
+                    }
+
+                    String message = "An inspection has been scheduled please investigate.";
+                    SMSRequest alertSmsRequest= new SMSRequest(new ArrayList<>(usersRelatingToDevice),"Device "+targetDevice.getDeviceName()+" is showing measurements that are out of the allowed bounds, an inspection has been scheduled please investigate.");
+                    EmailRequest alertEmailRequest = new EmailRequest(
+                            "EPark Smart Water Monitoring System",
+                            targetDevice.getDeviceName()+" Alert" ,
+                            emailList,
+                            null,
+                            null,
+                            Topic.ALERT,
+                            targetDevice.getDeviceName(),
+                            message,
+                            "Is displaying values that are out of bounds."
+                            );
+
+                    notificationService.sendMail(alertEmailRequest);
+                    notificationService.sendSMS(alertSmsRequest);
+                    long oneWeekLater = System.currentTimeMillis() + (86400 * 7 * 1000);
+                    Date InspectionDueDate =new Date(oneWeekLater);
+                    AddInspectionRequest inspectionRequestForAlert = new AddInspectionRequest(targetDevice.getDeviceId(),InspectionDueDate, targetDevice.getDeviceName()+" automated Inspection - levels out of bounds");
+                    inspectionService.addInspection(inspectionRequestForAlert);
+                    return;
+
+
+                }
+
+            }
+
+        }
+        System.out.println(dataNotificationRequest.toString());
+
     }
 
 }

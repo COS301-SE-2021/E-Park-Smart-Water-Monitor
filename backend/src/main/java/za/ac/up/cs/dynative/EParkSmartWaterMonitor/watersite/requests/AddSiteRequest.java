@@ -10,15 +10,27 @@ public class AddSiteRequest {
     private String siteName;
     private double latitude;
     private double longitude;
+    private String shape;
+    private double length;
+    private double width;
+    private double radius;
 
     public AddSiteRequest(@JsonProperty("parkId") UUID parkId,
                           @JsonProperty("siteName") String siteName,
                           @JsonProperty("latitude") double latitude,
-                          @JsonProperty("longitude")  double longitude) {
+                          @JsonProperty("longitude")  double longitude,
+                          @JsonProperty("shape") String shape,
+                          @JsonProperty("length") double length,
+                          @JsonProperty("width") double width,
+                          @JsonProperty("radius") double radius) {
         this.parkId = parkId;
         this.siteName = siteName;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.shape = shape;
+        this.length = length;
+        this.width = width;
+        this.radius = radius;
     }
 
     public AddSiteRequest() {
@@ -54,5 +66,37 @@ public class AddSiteRequest {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public String getShape() {
+        return shape;
+    }
+
+    public void setShape(String shape) {
+        this.shape = shape;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
 }
