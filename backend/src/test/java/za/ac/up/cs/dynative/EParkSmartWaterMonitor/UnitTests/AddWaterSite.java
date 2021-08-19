@@ -55,7 +55,7 @@ public class AddWaterSite {
     @Test
     @DisplayName("Attempt to add a water site but no id is specified")
     public void AddSiteIDNull(){
-        AddSiteRequest request= new AddSiteRequest(null,name1,lat1,lon1,shape,length,width,radius);
+        AddSiteRequest request= new AddSiteRequest(null,name1,lat1,lon1);
         AddSiteResponse response = waterSiteServices.addSite(request);
         assertNotNull(response);
         assertEquals("No park id specified", response.getStatus());
@@ -69,7 +69,7 @@ public class AddWaterSite {
         Mockito.when(parkService.findByParkId(Mockito.any())).thenReturn(null);
 
         //test
-        AddSiteRequest request= new AddSiteRequest(id2,name1,lat1,lon1,shape,length,width,radius);
+        AddSiteRequest request= new AddSiteRequest(id2,name1,lat1,lon1);
         AddSiteResponse response = waterSiteServices.addSite(request);
         assertNotNull(response);
         assertEquals("Park not found", response.getStatus());
@@ -85,7 +85,7 @@ public class AddWaterSite {
         Mockito.when(parkService.findByParkId(Mockito.any())).thenReturn(response);
 
         //test
-        AddSiteRequest request=new AddSiteRequest(id2,name2,lat2,lon2,shape,length,width,radius);
+        AddSiteRequest request=new AddSiteRequest(id2,name2,lat2,lon2);
         AddSiteResponse response2= waterSiteServices.addSite(request);
         assertNotNull(response);
         assertEquals("Successfully added: " + request.getSiteName(),response2.getStatus());

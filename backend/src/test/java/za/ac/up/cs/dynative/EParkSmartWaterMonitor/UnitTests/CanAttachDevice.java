@@ -75,7 +75,7 @@ public class CanAttachDevice {
     @DisplayName("Test if a device can be added to a site successful")
     public void CanAttach() {
         //setup
-        site1= new WaterSite(id1,name1,lat1,lon1,shape,length,width,radius);
+        site1= new WaterSite(id1,name1,lat1,lon1);
         Optional<WaterSite> op = Optional.of(site1);
         Mockito.when(repo.findById(id1)).thenReturn(op);
 

@@ -98,8 +98,8 @@ public class FindParkByName {
     @DisplayName("Find an existing park.")
     public void FindParkExisting() {
         //setup
-        site1= new WaterSite(id1,name1,lat1,lon1,shape,length,width,radius);
-        site2= new WaterSite(id2,name2,lat2,lon2,shape,length,width,radius);
+        site1= new WaterSite(id1,name1,lat1,lon1);
+        site2= new WaterSite(id2,name2,lat2,lon2);
         siteSet1= new HashSet<>();
         siteSet2= new HashSet<>();
         siteSet1.add(site1);

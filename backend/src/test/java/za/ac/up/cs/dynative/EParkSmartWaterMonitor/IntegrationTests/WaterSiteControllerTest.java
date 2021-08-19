@@ -92,7 +92,7 @@ public class WaterSiteControllerTest {
     //post: /api/sites/addSite
     @Test
     public void addWaterSiteParkIdNull(){
-        AddSiteRequest request = new AddSiteRequest(null,"IntTesting123123",-25.6637895,28.271731499999998,"circle",0,0,1);
+        AddSiteRequest request = new AddSiteRequest(null,"IntTesting123123",-25.6637895,28.271731499999998);
         ResponseEntity<AddSiteResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
                 .postForEntity("/api/sites/addSite", request,AddSiteResponse.class);
         assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
@@ -103,7 +103,7 @@ public class WaterSiteControllerTest {
     @Test
     public void addWaterSiteSuccess(){
         UUID id = UUID.fromString("4c0a1f95-051b-4885-b3fe-5d27c71ebd80");
-        AddSiteRequest request = new AddSiteRequest(id,"IntTesting123123",-25.6637895,28.271731499999998,"circle", 0,0,1);
+        AddSiteRequest request = new AddSiteRequest(id,"IntTesting123123",-25.6637895,28.271731499999998);
         ResponseEntity<AddSiteResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN","dynativeNext")
                 .postForEntity("/api/sites/addSite", request,AddSiteResponse.class);
         assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());

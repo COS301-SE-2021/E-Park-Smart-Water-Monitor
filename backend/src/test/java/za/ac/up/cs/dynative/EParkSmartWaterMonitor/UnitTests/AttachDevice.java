@@ -72,7 +72,7 @@ public class AttachDevice {
     @DisplayName("Succesfully attach a device")
     public void Attach() {
         //setup
-        WaterSite site1= new WaterSite(id1,name1,lat1,lon1,shape,length,width,radius);
+        WaterSite site1= new WaterSite(id1,name1,lat1,lon1);
         Device device = new Device(id2,"TESTING","UNIt","WaterSource",lat2,lon2);
         Optional<WaterSite> op = Optional.of(site1);
         Mockito.when(repo.findById(id1)).thenReturn(op);

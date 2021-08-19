@@ -92,7 +92,7 @@ public class ReceiveWaterDeviceData {
     public void receiveDeviceDataSuccess(){
         //setup
         List<Measurement> measurements = new ArrayList<>();
-        Measurement m = new Measurement("a",12,"km","ll",12,12);
+        Measurement m = new Measurement("a",12,"km","ll","12","hl");
         measurements.add(m);
         ReceiveDeviceDataRequest request= new ReceiveDeviceDataRequest("abc",measurements);
         List<Device> devices = new ArrayList<>();

@@ -73,8 +73,8 @@ public class GetSiteById {
     @DisplayName("Find a site with a valid id")
     public void FindSiteWithID() {
         //setup
-        site1= new WaterSite(id1,name1,lat1,lon1,shape,length,width,radius);
-        site2= new WaterSite(id2,name2,lat2,lon2,shape,length,width,radius);
+        site1= new WaterSite(id1,name1,lat1,lon1);
+        site2= new WaterSite(id2,name2,lat2,lon2);
         Optional<WaterSite> foundSite = Optional.of(site1);
         Mockito.when(repo.findById(site1.getId())).thenReturn(foundSite);
 
