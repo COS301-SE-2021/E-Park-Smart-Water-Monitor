@@ -41,7 +41,8 @@ public class WaterSiteServicesImpl implements WaterSiteService
         }
 
         if (request.getParkId() != null) {
-            if (Objects.equals(request.getShape(), "circle") || Objects.equals(request.getShape(), "rectangle")) {
+            if (Objects.equals(request.getShape(), "circle") || Objects.equals(request.getShape(), "rectangle")
+                    && (request.getLength() >= 0 && request.getWidth() >= 0 && request.getRadius() >= 0)) {
                 WaterSite waterSite = new WaterSite(UUID.randomUUID(),
                         request.getSiteName(),
                         request.getLatitude(),

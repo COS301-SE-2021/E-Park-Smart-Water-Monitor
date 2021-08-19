@@ -80,33 +80,43 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
         optimisticPredictions = new ArrayList<>(dailyAverageWaterLevel);
         conservativePredictions = new ArrayList<>(dailyAverageWaterLevel);
 
-        optimisticProjection(optimisticPredictions,
+        boolean validOptimistic = optimisticProjection(optimisticPredictions,
                 dailyAverageTemperature,
                 waterSite,
                 deviceProjectionRequest);
 
-        conservativeProjection(conservativePredictions,
+        boolean validConservative  = conservativeProjection(conservativePredictions,
                 dailyAverageTemperature,
                 waterSite,
                 deviceProjectionRequest);
+        if (validConservative && validOptimistic) {
+            System.out.println("coef="+ Arrays.toString(coefficients));
+            System.out.println("optimisticWaterLevel and predicted=" + optimisticPredictions);
+            System.out.println("dailyAverageWaterLevel and predicted=" + dailyAverageWaterLevel);
+            System.out.println("conservativeWaterLevel and predicted=" + conservativePredictions);
 
-        System.out.println("coef="+ Arrays.toString(coefficients));
-        System.out.println("optimisticWaterLevel and predicted=" + optimisticPredictions);
-        System.out.println("dailyAverageWaterLevel and predicted=" + dailyAverageWaterLevel);
-        System.out.println("conservativeWaterLevel and predicted=" + conservativePredictions);
-
-        return new DeviceProjectionResponse(
-                "Success",
-                true,
+            return new DeviceProjectionResponse(
+                    "Success",
+                    true,
+                    "waterlevel",
+                    deviceProjectionRequest.getLength(),
+                    optimisticPredictions,
+                    dailyAverageWaterLevel,
+                    conservativePredictions,
+                    labelDates);
+        }
+        else return new DeviceProjectionResponse(
+                "Incorrect Watersite dimensions",
+                false,
                 "waterlevel",
                 deviceProjectionRequest.getLength(),
-                optimisticPredictions,
-                dailyAverageWaterLevel,
-                conservativePredictions,
-                labelDates);
+                null,
+                null,
+                null,
+                null);
     }
 
-    private void conservativeProjection(ArrayList<Double> optimisticPredictions,
+    private boolean conservativeProjection(ArrayList<Double> optimisticPredictions,
                                         ArrayList<Double> dailyAverageTemperatures,
                                         WaterSite waterSite,
                                         DeviceProjectionRequest deviceProjectionRequest) {
@@ -122,7 +132,7 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
 
         populatateFutureAmbient(futureAmbientTemperatures,dailyAverageTemperatures,false);
 
-        evaporationCalc(optimisticPredictions,
+        return evaporationCalc(optimisticPredictions,
                 waterSite,
                 deviceProjectionRequest,
                 gravity,
@@ -135,7 +145,7 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
                 futureAmbientTemperatures);
     }
 
-    private void optimisticProjection(ArrayList<Double> optimisticPredictions,
+    private boolean optimisticProjection(ArrayList<Double> optimisticPredictions,
                                       ArrayList<Double> dailyAverageTemperatures,
                                       WaterSite waterSite,
                                       DeviceProjectionRequest deviceProjectionRequest) {
@@ -153,7 +163,7 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
 
         populatateFutureAmbient(futureAmbientTemperatures,dailyAverageTemperatures,true);
 
-        evaporationCalc(optimisticPredictions,
+        return evaporationCalc(optimisticPredictions,
                 waterSite,
                 deviceProjectionRequest,
                 gravity,
@@ -212,7 +222,7 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
         else return 0;
     }
 
-    private void evaporationCalc(ArrayList<Double> optimisticPredictions,
+    private boolean evaporationCalc(ArrayList<Double> optimisticPredictions,
                                  WaterSite waterSite,
                                  DeviceProjectionRequest deviceProjectionRequest,
                                  double gravity,
@@ -224,7 +234,7 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
                                  double[] kinematicViscosities,
                                  ArrayList<Double> futureAmbientTemperatures) {
 
-        if (waterSite.getShape().equals("circle")) {
+        if (waterSite.getShape().equals("circle") && waterSite.getRadius() > 0) {
             double surfaceArea = Math.PI * Math.pow(waterSite.getRadius(), 2.0);
             double diameter = waterSite.getRadius() * 2.0;
             double characteristicLength = diameter / 4.0;
@@ -242,9 +252,9 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
                     futureAmbientTemperatures,
                     surfaceArea,
                     characteristicLength);
-
+            return true;
         }
-        else if (waterSite.getShape().equals("rectangle")){
+        else if (waterSite.getShape().equals("rectangle") && waterSite.getLength() > 0 && waterSite.getWidth() > 0){
             double surfaceArea = waterSite.getLength() * waterSite.getWidth();
             double perimeter = (waterSite.getLength() + waterSite.getWidth()) * 2.0;
             double characteristicLength = surfaceArea / perimeter;
@@ -262,6 +272,10 @@ public class WaterLevelProjectionStrategy implements ProjectionStrategyInterface
                     futureAmbientTemperatures,
                     surfaceArea,
                     characteristicLength);
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
