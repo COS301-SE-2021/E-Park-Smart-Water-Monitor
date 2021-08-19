@@ -16,10 +16,10 @@ class JSN:
         self.trigger.value(1)
 
         while (self.echo.value() == 0):
-            pulse_start = time.time()
+            pulse_start = time.ticks_us()/1000000
 
         while (self.echo.value() == 1):
-            pulse_end = time.time()
+            pulse_end = time.ticks_us()/1000000
 
         pulse_duration = pulse_end - pulse_start
 
@@ -29,4 +29,4 @@ class JSN:
         if (distance > 20 and distance < 600):
             return distance
         else:
-            return None
+            return 0
