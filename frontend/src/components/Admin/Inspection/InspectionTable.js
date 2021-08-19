@@ -21,7 +21,7 @@ import AddInspectionBody from "./AddInspectionBody";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 import Button from "@material-ui/core/Button";
-import {BatteryStd, Replay} from "@material-ui/icons";
+import {BatteryStd, Refresh, Replay} from "@material-ui/icons";
 import {Tooltip} from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -30,6 +30,7 @@ import ForumIcon from '@material-ui/icons/Forum';
 import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import EditInspection from "./EditInspection";
 import Comments from "./Comments";
+import {ScaleLoader} from "react-spinners";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -44,6 +45,7 @@ const InspectionTable = () => {
     const [value, setValue] =useState(0)
     const [inspec, setInspec] =useState({})
     const [showComments, setShowComments] =useState(false)
+    const [reload, setReload] =useState(false)
 
     const reloadInspectionTable = () => {
         setValue(value => value+1)
@@ -84,11 +86,13 @@ const InspectionTable = () => {
     }
 
     useEffect(() => {
+        setReload(true)
         axios.get('http://localhost:8080/api/inspections/getAllInspections', {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
         }).then((res) => {
+            setReload(false)
             if (res.data) {
 
                 if(res.data && res.data.inspections)
@@ -144,7 +148,10 @@ const InspectionTable = () => {
                                        style={{verticalAlign: 'middle',width:"5.3%"}}>
                                 <Tooltip title="Edit" arrow>
                                     <EditIcon aria-label="edit"
-                                        onClick={ () => { setShowEditInspection(true); setInspec(inspection)} }>
+                                              onClick={() => {
+                                                  setShowEditInspection(true);
+                                                  setInspec(inspection)
+                                              }}>
                                     </EditIcon>
                                 </Tooltip>
                             </TableCell>
@@ -155,6 +162,8 @@ const InspectionTable = () => {
                     setResponse(m)
                 }
             }
+        }).catch(()=>{
+            setReload(false)
         })
       }, [value])
 
@@ -191,23 +200,37 @@ const InspectionTable = () => {
                                         alignItems="center"
                                         justifyContent="space-between"
                                     >
-                                        <Grid item >
+                                        <Grid item xs="auto">
                                             <Box
                                                 component={Typography}
-                                                variant="h2"
+                                                variant="h3"
                                                 marginBottom="0!important"
                                             >
                                                 Inspections for {user.parkName}
                                             </Box>
-
                                         </Grid>
-                                        {/*Dropdown select for different parks*/}
-                                        {/*<Grid item xs={12} md={3}>*/}
-                                        {/*    <Box>*/}
-                                        {/*        /!*<Select required={"required"} className="mb-3" name="park" options={ parkOptions } value={ park } onChange={e => setPark(e)}/>*!/*/}
-                                        {/*        <Select required={"required"} className="mb-3" name="park" />*/}
-                                        {/*    </Box>*/}
-                                        {/*</Grid>*/}
+                                        <Grid item xs="auto">
+                                            <Box
+                                                justifyContent="flex-end"
+                                                display="flex"
+                                                flexWrap="wrap"
+                                            >
+                                                { !reload &&
+                                                <Tooltip title="Refresh Inspections" arrow>
+                                                    <Box
+                                                        component={Refresh}
+                                                        width="1.25rem!important"
+                                                        height="1.25rem!important"
+                                                        className={classes["text"]}
+                                                        onClick={()=>{ reloadInspectionTable() }}
+                                                    />
+                                                </Tooltip>
+                                                }
+                                                { reload &&
+                                                <ScaleLoader size={10} height={15} color={"#5E72E4"} speedMultiplier={1.5} />
+                                                }
+                                            </Box>
+                                        </Grid>
                                     </Grid>
                                 }
                                 classes={{ root: classes.cardHeaderRoot }}
