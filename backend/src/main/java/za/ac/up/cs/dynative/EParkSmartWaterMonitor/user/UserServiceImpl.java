@@ -238,7 +238,6 @@ public class UserServiceImpl implements UserService {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
         assert userRepo != null;
         List<User> users = userRepo.findUserByUsername(username);
-        System.out.println(users.get(0).toString());
         if (users.size() <= 1) {
                 User user=null;
             if (users.size()==1){
