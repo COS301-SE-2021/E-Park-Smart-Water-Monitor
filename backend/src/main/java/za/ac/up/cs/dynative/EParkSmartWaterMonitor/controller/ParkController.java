@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.CreateParkRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.DeleteParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.EditParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.EditParkResponse;
 
 @CrossOrigin
 @RestController
@@ -29,16 +29,27 @@ public class ParkController {
         return new ResponseEntity<>(parkService.createPark(createParkRequest), HttpStatus.OK);
     }
 
-    @PostMapping("getParkWaterSites")
+    @PostMapping("/getParkWaterSites")
     public ResponseEntity<Object> getParkWaterSites(@RequestBody GetParkSitesRequest getParkSitesRequest) throws InvalidRequestException {
         return new ResponseEntity<>(parkService.getParkWaterSites(getParkSitesRequest),HttpStatus.OK);
     }
-    @PostMapping("editPark")
+    @PutMapping("/editPark")
     public ResponseEntity<Object> editPark(@RequestBody EditParkRequest request) throws InvalidRequestException {
         return new ResponseEntity<>(parkService.editPark(request),HttpStatus.OK);
     }
     @GetMapping("/getAllParks")
     public ResponseEntity<Object> getAllParks() {
         return new ResponseEntity<>(parkService.getAllParks(),HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllParksAndSites")
+    public ResponseEntity<Object> getAllParksAndSites() {
+        return new ResponseEntity<>(parkService.getAllParksAndSites(),HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/deletePark")
+    public ResponseEntity<Object> deletePark(@RequestBody DeleteParkRequest request) {
+        return new ResponseEntity<>(parkService.deletePark(request),HttpStatus.OK);
     }
 }

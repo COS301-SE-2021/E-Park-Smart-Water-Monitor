@@ -11,10 +11,15 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models.Inspection;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.repositories.InspectionRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.responses.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.repositories.ParkRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.SaveSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
+
+import java.util.List;
 
 @Service("InspectionServiceImpl")
 public class InspectionServiceImpl implements InspectionService {
@@ -22,14 +27,16 @@ public class InspectionServiceImpl implements InspectionService {
     InspectionRepo inspectionRepo;
     DevicesService devicesService;
     WaterSiteService waterSiteService;
-
+    ParkRepo parkRepo;
     @Autowired
     public InspectionServiceImpl(@Qualifier("InspectionRepo") InspectionRepo inspectionRepo,
+                                 @Qualifier("ParkRepo") ParkRepo parkRepo,
                                  @Qualifier("DeviceServiceImpl") DevicesService devicesService,
                                  @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService) {
         this.inspectionRepo = inspectionRepo;
         this.devicesService = devicesService;
         this.waterSiteService = waterSiteService;
+        this.parkRepo = parkRepo;
     }
 
     @Override
@@ -52,21 +59,23 @@ public class InspectionServiceImpl implements InspectionService {
             return response;
         }
 
-        GetSiteByIdResponse getSiteByIdResponse = waterSiteService.getSiteById(new GetSiteByIdRequest((request.getWaterSiteId())));
+        WaterSite getSiteByIdResponse = waterSiteService.getWaterSiteByRelatedDevice(findDeviceResponse.getDevice().getDeviceId());
+//        GetSiteByIdResponse getSiteByIdResponse = waterSiteService.getSiteById(new GetSiteByIdRequest((request.getWaterSiteId())));
+//
+//        if (getSiteByIdResponse == null || !getSiteByIdResponse.getSuccess()) {
+//            response.setStatus("Failed to add inspection! Failure to get site!");
+//            response.setSuccess(false);
+//
+//            return response;
+//        }
 
-        if (getSiteByIdResponse == null || !getSiteByIdResponse.getSuccess()) {
-            response.setStatus("Failed to add inspection! Failure to get site!");
-            response.setSuccess(false);
-
-            return response;
-        }
-
-        Inspection inspection = new Inspection(findDeviceResponse.getDevice(), request.getWaterSiteId(), request.getDateDue(), request.getDescription());
+//        Inspection inspection = new Inspection(findDeviceResponse.getDevice(), request.getDateDue(), request.getDescription());
+        Inspection inspection = new Inspection(findDeviceResponse.getDevice(),findDeviceResponse.getDevice().getDeviceId(), getSiteByIdResponse.getId(), request.getDateDue(), request.getDescription());
         inspectionRepo.save(inspection);
 
-        getSiteByIdResponse.getSite().addInspection(inspection);
+        getSiteByIdResponse.addInspection(inspection);
 
-        waterSiteService.saveSite(new SaveSiteRequest(getSiteByIdResponse.getSite()));
+        waterSiteService.saveSite(new SaveSiteRequest(getSiteByIdResponse));
 
         response.setStatus("Inspection successfully added!");
         response.setSuccess(true);
@@ -163,7 +172,7 @@ public class InspectionServiceImpl implements InspectionService {
             return response;
         }
 
-        inspection.setComments(request.getComments());
+        inspection.addComment(request.getComments());
 
         inspectionRepo.save(inspection);
 
@@ -172,4 +181,59 @@ public class InspectionServiceImpl implements InspectionService {
 
         return response;
     }
+
+    @Override
+    public SetInspectionDescriptionResponse setInspectionDescription(SetInspectionDescriptionRequest request)
+    {
+        SetInspectionDescriptionResponse response = new SetInspectionDescriptionResponse();
+
+        if (request.getInspectionId() == null) {
+            response.setStatus("Failed to set inspection description! Invalid inspectionId!");
+            response.setSuccess(false);
+
+            return response;
+        }
+
+        Inspection inspection = inspectionRepo.findInspectionById(request.getInspectionId());
+
+        if (inspection == null) {
+            response.setStatus("Failed to set inspection description! Inspection not found!");
+            response.setSuccess(false);
+
+            return response;
+        }
+
+        inspection.setDescription(request.getDescription());
+
+        inspectionRepo.save(inspection);
+
+        response.setStatus("Inspection description successfully set!");
+        response.setSuccess(true);
+
+        return response;
+    }
+
+    @Override
+    public GetAllInspectionsResponse getAllInspections()
+    {
+        List<Park> parks  = parkRepo.findAll();
+        GetAllInspectionsResponse response = new GetAllInspectionsResponse();
+        for (int i = 0; i <parks.size() ; i++)
+        {
+            response.addPark(parks.get(i).getId());
+            List<Inspection> inspectionsForParks = inspectionRepo.getInspectionByParkId(parks.get(i).getId());
+            System.out.println(inspectionsForParks);
+            response.addInspectionSet(inspectionsForParks);
+        }
+
+//        List<Inspection> allInspections = inspectionRepo.findAll();
+//        System.out.println("HUH");
+
+//        for (int i = 0; i <allInspections.size() ; i++) {
+//            System.out.println(allInspections.get(i).toString());
+//        }
+//        System.out.println("HUH2");
+        return response ;
+    }
+
 }

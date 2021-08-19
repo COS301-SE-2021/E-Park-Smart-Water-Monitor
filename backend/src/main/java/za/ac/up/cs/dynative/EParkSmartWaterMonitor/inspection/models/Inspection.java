@@ -2,8 +2,9 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models;
 
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Relationship;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.Date;
 
@@ -13,7 +14,7 @@ public class Inspection {
     private UUID id;
 
     @Relationship(type = "PERFORMED_ON", direction = Relationship.Direction.OUTGOING)
-    private WaterSourceDevice device;
+    private Device device;
 
     private UUID deviceId;
 
@@ -25,34 +26,61 @@ public class Inspection {
 
     private String description;
 
-    private String comments;
+    private ArrayList<String> comments;
 
     private String status;
 
     public Inspection(
-            WaterSourceDevice device,
+            Device device,
+            UUID deviceId,
             UUID waterSiteId,
             Date dateDue,
             String description) {
         this.id = UUID.randomUUID();
         this.device = device;
+        this.deviceId = deviceId;
         this.waterSiteId = waterSiteId;
         this.dateCreated = new Date();
         this.dateDue = dateDue;
         this.description = description;
-        this.comments = "";
+        this.comments = new ArrayList<>();
         this.status = "NOT STARTED";
+    }
+
+    @Override
+    public String toString() {
+        return "Inspection{" +
+                "id=" + id +
+                ", device=" + device +
+                ", deviceId=" + deviceId +
+                ", waterSiteId=" + waterSiteId +
+                ", dateCreated=" + dateCreated +
+                ", dateDue=" + dateDue +
+                ", description='" + description + '\'' +
+                ", comments='" + comments + '\'' +
+                ", status='" + status + '\'' +
+                '}';
     }
 
     public UUID getId() {
         return this.id;
     }
 
-    public void setComments(String comments) {
+    public void setComments(ArrayList<String> comments) {
         this.comments = comments;
     }
 
-    public String getComments() {
+    public void addComment(String comment) {
+        if (this.comments != null) {
+            this.comments.add(comment);
+        }
+        else {
+            this.comments = new ArrayList<>();
+            this.comments.add(comment);
+        }
+    }
+
+    public ArrayList<String> getComments() {
         return this.comments;
     }
 

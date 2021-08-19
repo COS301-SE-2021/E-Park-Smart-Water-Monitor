@@ -17,4 +17,6 @@ public interface ParkService {
     EditParkResponse editPark(EditParkRequest request) throws InvalidRequestException;
     FindByParkIdResponse findParkById(UUID parkId);
     GetAllParksResponse getAllParks();
+    DeleteParkResponse deletePark(DeleteParkRequest request);
+    GetAllParksAndSitesResponse getAllParksAndSites();
 }

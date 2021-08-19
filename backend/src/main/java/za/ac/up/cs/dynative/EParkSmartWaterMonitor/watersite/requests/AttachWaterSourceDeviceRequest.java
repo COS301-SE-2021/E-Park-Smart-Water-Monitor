@@ -1,24 +1,24 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests;
 
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 
 import java.util.UUID;
 
 public class AttachWaterSourceDeviceRequest {
 
     UUID siteId;
-    WaterSourceDevice waterSourceDevice;
+    Device device;
 
-    public AttachWaterSourceDeviceRequest(UUID siteId, WaterSourceDevice waterSourceDevice) {
+    public AttachWaterSourceDeviceRequest(UUID siteId, Device device) {
         this.siteId = siteId;
-        this.waterSourceDevice = waterSourceDevice;
+        this.device = device;
     }
 
     public UUID getSiteId() {
         return siteId;
     }
 
-    public WaterSourceDevice getWaterSourceDevice() {
-        return waterSourceDevice;
+    public Device getDevice() {
+        return device;
     }
 }

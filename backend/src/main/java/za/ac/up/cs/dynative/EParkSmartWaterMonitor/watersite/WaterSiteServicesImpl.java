@@ -2,31 +2,20 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.FindWaterSiteByDeviceRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.FindWaterSiteByDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkNameRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.SaveParkRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkNameResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.SaveParkResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.repositories.WaterSiteRepo;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.CanAttachWaterSourceDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.SaveSiteRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AddSiteResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWaterSourceDeviceResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.CanAttachWaterSourceDeviceResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.SaveSiteResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.*;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.*;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service("WaterSiteServiceImpl")
 public class WaterSiteServicesImpl implements WaterSiteService
@@ -43,79 +32,97 @@ public class WaterSiteServicesImpl implements WaterSiteService
     }
 
     @Override
-    public AddSiteResponse addSite(AddSiteRequest request) throws InvalidRequestException {
+    public AddSiteResponse addSite(AddSiteRequest request) {
         AddSiteResponse response = new AddSiteResponse();
 
         if (request==null){
-            throw new InvalidRequestException("Request is null");
+            response.setStatus("Request is null");
+            response.setSuccess(false);
         }
 
         if (request.getParkId() != null) {
-            WaterSite waterSite = new WaterSite(UUID.randomUUID(),request.getSiteName(),request.getLatitude(), request.getLongitude());
+            if (Objects.equals(request.getShape(), "circle") || Objects.equals(request.getShape(), "rectangle")
+                    && (request.getLength() >= 0 && request.getWidth() >= 0 && request.getRadius() >= 0)) {
+                WaterSite waterSite = new WaterSite(UUID.randomUUID(),
+                        request.getSiteName(),
+                        request.getLatitude(),
+                        request.getLongitude(),
+                        request.getShape(),
+                        request.getLength(),
+                        request.getWidth(),
+                        request.getRadius());
 
-            FindByParkIdResponse findByParkIdResponse = parkService.findByParkId(new FindByParkIdRequest(request.getParkId()));
+                FindByParkIdResponse findByParkIdResponse = parkService.findByParkId(new FindByParkIdRequest(request.getParkId()));
 
-            if (findByParkIdResponse != null) {
-                findByParkIdResponse.getPark().addWaterSite(waterSite);
-                waterSiteRepo.save(waterSite);
-                parkService.savePark(new SaveParkRequest(findByParkIdResponse.getPark()));
-                response.setStatus("Successfully added: " + request.getSiteName());
-                response.setSuccess(true);
-            }else {
-                throw new InvalidRequestException("Park not found");
+                if (findByParkIdResponse != null) {
+                    findByParkIdResponse.getPark().addWaterSite(waterSite);
+                    waterSiteRepo.save(waterSite);
+                    parkService.savePark(new SaveParkRequest(findByParkIdResponse.getPark()));
+                    response.setStatus("Successfully added: " + request.getSiteName());
+                    response.setSuccess(true);
+                }else {
+                    response.setStatus("Park not found");
+                    response.setSuccess(false);
+                }
+            }
+            else {
+                response.setStatus("Invalid watersite shape");
+                response.setSuccess(false);
             }
         }
         else {
-            throw new InvalidRequestException("No park id specified");
-            //response.setStatus("No Park Name specified! No park to add site to!");
-            //response.setSuccess(false);
+            response.setStatus("No park id specified");
+            response.setSuccess(false);
         }
 
         return response;
     }
 
-    public CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request) throws InvalidRequestException {
+    public CanAttachWaterSourceDeviceResponse canAttachWaterSourceDevice(CanAttachWaterSourceDeviceRequest request)  {
+        CanAttachWaterSourceDeviceResponse response;
         if (request==null){
-            throw new InvalidRequestException("Request is null");
+            response= new CanAttachWaterSourceDeviceResponse("CRequest is null",false);
+            return response;
         }
         if (request.getSiteId()==null){
-            throw new InvalidRequestException("No id specified");
+            response= new CanAttachWaterSourceDeviceResponse("No id specified",false);
+            return response;
         }
         Optional<WaterSite> siteToAddTo = waterSiteRepo.findById(request.getSiteId());
-        CanAttachWaterSourceDeviceResponse response;
         if (siteToAddTo.isPresent())
         {
             response= new CanAttachWaterSourceDeviceResponse("Can attach device to site!",true);
         }
         else
         {
-            throw new InvalidRequestException("Site does not exist");
-            //response = new CanAttachWaterSourceDeviceResponse("Site does not exist", false);
+            response = new CanAttachWaterSourceDeviceResponse("Site does not exist", false);
         }
 
         return response;
     }
 
-    public AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request) throws InvalidRequestException {
+    public AttachWaterSourceDeviceResponse attachWaterSourceDevice(AttachWaterSourceDeviceRequest request)  {
+        AttachWaterSourceDeviceResponse response;
 
         if (request.getSiteId()==null){
-            throw new InvalidRequestException("No Id specified");
+            response = new AttachWaterSourceDeviceResponse("No id specified", false);
+            return response;
         }
-        if (request.getWaterSourceDevice()==null){
-            throw new InvalidRequestException("No device specified");
+        if (request.getDevice()==null){
+            response = new AttachWaterSourceDeviceResponse("No device specified", false);
+            return response;
         }
-        if (request.getWaterSourceDevice().getDeviceId()==null){
-            throw new InvalidRequestException("No device Id specified");
+        if (request.getDevice().getDeviceId()==null){
+            response = new AttachWaterSourceDeviceResponse("No device id specified", false);
+            return response;
         }
         Optional<WaterSite> siteToAddTo = waterSiteRepo.findById(request.getSiteId());
-        AttachWaterSourceDeviceResponse response;
         if (siteToAddTo.isPresent()){
-            siteToAddTo.get().addWaterSourceDevice(request.getWaterSourceDevice());
+            siteToAddTo.get().addWaterSourceDevice(request.getDevice());
             waterSiteRepo.save(siteToAddTo.get());
             response= new AttachWaterSourceDeviceResponse("Successfully attached device to site!",true);
         }else{
-            throw new InvalidRequestException("Site not found");
-            //response = new AttachWaterSourceDeviceResponse("Site does not exist", false);
+            response = new AttachWaterSourceDeviceResponse("Site does not exist", false);
         }
         return response;
     }
@@ -126,15 +133,16 @@ public class WaterSiteServicesImpl implements WaterSiteService
 
 
     @Override
-    public GetSiteByIdResponse getSiteById(GetSiteByIdRequest request) throws InvalidRequestException {
+    public GetSiteByIdResponse getSiteById(GetSiteByIdRequest request)  {
+        GetSiteByIdResponse response;
+
         if (request.getSiteId()==null){
-            throw new InvalidRequestException("No Id specified");
+            response = new GetSiteByIdResponse("No id specified", false, null);
+            return response;
         }
         Optional<WaterSite> foundSite= waterSiteRepo.findById(request.getSiteId());
-        GetSiteByIdResponse response;
         if (foundSite.isEmpty()) {
-            throw new InvalidRequestException("Site not found");
-            //response = new GetSiteByIdResponse("Site does not exist.", false, null);
+            response = new GetSiteByIdResponse("Site does not exist.", false, null);
         }else{
             response = new GetSiteByIdResponse("Successfully found site.", true, foundSite.get());
         }
@@ -150,6 +158,72 @@ public class WaterSiteServicesImpl implements WaterSiteService
         else {
             return new SaveSiteResponse("Error in saving park!",false);
         }
+    }
+
+    @Override
+    public DeleteWaterSiteResponse deleteWaterSite(DeleteWaterSiteRequest request) {
+        if (request.getWaterSiteId() == null) {
+            return new DeleteWaterSiteResponse("No watersite id specified.", false);
+        }
+        Optional<WaterSite> waterSite = waterSiteRepo.findById(request.getWaterSiteId());
+
+        if (waterSite.isPresent()) {
+            waterSiteRepo.deletEntireWaterSite(waterSite.get().getId());
+            return new DeleteWaterSiteResponse("Successfully deleted the watersite and all related entities.", true);
+        }
+        return new DeleteWaterSiteResponse("No watersite with this id exists.", false);
+    }
+
+    @Override
+    public EditWaterSiteResponse editWaterSite(EditWaterSiteRequest request) {
+
+        EditWaterSiteResponse response = new EditWaterSiteResponse();
+        if (request.getId() != null) {
+            Optional<WaterSite> waterSiteToEdit = waterSiteRepo.findById(request.getId());
+            if (waterSiteToEdit.isPresent()) {
+                if (!request.getSiteName().equals("")) {
+                    waterSiteToEdit.get().setWaterSiteName(request.getSiteName());
+                }
+                if (request.getLatitude() != 0) {
+                    waterSiteToEdit.get().setLatitude(request.getLatitude());
+                }
+                if (request.getLongitude() != 0) {
+                    waterSiteToEdit.get().setLongitude(request.getLongitude());
+                }
+                response.setStatus("Watersite successfully edited.");
+                response.setSuccess(true);
+                waterSiteRepo.save(waterSiteToEdit.get());
+            }
+            else {
+                response.setStatus("Watersite does not exist.");
+                response.setSuccess(false);
+            }
+        }
+        else {
+            response.setStatus("No watersite id specified");
+            response.setSuccess(false);
+        }
+        return response;
+    }
+
+    @Override
+    public FindWaterSiteByDeviceResponse findWaterSiteByDeviceId(FindWaterSiteByDeviceRequest request) {
+        if (request == null) {
+            return new FindWaterSiteByDeviceResponse("Request is null",false,null);
+        }
+        if (request.getDeviceID() == null) {
+            return new FindWaterSiteByDeviceResponse("No device ID specified",false,null);
+        }
+        Optional<WaterSite> waterSite = waterSiteRepo.findWaterSiteByDeviceId(request.getDeviceID());
+        if (waterSite.isPresent()) {
+            return new FindWaterSiteByDeviceResponse("Watersite found",true,waterSite.get());
+        }
+        else
+            return new FindWaterSiteByDeviceResponse("Watersite not found",false,null);
+    }
+    public WaterSite getWaterSiteByRelatedDevice(UUID id)
+    {
+        return  waterSiteRepo.getWaterSiteByRelatedDevice(id);
     }
 
 }
