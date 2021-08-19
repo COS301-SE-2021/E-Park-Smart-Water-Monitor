@@ -27,7 +27,7 @@ public class InspectionControllerTest {
     @Test
     public void setStatusIdNull(){
         SetInspectionStatusRequest request = new SetInspectionStatusRequest(null,"");
-        ResponseEntity<SetInspectionStatusResponse> response = restTemplate.withBasicAuth("ChiChiTestingADMIN", "dynativeNext")
+        ResponseEntity<SetInspectionStatusResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
                 .postForEntity("/api/inspections/setStatus",request,SetInspectionStatusResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Failed to set inspection status! Invalid inspectionId!", response.getBody().getStatus());

@@ -1,4 +1,4 @@
-package za.ac.up.cs.dynative.EParkSmartWaterMonitor.IntegrationTests;
+package IntegrationTests;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
