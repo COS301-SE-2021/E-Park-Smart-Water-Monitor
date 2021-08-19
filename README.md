@@ -143,7 +143,7 @@
 
 <h3>Abel Jansen</h3>
 
-<img src="https://media-exp1.licdn.com/dms/image/C4D03AQHQrc4WkijXBg/profile-displayphoto-shrink_200_200/0/1618595111331?e=1628121600&v=beta&t=rGx9epclDkp6efivPN_PeSX3UUCQjbvp85leK7cooYw" align="left" width="200px"/> <p>Backend and Embedded Systems Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/jack-of-blades)
+<img src="https://media-exp1.licdn.com/dms/image/C4D03AQHQrc4WkijXBg/profile-displayphoto-shrink_200_200/0/1618595111331?e=1634774400&v=beta&t=QyjVHE3qpC8uCZ5wOUW7N8LvTmK33EoWODHo0Vl1NJA" align="left" width="200px"/> <p>Backend and Embedded Systems Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/jack-of-blades)
 
 [![Linkedin](https://img.shields.io/badge/linkedin-%2361dafb?style=for-the-badge&logoColor=white&color=0A66C2&logo=Linkedin)](https://www.linkedin.com/in/abel-jansen-b3ba7a20b/)
 
