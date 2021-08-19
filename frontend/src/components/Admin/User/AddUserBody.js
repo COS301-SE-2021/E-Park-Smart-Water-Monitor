@@ -43,15 +43,14 @@ const AddUserBody = (props) => {
         { value: 'RANGER', label: 'Ranger' }
     ];
 
-    const context = useContext(AdminContext)
+
     const user = useContext(UserContext)
-    const parksAndSites = context.parksAndSites
     const loader = useContext(LoadingContext)
     const toggleLoading = loader.toggleLoading
 
 
     useEffect(() => {
-        let options = parksAndSites.parks.map((p)=>{
+        let options = props.parksAndSites.parks.map((p)=>{
             return {value: p.id, label: p.parkName}
         })
 

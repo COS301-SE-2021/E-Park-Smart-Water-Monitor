@@ -79,13 +79,11 @@ const DeviceTable = () => {
     }
 
     useEffect(() => {
-        // toggleGeneralLoading()
         axios.get('http://localhost:8080/api/park/getAllParksAndSites', {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
         }).then((res)=>{
-            // toggleGeneralLoading()
             if(res)
             {
                 setParksAndSites(res.data)
@@ -159,11 +157,11 @@ const DeviceTable = () => {
                 classes={{ root: classes.containerRoot }}
             >
                 <Modal title="Add Device" onClose={() => setShow(false)} show={show}>
-                    <AddDeviceBody reloadDeviceTable={ reloadDeviceTable } closeModal={()=>{ setShow(false) }}/>
+                    <AddDeviceBody parksAndSites={parksAndSites} reloadDeviceTable={ reloadDeviceTable } closeModal={()=>{ setShow(false) }}/>
                 </Modal>
 
                 { device && <Modal title="Edit Device" onClose={() => setShowEdit(false)} show={ showEdit }>
-                    <EditDeviceBody deviceDetails={ device } reloadDeviceTable={ reloadDeviceTable } closeModal={()=>{ setShowEdit(false) }}/>
+                    <EditDeviceBody parksAndSites={parksAndSites} deviceDetails={ device } reloadDeviceTable={ reloadDeviceTable } closeModal={()=>{ setShowEdit(false) }}/>
                 </Modal> }
 
                 <Modal title="Add Inspection" onClose={() => setShowInspection(false)} show={ showInspection }>

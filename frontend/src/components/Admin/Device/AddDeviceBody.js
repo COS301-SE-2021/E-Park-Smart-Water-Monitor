@@ -31,11 +31,8 @@ const AddDeviceBody = (props) => {
     const [longitude, setLongitude] = useState(28.280765508)
 
     // use the context supplied from the admin component to get the parks and sites
-    const context = useContext(AdminContext)
     const user = useContext(UserContext)
     const toggleLoading = useContext(LoadingContext).toggleLoading
-    const parksAndSites = context.parksAndSites;
-
 
     // getting the clicked location on
     function MapEvents() {
@@ -70,7 +67,7 @@ const AddDeviceBody = (props) => {
     // get the parks to populate the select
     useEffect(() => {
 
-        let options = parksAndSites.parks.map((p)=>{
+        let options = props.parksAndSites.parks.map((p)=>{
             return {value: p.id, label: p.parkName}
         })
 
@@ -84,13 +81,11 @@ const AddDeviceBody = (props) => {
     // get sites for this park when the park selected changes
     useEffect(() => {
         if(park && park.value) {
-
             // find the park object in the parksAndSites
             // object using the park ID to retreive the
             // relevant sites to display
-            let selectedPark = parksAndSites.parks.filter( p => p.id === park.value )
+            let selectedPark = props.parksAndSites.parks.filter( p => p.id === park.value )
             assignSiteOptions(selectedPark[0])
-
         }
     },[park])
 
