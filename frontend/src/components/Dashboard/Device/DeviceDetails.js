@@ -47,7 +47,6 @@ function DeviceDetails(props) {
 
         if(props.device != null)
         {
-            console.log(JSON.stringify(props.device))
             setDevice(props.device);
             filterMetrics()
 

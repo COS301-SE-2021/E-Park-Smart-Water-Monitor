@@ -47,15 +47,15 @@ const ResetPassword = (props) => {
 
             toggleLoading();
 
-            console.log(JSON.stringify(res.data))
+            // console.log(JSON.stringify(res.data))
 
             if(res.data.code === "User not found"){
                 setError(res.data.code)
             }else{
                 setCode(res.data.code)
                 setNext(true)
-                console.log("code: "+code)
-                console.log("next")
+                // console.log("code: "+code)
+                // console.log("next")
             }
 
         }).catch((res) => {
@@ -80,7 +80,7 @@ const ResetPassword = (props) => {
             setErrorConfirmation("Passwords do not match")
         }else{
             toggleLoading()
-            console.log("submitting new password")
+            // console.log("submitting new password")
 
             let obj = {
                 username: username,
@@ -92,7 +92,7 @@ const ResetPassword = (props) => {
             axios.post('http://localhost:8080/api/user/resetPasswordFinalize', obj).then((res) => {
 
                 toggleLoading();
-                console.log(JSON.stringify(res))
+                // console.log(JSON.stringify(res))
 
                 if(res.data.success === false)
                 {
@@ -240,7 +240,7 @@ const ResetPassword = (props) => {
                                         New Password
                                     </InputLabel>
                                     <OutlinedInput
-                                        type="text"
+                                        type="password"
                                         endAdornment={
                                             <InputAdornment position="end">
                                                 <Box
@@ -268,7 +268,7 @@ const ResetPassword = (props) => {
                                         Confirm New Password
                                     </InputLabel>
                                     <OutlinedInput
-                                        type="text"
+                                        type="password"
                                         endAdornment={
                                             <InputAdornment position="end">
                                                 <Box
