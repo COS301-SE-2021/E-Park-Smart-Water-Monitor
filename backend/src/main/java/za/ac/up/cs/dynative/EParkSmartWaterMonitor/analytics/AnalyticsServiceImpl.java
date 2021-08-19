@@ -31,26 +31,53 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     @Override
     public DeviceProjectionResponse deviceProjection(DeviceProjectionRequest request) {
         if (request.getId() != null) {
+
             FindDeviceResponse findDeviceResponse = devicesService.findDevice(new FindDeviceRequest(request.getId()));
             FindWaterSiteByDeviceResponse waterSiteByDeviceResponse = waterSiteService.findWaterSiteByDeviceId(
                     new FindWaterSiteByDeviceRequest(request.getId()));
+
             if ((findDeviceResponse.getSuccess() && findDeviceResponse.getDevice() != null)
                     && (waterSiteByDeviceResponse.getSuccess() && waterSiteByDeviceResponse.getWaterSite() != null)) {
+
                 GetDeviceDataResponse deviceDataResponse = devicesService.getDeviceData(
                         new GetDeviceDataRequest(findDeviceResponse.getDevice().getDeviceName(),0, false));
+
                 if (deviceDataResponse.getSuccess()) {
-                    switch (request.getType()) {
-                        case "ph":
-                            projectionStrategy = new PhProjectionStrategy(request, deviceDataResponse);
-                            return projectionStrategy.predict();
-                        case "waterlevel":
-                            projectionStrategy = new WaterLevelProjectionStrategy(request,
-                                    deviceDataResponse,
-                                    waterSiteByDeviceResponse);
-                            return projectionStrategy.predict();
-                        case "temperature":
-                            projectionStrategy = new TemperatureProjectionStrategy(request, deviceDataResponse);
-                            return projectionStrategy.predict();
+                    if (request.getLength() >= 0 && request.getLength() <= 10) {
+                        switch (request.getType()) {
+                            case "ph":
+                                projectionStrategy = new PhProjectionStrategy(request, deviceDataResponse);
+                                return projectionStrategy.predict();
+                            case "waterlevel":
+                                projectionStrategy = new WaterLevelProjectionStrategy(request,
+                                        deviceDataResponse,
+                                        waterSiteByDeviceResponse);
+                                return projectionStrategy.predict();
+                            case "temperature":
+                                projectionStrategy = new TemperatureProjectionStrategy(request, deviceDataResponse);
+                                return projectionStrategy.predict();
+                            default:
+                                return new DeviceProjectionResponse(
+                                    "Invalid prediction strategy specified, must be of type temperature, ph or waterlevel",
+                                    false,
+                                    request.getType(),
+                                    request.getLength(),
+                                    null,
+                                    null,
+                                    null,
+                                    null);
+                        }
+                    }
+                    else {
+                        return new DeviceProjectionResponse(
+                                "Invalid prediction length specified, must be within the range 0-10.",
+                                false,
+                                request.getType(),
+                                request.getLength(),
+                                null,
+                                null,
+                                null,
+                                null);
                     }
                 }
                 else {
