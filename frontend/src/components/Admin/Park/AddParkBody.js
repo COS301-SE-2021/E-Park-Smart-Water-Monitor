@@ -8,11 +8,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Button, Form} from "react-bootstrap";
 import Select from "react-select";
-import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
+import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
 import AdminContext from "../AdminContext";
 import axios from "axios";
-import {UserContext} from "../../../Context/UserContext";
-import LoadingContext from "../../../Context/LoadingContext";
 
 const useStyles = makeStyles(componentStyles);
 const mapStyles = {
@@ -27,20 +25,8 @@ const AddParkBody = (props) => {
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
 
-    const user = useContext(UserContext)
-    const loader = useContext(LoadingContext)
-    const toggleLoading = loader.toggleLoading
-
-    // getting the clicked location on
-    function MapEvents() {
-        const map = useMapEvents({
-            click: (e) => {
-                setLatitude(e.latlng.lat)
-                setLongitude(e.latlng.lng)
-            }
-        })
-        return null
-    }
+    const context = useContext(AdminContext)
+    const toggleLoading = context.toggleLoading
 
     const createPark = (e) => {
         toggleLoading()
@@ -50,14 +36,9 @@ const AddParkBody = (props) => {
             latitude: latitude,
             longitude: longitude
         }
-
         console.log("Adding Park: "+JSON.stringify(obj))
         axios.post('http://localhost:8080/api/park/addPark',
-            obj, {
-                headers: {
-                    'Authorization': "Bearer " + user.token
-                }
-            }
+            obj
         ).then((res) => {
 
             toggleLoading();
@@ -104,7 +85,6 @@ const AddParkBody = (props) => {
 
                 <Row>
                     <Col>
-                        Click on the map to select the park location
                         <div style={ { height: 250 } } className="mb-3" >
                             {/*rietvlei centre*/}
                             {latitude && longitude && <MapContainer style={mapStyles} center={[-25.88536975144579, 28.277796392845673]} zoom={13} scrollWheelZoom={false}>
@@ -114,13 +94,10 @@ const AddParkBody = (props) => {
                                 />
                                 <Marker position={[latitude, longitude]}>
                                     <Popup>
-                                        { name !== "" && `${name} location` }
-                                        { name === "" && "Park Location" }
+                                        <h3>{name}</h3>
+                                        location
                                     </Popup>
                                 </Marker>
-
-
-                                <MapEvents/>
                             </MapContainer>}
                         </div>
                     </Col>

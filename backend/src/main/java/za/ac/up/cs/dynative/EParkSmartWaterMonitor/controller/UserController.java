@@ -32,12 +32,12 @@ public class UserController {
         return new ResponseEntity<>(userService.findUserById(findUserByIdRequest), HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteUser")
+    @PostMapping("/deleteUser")
     public ResponseEntity<Object> deleteUser(@RequestBody DeleteUserRequest deleteUserRequest) {
         return new ResponseEntity<>(userService.deleteUser(deleteUserRequest), HttpStatus.OK);
     }
 
-    @PutMapping("/editUser")
+    @PostMapping("/editUser")
     public ResponseEntity<Object> editUser(@RequestBody EditUserRequest editUserRequest) {
         return new ResponseEntity<>(userService.editUser(editUserRequest), HttpStatus.OK);
     }

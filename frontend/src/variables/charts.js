@@ -185,7 +185,7 @@ function chartOptions() {
           },
           line: {
             tension: 0.4,
-            borderWidth: 2,
+            borderWidth: 4,
             borderColor: colors.theme["primary"],
             backgroundColor: colors.transparent,
             borderCapStyle: "rounded",
@@ -244,7 +244,7 @@ function chartOptions() {
       zeroLineBorderDashOffset: [2],
     },
     ticks: {
-      beginAtZero: false,
+      beginAtZero: true,
       padding: 10,
       callback: function (value) {
         if (!(value % 10)) {
@@ -262,7 +262,7 @@ function chartOptions() {
       drawTicks: false,
     },
     ticks: {
-      padding: 1,
+      padding: 20,
     },
   });
 
@@ -292,8 +292,8 @@ let chartExample1 = {
           },
           ticks: {
             callback: function (value) {
-              if (!(value % 0.5)) {
-                return value + "cm";
+              if (!(value % 10)) {
+                return "$" + value + "k";
               }
             },
           },
@@ -304,14 +304,14 @@ let chartExample1 = {
       callbacks: {
         label: function (item, data) {
           var label = data.datasets[item.datasetIndex].label || "";
-          var yLabel = "Prediction "+item.yLabel;
+          var yLabel = item.yLabel;
           var content = "";
 
           if (data.datasets.length > 1) {
             content += label;
           }
 
-          content += yLabel + "cm";
+          content += "$" + yLabel + "k";
           return content;
         },
       },

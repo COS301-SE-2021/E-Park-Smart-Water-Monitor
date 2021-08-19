@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.DataNotification;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
@@ -73,23 +72,13 @@ public class DeviceController {
         return new ResponseEntity<>(devicesService.getDeviceData(getDeviceDataRequest),HttpStatus.OK);
     }
 
-    @PutMapping("/setMetricFrequency")
+    @PostMapping("/setMetricFrequency")
     public ResponseEntity<Object> setMetricFrequency(@RequestBody SetMetricFrequencyRequest setMetricFrequencyRequest) {
         return new ResponseEntity<>(devicesService.setMetricFrequency(setMetricFrequencyRequest), HttpStatus.OK);
-    }
-
-    @PostMapping("/dataNotification")
-    public void dataNotification(@RequestBody DataNotificationRequest dataNotificationRequest) throws InvalidRequestException {
-        devicesService.getDataNotification(dataNotificationRequest);
     }
 
     @DeleteMapping("/deleteDevice")
     public ResponseEntity<Object> deleteDevice(@RequestBody DeleteDeviceRequest deleteDeviceRequest) throws InvalidRequestException {
         return new ResponseEntity<>(devicesService.deleteDevice(deleteDeviceRequest),HttpStatus.OK);
-    }
-
-    @PostMapping("/pingDevice")
-    public ResponseEntity<Object> pingDevice(@RequestBody PingDeviceRequest pingDeviceRequest) {
-        return new ResponseEntity<>(devicesService.pingDevice(pingDeviceRequest), HttpStatus.OK);
     }
 }

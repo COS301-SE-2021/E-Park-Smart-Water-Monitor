@@ -1,6 +1,5 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices;
 
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.DataNotification;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.*;
@@ -13,15 +12,12 @@ public interface DevicesService {
     ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request);
     AddDeviceResponse addDevice(AddDeviceRequest addWSDRequest) throws InvalidRequestException;
     Collection<Device> getAll();
-    FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest);
+    FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest) throws InvalidRequestException;
     GetNumDevicesResponse getNumDevices(GetNumDevicesRequest getNumDevicesRequest) throws InvalidRequestException;
     GetParkDevicesResponse getParkDevices(GetParkDevicesRequest getParkDevicesRequest) throws InvalidRequestException;
     EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest);
     DeleteDeviceResponse deleteDevice(DeleteDeviceRequest deleteDeviceRequest);
-    GetDeviceDataResponse getDeviceData(GetDeviceDataRequest getDeviceDataRequest);
+    GetDeviceDataResponse getDeviceData(GetDeviceDataRequest getDeviceDataRequest) throws InvalidRequestException;
     GetAllDevicesResponse getAllDevices();
     SetMetricFrequencyResponse setMetricFrequency(SetMetricFrequencyRequest setMetricFrequencyRequest);
-    PingDeviceResponse pingDevice(PingDeviceRequest pingDeviceRequest);
-    void getDataNotification(DataNotificationRequest dataNotificationRequest) throws InvalidRequestException;
-
 }

@@ -10,36 +10,12 @@ public class sensorConfiguration
     private UUID configId ;
     private String settingType ;
     private double value;
-    private double upperLimit;
-    private double lowerLimit;
 
     public sensorConfiguration(String settingType, double value)
     {
         configId=UUID.randomUUID();
         this.settingType = settingType;
         this.value = value;
-        this.upperLimit = 100;
-        this.lowerLimit = 10;
-    }
-
-    public void setConfigId(UUID configId) {
-        this.configId = configId;
-    }
-
-    public double getUpperLimit() {
-        return upperLimit;
-    }
-
-    public void setUpperLimit(double upperLimit) {
-        this.upperLimit = upperLimit;
-    }
-
-    public double getLowerLimit() {
-        return lowerLimit;
-    }
-
-    public void setLowerLimit(double lowerLimit) {
-        this.lowerLimit = lowerLimit;
     }
 
     public UUID getConfigId() {

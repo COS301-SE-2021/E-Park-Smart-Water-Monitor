@@ -238,7 +238,6 @@ public class UserServiceImpl implements UserService {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
         assert userRepo != null;
         List<User> users = userRepo.findUserByUsername(username);
-        System.out.println(users.get(0).toString());
         if (users.size() <= 1) {
                 User user=null;
             if (users.size()==1){
@@ -287,11 +286,6 @@ public class UserServiceImpl implements UserService {
         if (user.size() == 1) {
             return user.get(0);
         } else return null;
-    }
-
-    @Override
-    public List<User> findUsersRelatedToDevice(String dName) {
-       return userRepo.findUsersWorkingAtDevicePark(dName);
     }
 
     @Override

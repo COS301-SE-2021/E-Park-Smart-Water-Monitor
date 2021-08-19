@@ -8,11 +8,9 @@ import Row from "react-bootstrap/Row";
 import axios from "axios";
 import { Range, getTrackBackground } from "react-range";
 import AdminContext from "../../Admin/AdminContext";
-import {PuffLoader, ScaleLoader} from "react-spinners";
+import {PuffLoader} from "react-spinners";
 import Modal from "../../Modals/Modal";
 import {css} from "@emotion/react";
-import LoadingContext from "../../../Context/LoadingContext";
-import {UserContext} from "../../../Context/UserContext";
 const { Form } = require( "react-bootstrap" );
 
 
@@ -35,32 +33,24 @@ const overlay = css`
 const useStyles = makeStyles(componentStyles);
 
 const EditDeviceMetricsBody = (props) => {
-    const [value, setValue] = useState("")
+    const [value, setValue] = useState(0)
     const [show, setShow] = useState(false)
     const [loading, setLoading] = useState(false)
 
-    const toggleLoading = useContext(LoadingContext).toggleLoading
-    const user = useContext(UserContext)
+    const toggleLoading = ()=>{
+        setShow(show=>!show)
+        setLoading(loading=>!loading)
+    }
 
     useEffect(() => {
 
         // get the device details by id
         axios.post('http://localhost:8080/api/devices/getById', {
                 deviceID: props.deviceDetails.deviceId
-            },
-            {
-                headers: {
-                    'Authorization': "Bearer " + user.token
-                }
             }
         ).then((res)=>{
 
-            console.log(JSON.stringify(res.data))
-
-            let freq = res.data.device.deviceData.deviceConfiguration.filter((elem)=>{
-                return elem.settingType==="reportingFrequency"
-            })
-            setValue(freq[0].value)
+            setValue(res.data.device.deviceData.deviceConfiguration[0].value)
 
         }).catch((res)=>{
             console.log("response getById:"+JSON.stringify(res))
@@ -79,12 +69,11 @@ const EditDeviceMetricsBody = (props) => {
             value: value
         }
 
-        axios.put('http://localhost:8080/api/devices/setMetricFrequency', obj
+        axios.post('http://localhost:8080/api/devices/setMetricFrequency', obj
         ).then((res)=>{
 
             toggleLoading()
             props.closeModal()
-            props.reloadDeviceTable()
 
         }).catch((res)=>{
 
@@ -95,30 +84,28 @@ const EditDeviceMetricsBody = (props) => {
     }
 
 
+
     return (
         <>
+            <Modal onClose={() => setShow(false)} show={show}>
+                <div style={ overlay }>
+                    <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
+                </div>
+            </Modal>
             <Form onSubmit={ submit }>
                 <Row>
                     <Col>
-                        { value &&
-                            <>
-                                <Form.Label>Hourly Frequency: {value}</Form.Label>
-                                <input
-                                style={{width:"100%"}}
-                                type="range"
-                                min="0" max="48"
-                                value={value}
-                                onChange={e => setValue(e.target.value)}
-                                step="0.1"/>
-
-                                <Form.Text className="text-muted">
-                                eg. {value} would map to a reading every {value*60} mins
-                                </Form.Text>
-                            </>
-                        }
-                        { !value &&
-                            <ScaleLoader size={50} color={"#5E72E4"} speedMultiplier={1.5} />
-                        }
+                        <Form.Label>Hourly Frequency: { value }</Form.Label>
+                        <input
+                            style={{ width:"100%" }}
+                            type="range"
+                            min="0" max="48"
+                            value={value}
+                            onChange={e => setValue(e.target.value)}
+                            step="0.1"/>
+                        <Form.Text className="text-muted">
+                            eg. {value} would map to a reading every {value*60} mins
+                        </Form.Text>
                     </Col>
                 </Row>
 
