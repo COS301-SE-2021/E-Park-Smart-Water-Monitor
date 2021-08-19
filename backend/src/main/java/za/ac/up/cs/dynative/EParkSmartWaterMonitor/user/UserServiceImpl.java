@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.NotificationService;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.NotificationServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
@@ -153,6 +152,7 @@ public class UserServiceImpl implements UserService {
         EditUserResponse response = new EditUserResponse();
         List<User> usersWithUsername = userRepo.findUserByUsername(request.getUsername());
         User userToChange=null;
+        String originalUsername=request.getUsername();
         if (usersWithUsername.size() != 0)
         {
             userToChange= usersWithUsername.get(0);
@@ -257,7 +257,17 @@ public class UserServiceImpl implements UserService {
 
             if (userToChange != null)
             {
-                userRepo.save(userToChange);
+//                userRepo.save(userToChange);
+                userRepo.editUser(
+                        userToChange.getRole() ,
+                        userToChange.getIdNumber() ,
+                        userToChange.getName(),
+                        userToChange.getSurname(),
+                        originalUsername,
+                        userToChange.getUsername() ,
+                        userToChange.getEmail(),
+                        userToChange.getCellNumber());
+
             }
 
 

@@ -2,6 +2,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.DevicesService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.FindDeviceRequest;
@@ -31,7 +32,7 @@ public class InspectionServiceImpl implements InspectionService {
     @Autowired
     public InspectionServiceImpl(@Qualifier("InspectionRepo") InspectionRepo inspectionRepo,
                                  @Qualifier("ParkRepo") ParkRepo parkRepo,
-                                 @Qualifier("DeviceServiceImpl") DevicesService devicesService,
+                                 @Lazy  @Qualifier("DeviceServiceImpl") DevicesService devicesService,
                                  @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService) {
         this.inspectionRepo = inspectionRepo;
         this.devicesService = devicesService;

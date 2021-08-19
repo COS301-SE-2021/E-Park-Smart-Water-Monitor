@@ -26,6 +26,8 @@ public interface UserRepo extends Neo4jRepository<User, UUID> {
     @Query("match (u:User{id: $id}) return u")
     User findSpecificUser(@Param("id") UUID id);
 
+    @Query(" MATCH (u:User {username: $username})"+ "SET u.role= $role, u.idNumber= $idNumber,u.name= $name ,u.surname= $surname,u.username=$newUsername,u.email=$email,u.cellNumber=$cellNumber ")
+    void editUser(String role, Long idNumber , String name, String surname, String username, String newUsername, String email, String cellNumber);
 
     @Query("    MATCH (users:User)-[:WORKS_FOR]->(x:Park)\n" +
             "    where (x)-[:HAS_WATER_SITE]->(:WaterSite)-[]->(:Device{deviceName: $dName})\n" +
