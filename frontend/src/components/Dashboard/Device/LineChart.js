@@ -78,7 +78,7 @@ function LineChart(props) {
             type: readingType,
             length: numPredictions
         }
-        console.log(JSON.stringify(obj))
+
         axios.post('http://localhost:8080/api/analytics/deviceProjection', obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
@@ -86,7 +86,6 @@ function LineChart(props) {
             }
         ).then((res)=>{
             setReset(true)
-            console.log(JSON.stringify(res.data))
             let data = res.data.optimisticProjections // just one of the lines
             let labels = res.data.labelDates
 
@@ -136,10 +135,9 @@ function LineChart(props) {
                 };
             })
 
-            console.log(projectionsData)
 
         }).catch((res)=>{
-            console.log("response projections:"+JSON.stringify(res))
+            console.log("Projections failed.")
         });
     },[props.device, numPredictions])
 

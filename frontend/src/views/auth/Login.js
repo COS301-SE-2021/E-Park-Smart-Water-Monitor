@@ -58,7 +58,6 @@ function Login() {
         axios.post('http://localhost:8080/api/user/login', obj
         ).then((res)=>{
             setLoading(false)
-            // console.log("login response: "+JSON.stringify(res))
             let x = res.data;
             if(x.success){
                 user.setToken(x.jwt) // allow for authorisation of a user for the other pages
@@ -76,9 +75,8 @@ function Login() {
                 setError("Login details incorrect")
             }
 
-
         }).catch((res)=>{
-          console.log("response:"+JSON.stringify(res))
+          console.log("login request failed")
         });
 
     }
