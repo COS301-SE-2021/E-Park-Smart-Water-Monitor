@@ -153,7 +153,7 @@
 
 <h3>Janlu Pretorius</h3>
 
-<img src="https://media-exp1.licdn.com/dms/image/C4D03AQGM79za0zrJAQ/profile-displayphoto-shrink_200_200/0/1620078455932?e=1628121600&v=beta&t=QRxKTWQvMmw49wvbm6-Qx8PNoUT_PvR0O_DiifTmU0k" align="left" width="200px"/> <p>Fullstack Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/JLooping)
+<img src="https://media-exp1.licdn.com/dms/image/C4D03AQGM79za0zrJAQ/profile-displayphoto-shrink_200_200/0/1620078455932?e=1634774400&v=beta&t=mrtjSydT9g_gY7kwg8byrLlEiyhTB9dteHq7JTaP7BI" align="left" width="200px"/> <p>Fullstack Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/JLooping)
 
 [![Linkedin](https://img.shields.io/badge/linkedin-%2361dafb?style=for-the-badge&logoColor=white&color=0A66C2&logo=Linkedin)](https://www.linkedin.com/in/janlu-p)
 
