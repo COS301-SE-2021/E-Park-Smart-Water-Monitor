@@ -56,6 +56,16 @@ public class AnalyticsServiceImpl implements AnalyticsService {
                             case "temperature":
                                 projectionStrategy = new TemperatureProjectionStrategy(request, deviceDataResponse);
                                 return projectionStrategy.predict();
+                            default:
+                                return new DeviceProjectionResponse(
+                                    "Invalid prediction strategy specified, must be of type temperature, ph or waterlevel",
+                                    false,
+                                    request.getType(),
+                                    request.getLength(),
+                                    null,
+                                    null,
+                                    null,
+                                    null);
                         }
                     }
                     else {
