@@ -348,9 +348,11 @@ public class DevicesServicesImpl implements DevicesService
     }
 
     @Override
-    public EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest) {
+    public EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest)
+    {
         EditDeviceResponse response = new EditDeviceResponse();
-        if (editDeviceRequest.getDeviceType().equals("WaterSource")||editDeviceRequest.getDeviceType().equals("Infrastructure")) {
+        if (editDeviceRequest.getDeviceType().equals("WaterSource")||editDeviceRequest.getDeviceType().equals("Infrastructure"))
+        {
 
             Optional<Device> deviceToChange = deviceRepo.findById(editDeviceRequest.getDeviceId());
 
@@ -376,7 +378,8 @@ public class DevicesServicesImpl implements DevicesService
                 }
                 response.setStatus("Device successfully edited.");
                 response.setSuccess(true);
-                deviceRepo.save(deviceToChange.get());
+//                deviceRepo.save(deviceToChange.get());
+                deviceRepo.editDevice(editDeviceRequest.getDeviceId(),deviceToChange.get().getDeviceName(),deviceToChange.get().getDeviceModel());
                 return response;
             }
             else
