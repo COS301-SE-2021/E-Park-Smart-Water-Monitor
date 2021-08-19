@@ -101,8 +101,8 @@ public class CreatePark {
     @DisplayName("Creating a park with an existing name")
     public void createParkAlreadyExists()  {
         //setup
-        site1= new WaterSite(id1,name1,lat1,lon1);
-        site2= new WaterSite(id2,name2,lat2,lon2);
+        site1= new WaterSite(id1,name1,lat1,lon1,shape,length,width,radius);
+        site2= new WaterSite(id2,name2,lat2,lon2,shape,length,width,radius);
         siteSet1= new HashSet<>();
         siteSet2= new HashSet<>();
         siteSet1.add(site1);

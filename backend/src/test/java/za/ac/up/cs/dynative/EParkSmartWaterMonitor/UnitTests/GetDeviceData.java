@@ -46,7 +46,7 @@ public class GetDeviceData {
     @Test
     @DisplayName("Try to get device data but the device name is null")
     public void getDeviceDataNameNull(){
-        GetDeviceDataResponse response= devicesServices.getDeviceData(new GetDeviceDataRequest("",23));
+        GetDeviceDataResponse response= devicesServices.getDeviceData(new GetDeviceDataRequest("",23,false));
         assertNotNull(response);
         assertEquals("No device name is specified", response.getStatus());
         assertEquals(false, response.getSuccess());
@@ -55,7 +55,7 @@ public class GetDeviceData {
     @Test
     @DisplayName("Device not found when searched for")
     public void getDeviceDataNotFound(){
-        GetDeviceDataResponse response= devicesServices.getDeviceData(new GetDeviceDataRequest("test",23));
+        GetDeviceDataResponse response= devicesServices.getDeviceData(new GetDeviceDataRequest("test",23,false));
         assertNotNull(response);
         assertEquals(false, response.getSuccess());
         assertEquals("Device does not exist",response.getStatus());
