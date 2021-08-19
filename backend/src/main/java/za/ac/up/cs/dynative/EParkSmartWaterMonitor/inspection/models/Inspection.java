@@ -4,6 +4,7 @@ import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 
+import java.util.ArrayList;
 import java.util.UUID;
 import java.util.Date;
 
@@ -25,7 +26,7 @@ public class Inspection {
 
     private String description;
 
-    private String comments;
+    private ArrayList<String> comments;
 
     private String status;
 
@@ -42,7 +43,7 @@ public class Inspection {
         this.dateCreated = new Date();
         this.dateDue = dateDue;
         this.description = description;
-        this.comments = "";
+        this.comments = new ArrayList<>();
         this.status = "NOT STARTED";
     }
 
@@ -65,11 +66,21 @@ public class Inspection {
         return this.id;
     }
 
-    public void setComments(String comments) {
+    public void setComments(ArrayList<String> comments) {
         this.comments = comments;
     }
 
-    public String getComments() {
+    public void addComment(String comment) {
+        if (this.comments != null) {
+            this.comments.add(comment);
+        }
+        else {
+            this.comments = new ArrayList<>();
+            this.comments.add(comment);
+        }
+    }
+
+    public ArrayList<String> getComments() {
         return this.comments;
     }
 
