@@ -172,7 +172,7 @@ public class InspectionServiceImpl implements InspectionService {
             return response;
         }
 
-        inspection.addComment(request.getComments());
+        inspection.setComments(request.getComments());
 
         inspectionRepo.save(inspection);
 
