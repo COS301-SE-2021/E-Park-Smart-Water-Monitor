@@ -57,6 +57,9 @@
   <a href="https://drive.google.com/file/d/17l6xFm0GIr8OcUFNloLxIEMFR_xsQAxa/view">User Muanual</a>
 </h2>
 
+<h2 align="center">
+  <a href="https://drive.google.com/file/d/1Fg8PA42goaZxA0qlhmuS9Ol2cqxX4gHt/view?usp=sharing">Installation Muanual</a>
+</h2>
 ## 📋 Table of Contents
 
 1. [Branching Strategy](#-branching-strategy)
