@@ -163,7 +163,7 @@
 
 <h3>Michaela Shormann</h3>
 
-<img src="https://media-exp1.licdn.com/dms/image/C5603AQG32gtGkTnrIg/profile-displayphoto-shrink_200_200/0/1618576752796?e=1628121600&v=beta&t=eGZDan8xXrgb_NkK1i18TRr00ilYpjtzAL3syDiMQJQ" align="left" width="200px"/> <p>Frontend Designer and Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/glithcy)
+<img src="https://media-exp1.licdn.com/dms/image/C5603AQHSBouXoYhbMA/profile-displayphoto-shrink_400_400/0/1627244760239?e=1634774400&v=beta&t=4hE7kp7VcreKci8d4bUrUe8kzyCCPLGbwbfO9qiTLfM" align="left" width="200px"/> <p>Frontend Designer and Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/glithcy)
 
 [![Linkedin](https://img.shields.io/badge/linkedin-%2361dafb?style=for-the-badge&logoColor=white&color=0A66C2&logo=Linkedin)](https://www.linkedin.com/in/michaela-schormann/)
 
