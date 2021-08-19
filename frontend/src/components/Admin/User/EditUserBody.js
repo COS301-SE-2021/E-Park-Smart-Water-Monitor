@@ -37,7 +37,6 @@ const EditUserBody = (props) => {
     const [parkOptions, setParkOptions] = useState("")
     const [error, setError] = useState("")
 
-    const context = useContext(AdminContext)
     const user = useContext(UserContext)
     const loader = useContext(LoadingContext)
     const toggleLoading = loader.toggleLoading

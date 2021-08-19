@@ -29,6 +29,7 @@ import AddInspectionBody from "../Inspection/AddInspectionBody";
 import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
+import {ScaleLoader} from "react-spinners";
 
 
 
@@ -45,6 +46,7 @@ const DeviceTable = () => {
     const [response, setResponse] = useState([]);
     const [device, setDevice] = useState({});
     const [value, setValue] = useState(0);
+    const [parksAndSites, setParksAndSites] = useState(null)
 
     const user = useContext(UserContext)
     const loader = useContext(LoadingContext)
@@ -75,6 +77,21 @@ const DeviceTable = () => {
             })
         }
     }
+
+    useEffect(() => {
+        // toggleGeneralLoading()
+        axios.get('http://localhost:8080/api/park/getAllParksAndSites', {
+            headers: {
+                'Authorization': "Bearer " + user.token
+            }
+        }).then((res)=>{
+            // toggleGeneralLoading()
+            if(res)
+            {
+                setParksAndSites(res.data)
+            }
+        });
+    },[])
 
     useEffect(() => {
         // get all users
@@ -273,16 +290,20 @@ const DeviceTable = () => {
                           marginBottom="3rem!important"
                           classes={{ root: classes.gridItemRoot }}
                           style={{ display: "flex", justifyContent: "flex-end", marginTop: "5px" }}>
-
+                        {parksAndSites &&
                         <Button
                             variant="contained"
                             color="primary"
                             size="medium"
-                            style={{width:'200px'}}
+                            style={{width: '200px'}}
                             onClick={() => setShow(true)}
                         >
                             Add Device
                         </Button>
+                        }
+                        { !parksAndSites &&
+                            <ScaleLoader size={10} height={15} color={"#5E72E4"} speedMultiplier={1.5} />
+                        }
                     </Grid>
                 </Grid>
 

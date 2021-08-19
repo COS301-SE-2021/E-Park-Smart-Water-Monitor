@@ -17,6 +17,7 @@ import {css} from "@emotion/react";
 import AddParkBody from "../../components/Admin/Park/AddParkBody";
 import Modal from "../../components/Modals/Modal";
 import {UserContext} from "../../Context/UserContext";
+import LoadingContext from "../../Context/LoadingContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -44,6 +45,7 @@ function Admin() {
     const [value, setValue] = useState(0)
 
     const user = useContext(UserContext)
+    const toggleGeneralLoading = useContext(LoadingContext).toggleLoading
 
     const selectPark = (details) => {
         setPark(details)
@@ -66,12 +68,13 @@ function Admin() {
     // to child components easily in future
 
     useEffect(() => {
-
+        // toggleGeneralLoading()
         axios.get('http://localhost:8080/api/park/getAllParksAndSites', {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
         }).then((res)=>{
+            // toggleGeneralLoading()
             if(res)
             {
                 setParksAndSites(res.data)
@@ -83,78 +86,67 @@ function Admin() {
     // https://medium.com/nerd-for-tech/using-context-api-in-react-with-functional-components-dbc653c7d485
     // https://medium.com/@danfyfe/using-react-context-with-functional-components-153cbd9ba214
 
-    if(parksAndSites === null){
-        return (
-            <>
+
+    return (
+        <>
                 <AdminHeader/>
-                <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
-            </>
-        )
-    }
-    else {
-        return (
-            <>
-                <AdminProvider value={ { parksAndSites: parksAndSites, toggleLoading: toggleLoading } } >
-                    <AdminHeader/>
-                    <Modal onClose={() => setShow(false)} show={show}>
-                        <div className="sweet-loading" style={ overlay }>
-                            <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
-                        </div>
-                    </Modal>
-                    <Container
-                        maxWidth={false}
-                        component={Box}
-                        marginTop="-1rem"
-                        classes={{root: classes.containerRoot}}
-                    >
-                        <Grid container>
-                            <Grid
-                                item
-                                xs={12}
-                                xl={12}
-                                component={Box}
-                                marginBottom="3rem!important"
-                                classes={{root: classes.gridItemRoot}}
-                            >
-                                <UserTable/>
-                                <DeviceTable/>
-                                <InspectionTable/>
-                            </Grid>
-
-                            {/* Sites altered on the change of park */}
-                            {parksAndSites &&
-                            <Grid
-                                item
-                                xs={12}
-                                xl={7}
-                                component={Box}
-                                marginBottom="3rem!important"
-                                classes={{root: classes.gridItemRoot}}
-                            >
-                                <SiteTable park={park}/>
-                            </Grid>
-                            }
-
-                            {parksAndSites &&
-                            <Grid
-                                item
-                                xs={12}
-                                xl={5}
-                                component={Box}
-                                marginBottom="3rem!important"
-                                classes={{root: classes.gridItemRoot}}
-
-                            >
-                                <ParkTable select={selectPark}/>
-                            </Grid>}
-
+                <Modal onClose={() => setShow(false)} show={show}>
+                    <div className="sweet-loading" style={ overlay }>
+                        <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
+                    </div>
+                </Modal>
+                <Container
+                    maxWidth={false}
+                    component={Box}
+                    marginTop="-1rem"
+                    classes={{root: classes.containerRoot}}
+                >
+                    <Grid container>
+                        <Grid
+                            item
+                            xs={12}
+                            xl={12}
+                            component={Box}
+                            marginBottom="3rem!important"
+                            classes={{root: classes.gridItemRoot}}
+                        >
+                            <UserTable/>
+                            <DeviceTable/>
+                            <InspectionTable/>
                         </Grid>
-                    </Container>
 
-                </AdminProvider>
-            </>
-        );
-    }
+                        {/* Sites altered on the change of park */}
+
+                        <Grid
+                            item
+                            xs={12}
+                            xl={7}
+                            component={Box}
+                            marginBottom="3rem!important"
+                            classes={{root: classes.gridItemRoot}}
+                        >
+                            <SiteTable park={park}/>
+                        </Grid>
+                        
+
+
+                        <Grid
+                            item
+                            xs={12}
+                            xl={5}
+                            component={Box}
+                            marginBottom="3rem!important"
+                            classes={{root: classes.gridItemRoot}}
+
+                        >
+                            <ParkTable select={selectPark}/>
+                        </Grid>
+
+                    </Grid>
+                </Container>
+        </>
+    );
+
 }
 
 export default Admin;

@@ -28,6 +28,7 @@ import {Tooltip} from "@material-ui/core";
 import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
+import {ScaleLoader} from "react-spinners";
 // import disableScroll from 'disable-scroll';
 
 // import AdminModal from 'admin-modal'
@@ -42,6 +43,8 @@ const UserTable = () => {
     const [showEdit, setShowEdit] = useState(false);
     const [response, setResponse] = useState([]);
     const [user, setUser] = useState({});
+    const [parksAndSites, setParksAndSites] = useState(null)
+
     // for reloads of the component values
     const [value, setValue] = useState(0);
 
@@ -71,6 +74,22 @@ const UserTable = () => {
         }
 
     }
+
+    // Get parks and sites
+    useEffect(() => {
+        // toggleGeneralLoading()
+        axios.get('http://localhost:8080/api/park/getAllParksAndSites', {
+            headers: {
+                'Authorization': "Bearer " + userContext.token
+            }
+        }).then((res)=>{
+            // toggleGeneralLoading()
+            if(res)
+            {
+                setParksAndSites(res.data)
+            }
+        });
+    },[])
 
 
     useEffect(() => {
@@ -151,11 +170,14 @@ const UserTable = () => {
                 classes={{ root: classes.containerRoot }}
 
             >
-                <Modal  title="Add User" onClose={() => setShowAdd(false)} show={ showAdd }>
-                    <AddUserBody reloadUserTable={ reloadUserTable } closeModal={() => setShowAdd(false)} />
-                </Modal>
+                { parksAndSites &&
+                <Modal title="Add User" onClose={() => setShowAdd(false)} show={showAdd}>
+                    <AddUserBody parksAndSites={parksAndSites} reloadUserTable={reloadUserTable}
+                                 closeModal={() => setShowAdd(false)}/>
+                </Modal> }
 
-                { user && <Modal title="Edit User" onClose={() => setShowEdit(false)} show={ showEdit }>
+                { user && parksAndSites &&
+                <Modal title="Edit User" onClose={() => setShowEdit(false)} show={ showEdit }>
                     <EditUserBody userDetails={ user } reloadUserTable={ reloadUserTable } closeModal={()=>{ setShowEdit(false) }}/>
                 </Modal> }
 
@@ -321,15 +343,20 @@ const UserTable = () => {
                         marginBottom="3rem!important"
                         classes={{ root: classes.gridItemRoot }}
                         style={{ display: "flex", justifyContent: "flex-end", marginTop: "5px"}}>
+                        {parksAndSites &&
                         <Button
                             variant="contained"
                             color="primary"
                             size="medium"
-                            style={{width:'200px'}}
+                            style={{width: '200px'}}
                             onClick={() => setShowAdd(true)}
                         >
                             Add User
                         </Button>
+                        }
+                        { !parksAndSites &&
+                            <ScaleLoader size={10} height={15} color={"#5E72E4"} speedMultiplier={1.5} />
+                        }
                     </Grid>
                 </Grid>
 

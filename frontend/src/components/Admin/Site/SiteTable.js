@@ -36,16 +36,14 @@ const SiteTable = (props) => {
     const [park, setPark] = useState({});
     const [value, setValue] = useState({});
     const [parkOptions, setParkOptions] = useState("")
+    const [parksAndSites, setParksAndSites] = useState(null)
 
-    const context = useContext(AdminContext)
-    const parksAndSites = context.parksAndSites
     const toggleLoading = useContext(LoadingContext).toggleLoading
     const user = useContext(UserContext)
 
     const reloadSiteTable = () => {
         setValue(value => value+1)
     }
-
 
     // on delete of a site
     const removeSite = (id) => {
@@ -69,23 +67,12 @@ const SiteTable = (props) => {
         }
     }
 
-    // get all the parks and sites on initial load
-    useEffect(() => {
-
-        // get the park and watersites and adjust when the value changes
-        let options = parksAndSites.parks.map((p)=>{
-            return {value: p.id, label: p.parkName}
-        })
-
-        setParkOptions(options)
-        setPark(options[0])
-
-    },[])
-
     // when updates or deletes are made to a watersite, get the watersites for the selected park again
     useEffect(() => {
         setTable()
     },[value])
+
+
 
     const setTable = () =>{
         axios.post('http://localhost:8080/api/park/getParkWaterSites', {
@@ -196,13 +183,7 @@ const SiteTable = (props) => {
                                             </Box>
 
                                         </Grid>
-                                        {/*Select Park Dropdown*/}
-                                        {/*<Grid item xs="auto"  xs={"12"} md={"6"}>*/}
-                                        {/*    <Box>*/}
-                                        {/*        /!*dropdown*!/*/}
-                                        {/*        <Select required={"required"} className="mb-3" name="park" options={ parkOptions } value={ park } onChange={e => setPark(e)}/>*/}
-                                        {/*    </Box>*/}
-                                        {/*</Grid>*/}
+
                                     </Grid>
                                 }
                                 classes={{ root: classes.cardHeaderRoot }}
