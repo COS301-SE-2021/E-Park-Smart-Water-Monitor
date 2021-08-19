@@ -23,6 +23,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditParkBody from "./EditParkBody";
 import {Tooltip} from "@material-ui/core";
 import AdminContext from '../AdminContext'
+import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
 
 
 const useStyles = makeStyles(componentStyles);
@@ -36,11 +38,9 @@ const ParkTable = (props) => {
     const [hover, setHover] = useState(true)
     const [value, setValue] = useState(0);
 
-    // get the parks context with the sites from the Admin parent component
-    // if you make this a state then the parent will rerender
-    const context = useContext(AdminContext)
-    const parksAndSites = context.parksAndSites
-    const toggleLoading = context.toggleLoading
+    const user = useContext(UserContext)
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
     const reloadParkTable = () => {
         setValue(value => value+1)
@@ -48,22 +48,26 @@ const ParkTable = (props) => {
 
     useEffect( () => {
 
-        let hoverStyle;
-        if (hover) {
-            hoverStyle = {cursor: 'pointer'}
-        } else {
-            hoverStyle = {cursor: 'default'}
-        }
+        // let hoverStyle;
+        // if (hover) {
+        //     hoverStyle = {cursor: 'pointer'}
+        // } else {
+        //     hoverStyle = {cursor: 'default'}
+        // }
 
 
         let obj = null;
 
         // if (parksAndSites && parksAndSites.parks) {
-        axios.get('http://localhost:8080/api/park/getAllParks').then((res)=> {
+        axios.get('http://localhost:8080/api/park/getAllParks',{
+            headers: {
+                'Authorization': "Bearer " + user.token
+            }
+        }).then((res)=> {
             obj = res.data.allParks.map((park) =>
                 <TableRow key={park.id}
                           onClick={handleParkSelection(park)} // send through the whole park object
-                          style={hoverStyle}
+                          // style={hoverStyle}
                           onMouseEnter={toggleHover}
                           onMouseLeave={toggleHover}
                 >
@@ -120,13 +124,23 @@ const ParkTable = (props) => {
         }
     }
 
+
     // on delete of a park
     const removePark = (id) => {
+
+        const config = {
+            headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
+        };
+
         return ()=>{
             toggleLoading()
             axios.delete('http://localhost:8080/api/park/deletePark', {
                 data: {
                     parkId: id
+                }
+            }, {
+                headers: {
+                    'Authorization': "Bearer " + user.token
                 }
             }).then((res)=> {
                 toggleLoading()

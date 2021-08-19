@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import PropTypes from "prop-types";
 import { useLocation, Link } from "react-router-dom";
 // @material-ui/core components
@@ -20,6 +20,13 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 // core components
 import componentStyles from "assets/theme/components/sidebar.js";
+import {UserContext} from "../../Context/UserContext";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import {Contacts, Email, EmojiPeople, People, Pets, Smartphone} from "@material-ui/icons";
+import Person from "@material-ui/icons/Person";
+import Button from "@material-ui/core/Button";
+import EditProfileContext from "../../Context/EditProfileContext";
+import LoadingContext from "../../Context/LoadingContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -30,6 +37,11 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
 
   const isMenuOpen = Boolean(anchorEl);
 
+  const user = useContext(UserContext)
+
+  const editProfile = useContext(EditProfileContext)
+  const toggleEditProfile = editProfile.toggleEditProfile
+
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -38,10 +50,27 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
     setAnchorEl(null);
   };
 
+  const editProfileAction = ()=> {
+    toggleEditProfile()
+  }
+
   const menuId = "responsive-menu-id";
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes) => {
-    return routes.map((prop, key) => {
+
+    // Test admin status and remove that element from appearing
+    let routesWithAdminConstraint = []
+    if(user.role && user.role !== "ADMIN")
+    {
+      // remove the admin prop from the array
+      routesWithAdminConstraint = routes.filter((elem)=>{
+          return elem.name !== "Admin"
+      })
+      routes = [...routesWithAdminConstraint]
+    }
+
+    let items = routes.map((prop, key) => {
+
       if (prop.divider) {
         return <Divider key={key} classes={{ root: classes.divider }} />;
       } else if (prop.title) {
@@ -56,6 +85,7 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
           </Typography>
         );
       }
+
       let textContent = (
         <>
           <Box minWidth="2.25rem" display="flex" alignItems="center">
@@ -77,6 +107,7 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
           {prop.name}
         </>
       );
+      // link to the pro site
       if (prop.href) {
         return (
           <ListItem
@@ -98,14 +129,14 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
             {textContent}
           </ListItem>
         );
-      } else {
+      } else { // all the components currently fall in here
         return (
           <ListItem
             key={key}
             component={Link}
             onClick={handleMenuClose}
             to={prop.layout + prop.path}
-            classes={{
+            classes={{ // makes the icons appear properly next to the text
               root:
                 classes.listItemRoot +
                 (prop.upgradeToPro
@@ -123,7 +154,40 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
         );
       }
     });
+
+    // append all the new list items for the user details to the routes array created above
+    let profileItem = (name,icon)=>{
+      return (
+          <ListItem
+              key={ name }
+
+              classes={{ // makes the icons appear properly next to the text
+                root: classes.listItemRoot,
+              }}
+          >
+            <Box minWidth="2.25rem" display="flex" alignItems="center">
+              <Box
+                  component={icon}
+                  width="1.25rem!important"
+                  height="1.25rem!important"
+                  className={classes["text"]}
+              />
+            </Box>
+            {name}
+          </ListItem>
+      )
+    }
+
+    items.push(profileItem(`${user.name} ${user.surname}`,Person))
+    items.push(profileItem(user.username,Contacts))
+    items.push(profileItem(user.role,People))
+    items.push(profileItem(user.email,Email))
+    items.push(profileItem(user.cellNumber,Smartphone))
+    items.push(profileItem(user.parkName,Pets))
+
+    return items
   };
+  // logo at the top
   let logoImage = (
     <img alt={logo.imgAlt} className={classes.logoClasses} src={logo.imgSrc} />
   );
@@ -142,9 +206,17 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
       <Hidden smDown implementation="css">
         <Drawer variant="permanent" anchor="left" open>
           <Box paddingBottom="1rem">{logoObject}</Box>
+          {/*all the sidebar components are created here for the full width view */}
           <List classes={{ root: classes.listRoot }}>
             {createLinks(routes)}
           </List>
+          <Box paddingLeft="1.25rem" paddingRight="1.25rem">
+            <Button
+                variant={"outlined"}
+                size={"small"}
+                onClick={editProfileAction}
+            >Edit Profile</Button>
+          </Box>
         </Drawer>
       </Hidden>
       <Hidden mdUp implementation="css">
@@ -211,9 +283,18 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
           <Box paddingLeft="1.25rem" paddingRight="1.25rem">
             {input}
           </Box>
+          {/*render the mobile view menu*/}
           <List classes={{ root: classes.listRoot }}>
             {createLinks(routes)}
           </List>
+          <Box paddingLeft="1.25rem" paddingRight="1.25rem">
+            <Button
+                variant={"outlined"}
+                size={"small"}
+                onClick={editProfileAction}
+            >Edit Profile</Button>
+          </Box>
+
         </Menu>
       </Hidden>
     </>

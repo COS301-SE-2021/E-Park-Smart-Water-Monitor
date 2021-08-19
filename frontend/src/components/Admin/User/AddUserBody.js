@@ -9,6 +9,8 @@ import Row from "react-bootstrap/Row";
 import axios from "axios";
 import AdminContext from "../AdminContext";
 import {DotLoader} from "react-spinners";
+import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
 const { Form } = require( "react-bootstrap" );
 
 const styles = {
@@ -35,20 +37,20 @@ const AddUserBody = (props) => {
     const [cellNumber, setCellNumber] = useState("")
     const [parkOptions, setParkOptions] = useState("")
 
-
     let userRoles = [
         { value: 'ADMIN', label: 'Admin' },
         { value: 'FIELD_ENGINEER', label: 'Field Engineer' },
         { value: 'RANGER', label: 'Ranger' }
     ];
 
-    const context = useContext(AdminContext)
-    const parksAndSites = context.parksAndSites
-    const toggleLoading = context.toggleLoading
+
+    const user = useContext(UserContext)
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
 
     useEffect(() => {
-        let options = parksAndSites.parks.map((p)=>{
+        let options = props.parksAndSites.parks.map((p)=>{
             return {value: p.id, label: p.parkName}
         })
 
@@ -79,7 +81,11 @@ const AddUserBody = (props) => {
             cellNumber: `+27${cellNumber}`
         }
 
-        axios.post('http://localhost:8080/api/user/createUser', obj
+        axios.post('http://localhost:8080/api/user/createUser', obj, {
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
+            }
         ).then((res)=>{
 
             // reload the parent to refetch the data with out reloading the whole page

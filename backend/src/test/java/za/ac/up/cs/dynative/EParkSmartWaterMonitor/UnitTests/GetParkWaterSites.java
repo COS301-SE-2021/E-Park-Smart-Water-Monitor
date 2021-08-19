@@ -43,6 +43,10 @@ public class GetParkWaterSites {
     double lon1=28.737437;
     double lon2=28.007437;
     double lon3=28.555437;
+    String shape="circle";
+    double length = 0;
+    double width=0;
+    double radius=1.785;
     String name1="UnitTest 1";
     String name2="UnitTest 2";
     String name3="UnitTest 3";
@@ -76,9 +80,9 @@ public class GetParkWaterSites {
     @DisplayName("Find all the sites of an existing park.")
     public void GetParkWaterSitesExisting() throws InvalidRequestException {
         //setting up the repo
-        site1= new WaterSite(id1,name1,lat1,lon1);
-        site2= new WaterSite(id2,name2,lat2,lon2);
-        site3= new WaterSite(id3,name3,lat3,lon3);
+        site1= new WaterSite(id1,name1,lat1,lon1,shape,length,width,radius);
+        site2= new WaterSite(id2,name2,lat2,lon2,shape,length,width,radius);
+        site3= new WaterSite(id3,name3,lat3,lon3,shape,length,width,radius);
         site= new HashSet<>();
         site.add(site1);
         site.add(site2);

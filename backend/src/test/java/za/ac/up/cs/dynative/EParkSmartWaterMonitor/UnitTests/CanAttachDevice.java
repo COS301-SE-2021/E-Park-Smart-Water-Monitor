@@ -31,6 +31,10 @@ public class CanAttachDevice {
     double lat1= -27.371767;
     double lon1=28.737437;
     String name1="UnitTest 1";
+    String shape="circle";
+    double length = 0;
+    double width=0;
+    double radius=1.785;
 
     @Test
     @DisplayName("Test if a device can be added to a site, but the site id is null")

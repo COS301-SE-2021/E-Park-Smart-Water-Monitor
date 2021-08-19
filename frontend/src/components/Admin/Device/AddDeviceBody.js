@@ -7,6 +7,8 @@ import Select from "react-select";
 import axios from "axios";
 import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import AdminContext from "../AdminContext";
+import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
 
 
 const mapStyles = {
@@ -27,12 +29,10 @@ const AddDeviceBody = (props) => {
     const [model, setModel] = useState("ESP32")
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
-    const [currentPos, setCurrentPos] = useState([-25.88536975144579, 28.277796392845673])
 
     // use the context supplied from the admin component to get the parks and sites
-    const context = useContext(AdminContext)
-    const parksAndSites = context.parksAndSites;
-    const toggleLoading = context.toggleLoading
+    const user = useContext(UserContext)
+    const toggleLoading = useContext(LoadingContext).toggleLoading
 
     // getting the clicked location on
     function MapEvents() {
@@ -40,13 +40,11 @@ const AddDeviceBody = (props) => {
             click: (e) => {
                 setLatitude(e.latlng.lat)
                 setLongitude(e.latlng.lng)
-            },
-            drag : () => {
-
             }
         })
         return null
     }
+
 
 
     const assignSiteOptions = (selectedPark) => {
@@ -69,7 +67,7 @@ const AddDeviceBody = (props) => {
     // get the parks to populate the select
     useEffect(() => {
 
-        let options = parksAndSites.parks.map((p)=>{
+        let options = props.parksAndSites.parks.map((p)=>{
             return {value: p.id, label: p.parkName}
         })
 
@@ -83,13 +81,11 @@ const AddDeviceBody = (props) => {
     // get sites for this park when the park selected changes
     useEffect(() => {
         if(park && park.value) {
-
             // find the park object in the parksAndSites
             // object using the park ID to retreive the
             // relevant sites to display
-            let selectedPark = parksAndSites.parks.filter( p => p.id === park.value )
+            let selectedPark = props.parksAndSites.parks.filter( p => p.id === park.value )
             assignSiteOptions(selectedPark[0])
-
         }
     },[park])
 
@@ -108,9 +104,11 @@ const AddDeviceBody = (props) => {
             longitude: longitude
         }
         console.log("Adding Device: "+JSON.stringify(obj))
-        axios.post('http://localhost:8080/api/devices/addDevice',
-            obj
-        ).then((res) => {
+        axios.post('http://localhost:8080/api/devices/addDevice', obj, {
+            headers: {
+                'Authorization': "Bearer " + user.token
+            }
+        }).then((res) => {
 
             toggleLoading();
             props.closeModal()
@@ -170,7 +168,7 @@ const AddDeviceBody = (props) => {
 
                 <Row>
                     <Col>
-                        Click on the map to select the location
+                        Click on the map to select the device location
                         <div style={ { height: 250 } } className="mb-3" >
                             {/*rietvlei centre*/}
                             {latitude && longitude && <MapContainer
@@ -183,13 +181,12 @@ const AddDeviceBody = (props) => {
                                     attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                 />
-                                { currentPos && <Marker
-                                    position={[latitude, longitude]}
-                                >
-                                <Popup>
-                                    Current location: <pre>{JSON.stringify( currentPos, null, 2)}</pre>
-                                </Popup>
-                                </Marker>}
+                                <Marker position={[latitude, longitude]}>
+                                    <Popup>
+                                        { name !== "" && `${name} location` }
+                                        { name === "" && "Device Location" }
+                                    </Popup>
+                                </Marker>
 
                                 <MapEvents/>
 

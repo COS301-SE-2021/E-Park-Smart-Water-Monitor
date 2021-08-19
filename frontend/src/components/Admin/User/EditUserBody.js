@@ -6,6 +6,8 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
 import AdminContext from "../AdminContext";
+import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
 const { Form } = require( "react-bootstrap" );
 
 const styles = {
@@ -35,8 +37,9 @@ const EditUserBody = (props) => {
     const [parkOptions, setParkOptions] = useState("")
     const [error, setError] = useState("")
 
-    const context = useContext(AdminContext)
-    const toggleLoading = context.toggleLoading
+    const user = useContext(UserContext)
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
     let userRoles = [
         { value: 'ADMIN', label: 'Admin' },
@@ -110,7 +113,11 @@ const EditUserBody = (props) => {
             }
 
 
-            axios.post('http://localhost:8080/api/user/editUser', obj
+            axios.put('http://localhost:8080/api/user/editUser', obj, {
+                    headers: {
+                        'Authorization': "Bearer " + user.token
+                    }
+                }
             ).then((res)=>{
 
                 console.log("response:"+JSON.stringify(res))
