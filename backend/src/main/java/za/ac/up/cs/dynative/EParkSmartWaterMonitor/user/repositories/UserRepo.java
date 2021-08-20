@@ -29,4 +29,6 @@ public interface UserRepo extends Neo4jRepository<User, UUID> {
 
     @Query("    MATCH (users:User)-[:WORKS_FOR]->(x:Park) where (x)-[:HAS_WATER_SITE]->(:WaterSite)-[]->(:Device{deviceName: $dName}) return users")
     List<User> findUsersWorkingAtDevicePark(@Param("dName") String dName);
+
+    //void deleteUserById
 }

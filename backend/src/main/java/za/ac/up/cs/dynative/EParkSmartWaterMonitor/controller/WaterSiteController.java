@@ -32,6 +32,11 @@ public class WaterSiteController {
         return new ResponseEntity<>(waterSiteService.addSite(addSiteRequest),HttpStatus.ACCEPTED);
     }
 
+    @PostMapping("/deleteInternal")
+    public ResponseEntity<Object> deleteInternal(@RequestBody DeleteWaterSiteRequest deleteWaterSiteRequest) {
+        return new ResponseEntity<>(waterSiteService.deleteWaterSite(deleteWaterSiteRequest), HttpStatus.OK);
+    }
+
     @GetMapping("/getAllSites")
     public java.util.Collection<WaterSite> getDevice() {
         return waterSiteService.getAll();

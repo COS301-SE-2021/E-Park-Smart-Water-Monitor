@@ -11,4 +11,5 @@ public interface InspectionService {
     public SetInspectionCommentsResponse setInspectionComments(SetInspectionCommentsRequest request);
     public SetInspectionDescriptionResponse setInspectionDescription(SetInspectionDescriptionRequest request);
     public GetAllInspectionsResponse getAllInspections();
+    public DeleteInternalResponse deleteInternal(DeleteInternalRequest request);
 }

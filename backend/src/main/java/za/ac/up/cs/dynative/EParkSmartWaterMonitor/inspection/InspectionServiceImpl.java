@@ -73,6 +73,7 @@ public class InspectionServiceImpl implements InspectionService {
         waterSiteService.saveSite(new SaveSiteRequest(getSiteByIdResponse));
         response.setStatus("Inspection successfully added!");
         response.setSuccess(true);
+        response.setId(inspection.getId());
         return  response;
     }
 
@@ -218,6 +219,12 @@ public class InspectionServiceImpl implements InspectionService {
 //        }
 //        System.out.println("HUH2");
         return response ;
+    }
+
+    @Override
+    public DeleteInternalResponse deleteInternal(DeleteInternalRequest request) {
+        inspectionRepo.deleteById(request.getId());
+        return new DeleteInternalResponse(true);
     }
 
 }

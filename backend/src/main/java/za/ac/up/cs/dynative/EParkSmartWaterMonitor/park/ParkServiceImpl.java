@@ -36,6 +36,7 @@ public class ParkServiceImpl implements ParkService {
             parkRepo.save(park);
             response.setStatus("Park "+request.getParkName()+" Added!");
             response.setSuccess(true);
+            response.setId(park.getId());
         }
         else {
             response.setStatus("No park name specified!");

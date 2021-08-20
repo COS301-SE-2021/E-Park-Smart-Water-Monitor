@@ -55,6 +55,7 @@ public class WaterSiteServicesImpl implements WaterSiteService {
                     parkService.savePark(new SaveParkRequest(findByParkIdResponse.getPark()));
                     response.setStatus("Successfully added: " + request.getSiteName());
                     response.setSuccess(true);
+                    response.setId(waterSite.getId());
                 }else {
                     response.setStatus("Park not found");
                     response.setSuccess(false);
@@ -148,6 +149,7 @@ public class WaterSiteServicesImpl implements WaterSiteService {
 
     @Override
     public DeleteWaterSiteResponse deleteWaterSite(DeleteWaterSiteRequest request) {
+        System.out.println(request.getWaterSiteId());
         if (request.getWaterSiteId() == null) {
             return new DeleteWaterSiteResponse("No watersite id specified.", false);
         }
