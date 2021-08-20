@@ -137,7 +137,7 @@
 
 <h3>Rolan Strydom</h3>
 
-<img src="https://user-images.githubusercontent.com/73602692/115803778-dd422200-a3e1-11eb-8f91-0cb8e5b123a3.jpeg" align="left" width="200px"/> <p>Group Leader and Backend Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/TheySeeMeRolan)
+<img src="https://media-exp1.licdn.com/dms/image/C4D03AQFJzDbdcaLnvg/profile-displayphoto-shrink_200_200/0/1605289307473?e=1634774400&v=beta&t=VW_P_xVd7aw-jscrqlT7-oR4PVpv9tOV15QvXiKWicI" align="left" width="200px"/> <p>Group Leader and Backend Developer</p> [![Github](https://img.shields.io/badge/github-%2361dafb?style=for-the-badge&logoColor=white&color=161b22&logo=github)](https://github.com/TheySeeMeRolan)
 
 [![Linkedin](https://img.shields.io/badge/linkedin-%2361dafb?style=for-the-badge&logoColor=white&color=0A66C2&logo=Linkedin)](https://www.linkedin.com/in/rolanstrydom/)
 
