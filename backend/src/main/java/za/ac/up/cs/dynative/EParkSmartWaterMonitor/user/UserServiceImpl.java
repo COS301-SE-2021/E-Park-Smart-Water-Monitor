@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.NotificationService;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.NotificationServiceImpl;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.ParkService;
@@ -37,8 +36,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepo userRepo;
     private final ParkService parkService;
     private final NotificationService notificationService;
-
-
 
     @Autowired
     public UserServiceImpl(@Qualifier("UserRepo") UserRepo userRepo,
@@ -111,7 +108,9 @@ public class UserServiceImpl implements UserService {
                     Park park = findByParkIdResponse.getPark();
                     if (park != null) {
                         User user = new User(Long.parseLong(idNumber), email, name, surname, passwordEncoder.encode(password), username, role, park, cellNumber);
-                        userRepo.save(user);
+
+                        userRepo.addUser( UUID.randomUUID(),user.getIdNumber(),user.getEmail(), user.getName(),user.getName(),user.getSurname(),user.getUsername(),user.getRole(),user.getPark().getId(),user.getPark().getParkName(),user.getCellNumber());
+
                         response.setStatus("Successfully create user: "
                                 + name
                                 + " "
@@ -144,7 +143,9 @@ public class UserServiceImpl implements UserService {
         EditUserResponse response = new EditUserResponse();
         List<User> usersWithUsername = userRepo.findUserByUsername(request.getUsername());
         User userToChange=null;
-        if (usersWithUsername.size() != 0) {
+        String originalUsername=request.getUsername();
+        if (usersWithUsername.size() != 0)
+        {
             userToChange= usersWithUsername.get(0);
             if (!request.getNewUsername().equals("")) {
                 usersWithUsername = userRepo.findUserByUsername(request.getNewUsername());
@@ -215,8 +216,23 @@ public class UserServiceImpl implements UserService {
             if (!request.getRole().equals("")) {
                 userToChange.setRole(request.getRole());
             }
-            if (userToChange != null) {
-                userRepo.save(userToChange);
+
+
+
+
+            if (userToChange != null)
+            {
+//                userRepo.save(userToChange);
+                userRepo.editUser(
+                        userToChange.getRole() ,
+                        userToChange.getIdNumber() ,
+                        userToChange.getName(),
+                        userToChange.getSurname(),
+                        originalUsername,
+                        userToChange.getUsername() ,
+                        userToChange.getEmail(),
+                        userToChange.getCellNumber());
+
             }
             response.setStatus("User details updated.");
             response.setSuccess(true);
@@ -257,14 +273,6 @@ public class UserServiceImpl implements UserService {
                 authorities.add(new SimpleGrantedAuthority(user.getRole()));
                 Authentication auth = new UsernamePasswordAuthenticationToken(username, password, authorities);
                 JWTToken =  jwtTokenProvider.generateToken(auth);
-//                        Jwts.builder()
-//                        .setHeader(head)
-//                        .setSubject(username)
-//                        .setClaims(claims)
-//                        .setIssuedAt(new Date())
-//                        .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(7)))
-//                        .signWith(SignatureAlgorithm.HS512, "secret")
-//                        .compact();
                 return new LoginResponse(true, JWTToken,
                         user.getRole(),
                         user.getEmail(),
