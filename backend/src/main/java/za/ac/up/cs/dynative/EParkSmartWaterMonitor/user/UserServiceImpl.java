@@ -114,9 +114,8 @@ public class UserServiceImpl implements UserService {
 
                     if (park != null) {
                         User user = new User(Long.parseLong(idNumber), email, name, surname, passwordEncoder.encode(password), username, role, park, cellNumber);
-//                        void addUser( String surname, String password, String username, String role, UUID parkId , String parkName, String cellNumber);
+
                         userRepo.addUser( UUID.randomUUID(),user.getIdNumber(),user.getEmail(), user.getName(),user.getName(),user.getSurname(),user.getUsername(),user.getRole(),user.getPark().getId(),user.getPark().getParkName(),user.getCellNumber());
-//                        userRepo.save(user);
 
                         response.setStatus("Successfully create user: "
                                 + name
@@ -318,14 +317,6 @@ public class UserServiceImpl implements UserService {
                 Authentication auth = new UsernamePasswordAuthenticationToken(username, password, authorities);
 
                 JWTToken =  jwtTokenProvider.generateToken(auth);
-//                        Jwts.builder()
-//                        .setHeader(head)
-//                        .setSubject(username)
-//                        .setClaims(claims)
-//                        .setIssuedAt(new Date())
-//                        .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusDays(7)))
-//                        .signWith(SignatureAlgorithm.HS512, "secret")
-//                        .compact();
 
                 return new LoginResponse(true, JWTToken,
                         user.getRole(),
