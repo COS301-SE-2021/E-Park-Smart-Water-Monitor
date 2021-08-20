@@ -111,7 +111,6 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/park/editPark").hasAnyRole("ADMIN")
                 .antMatchers("/api/user/createUser").permitAll()
                 .antMatchers("/api/user/deleteUser").hasAnyRole("ADMIN")
-                .antMatchers("/api/devices/dataNotification").permitAll()
                 .antMatchers("/api/user/editUser").hasAnyRole("ADMIN")
                 .antMatchers("/api/user/resetPassword").permitAll()
                 .antMatchers("/api/user/resetPasswordFinalize").permitAll()

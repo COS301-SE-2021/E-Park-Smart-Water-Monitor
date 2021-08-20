@@ -348,8 +348,7 @@ public class DevicesServicesImpl implements DevicesService
     }
 
     @Override
-    public EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest)
-    {
+    public EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest) {
         EditDeviceResponse response = new EditDeviceResponse();
         if (editDeviceRequest==null){
             response.setStatus("Request is null");
@@ -379,8 +378,7 @@ public class DevicesServicesImpl implements DevicesService
                 }
                 response.setStatus("Device successfully edited.");
                 response.setSuccess(true);
-//                deviceRepo.save(deviceToChange.get());
-                deviceRepo.editDevice(editDeviceRequest.getDeviceId(),deviceToChange.get().getDeviceName(),deviceToChange.get().getDeviceModel());
+                deviceRepo.save(deviceToChange.get());
                 return response;
             }
             else {
