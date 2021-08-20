@@ -9,5 +9,7 @@ public interface InspectionService {
     public GetDeviceInspectionsResponse getDeviceInspections(GetDeviceInspectionsRequest request);
     public SetInspectionStatusResponse setInspectionStatus(SetInspectionStatusRequest request);
     public SetInspectionCommentsResponse setInspectionComments(SetInspectionCommentsRequest request);
+    public SetInspectionDescriptionResponse setInspectionDescription(SetInspectionDescriptionRequest request);
     public GetAllInspectionsResponse getAllInspections();
+    public DeleteInternalResponse deleteInternal(DeleteInternalRequest request);
 }

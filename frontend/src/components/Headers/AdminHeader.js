@@ -19,7 +19,8 @@ const AdminHeader = () => {
                     maxWidth={false}
                     component={Box}
                     classes={{ root: classes.containerRoot }}
-                ><Stats/>
+                >
+                {/*<Stats/>*/}
                 </Container>
             </div>
         </>

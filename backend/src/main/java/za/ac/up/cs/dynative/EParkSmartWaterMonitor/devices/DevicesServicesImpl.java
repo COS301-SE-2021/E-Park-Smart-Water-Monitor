@@ -9,6 +9,7 @@ import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.regions.Region;
@@ -17,6 +18,8 @@ import software.amazon.awssdk.services.iot.model.AttributePayload;
 import software.amazon.awssdk.services.iot.model.CreateThingRequest;
 import software.amazon.awssdk.services.iot.model.CreateThingResponse;
 import software.amazon.awssdk.services.iotdataplane.IotDataPlaneClient;
+import software.amazon.awssdk.services.iotdataplane.model.PublishRequest;
+import software.amazon.awssdk.services.iotdataplane.model.PublishResponse;
 import software.amazon.awssdk.services.iotdataplane.model.UpdateThingShadowRequest;
 import software.amazon.awssdk.services.iotdataplane.model.UpdateThingShadowResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.DataNotification;
@@ -42,22 +45,24 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.FindByParkIdReq
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.responses.FindByParkIdResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.UserService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.repositories.UserRepo;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.GetAllDevicesResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AttachWaterSourceDeviceRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.CanAttachWaterSourceDeviceRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.DeleteWaterSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AttachWaterSourceDeviceResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.CanAttachWaterSourceDeviceResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.DeleteWaterSiteResponse;
 
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service("DeviceServiceImpl")
 public class DevicesServicesImpl implements DevicesService
 {
-
+    @Autowired
     private DeviceRepo deviceRepo;
     private ParkService parkService;
     private InspectionService inspectionService;
@@ -69,9 +74,10 @@ public class DevicesServicesImpl implements DevicesService
     private IotDataPlaneClient iotDataPlaneClient;
     private AmazonDynamoDB dynamoDBClient;
     private DynamoDB dynamoDB;
-
-    public DevicesServicesImpl(@Qualifier("WaterSourceDeviceRepo") DeviceRepo deviceRepo,
-                               @Qualifier("InspectionServiceImpl") InspectionService inspectionService,
+    @Autowired
+    public DevicesServicesImpl(
+                                @Qualifier("WaterSourceDeviceRepo") DeviceRepo deviceRepo,
+                               @Lazy @Qualifier("InspectionServiceImpl") InspectionService inspectionService,
                                @Qualifier("ParkService") ParkService parkService,
                                @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService,
                                @Qualifier("NotificationServiceImpl") NotificationService notificationService,
@@ -81,7 +87,10 @@ public class DevicesServicesImpl implements DevicesService
     )
     {
         this.deviceRepo = deviceRepo;
+        this.inspectionService=inspectionService;
+        this.userService=userService;
         this.parkService = parkService;
+        this.notificationService=notificationService;
         this.measurementRepo = measurementRepo;
         this.waterSiteService = waterSiteService;
         this.iotClient = IotClient.builder().region(Region.US_EAST_2).build();
@@ -96,67 +105,59 @@ public class DevicesServicesImpl implements DevicesService
 
     public AddDeviceResponse addDevice(AddDeviceRequest addDeviceRequest) throws InvalidRequestException {
         AddDeviceResponse response = new AddDeviceResponse();
-        if (addDeviceRequest.getParkName().equals("")||addDeviceRequest.getSiteId()==null||addDeviceRequest.getDeviceModel().equals("")||addDeviceRequest.getDeviceType().equals("")||addDeviceRequest.getDeviceName().equals(""))
-        {
+        if (addDeviceRequest.getParkName().equals("")||addDeviceRequest.getSiteId()==null||addDeviceRequest.getDeviceModel().equals("")||addDeviceRequest.getDeviceType().equals("")||addDeviceRequest.getDeviceName().equals("")) {
             response.setSuccess(false);
             response.setStatus("Request is missing parameters.");
             return response;
         }
         List<Device> devices = deviceRepo.findDeviceByDeviceName(addDeviceRequest.getDeviceName());
-
         if (devices.size() == 0) {
-
-            CanAttachWaterSourceDeviceResponse canAttachWaterSourceDeviceResponse = waterSiteService.canAttachWaterSourceDevice(new CanAttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId()));
-
+            CanAttachWaterSourceDeviceResponse canAttachWaterSourceDeviceResponse =
+                    waterSiteService.canAttachWaterSourceDevice(new CanAttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId()));
             if (!canAttachWaterSourceDeviceResponse.getSuccess()) {
                 response.setSuccess(false);
                 response.setStatus("The water site " + addDeviceRequest.getSiteId() + " does not exist.");
                 return response;
             } else {
-
                 Map<String, String> attributes = Map.of("deviceModel",addDeviceRequest.getDeviceModel());
-
                 AttributePayload attributePayload = AttributePayload.builder()
                         .attributes(attributes)
                         .build();
-
                 CreateThingRequest createThingRequest = CreateThingRequest.builder()
                         .thingName(addDeviceRequest.getDeviceName())
                         .thingTypeName("WaterSourceDevice")
                         .attributePayload(attributePayload)
                         .build();
-
                 CreateThingResponse createThingResponse = iotClient.createThing(createThingRequest);
 
-                Device newDevice = new Device(UUID.fromString(createThingResponse.thingId()),addDeviceRequest.getDeviceName(),addDeviceRequest.getDeviceType(), addDeviceRequest.getDeviceModel(), addDeviceRequest.getLongitude(), addDeviceRequest.getLatitude());
+                Device newDevice = new Device(UUID.fromString(createThingResponse.thingId()),
+                        addDeviceRequest.getDeviceName(),
+                        addDeviceRequest.getDeviceType(),
+                        addDeviceRequest.getDeviceModel(),
+                        addDeviceRequest.getLongitude(),
+                        addDeviceRequest.getLatitude());
+
                 AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse = waterSiteService.attachWaterSourceDevice(new AttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId(), newDevice));
 
                 String payload = "{\"state\": {\"reported\": {";
                 payload += newDevice.getDeviceData().toString();
                 payload += "}}}";
-
                 SdkBytes shadowPayload = SdkBytes.fromUtf8String(payload);
-
                 UpdateThingShadowRequest updateThingShadowRequest = UpdateThingShadowRequest.builder()
                         .thingName(createThingResponse.thingName())
                         .shadowName(createThingResponse.thingName()+"_Shadow")
                         .payload(shadowPayload)
                         .build();
-
                 UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
-
                 deviceRepo.save(newDevice);
                 response.setSuccess(true);
                 response.setStatus("Device " + addDeviceRequest.getDeviceName() + " successfully added");
             }
-
         } else {
             response.setSuccess(false);
             response.setStatus("Device " + addDeviceRequest.getDeviceName() + " already exists.");
         }
-
         return response;
-
     }
 
     public FindDeviceResponse findDevice(FindDeviceRequest findDeviceRequest)  {
@@ -167,8 +168,7 @@ public class DevicesServicesImpl implements DevicesService
             return new FindDeviceResponse("No device ID specified",false,null);
         }
         Optional<Device> device = deviceRepo.findById(findDeviceRequest.getDeviceID());
-        if (device.isPresent())
-        {
+        if (device.isPresent()) {
             return new FindDeviceResponse("Device found",true,device.get());
         }
         else
@@ -178,9 +178,14 @@ public class DevicesServicesImpl implements DevicesService
 
     @Override
     public ReceiveDeviceDataResponse receiveWaterDeviceData(ReceiveDeviceDataRequest request) {
+        if (request.getDeviceName().equals("")){
+            ReceiveDeviceDataResponse response= new ReceiveDeviceDataResponse();
+            response.setSuccess(false);
+            response.setStatus("No device name is specified.");
+            return response;
+        }
         List<Device> devices = deviceRepo.findDeviceByDeviceName(request.getDeviceName());
         ReceiveDeviceDataResponse response = new ReceiveDeviceDataResponse();
-
         if (devices.size()==0){
             response.setSuccess(false);
             response.setStatus("Device with that name does not exist");
@@ -198,15 +203,12 @@ public class DevicesServicesImpl implements DevicesService
                 measurementRepo.save(data);
             }
             deviceRepo.save(device);
-
-
             response.setStatus(
                     "Successfully added data send from ESP: "
                             + request.getDeviceName()
                             + " sent at: "
                             + request.getMeasurements().get(0).getDeviceDateTime());
             response.setSuccess(true);
-
         } else {
             response.setSuccess(false);
             response.setStatus("Request Failed... fix not applied!");
@@ -229,12 +231,12 @@ public class DevicesServicesImpl implements DevicesService
                 getNumDevicesResponse.setNumDevices(deviceRepo.getAllParkDevices(request.getParkId()).size());
                 getNumDevicesResponse.setSuccess(true);
             }else{
-                getNumDevicesResponse.setNumDevices(-1);
+                getNumDevicesResponse.setNumDevices(-2);
                 getNumDevicesResponse.setSuccess(false);
                 return getNumDevicesResponse;
             }
         } else{
-            getNumDevicesResponse.setNumDevices(-1);
+            getNumDevicesResponse.setNumDevices(-3);
             getNumDevicesResponse.setSuccess(false);
             return getNumDevicesResponse;
         }
@@ -242,7 +244,7 @@ public class DevicesServicesImpl implements DevicesService
     }
 
     @Override
-    public GetParkDevicesResponse getParkDevices(GetParkDevicesRequest request)  {
+    public GetParkDevicesResponse getParkDevices(GetParkDevicesRequest request)  {  //This is not correct :(
         GetParkDevicesResponse getParkDevicesResponse = new GetParkDevicesResponse();
         if (request==null){
             getParkDevicesResponse.setSite(null);
@@ -251,9 +253,7 @@ public class DevicesServicesImpl implements DevicesService
             return getParkDevicesResponse;
         }
         if (request.getParkId() != null) {
-
             List<Device> devices = deviceRepo.findAll();
-
             if (devices != null) {
                 getParkDevicesResponse.setSite(devices);
                 getParkDevicesResponse.setSuccess(true);
@@ -275,39 +275,39 @@ public class DevicesServicesImpl implements DevicesService
 
     @Override
     public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request)  {
-        GetDeviceDataResponse response =  new GetDeviceDataResponse("Failed to load device data for device: " + request.getDeviceName(),false);
-        GetDeviceInnerResponse innerResponse;
-
         if (request==null){
-            response.setSuccess(false);
-            response.setStatus("Request is null");
+            GetDeviceDataResponse response =  new GetDeviceDataResponse
+                    ("Request is null",false);
             return response;
         }
-
+        GetDeviceDataResponse response =  new GetDeviceDataResponse
+                ("Failed to load device data for device: " + request.getDeviceName(),false);
+        GetDeviceInnerResponse innerResponse;
         if (request.getDeviceName().equals("")){
             response.setSuccess(false);
             response.setStatus("No device name is specified");
             return response;
         }
-
         if (deviceRepo.findDeviceByDeviceName(request.getDeviceName()).size() != 0) {
             Table waterSourceDataTable = dynamoDB.getTable("WaterSourceData");
-
             QuerySpec spec = new QuerySpec()
                     .withKeyConditionExpression("deviceName = :id")
+                    .withScanIndexForward(true)
                     .withValueMap(new ValueMap()
-                            .withString(":id",request.getDeviceName()));
+                            .withString(":id",request.getDeviceName()))
+                    .withScanIndexForward(!request.isSorted());
 
             ItemCollection<QueryOutcome> items = waterSourceDataTable.query(spec);
-
             Iterator<Item> iterator = items.iterator();
             Item item;
             int counter = 0;
-
-            while (iterator.hasNext() && counter < request.getNumResults()) {
+            int numResults = request.getNumResults();
+            if (numResults == 0) {
+                numResults = Integer.MAX_VALUE;
+            }
+            while (iterator.hasNext() && counter < numResults) {
                 item = iterator.next();
                 counter++;
-
                 ObjectMapper mapper = new ObjectMapper();
                 try {
                     innerResponse = mapper.readValue(item.getJSONPretty("WaterSourceData"),GetDeviceInnerResponse.class);
@@ -351,30 +351,31 @@ public class DevicesServicesImpl implements DevicesService
     public EditDeviceResponse editDevice(EditDeviceRequest editDeviceRequest)
     {
         EditDeviceResponse response = new EditDeviceResponse();
-        if (editDeviceRequest.getDeviceType().equals("WaterSource")||editDeviceRequest.getDeviceType().equals("Infrastructure"))
-        {
-
+        if (editDeviceRequest==null){
+            response.setStatus("Request is null");
+            response.setSuccess(false);
+            return response;
+        }
+        if (editDeviceRequest.getDeviceName()=="" || editDeviceRequest.getDeviceType()==""|| editDeviceRequest.getDeviceId()==null || editDeviceRequest.getDeviceModel()==""){
+            response.setStatus("Request incomplete");
+            response.setSuccess(false);
+            return response;
+        }
+        if (editDeviceRequest.getDeviceType().equals("WaterSource")||editDeviceRequest.getDeviceType().equals("Infrastructure")) {
             Optional<Device> deviceToChange = deviceRepo.findById(editDeviceRequest.getDeviceId());
-
             if (deviceToChange.isPresent()) {
                 if (!editDeviceRequest.getDeviceModel().equals("")) {
                     deviceToChange.get().setDeviceModel(editDeviceRequest.getDeviceModel());
                 }
                 if (!editDeviceRequest.getDeviceName().equals("")) {
-
                     List<Device> devicesWithSameName = deviceRepo.findDeviceByDeviceName(editDeviceRequest.getDeviceName());
                     if (devicesWithSameName.size() == 0) {
                         deviceToChange.get().setDeviceName(editDeviceRequest.getDeviceName());
-
-                    }
-                    else
-                    {
+                    }else {
                         response.setStatus("A device with that name already exists");
                         response.setSuccess(false);
                         return response;
-
                     }
-
                 }
                 response.setStatus("Device successfully edited.");
                 response.setSuccess(true);
@@ -382,38 +383,27 @@ public class DevicesServicesImpl implements DevicesService
                 deviceRepo.editDevice(editDeviceRequest.getDeviceId(),deviceToChange.get().getDeviceName(),deviceToChange.get().getDeviceModel());
                 return response;
             }
-            else
-            {
+            else {
                 response.setStatus("That device does not exist.");
                 response.setSuccess(false);
                 return response;
-
             }
-
-
-
         }
-        else
-        {
+        else {
             response.setStatus("The specified device type "+editDeviceRequest.getDeviceType()+" does not exist.");
             response.setSuccess(false);
             return response;
         }
-
     }
-
-
 
     @Override
     public DeleteDeviceResponse deleteDevice(DeleteDeviceRequest request) {
-        if (request.getDeviceId() == null)
-        {
+        System.out.println("A");
+        if (request.getDeviceId() == null) {
             return new DeleteDeviceResponse("No device id specified.", false);
         }
         Optional<Device> device = deviceRepo.findById(request.getDeviceId());
-
-        if (device.isPresent())
-        {
+        if (device.isPresent()) {
             deviceRepo.deleteDevice(device.get().getDeviceId());
             return new DeleteDeviceResponse("Successfully deleted the device and all related entities.", true);
         }
@@ -425,15 +415,30 @@ public class DevicesServicesImpl implements DevicesService
             return new SetMetricFrequencyResponse("No device id specified.", false);
         }
         Optional<Device> device = deviceRepo.findById(request.getId());
-
         if (device.isPresent()) {
             if (device.get().getDeviceData().getDeviceConfiguration() != null) {
                 for (sensorConfiguration config : device.get().getDeviceData().getDeviceConfiguration()) {
                     if (config.getSettingType().equals("reportingFrequency")) {
+                        if (request.getValue() >= 0) {
                         config.setValue(request.getValue());
                         deviceRepo.save(device.get());
+
+                        String payload = "{\"state\": {\"reported\": {";
+                        payload += device.get().getDeviceData().toString();
+                        payload += "}}}";
+
+                        SdkBytes shadowPayload = SdkBytes.fromUtf8String(payload);
+
+                        UpdateThingShadowRequest updateThingShadowRequest = UpdateThingShadowRequest.builder()
+                                .thingName(device.get().getDeviceName())
+                                .shadowName(device.get().getDeviceName()+"_Shadow")
+                                .payload(shadowPayload)
+                                .build();
+                        UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
+
                         return new SetMetricFrequencyResponse("Successfully changed metric frequency to: " +
                                 request.getValue() + " hours.", true);
+                        }
                     }
                 }
             }
@@ -445,8 +450,63 @@ public class DevicesServicesImpl implements DevicesService
     }
 
     @Override
-    public void getDataNotification(DataNotificationRequest dataNotificationRequest) throws InvalidRequestException
-    {
+    public PingDeviceResponse pingDevice(PingDeviceRequest request) {
+        String deviceName = "";
+        if (request.getDeviceID() != null) {
+            FindDeviceResponse findDeviceResponse = findDevice(new FindDeviceRequest(request.getDeviceID()));
+
+            if (findDeviceResponse.getDevice() != null) {
+                deviceName = findDeviceResponse.getDevice().getDeviceName();
+                String payload = "{\"DeviceName\": \"";
+                payload += deviceName;
+                payload += "\"}";
+
+                SdkBytes publishPayload = SdkBytes.fromUtf8String(payload);
+                PublishResponse publishResponse = iotDataPlaneClient.publish(PublishRequest
+                        .builder()
+                        .topic("iot/ping")
+                        .payload(publishPayload)
+                        .qos(1)
+                        .build());
+
+                try {
+                    TimeUnit.SECONDS.sleep(45);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
+                }
+
+                GetDeviceDataResponse deviceDataResponse = getDeviceData(new GetDeviceDataRequest(deviceName, 1, true));
+
+                if (deviceDataResponse.getInnerResponses() != null) {
+                    String latestDeviceTime = deviceDataResponse.getInnerResponses().get(0).getMeasurements().get(0).getDeviceDateTime();
+
+                    String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+                    String latestServerTime = new SimpleDateFormat(dateTimeFormat).format(new Date());
+
+                    try {
+                        Date latestServerTimeDate = new SimpleDateFormat(dateTimeFormat).parse(latestServerTime);
+                        Date latestDeviceTimeDate = new SimpleDateFormat(dateTimeFormat).parse(latestDeviceTime);
+
+                        if (Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 1
+                                || Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 0) {
+                            findDeviceResponse.getDevice().getDeviceData().setLastSeen(latestDeviceTimeDate);
+                            deviceRepo.save(findDeviceResponse.getDevice());
+                            return new PingDeviceResponse("Device " + deviceName + " says hello.", true, deviceName, deviceDataResponse.getInnerResponses().get(0));
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
+                    }
+                }
+                return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
+            }
+            return new PingDeviceResponse("Device does not exist.", false, deviceName, null);
+        }
+        return new PingDeviceResponse("No device ID specified.", false, deviceName, null);
+    }
+
+    public void getDataNotification(DataNotificationRequest dataNotificationRequest) throws InvalidRequestException {
         List<Device> deviceList = deviceRepo.findDeviceByDeviceName(dataNotificationRequest.getData().get(0).getDeviceName());
         int problematicMeasurements=0;
         if (deviceList.size()<1)
@@ -478,8 +538,7 @@ public class DevicesServicesImpl implements DevicesService
 
                 if ((targetMeasurement.getEstimateValue())>upperLimit||(targetMeasurement.getValue())<lowerLimit)
                 {
-                    ArrayList<User> usersRelatingToDevice= userService.findUsersRelatedToDevice(targetDevice.getDeviceName());
-
+                    List<User> usersRelatingToDevice = userService.findUsersRelatedToDevice(targetDevice.getDeviceName());
                     if (usersRelatingToDevice.size()==0)
                         return;
 
@@ -492,7 +551,7 @@ public class DevicesServicesImpl implements DevicesService
                     }
 
                     String message = "An inspection has been scheduled please investigate.";
-                    SMSRequest alertSmsRequest= new SMSRequest(usersRelatingToDevice,"Device "+targetDevice.getDeviceName()+" is showing measurements that are out of the allowed bounds, an inspection has been scheduled please investigate.");
+                    SMSRequest alertSmsRequest= new SMSRequest(new ArrayList<>(usersRelatingToDevice),"Device "+targetDevice.getDeviceName()+" is showing measurements that are out of the allowed bounds, an inspection has been scheduled please investigate.");
                     EmailRequest alertEmailRequest = new EmailRequest(
                             "EPark Smart Water Monitoring System",
                             targetDevice.getDeviceName()+" Alert" ,
@@ -511,7 +570,7 @@ public class DevicesServicesImpl implements DevicesService
                     Date InspectionDueDate =new Date(oneWeekLater);
                     AddInspectionRequest inspectionRequestForAlert = new AddInspectionRequest(targetDevice.getDeviceId(),InspectionDueDate, targetDevice.getDeviceName()+" automated Inspection - levels out of bounds");
                     inspectionService.addInspection(inspectionRequestForAlert);
-
+                    return;
 
 
                 }

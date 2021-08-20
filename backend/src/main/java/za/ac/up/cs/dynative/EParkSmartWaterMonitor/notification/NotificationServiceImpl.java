@@ -12,7 +12,6 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.configurations.TwilioConfig;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.models.Topic;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.notification.requests.EmailRequest;
@@ -62,12 +61,10 @@ public class NotificationServiceImpl implements NotificationService
         if (eMailRequest.getToAddresses().size()<1){
             return new EmailResponse("No recipients specified",false);
         }
-        MimeMessagePreparator preparator = mimeMessage ->
-        {
+        MimeMessagePreparator preparator = mimeMessage -> {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage,
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                     StandardCharsets.UTF_8.name());
-
 
             message.setTo(eMailRequest.getToAddresses().toArray(new String[eMailRequest.getToAddresses().size()]));
             message.setFrom(senderUsername, eMailRequest.getFrom());
@@ -76,25 +73,15 @@ public class NotificationServiceImpl implements NotificationService
                 message.setBcc(eMailRequest.getBccAddresses().toArray(new String[eMailRequest.getBccAddresses().size()]));
             if (eMailRequest.getCcAddresses() != null && eMailRequest.getCcAddresses().size() != 0)
                 message.setCc(eMailRequest.getCcAddresses().toArray(new String[eMailRequest.getCcAddresses().size()]));
-
             Map<String, Object> templateData = new HashMap<>();
-
-            if (eMailRequest.getTopic()== Topic.ALERT)
-            {
+            if (eMailRequest.getTopic()== Topic.ALERT) {
                 templateSelector="/AlertTemplate.ftlh";
             }
-            else
-            if (eMailRequest.getTopic()== Topic.INSPECTION_REMINDER)
-            {
+            else if (eMailRequest.getTopic()== Topic.INSPECTION_REMINDER) {
                 templateSelector="/InspectionTemplate.ftlh";
-            }
-            else
-            if (eMailRequest.getTopic()== Topic.REFILL_NOTIFICATION)
-            {
+            } else if (eMailRequest.getTopic()== Topic.REFILL_NOTIFICATION) {
                 templateSelector="/RefillTemplate.ftlh";
-            }
-            if (eMailRequest.getTopic()== Topic.PASSWORD_RESET)
-            {
+            }if (eMailRequest.getTopic()== Topic.PASSWORD_RESET) {
                 templateSelector="/PasswordReset.ftlh";
             }
 
@@ -136,30 +123,24 @@ public class NotificationServiceImpl implements NotificationService
         }
 
         ArrayList<String>  smsErrors = new ArrayList<>();
-
         Pattern pattern = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$");
         Matcher matcher = pattern.matcher("+111 (202) 555-0125");
 
-        for (int i = 0; i < recipients.size(); i++)
-        {
+        for (int i = 0; i < recipients.size(); i++) {
             matcher = pattern.matcher(recipients.get(i).getCellNumber());
-            if (!matcher.matches())
-            {
+            if (!matcher.matches()) {
                 smsErrors.add(recipients.get(i).getUsername());
             }
-
         }
-        if (smsErrors.size()!=0)
-        {
+        if (smsErrors.size()!=0) {
             String users ="";
 
-            for (int i = 0; i < smsErrors.size(); i++)
-            {
+            for (int i = 0; i < smsErrors.size(); i++) {
                 users += smsErrors.get(i);
                 if(i!=smsErrors.size()-1)
                 users+=",";
             }
-            return new SMSResponse("The following users have invalid phone numbers: \" +users +\". Please correct and try again.",false);
+            return new SMSResponse("The following users have invalid phone numbers: " +users +". Please correct and try again.",false);
         }
         else {
             PhoneNumber from = new PhoneNumber(twilioConfig.getNumber());
@@ -173,7 +154,5 @@ public class NotificationServiceImpl implements NotificationService
             }
             return new SMSResponse("Messages sent successfully",true);
         }
-
     }
-
 }

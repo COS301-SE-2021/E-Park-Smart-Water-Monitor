@@ -16,8 +16,8 @@ public class Measurement {
     private String unitOfMeasurement;
     private double value;
     private String deviceDateTime;
-    private Double estimateValue;
-    private Double estimateError;
+    private double estimateValue;
+    private double estimateError;
     private Date dateTime;
 
     public Measurement(
@@ -25,8 +25,8 @@ public class Measurement {
             @JsonProperty("value") double value,
             @JsonProperty("unitOfMeasurement") String unitOfMeasurement,
             @JsonProperty("deviceDateTime") String deviceDateTime,
-            @JsonProperty("estimateValue") Double estimateValue,
-            @JsonProperty("estimateError") Double estimateError)
+            @JsonProperty("estimateValue") double estimateValue,
+            @JsonProperty("estimateError") double estimateError)
     {
         this.dataId = UUID.randomUUID();
 
@@ -98,6 +98,10 @@ public class Measurement {
         return deviceDateTime;
     }
 
+    public String getDeviceDate() {
+        return deviceDateTime.substring(0,10);
+    }
+
     public void setDeviceDateTime(String deviceDateTime) {
         this.deviceDateTime = deviceDateTime;
     }
@@ -110,7 +114,7 @@ public class Measurement {
         this.dateTime = dateTime;
     }
 
-    public Double getEstimateValue() {
+    public double getEstimateValue() {
         return estimateValue;
     }
 
@@ -118,7 +122,7 @@ public class Measurement {
         this.estimateValue = estimateValue;
     }
 
-    public Double getEstimateError() {
+    public double getEstimateError() {
         return estimateError;
     }
 

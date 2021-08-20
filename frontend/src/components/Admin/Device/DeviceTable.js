@@ -27,6 +27,9 @@ import IconButton from "@material-ui/core/IconButton";
 import {Tooltip} from "@material-ui/core";
 import AddInspectionBody from "../Inspection/AddInspectionBody";
 import AdminContext from "../AdminContext";
+import {UserContext} from "../../../Context/UserContext";
+import LoadingContext from "../../../Context/LoadingContext";
+import {ScaleLoader} from "react-spinners";
 
 
 
@@ -43,9 +46,11 @@ const DeviceTable = () => {
     const [response, setResponse] = useState([]);
     const [device, setDevice] = useState({});
     const [value, setValue] = useState(0);
+    const [parksAndSites, setParksAndSites] = useState(null)
 
-    const context = useContext(AdminContext)
-    const toggleLoading = context.toggleLoading
+    const user = useContext(UserContext)
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
 
     const reloadDeviceTable = () => {
         setValue(value => value+1)
@@ -60,6 +65,10 @@ const DeviceTable = () => {
                 data: {
                          id: id
                       }
+            },{
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
             }).then((res)=> {
                 toggleLoading()
                 setValue(value => value+1 ) // returns an updated value
@@ -68,6 +77,19 @@ const DeviceTable = () => {
             })
         }
     }
+
+    useEffect(() => {
+        axios.get('http://localhost:8080/api/park/getAllParksAndSites', {
+            headers: {
+                'Authorization': "Bearer " + user.token
+            }
+        }).then((res)=>{
+            if(res)
+            {
+                setParksAndSites(res.data)
+            }
+        });
+    },[])
 
     useEffect(() => {
         // get all users
@@ -135,15 +157,15 @@ const DeviceTable = () => {
                 classes={{ root: classes.containerRoot }}
             >
                 <Modal title="Add Device" onClose={() => setShow(false)} show={show}>
-                    <AddDeviceBody reloadDeviceTable={ reloadDeviceTable } closeModal={()=>{ setShow(false) }}/>
+                    <AddDeviceBody parksAndSites={parksAndSites} reloadDeviceTable={ reloadDeviceTable } closeModal={()=>{ setShow(false) }}/>
                 </Modal>
 
                 { device && <Modal title="Edit Device" onClose={() => setShowEdit(false)} show={ showEdit }>
-                    <EditDeviceBody deviceDetails={ device } reloadDeviceTable={ reloadDeviceTable } closeModal={()=>{ setShowEdit(false) }}/>
+                    <EditDeviceBody parksAndSites={parksAndSites} deviceDetails={ device } reloadDeviceTable={ reloadDeviceTable } closeModal={()=>{ setShowEdit(false) }}/>
                 </Modal> }
 
                 <Modal title="Add Inspection" onClose={() => setShowInspection(false)} show={ showInspection }>
-                    <AddInspectionBody device_id={ device.deviceId }/>
+                    <AddInspectionBody device_id={ device.deviceId } closeModal={ () => setShowInspection(false) }/>
                 </Modal>
 
                 <Grid container component={Box}>
@@ -266,16 +288,20 @@ const DeviceTable = () => {
                           marginBottom="3rem!important"
                           classes={{ root: classes.gridItemRoot }}
                           style={{ display: "flex", justifyContent: "flex-end", marginTop: "5px" }}>
-
+                        {parksAndSites &&
                         <Button
                             variant="contained"
                             color="primary"
                             size="medium"
-                            style={{width:'200px'}}
+                            style={{width: '200px'}}
                             onClick={() => setShow(true)}
                         >
                             Add Device
                         </Button>
+                        }
+                        { !parksAndSites &&
+                            <ScaleLoader size={10} height={15} color={"#5E72E4"} speedMultiplier={1.5} />
+                        }
                     </Grid>
                 </Grid>
 

@@ -41,8 +41,9 @@ public class ResetPasswordFinalizeRequest {
         this.resetCode = resetCode;
         this.newPassword = newPassword;
         this.newPasswordConfirm = newPasswordConfirm;
-
     }
+
+    public ResetPasswordFinalizeRequest(){}
 
 
 

@@ -19,4 +19,6 @@ public class GetAllParksAndSitesResponse
     public List<Park> getParks() {
         return parks;
     }
+
+    public GetAllParksAndSitesResponse(){}
 }

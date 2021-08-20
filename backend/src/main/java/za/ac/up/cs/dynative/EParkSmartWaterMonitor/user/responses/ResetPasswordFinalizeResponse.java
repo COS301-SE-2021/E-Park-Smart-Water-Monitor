@@ -23,4 +23,6 @@ public class ResetPasswordFinalizeResponse {
         this.success= success;
     }
 
+    public ResetPasswordFinalizeResponse(){}
+
 }
