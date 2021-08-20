@@ -19,4 +19,7 @@ public class GetAllParksResponse {
     public void setAllParks(List<Park> allParks) {
         this.allParks = allParks;
     }
+
+    public GetAllParksResponse(){}
+
 }

@@ -18,6 +18,8 @@ import Tv from "@material-ui/icons/Tv";
 import VpnKey from "@material-ui/icons/VpnKey";
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
+
+
 var routes = [
   {
     path: "/index",
@@ -35,27 +37,27 @@ var routes = [
     component: Admin,
     layout: "/admin",
   },
-  {
-    path: "/user-profile",
-    name: "Profile",
-    icon: Person,
-    iconColor: "WarningLight",
-    component: Profile,
-    layout: "/admin",
-  },
-  {
-    path: "/device",
-    name: "Device",
-    icon: AccountCircle,
-    iconColor: "ErrorLight",
-    component: Device,
-    layout: "/dashboard",
-  },
+ // {
+    // path: "/device",
+    // name: "Device",
+    // icon: Person,
+    // iconColor: "WarningLight",
+    // component: Device,
+    // layout: "/dashboard",
+//  },
+  // {
+  //   path: "/index",
+  //   name: "Login",
+  //   icon: VpnKey,
+  //   iconColor: "Info",
+  //   component: Login,
+  //   layout: "/auth",
+  // },
   {
     path: "/index",
-    name: "Login",
-    icon: VpnKey,
-    iconColor: "Info",
+    name: "Logout",
+    icon: AccountCircle,
+    iconColor: "ErrorLight",
     component: Login,
     layout: "/auth",
   },
@@ -64,18 +66,6 @@ var routes = [
   },
   {
     title: "Profile",
-  },
-  // {
-  //   href:
-  //     "https://www.creative-tim.com/learning-lab/material-ui/overview/argon-dashboard?ref=admui-admin-sidebar",
-  //   name: "Getting started",
-  //   icon: FlashOn,
-  // },
-  {
-    href:
-      "https://www.creative-tim.com/learning-lab/material-ui/alerts/argon-dashboard?ref=admui-admin-sidebar",
-    name: "Components",
-    icon: Dns,
   },
 ];
 export default routes;

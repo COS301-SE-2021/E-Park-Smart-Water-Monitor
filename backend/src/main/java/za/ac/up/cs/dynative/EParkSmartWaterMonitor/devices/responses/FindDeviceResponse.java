@@ -1,15 +1,15 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses;
 
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 
 public class FindDeviceResponse
 {
 
     private String status;
     private Boolean success;
-    private WaterSourceDevice device;
+    private Device device;
 
-    public FindDeviceResponse(String status, Boolean success, WaterSourceDevice device)
+    public FindDeviceResponse(String status, Boolean success, Device device)
     {
         this.status = status;
         this.success = success;
@@ -20,11 +20,11 @@ public class FindDeviceResponse
     {
     }
 
-    public WaterSourceDevice getDevice() {
+    public Device getDevice() {
         return device;
     }
 
-    public void setDevice(WaterSourceDevice device) {
+    public void setDevice(Device device) {
         this.device = device;
     }
 

@@ -35,7 +35,7 @@
     padding: 15px;
     border-radius: 5px;
     max-height: 30rem;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 @media only screen and (min-width: 600px) {
