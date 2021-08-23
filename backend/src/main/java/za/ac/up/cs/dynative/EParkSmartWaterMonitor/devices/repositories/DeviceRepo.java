@@ -93,7 +93,7 @@ public interface DeviceRepo extends Neo4jRepository<Device, UUID> {
                    @Param("latitude") double latitude,
                    @Param("longitude") double longitude,
                    @Param("upTime") double upTime,
-                   double lifeTime,
+                   @Param("lifeTime") double lifeTime,
                    @Param("configId1") UUID configId1,
                    @Param("lowerLimit1") double lowerLimit1,
                    @Param("upperLimit1") double upperLimit1,
