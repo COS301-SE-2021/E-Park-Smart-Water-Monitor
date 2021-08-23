@@ -137,7 +137,7 @@ const InspectionTable = () => {
                                 { inspection.description }
                             </TableCell>
                             <TableCell classes={{root: classes.tableCellRoot}}
-                                       style={{verticalAlign: 'middle',width:"6.2%"}}>
+                                       style={{verticalAlign: 'middle'}}>
                                 <Tooltip title="Comments" arrow>
                                     <ForumIcon aria-label="forum"
                                               onClick={ () => {setShowComments(true); setInspec(inspection)} }>
@@ -145,7 +145,7 @@ const InspectionTable = () => {
                                 </Tooltip>
                             </TableCell>
                             <TableCell classes={{root: classes.tableCellRoot}}
-                                       style={{verticalAlign: 'middle',width:"5.3%"}}>
+                                       style={{verticalAlign: 'middle'}}>
                                 <Tooltip title="Edit" arrow>
                                     <EditIcon aria-label="edit"
                                               onClick={() => {
