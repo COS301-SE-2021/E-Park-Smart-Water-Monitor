@@ -23,4 +23,8 @@ public interface WaterSiteRepo extends Neo4jRepository<WaterSite, UUID>
 
     @Query("MATCH (n:WaterSite)-[r]->(d:Device{deviceId:$id}) return n")
     WaterSite getWaterSiteByRelatedDevice(@Param("id") UUID id);
+
+    @Query("MATCH (p:Park{id: $parkId})"+
+            "    CREATE (watersite: WaterSite { id: $id, shape: $shape , longitude: $longitude, latitude: $latitude,radius:$radius , waterSiteName: $waterSiteName, width: $width, length: $length, parkId: $parkId })<-[:HAS_WATER_SITE]-(p)")
+    void addWatersite(UUID id, String waterSiteName, Double latitude, Double longitude,String shape,Double length,  Double width, Double radius,  UUID parkId );
 }
