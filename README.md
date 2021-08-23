@@ -68,11 +68,11 @@
   <a href="https://docs.google.com/document/d/1ikdJGD2mMvUbiWejvXX4rgyWX0MuYbJIvR5ABKEp_s8/edit?usp=sharing">Coding Conventions</a>
 </h2>
 <h2 align="center">
-  <a href="https://drive.google.com/file/d/17l6xFm0GIr8OcUFNloLxIEMFR_xsQAxa/view?usp=sharing">User Muanual</a>
+  <a href="https://drive.google.com/file/d/17l6xFm0GIr8OcUFNloLxIEMFR_xsQAxa/view?usp=sharing">User Manual</a>
 </h2>
 
 <h2 align="center">
-  <a href="https://drive.google.com/file/d/1Fg8PA42goaZxA0qlhmuS9Ol2cqxX4gHt/view?usp=sharing">Installation Muanual</a>
+  <a href="https://drive.google.com/file/d/1Fg8PA42goaZxA0qlhmuS9Ol2cqxX4gHt/view?usp=sharing">Installation Manual</a>
 </h2>
  📋 Table of Contents
 
