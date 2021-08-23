@@ -137,7 +137,7 @@ public class DevicesServicesImpl implements DevicesService
                         addDeviceRequest.getLongitude(),
                         addDeviceRequest.getLatitude());
 
-                AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse = waterSiteService.attachWaterSourceDevice(new AttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId(), newDevice));
+//                AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse = waterSiteService.attachWaterSourceDevice(new AttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId(), newDevice));
 
                 String payload = "{\"state\": {\"reported\": {";
                 payload += newDevice.getDeviceData().toString();
@@ -149,7 +149,42 @@ public class DevicesServicesImpl implements DevicesService
                         .payload(shadowPayload)
                         .build();
                 UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
-                deviceRepo.save(newDevice);
+//                deviceRepo.save(newDevice);
+                deviceRepo.addDevice(addDeviceRequest.getSiteId(),
+                        UUID.randomUUID(),
+                        addDeviceRequest.getDeviceModel(),
+                        addDeviceRequest.getDeviceName(),
+                        addDeviceRequest.getDeviceType(),
+                        new HashSet<>(),
+                        UUID.randomUUID(),
+                        100.0,
+                        "FINE",
+                        new Date(),
+                        addDeviceRequest.getLatitude(),
+                        addDeviceRequest.getLongitude(),
+                        100.0,
+                        100.0,
+                        UUID.randomUUID(),
+                        10.0,
+                        100.0,
+                        "reportingFrequency",
+                        4,
+                        UUID.randomUUID(),
+                        10.0,
+                        100.0,
+                        "WATER_QUALITY",
+                        5,
+                        UUID.randomUUID(),
+                        10.0,
+                        100.0,
+                        "WATER_TEMP",
+                        5,
+                        UUID.randomUUID(),
+                        10.0,
+                        100.0,
+                        "WATER_LEVEL",
+                        5
+                        );
                 response.setSuccess(true);
                 response.setStatus("Device " + addDeviceRequest.getDeviceName() + " successfully added");
             }
