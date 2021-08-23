@@ -62,7 +62,8 @@ public class WaterSite {
         }
     }
 
-    public WaterSite() {
+    public WaterSite()
+    {
     }
 
     public void addWaterSourceDevice(Device device) {
