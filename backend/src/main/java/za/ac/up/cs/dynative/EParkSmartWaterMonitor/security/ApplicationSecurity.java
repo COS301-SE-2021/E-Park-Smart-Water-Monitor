@@ -128,8 +128,8 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/inspections/setStatus").hasAnyRole("ADMIN", "FIELD_ENGINEER")
 
                 //notifications:
-                .antMatchers("/api/notifications/mail").permitAll()
-                .antMatchers("/api/notifications/sms").permitAll()
+                .antMatchers("/api/notifications/mail").denyAll()
+                .antMatchers("/api/notifications/sms").denyAll()
 
                 //park:
                 .antMatchers("/api/park/addPark").hasAnyRole("ADMIN")
