@@ -116,9 +116,9 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/devices/getById").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
                 .antMatchers("/api/devices/getDeviceData").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
                 .antMatchers("/api/devices/setMetricFrequency").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
-                .antMatchers("/api/devices/editDevice").hasAnyRole("ADMIN", "FIELD_ENGINEER") //TODO: confirm role
-                .antMatchers("addInspection/deleteDevice").hasAnyRole("ADMIN") //TODO: confirm role
-                .antMatchers("/api/devices/addDevice").hasAnyRole("ADMIN") //TODO: confirm role
+                .antMatchers("/api/devices/editDevice").hasAnyRole("ADMIN", "FIELD_ENGINEER")
+                .antMatchers("addInspection/deleteDevice").hasAnyRole("ADMIN", "FIELD_ENGINEER")
+                .antMatchers("/api/devices/addDevice").hasAnyRole("ADMIN", "FIELD_ENGINEER")
 
                 //inspections:
                 .antMatchers("/api/inspections/setComments").hasAnyRole("ADMIN", "FIELD_ENGINEER","RANGER")
