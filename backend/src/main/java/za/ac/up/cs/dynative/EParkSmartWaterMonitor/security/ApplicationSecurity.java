@@ -125,6 +125,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/inspections/getDeviceInspections").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
                 .antMatchers("/api/inspections/getSiteInspections").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
                 .antMatchers("/api/inspections/addInspection").hasAnyRole("ADMIN", "FIELD_ENGINEER")
+                .antMatchers("/api/inspections/setDescription").hasAnyRole("ADMIN", "FIELD_ENGINEER")
                 .antMatchers("/api/inspections/setStatus").hasAnyRole("ADMIN", "FIELD_ENGINEER")
 
                 //notifications:
