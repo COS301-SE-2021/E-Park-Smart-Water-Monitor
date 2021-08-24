@@ -33,10 +33,12 @@ public class ParkController {
     public ResponseEntity<Object> getParkWaterSites(@RequestBody GetParkSitesRequest getParkSitesRequest) throws InvalidRequestException {
         return new ResponseEntity<>(parkService.getParkWaterSites(getParkSitesRequest),HttpStatus.OK);
     }
+
     @PostMapping("editPark")
     public ResponseEntity<Object> editPark(@RequestBody EditParkRequest request) throws InvalidRequestException {
         return new ResponseEntity<>(parkService.editPark(request),HttpStatus.OK);
     }
+
     @GetMapping("/getAllParks")
     public ResponseEntity<Object> getAllParks() {
         return new ResponseEntity<>(parkService.getAllParks(),HttpStatus.OK);
@@ -46,7 +48,6 @@ public class ParkController {
     public ResponseEntity<Object> getAllParksAndSites() {
         return new ResponseEntity<>(parkService.getAllParksAndSites(),HttpStatus.OK);
     }
-
 
     @DeleteMapping("/deletePark")
     public ResponseEntity<Object> deletePark(@RequestBody DeleteParkRequest request) {
