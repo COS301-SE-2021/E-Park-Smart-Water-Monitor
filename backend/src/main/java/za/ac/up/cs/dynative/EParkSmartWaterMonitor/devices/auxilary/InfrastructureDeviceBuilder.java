@@ -47,4 +47,8 @@ public class InfrastructureDeviceBuilder implements DeviceBuilder  {
         deviceConfiguration.add(new sensorConfiguration("WATER_FLOW_RATE",1.0));
         deviceData.setDeviceConfiguration(deviceConfiguration);
     }
+    public Device getInfrastructureDevice()
+    {
+     return infrastructureDevice;
+    }
 }
