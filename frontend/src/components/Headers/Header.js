@@ -16,6 +16,7 @@ import PieChart from "@material-ui/icons/PieChart";
 
 import componentStyles from "assets/theme/components/header.js";
 import axios from "axios";
+import Stats from "../Stats/Stats";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -42,6 +43,7 @@ const Header = () => {
           component={Box}
           classes={{ root: classes.containerRoot }}
         >
+          <Stats/>
           {/*<div>*/}
           {/*  <Grid container>*/}
           {/*    <Grid item xl={3} lg={6} xs={12}>*/}

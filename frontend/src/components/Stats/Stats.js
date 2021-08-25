@@ -9,14 +9,41 @@ import GroupAdd from "@material-ui/icons/GroupAdd";
 import EmojiEvents from "@material-ui/icons/EmojiEvents";
 import {useTheme} from "@material-ui/core/styles";
 import CardStats from "./CardStats";
+import axios from "axios";
 
 
 const Stats = () => {
     const theme = useTheme();
+    const [devices, setDevices] = useState(0)
+    const [numConnected, setNumConnected] = useState(0)
+    const [numCritical, setNumCritical] = useState(0)
+    const [numFine, setNumFine] = useState(0)
 
     const result = {
         numDevices: 2
     };
+
+    useEffect(()=>{
+        // get the devices
+        axios.get('http://localhost:8080/api/devices/getAllDevices',{
+            headers: {
+                'Authorization': "Bearer " + user.token
+            }
+        }).then((res)=>{
+            if(res.data)
+            {
+                const site = res.data.site; // site array
+                setDevices(site)
+                console.log(JSON.stringify(site))
+
+
+            }else{
+                console.log('res.data null')
+            }
+        }).catch((res)=>{
+            console.log(JSON.stringify(res))
+        });
+    },[])
 
     return (
         <>
@@ -25,7 +52,7 @@ const Stats = () => {
                 <Grid item xl={3} lg={6} xs={12}>
                     <CardStats
                         subtitle="Devices"
-                        title={result === null ? 'loading' : result.numDevices}
+                        title={result === null ? '...loading' : result.numDevices}
                         icon={InsertChartOutlined}
                         color="bgError"
                         footer={
