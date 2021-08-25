@@ -48,4 +48,9 @@ public class WaterSourceDeviceBuilder implements DeviceBuilder {
         deviceConfiguration.add(new sensorConfiguration("WATER_QUALITY",1.0));
         deviceData.setDeviceConfiguration(deviceConfiguration);
     }
+
+    public Device getWaterSourceDevice() {
+        return waterSourceDevice;
+    }
+
 }
