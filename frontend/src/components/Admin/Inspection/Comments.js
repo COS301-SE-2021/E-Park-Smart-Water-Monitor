@@ -9,6 +9,7 @@ import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 import Select from "react-select";
+import PrevComments from "./PrevComments";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -63,10 +64,7 @@ const Comments = (props) => {
     return (
         <>
             <Form onSubmit={handleSubmit}>
-                {commentss}
-                <Form.Group controlId="formBasicPassword">
-                    <Form.Control type="text" Required={"required"} placeholder="..." onChange={e => setNewComments(e.target.value)}/>
-                </Form.Group>
+                <PrevComments comments={commentss} user={user.username}/>
                 <br/>
                 <br/>
                 <Form.Group controlId="formBasicPassword">
