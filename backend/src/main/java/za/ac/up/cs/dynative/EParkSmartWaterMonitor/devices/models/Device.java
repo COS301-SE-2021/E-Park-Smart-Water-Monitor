@@ -19,12 +19,14 @@ public class Device
     @Relationship(type = "PRODUCES", direction = Relationship.Direction.OUTGOING)
     private Set<Measurement> measurementSet;
 
-    public Device(UUID deviceId,
+    public Device(
+                    UUID deviceId,
                   String deviceName,
                   String deviceType,
                   String deviceModel,
                   double longitude,
-                  double latitude)
+                  double latitude
+    )
     {
         this.deviceId    = deviceId;
         this.deviceName  = deviceName;
