@@ -48,6 +48,10 @@ public class Device
 
     }
 
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
     public void addDeviceDataProduced(Measurement data) {
         if (measurementSet == null) {
             measurementSet = new HashSet<>();

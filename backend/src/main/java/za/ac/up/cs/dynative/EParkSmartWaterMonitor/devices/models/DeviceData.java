@@ -41,6 +41,7 @@ public class DeviceData {
         this.deviceConfiguration=deviceConfiguration;
     }
 
+
     public Date getLastSeen() {
         return lastSeen;
     }
@@ -66,7 +67,13 @@ public class DeviceData {
     }
 
     public DeviceData() {
+
         this.deviceDataId = UUID.randomUUID();
+        this.battery =100;
+        this.deviceStatus ="FINE";
+        this.upTime =100;
+        this.lifeTime =1;
+
     }
 
     public double getLongitude() {

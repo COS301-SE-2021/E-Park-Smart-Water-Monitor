@@ -5,7 +5,8 @@ import java.util.UUID;
 public interface DeviceBuilder
 {
     void selectDeviceName(String deviceName);
-    void selectDeviceType(String deviceType);
+    void selectDeviceType();
     void selectDeviceModel(String deviceModel);
     void selectDeviceCoordinates(double longitude,double latitude);
+    void selectDeviceConfiguration();
 }
