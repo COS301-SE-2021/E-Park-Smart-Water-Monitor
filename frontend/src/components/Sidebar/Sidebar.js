@@ -60,7 +60,7 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
 
     // Test admin status and remove that element from appearing
     let routesWithAdminConstraint = []
-    if(user.role && user.role !== "ADMIN")
+    if(user.role && user.role === "RANGER" )
     {
       // remove the admin prop from the array
       routesWithAdminConstraint = routes.filter((elem)=>{
