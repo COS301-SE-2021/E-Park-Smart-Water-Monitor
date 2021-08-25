@@ -61,11 +61,12 @@ const UserTable = () => {
         
         return ()=>{
             toggleLoading()
-            axios.post('http://localhost:8080/api/user/deleteUser', {
-                id: id
-            }, {
+            axios.delete('http://localhost:8080/api/user/deleteUser', {
                 headers: {
                     'Authorization': "Bearer " + userContext.token
+                },
+                data: {
+                    id: id,
                 }
             }).then((res)=> {
                 toggleLoading()
