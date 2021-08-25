@@ -17,15 +17,18 @@ const PrevComments = (props) => {
 
     useEffect(() => {
         let com
-        let m = props.comments[props.comments.length].map((comment) => (
-            // com= comment.split("\n")
-            // <label>{com[0]}</label>
-            // <br/>
-            // <TextareaAutosize value={com[1]}/>
-            // <br/><br/>
-            <TextareaAutosize value={comment}/>
-        ))
-        setResponse(m)
+        //alert(props.comments)
+        let m = props.comments.map((comment) => { com= comment.split("\n")
+        return(
+            <>
+                <label>{com[0]}</label>
+                <br/>
+                <TextareaAutosize value={com[1]}/>
+                <br/><br/>
+                <TextareaAutosize value={comment}/>
+            </>
+        )})
+       setResponse(m)
     },[])
 
     return (

@@ -20,7 +20,7 @@ const statusOptions = [
 
 const Comments = (props) => {
 
-    const [commentss, setCommentss] = useState("")
+    const [comments, setComments] = useState([])
     const [newComments, setNewComments] = useState("")
 
     const user = useContext(UserContext)
@@ -28,7 +28,8 @@ const Comments = (props) => {
     const toggleLoading = loader.toggleLoading
 
     useEffect(() => {
-        setCommentss(props.inspectionDetails.comments)
+        setComments(props.inspectionDetails.comments)
+        //alert(JSON.stringify(comments))
     },[])
 
 
@@ -36,7 +37,7 @@ const Comments = (props) => {
         toggleLoading()
       event.preventDefault()
 
-        let comm= commentss +user.username+":\n "+ newComments+ "\n\n"
+        let comm= comments +user.username+":\n "+ newComments+ "\n\n"
 
       //set comments
       var body = {
@@ -64,9 +65,8 @@ const Comments = (props) => {
     return (
         <>
             <Form onSubmit={handleSubmit}>
-                <PrevComments comments={commentss} user={user.username}/>
-                <br/>
-                <br/>
+                <PrevComments comments={props.inspectionDetails.comments} user={user.username}/>
+
                 <Form.Group controlId="formBasicPassword">
                     <Form.Label>Add a comment:</Form.Label>
                     <Form.Control type="text" Required={"required"} placeholder="..." onChange={e => setNewComments(e.target.value)}/>
