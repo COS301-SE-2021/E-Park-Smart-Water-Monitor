@@ -64,6 +64,9 @@ const Comments = (props) => {
         <>
             <Form onSubmit={handleSubmit}>
                 {commentss}
+                <Form.Group controlId="formBasicPassword">
+                    <Form.Control type="text" Required={"required"} placeholder="..." onChange={e => setNewComments(e.target.value)}/>
+                </Form.Group>
                 <br/>
                 <br/>
                 <Form.Group controlId="formBasicPassword">
@@ -71,7 +74,7 @@ const Comments = (props) => {
                     <Form.Control type="text" Required={"required"} placeholder="..." onChange={e => setNewComments(e.target.value)}/>
                 </Form.Group>
                 <Button background-color="primary" variant="primary" type="submit" >
-                    Comment
+                    Post
                 </Button>
             </Form>
         </>
