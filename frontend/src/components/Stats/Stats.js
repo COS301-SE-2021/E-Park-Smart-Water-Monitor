@@ -28,6 +28,10 @@ const Stats = () => {
     };
 
     useEffect(()=>{
+        setNumConnected(0)
+        setNumCritical(0)
+        setNumFine(0)
+        setLoaded(false)
         // get the devices
         axios.get('http://localhost:8080/api/devices/getAllDevices',{
             headers: {
@@ -40,16 +44,13 @@ const Stats = () => {
                 setDevices(site)
                 console.log(JSON.stringify(site))
 
+                alert(site.length)
                 site.forEach(elem => {
-                    alert(JSON.stringify(elem))
                     // count number connected
                     let a = elem.deviceData.lastSeen ? setNumConnected(numConnected => numConnected +1) : ""
                     // count number critical and not critical
                     let b = elem.deviceData.deviceStatus !== "FINE" ? setNumCritical(numCritical => numCritical +1) : setNumFine(numFine => numFine +1)
                 })
-                alert(numConnected)
-                alert(numCritical)
-                alert(numFine)
                 setLoaded(true)
 
             }else{
@@ -66,29 +67,29 @@ const Stats = () => {
             <Grid container>
                 <Grid item xl={3} lg={6} xs={12}>
                     <CardStats
-                        subtitle="Connected Devices"
-                        title={numConnected === null ? '...loading' : result.numDevices}
+                        subtitle="Connected"
+                        title={loaded === false ? '...' : numConnected}
                         icon={InsertChartOutlined}
                         color="bgError"
                         footer={
                             <>
-                                <Box
-                                    component="span"
-                                    fontSize=".875rem"
-                                    color={theme.palette.success.main}
-                                    marginRight=".5rem"
-                                    display="flex"
-                                    alignItems="center"
-                                >
-                                    <Box
-                                        component={ArrowUpward}
-                                        width="1.5rem!important"
-                                        height="1.5rem!important"
-                                    />{" "}
-                                    3.48%
-                                </Box>
+                                {/*<Box*/}
+                                {/*    component="span"*/}
+                                {/*    fontSize=".875rem"*/}
+                                {/*    color={theme.palette.success.main}*/}
+                                {/*    marginRight=".5rem"*/}
+                                {/*    display="flex"*/}
+                                {/*    alignItems="center"*/}
+                                {/*>*/}
+                                {/*    <Box*/}
+                                {/*        component={ArrowUpward}*/}
+                                {/*        width="1.5rem!important"*/}
+                                {/*        height="1.5rem!important"*/}
+                                {/*    />{" "}*/}
+                                {/*    3.48%*/}
+                                {/*</Box>*/}
                                 <Box component="span" whiteSpace="nowrap">
-                                    Since last month
+                                    Devices giving readings
                                 </Box>
                             </>
                         }
@@ -96,29 +97,29 @@ const Stats = () => {
                 </Grid>
                 <Grid item xl={3} lg={6} xs={12}>
                     <CardStats
-                        subtitle="Inspections"
-                        title="2,356"
+                        subtitle="Critical"
+                        title={loaded === false ? '...' : numCritical}
                         icon={PieChart}
                         color="bgWarning"
                         footer={
                             <>
-                                <Box
-                                    component="span"
-                                    fontSize=".875rem"
-                                    color={theme.palette.error.main}
-                                    marginRight=".5rem"
-                                    display="flex"
-                                    alignItems="center"
-                                >
-                                    <Box
-                                        component={ArrowDownward}
-                                        width="1.5rem!important"
-                                        height="1.5rem!important"
-                                    />{" "}
-                                    3.48%
-                                </Box>
+                                {/*<Box*/}
+                                {/*    component="span"*/}
+                                {/*    fontSize=".875rem"*/}
+                                {/*    color={theme.palette.error.main}*/}
+                                {/*    marginRight=".5rem"*/}
+                                {/*    display="flex"*/}
+                                {/*    alignItems="center"*/}
+                                {/*>*/}
+                                {/*    <Box*/}
+                                {/*        component={ArrowDownward}*/}
+                                {/*        width="1.5rem!important"*/}
+                                {/*        height="1.5rem!important"*/}
+                                {/*    />{" "}*/}
+                                {/*    3.48%*/}
+                                {/*</Box>*/}
                                 <Box component="span" whiteSpace="nowrap">
-                                    Since last week
+                                    Devices need attention
                                 </Box>
                             </>
                         }
@@ -126,29 +127,29 @@ const Stats = () => {
                 </Grid>
                 <Grid item xl={3} lg={6} xs={12}>
                     <CardStats
-                        subtitle="Users"
-                        title="924"
+                        subtitle="Fine"
+                        title={loaded === false ? '...' : numFine}
                         icon={GroupAdd}
                         color="bgWarningLight"
                         footer={
                             <>
-                                <Box
-                                    component="span"
-                                    fontSize=".875rem"
-                                    color={theme.palette.warning.main}
-                                    marginRight=".5rem"
-                                    display="flex"
-                                    alignItems="center"
-                                >
-                                    <Box
-                                        component={ArrowDownward}
-                                        width="1.5rem!important"
-                                        height="1.5rem!important"
-                                    />{" "}
-                                    1.10%
-                                </Box>
+                                {/*<Box*/}
+                                {/*    component="span"*/}
+                                {/*    fontSize=".875rem"*/}
+                                {/*    color={theme.palette.warning.main}*/}
+                                {/*    marginRight=".5rem"*/}
+                                {/*    display="flex"*/}
+                                {/*    alignItems="center"*/}
+                                {/*>*/}
+                                {/*    <Box*/}
+                                {/*        component={ArrowDownward}*/}
+                                {/*        width="1.5rem!important"*/}
+                                {/*        height="1.5rem!important"*/}
+                                {/*    />{" "}*/}
+                                {/*    1.10%*/}
+                                {/*</Box>*/}
                                 <Box component="span" whiteSpace="nowrap">
-                                    Since yesterday
+                                    Devices running smoothly
                                 </Box>
                             </>
                         }
@@ -156,29 +157,29 @@ const Stats = () => {
                 </Grid>
                 <Grid item xl={3} lg={6} xs={12}>
                     <CardStats
-                        subtitle="Predictions"
+                        subtitle="Incomplete"
                         title="49,65%"
                         icon={EmojiEvents}
                         color="bgInfo"
                         footer={
                             <>
-                                <Box
-                                    component="span"
-                                    fontSize=".875rem"
-                                    color={theme.palette.success.main}
-                                    marginRight=".5rem"
-                                    display="flex"
-                                    alignItems="center"
-                                >
-                                    <Box
-                                        component={ArrowUpward}
-                                        width="1.5rem!important"
-                                        height="1.5rem!important"
-                                    />{" "}
-                                    10%
-                                </Box>
+                                {/*<Box*/}
+                                {/*    component="span"*/}
+                                {/*    fontSize=".875rem"*/}
+                                {/*    color={theme.palette.success.main}*/}
+                                {/*    marginRight=".5rem"*/}
+                                {/*    display="flex"*/}
+                                {/*    alignItems="center"*/}
+                                {/*>*/}
+                                {/*    <Box*/}
+                                {/*        component={ArrowUpward}*/}
+                                {/*        width="1.5rem!important"*/}
+                                {/*        height="1.5rem!important"*/}
+                                {/*    />{" "}*/}
+                                {/*    10%*/}
+                                {/*</Box>*/}
                                 <Box component="span" whiteSpace="nowrap">
-                                    Since last month
+                                    Inspections not completed
                                 </Box>
                             </>
                         }
