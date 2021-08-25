@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import Grid from "@material-ui/core/Grid";
 import InsertChartOutlined from "@material-ui/icons/InsertChartOutlined";
 import Box from "@material-ui/core/Box";
@@ -10,6 +10,7 @@ import EmojiEvents from "@material-ui/icons/EmojiEvents";
 import {useTheme} from "@material-ui/core/styles";
 import CardStats from "./CardStats";
 import axios from "axios";
+import {UserContext} from "../../Context/UserContext";
 
 
 const Stats = () => {
@@ -18,6 +19,9 @@ const Stats = () => {
     const [numConnected, setNumConnected] = useState(0)
     const [numCritical, setNumCritical] = useState(0)
     const [numFine, setNumFine] = useState(0)
+    const [loaded, setLoaded] = useState(false)
+
+    const user = useContext(UserContext)
 
     const result = {
         numDevices: 2
@@ -36,6 +40,17 @@ const Stats = () => {
                 setDevices(site)
                 console.log(JSON.stringify(site))
 
+                site.forEach(elem => {
+                    alert(JSON.stringify(elem))
+                    // count number connected
+                    let a = elem.deviceData.lastSeen ? setNumConnected(numConnected => numConnected +1) : ""
+                    // count number critical and not critical
+                    let b = elem.deviceData.deviceStatus !== "FINE" ? setNumCritical(numCritical => numCritical +1) : setNumFine(numFine => numFine +1)
+                })
+                alert(numConnected)
+                alert(numCritical)
+                alert(numFine)
+                setLoaded(true)
 
             }else{
                 console.log('res.data null')
@@ -51,8 +66,8 @@ const Stats = () => {
             <Grid container>
                 <Grid item xl={3} lg={6} xs={12}>
                     <CardStats
-                        subtitle="Devices"
-                        title={result === null ? '...loading' : result.numDevices}
+                        subtitle="Connected Devices"
+                        title={numConnected === null ? '...loading' : result.numDevices}
                         icon={InsertChartOutlined}
                         color="bgError"
                         footer={
