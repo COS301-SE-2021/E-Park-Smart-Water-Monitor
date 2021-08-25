@@ -153,18 +153,18 @@ function Dashboard() {
         </Grid>
 
 
-        {/*<Grid container component={Box} marginTop="3rem!important">*/}
-        {/*  <Grid*/}
-        {/*      item*/}
-        {/*      xs={12}*/}
-        {/*      xl={12}*/}
-        {/*      component={Box}*/}
-        {/*      marginBottom="3rem!important"*/}
-        {/*      classes={{ root: classes.gridItemRoot }}*/}
-        {/*  >*/}
-        {/*    <InspectionTable inspections={inspections}></InspectionTable>*/}
-        {/*  </Grid>*/}
-        {/*</Grid>*/}
+        <Grid container component={Box} marginTop="3rem!important">
+          <Grid
+              item
+              xs={12}
+              xl={12}
+              component={Box}
+              marginBottom="3rem!important"
+              classes={{ root: classes.gridItemRoot }}
+          >
+            <InspectionTable inspections={inspections}/>
+          </Grid>
+        </Grid>
 
       </Container>
       <br/><br/>

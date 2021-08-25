@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useContext} from "react";
 // import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,6 +13,7 @@ import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
 import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import axios from 'axios'
+import {UserContext} from "../../Context/UserContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -25,6 +26,8 @@ function Map(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [response, setResponse] = useState(null)
+
+    const user = useContext(UserContext)
 
     useEffect(() => {
         if (props.devices) {
@@ -53,7 +56,7 @@ function Map(props) {
                 device layout
               </Box>
             }
-            subheader="Park Map"
+            subheader={user.parkName+" Map"}
             classes={{ root: classes.cardHeaderRoot }}
             titleTypographyProps={{
               component: Box,
