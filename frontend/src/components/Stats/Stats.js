@@ -21,19 +21,20 @@ const Stats = () => {
     const [numConnected, setNumConnected] = useState(0)
     const [numCritical, setNumCritical] = useState(0)
     const [numFine, setNumFine] = useState(0)
+    const [numInspections, setNumInspections] = useState(0)
     const [loaded, setLoaded] = useState(false)
+    const [loadedInspections, setLoadedInspections] = useState(false)
+
 
     const user = useContext(UserContext)
-
-    const result = {
-        numDevices: 2
-    };
 
     useEffect(()=>{
         setNumConnected(0)
         setNumCritical(0)
         setNumFine(0)
         setLoaded(false)
+        setLoadedInspections(false)
+
         // get the devices
         axios.get('http://localhost:8080/api/devices/getAllDevices',{
             headers: {
@@ -44,7 +45,6 @@ const Stats = () => {
             {
                 const site = res.data.site; // site array
                 setDevices(site)
-                console.log(JSON.stringify(site))
 
                 site.forEach(elem => {
                     // count number connected
@@ -60,7 +60,32 @@ const Stats = () => {
         }).catch((res)=>{
             console.log(JSON.stringify(res))
         });
-    },[])
+
+        axios.get('http://localhost:8080/api/inspections/getAllInspections', {
+            headers: {
+                'Authorization': "Bearer " + user.token
+            }
+        }).then((res) => {
+
+            if (res.data) {
+
+                if(res.data && res.data.inspections) {
+                    // get the inspections for the user logged in
+                    let parkIndex = -1;
+                    for (let i = 0; i < res.data.parkId.length; i++) {
+                        if (res.data.parkId[i] == user.parkID) {
+                            parkIndex = i;
+                        }
+                    }
+
+                    res.data.inspections[parkIndex].forEach((inspection) => {
+                        let a = inspection.status !== "DONE" ? setNumInspections(numInspections => numInspections +1) : ""
+                    })
+                    setLoadedInspections(true)
+                }
+            }
+        })
+    }, [])
 
     return (
         <>
@@ -74,21 +99,6 @@ const Stats = () => {
                         color="bgError"
                         footer={
                             <>
-                                {/*<Box*/}
-                                {/*    component="span"*/}
-                                {/*    fontSize=".875rem"*/}
-                                {/*    color={theme.palette.success.main}*/}
-                                {/*    marginRight=".5rem"*/}
-                                {/*    display="flex"*/}
-                                {/*    alignItems="center"*/}
-                                {/*>*/}
-                                {/*    <Box*/}
-                                {/*        component={ArrowUpward}*/}
-                                {/*        width="1.5rem!important"*/}
-                                {/*        height="1.5rem!important"*/}
-                                {/*    />{" "}*/}
-                                {/*    3.48%*/}
-                                {/*</Box>*/}
                                 <Box component="span" whiteSpace="nowrap">
                                     Devices giving readings
                                 </Box>
@@ -104,21 +114,6 @@ const Stats = () => {
                         color="bgWarning"
                         footer={
                             <>
-                                {/*<Box*/}
-                                {/*    component="span"*/}
-                                {/*    fontSize=".875rem"*/}
-                                {/*    color={theme.palette.error.main}*/}
-                                {/*    marginRight=".5rem"*/}
-                                {/*    display="flex"*/}
-                                {/*    alignItems="center"*/}
-                                {/*>*/}
-                                {/*    <Box*/}
-                                {/*        component={ArrowDownward}*/}
-                                {/*        width="1.5rem!important"*/}
-                                {/*        height="1.5rem!important"*/}
-                                {/*    />{" "}*/}
-                                {/*    3.48%*/}
-                                {/*</Box>*/}
                                 <Box component="span" whiteSpace="nowrap">
                                     Devices need attention
                                 </Box>
@@ -134,21 +129,6 @@ const Stats = () => {
                         color="bgWarningLight"
                         footer={
                             <>
-                                {/*<Box*/}
-                                {/*    component="span"*/}
-                                {/*    fontSize=".875rem"*/}
-                                {/*    color={theme.palette.warning.main}*/}
-                                {/*    marginRight=".5rem"*/}
-                                {/*    display="flex"*/}
-                                {/*    alignItems="center"*/}
-                                {/*>*/}
-                                {/*    <Box*/}
-                                {/*        component={ArrowDownward}*/}
-                                {/*        width="1.5rem!important"*/}
-                                {/*        height="1.5rem!important"*/}
-                                {/*    />{" "}*/}
-                                {/*    1.10%*/}
-                                {/*</Box>*/}
                                 <Box component="span" whiteSpace="nowrap">
                                     Devices running smoothly
                                 </Box>
@@ -159,26 +139,11 @@ const Stats = () => {
                 <Grid item xl={3} lg={6} xs={12}>
                     <CardStats
                         subtitle="Inspections"
-                        title="49,65%"
+                        title={loadedInspections === false ? '...' : numInspections}
                         icon={AssignmentTurnedIn}
                         color="bgInfo"
                         footer={
                             <>
-                                {/*<Box*/}
-                                {/*    component="span"*/}
-                                {/*    fontSize=".875rem"*/}
-                                {/*    color={theme.palette.success.main}*/}
-                                {/*    marginRight=".5rem"*/}
-                                {/*    display="flex"*/}
-                                {/*    alignItems="center"*/}
-                                {/*>*/}
-                                {/*    <Box*/}
-                                {/*        component={ArrowUpward}*/}
-                                {/*        width="1.5rem!important"*/}
-                                {/*        height="1.5rem!important"*/}
-                                {/*    />{" "}*/}
-                                {/*    10%*/}
-                                {/*</Box>*/}
                                 <Box component="span" whiteSpace="nowrap">
                                     Inspections not completed
                                 </Box>
