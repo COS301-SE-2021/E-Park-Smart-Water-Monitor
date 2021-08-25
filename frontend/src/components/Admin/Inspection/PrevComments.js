@@ -13,14 +13,24 @@ const useStyles = makeStyles(componentStyles);
 
 const PrevComments = (props) => {
     const user = useContext(UserContext)
+    const [response, setResponse] = useState([])
+
+    useEffect(() => {
+        let com
+        let m = props.comments[props.comments.length].map((comment) => (
+            // com= comment.split("\n")
+            // <label>{com[0]}</label>
+            // <br/>
+            // <TextareaAutosize value={com[1]}/>
+            // <br/><br/>
+            <TextareaAutosize value={comment}/>
+        ))
+        setResponse(m)
+    },[])
 
     return (
         <>
-            <label>{props.user}:</label><br/>
-            <TextareaAutosize value={"hello world"} />
-            <br/><br/>
-            <label>{props.user}:</label><br/>
-            <TextareaAutosize value={"hello world dej;oiewhjdo'iewhjd;o1iweh3d;o1u  h"} />
+            {response}
         </>
     );
 };
