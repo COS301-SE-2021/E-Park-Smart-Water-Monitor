@@ -11,6 +11,8 @@ import {useTheme} from "@material-ui/core/styles";
 import CardStats from "./CardStats";
 import axios from "axios";
 import {UserContext} from "../../Context/UserContext";
+import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
+import {AssignmentTurnedIn, Error as ErrorIcon, CheckCircleOutline} from "@material-ui/icons";
 
 
 const Stats = () => {
@@ -44,7 +46,6 @@ const Stats = () => {
                 setDevices(site)
                 console.log(JSON.stringify(site))
 
-                alert(site.length)
                 site.forEach(elem => {
                     // count number connected
                     let a = elem.deviceData.lastSeen ? setNumConnected(numConnected => numConnected +1) : ""
@@ -99,7 +100,7 @@ const Stats = () => {
                     <CardStats
                         subtitle="Critical"
                         title={loaded === false ? '...' : numCritical}
-                        icon={PieChart}
+                        icon={ErrorIcon}
                         color="bgWarning"
                         footer={
                             <>
@@ -129,7 +130,7 @@ const Stats = () => {
                     <CardStats
                         subtitle="Fine"
                         title={loaded === false ? '...' : numFine}
-                        icon={GroupAdd}
+                        icon={CheckCircleOutline}
                         color="bgWarningLight"
                         footer={
                             <>
@@ -157,9 +158,9 @@ const Stats = () => {
                 </Grid>
                 <Grid item xl={3} lg={6} xs={12}>
                     <CardStats
-                        subtitle="Incomplete"
+                        subtitle="Inspections"
                         title="49,65%"
-                        icon={EmojiEvents}
+                        icon={AssignmentTurnedIn}
                         color="bgInfo"
                         footer={
                             <>
