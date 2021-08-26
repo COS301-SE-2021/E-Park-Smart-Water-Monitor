@@ -17,7 +17,6 @@ const PrevComments = (props) => {
 
     useEffect(() => {
         let com
-        //alert(props.comments)
         let m = props.comments.map((comment) => { com= comment.split("\n")
         return(
             <>
@@ -25,7 +24,6 @@ const PrevComments = (props) => {
                 <br/>
                 <TextareaAutosize value={com[1]}/>
                 <br/><br/>
-                <TextareaAutosize value={comment}/>
             </>
         )})
        setResponse(m)

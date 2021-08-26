@@ -37,7 +37,7 @@ const Comments = (props) => {
         toggleLoading()
       event.preventDefault()
 
-        let comm= comments +user.username+":\n "+ newComments+ "\n\n"
+        let comm= user.username+":\n"+ newComments
 
       //set comments
       var body = {
@@ -66,7 +66,7 @@ const Comments = (props) => {
         <>
             <Form onSubmit={handleSubmit}>
                 <PrevComments comments={props.inspectionDetails.comments} user={user.username}/>
-
+                <br/>
                 <Form.Group controlId="formBasicPassword">
                     <Form.Label>Add a comment:</Form.Label>
                     <Form.Control type="text" Required={"required"} placeholder="..." onChange={e => setNewComments(e.target.value)}/>
