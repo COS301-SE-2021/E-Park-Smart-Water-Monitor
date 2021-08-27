@@ -23,11 +23,31 @@ const mapStyles = {
 };
 
 function Map(props) {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [response, setResponse] = useState(null)
+    const classes = useStyles();
+    const theme = useTheme();
+    const [response, setResponse] = useState(null)
+    const [position, setPosition] = useState(null)
 
     const user = useContext(UserContext)
+
+    // https://react-leaflet.js.org/docs/example-events/
+
+
+    useEffect(()=>{
+        if(props.device)
+        {
+
+        }
+    },[props.device])
+
+    // functional component declared
+    function MapEvents(p) {
+        const map = useMapEvents({})
+        let obj = { lat: p.device.deviceData.latitude, lng: p.device.deviceData.longitude }
+        map.flyTo(obj)
+        return null
+    }
+
 
     useEffect(() => {
         if (props.devices) {
@@ -46,6 +66,8 @@ function Map(props) {
             console.log("no device prop added")
         }
     },[props.devices])
+
+
 
   return (
     <>
@@ -84,7 +106,7 @@ function Map(props) {
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
                 { response }
-
+                <MapEvents device={props.device}/>
             </MapContainer>
           </div>
 

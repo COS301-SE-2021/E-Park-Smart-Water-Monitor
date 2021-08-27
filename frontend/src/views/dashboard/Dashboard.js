@@ -60,7 +60,6 @@ function Dashboard() {
         {
           setDevice(site[0])
         }
-        // console.log(JSON.stringify(site))
 
       }else{
         console.log('res.data null')
@@ -137,7 +136,8 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            { devices && <Map load_device={load_device} devices={ devices }/>}
+            {/*if a device changes in the table then the map must rerender*/}
+            { device && devices && <Map load_device={load_device} devices={ devices } device={device} />}
           </Grid>
         </Grid>
 
