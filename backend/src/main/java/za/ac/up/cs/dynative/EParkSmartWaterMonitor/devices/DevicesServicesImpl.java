@@ -388,7 +388,7 @@ public class DevicesServicesImpl implements DevicesService
             response.setSuccess(false);
             return response;
         }
-        if (editDeviceRequest.getDeviceName().equals("") || editDeviceRequest.getDeviceType().equals("") || editDeviceRequest.getDeviceId()==null || editDeviceRequest.getDeviceModel().equals("")){
+        if (editDeviceRequest.getDeviceType().equals("") || editDeviceRequest.getDeviceId()==null || editDeviceRequest.getDeviceModel().equals("")){
             response.setStatus("Request incomplete");
             response.setSuccess(false);
             return response;
