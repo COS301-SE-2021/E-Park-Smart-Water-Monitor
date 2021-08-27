@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.iot.IotClient;
-import software.amazon.awssdk.services.iot.model.AttributePayload;
-import software.amazon.awssdk.services.iot.model.CreateThingRequest;
-import software.amazon.awssdk.services.iot.model.CreateThingResponse;
+import software.amazon.awssdk.services.iot.model.*;
 import software.amazon.awssdk.services.iotdataplane.IotDataPlaneClient;
 import software.amazon.awssdk.services.iotdataplane.model.PublishRequest;
 import software.amazon.awssdk.services.iotdataplane.model.PublishResponse;
@@ -390,7 +388,7 @@ public class DevicesServicesImpl implements DevicesService
             response.setSuccess(false);
             return response;
         }
-        if (editDeviceRequest.getDeviceName()=="" || editDeviceRequest.getDeviceType()==""|| editDeviceRequest.getDeviceId()==null || editDeviceRequest.getDeviceModel()==""){
+        if (editDeviceRequest.getDeviceName().equals("") || editDeviceRequest.getDeviceType().equals("") || editDeviceRequest.getDeviceId()==null || editDeviceRequest.getDeviceModel().equals("")){
             response.setStatus("Request incomplete");
             response.setSuccess(false);
             return response;
@@ -410,6 +408,14 @@ public class DevicesServicesImpl implements DevicesService
                         response.setSuccess(false);
                         return response;
                     }
+                }
+                if (editDeviceRequest.getLongitude() != 0) {
+                    deviceToChange.get().getDeviceData().setLongitude(editDeviceRequest.getLongitude());
+
+                    if (editDeviceRequest.getLatitude() != 0) {
+                        deviceToChange.get().getDeviceData().setLatitude(editDeviceRequest.getLatitude());
+                    }
+                    UpdateDeviceShadow(deviceToChange);
                 }
                 response.setStatus("Device successfully edited.");
                 response.setSuccess(true);
@@ -431,12 +437,13 @@ public class DevicesServicesImpl implements DevicesService
 
     @Override
     public DeleteDeviceResponse deleteDevice(DeleteDeviceRequest request) {
-        System.out.println("A");
         if (request.getDeviceId() == null) {
             return new DeleteDeviceResponse("No device id specified.", false);
         }
         Optional<Device> device = deviceRepo.findById(request.getDeviceId());
         if (device.isPresent()) {
+            DeleteThingRequest deleteThingRequest = DeleteThingRequest.builder().thingName(device.get().getDeviceName()).build();
+            iotClient.deleteThing(deleteThingRequest);
             deviceRepo.deleteDevice(device.get().getDeviceId());
             return new DeleteDeviceResponse("Successfully deleted the device and all related entities.", true);
         }
@@ -453,24 +460,11 @@ public class DevicesServicesImpl implements DevicesService
                 for (sensorConfiguration config : device.get().getDeviceData().getDeviceConfiguration()) {
                     if (config.getSettingType().equals("reportingFrequency")) {
                         if (request.getValue() >= 0) {
-                        config.setValue(request.getValue());
-                        deviceRepo.save(device.get());
-
-                        String payload = "{\"state\": {\"reported\": {";
-                        payload += device.get().getDeviceData().toString();
-                        payload += "}}}";
-
-                        SdkBytes shadowPayload = SdkBytes.fromUtf8String(payload);
-
-                        UpdateThingShadowRequest updateThingShadowRequest = UpdateThingShadowRequest.builder()
-                                .thingName(device.get().getDeviceName())
-                                .shadowName(device.get().getDeviceName()+"_Shadow")
-                                .payload(shadowPayload)
-                                .build();
-                        UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
-
-                        return new SetMetricFrequencyResponse("Successfully changed metric frequency to: " +
-                                request.getValue() + " hours.", true);
+                            config.setValue(request.getValue());
+                            deviceRepo.save(device.get());
+                            UpdateDeviceShadow(device);
+                            return new SetMetricFrequencyResponse("Successfully changed metric frequency to: " +
+                                    request.getValue() + " hours.", true);
                         }
                     }
                 }
@@ -615,4 +609,20 @@ public class DevicesServicesImpl implements DevicesService
 
     }
 
+    private void UpdateDeviceShadow(Optional<Device> deviceToChange) {
+        if (deviceToChange.isPresent()) {
+            String payload = "{\"state\": {\"reported\": {";
+            payload += deviceToChange.get().getDeviceData().toString();
+            payload += "}}}";
+
+            SdkBytes shadowPayload = SdkBytes.fromUtf8String(payload);
+
+            UpdateThingShadowRequest updateThingShadowRequest = UpdateThingShadowRequest.builder()
+                    .thingName(deviceToChange.get().getDeviceName())
+                    .shadowName(deviceToChange.get().getDeviceName()+"_Shadow")
+                    .payload(shadowPayload)
+                    .build();
+            UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
+        }
+    }
 }
