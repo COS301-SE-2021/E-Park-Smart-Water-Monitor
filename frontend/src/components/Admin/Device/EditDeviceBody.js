@@ -15,6 +15,8 @@ import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leafle
 import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
+import Box from "@material-ui/core/Box";
+import {Alert} from "@material-ui/lab";
 const { Form } = require( "react-bootstrap" );
 
 
@@ -75,6 +77,7 @@ const EditDeviceBody = (props) => {
     const submit = (e) => {
         toggleLoading()
         e.preventDefault()
+        setError(null)
 
         if(props && props.deviceDetails)
         {
@@ -96,7 +99,7 @@ const EditDeviceBody = (props) => {
             ).then((res)=>{
                 toggleLoading()
                 console.log("response:"+JSON.stringify(res))
-                if(res.data.success === "false")
+                if(res.data.success === false)
                 {
                     setError(res.data.status)
                     console.log("error with editing device")
@@ -164,6 +167,9 @@ const EditDeviceBody = (props) => {
                     </Col>
                 </Row>
 
+                { error &&
+                    <Alert severity={"warning"} className="mb-3">{error}</Alert>
+                }
 
                 <Button background-color="primary" variant="primary" type="submit">
                     Edit
