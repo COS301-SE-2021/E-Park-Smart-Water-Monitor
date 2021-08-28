@@ -36,6 +36,7 @@ const EditDeviceBody = (props) => {
     // park must be selected before the site can be selected to maintain validity
 
     const [name, setName] = useState("")
+    const [id, setId] = useState("")
     const [park, setPark] = useState("") // id and name stored
     const [site, setSite] = useState("") // id and name stored
     const [model, setModel] = useState("ESP32")
@@ -67,6 +68,7 @@ const EditDeviceBody = (props) => {
             setName(props.deviceDetails.deviceName)
             setLatitude(props.deviceDetails.deviceData.latitude)
             setLongitude(props.deviceDetails.deviceData.longitude)
+            setId(props.deviceId)
         }
     },[props.deviceDetails])
 
@@ -78,8 +80,7 @@ const EditDeviceBody = (props) => {
         {
             // device edit request
             let obj = {
-                parkName: park,
-                siteId: site,
+                deviceId: props.deviceDetails.deviceId,
                 deviceModel: model,
                 deviceType: "WaterSource",
                 deviceName: name,
@@ -87,8 +88,7 @@ const EditDeviceBody = (props) => {
                 longitude: longitude
             }
 
-
-            axios.post('http://localhost:8080/api/user/editDevice', obj, {
+            axios.put('http://localhost:8080/api/devices/editDevice', obj, {
                     headers: {
                         'Authorization': "Bearer " + user.token
                     }
@@ -110,8 +110,6 @@ const EditDeviceBody = (props) => {
                 console.log("response:"+JSON.stringify(res))
             });
         }
-
-
     }
 
 
