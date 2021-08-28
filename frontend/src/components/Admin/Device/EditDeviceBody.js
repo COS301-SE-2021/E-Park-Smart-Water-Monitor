@@ -47,13 +47,14 @@ const EditDeviceBody = (props) => {
     const loader = useContext(LoadingContext)
     const toggleLoading = loader.toggleLoading
 
-    function MapEvents() {
+    function MapEvents(props) {
         const map = useMapEvents({
             click: (e) => {
                 setLatitude(e.latlng.lat)
                 setLongitude(e.latlng.lng)
             }
         })
+        map.setView({lat: props.deviceDetails.deviceData.latitude, lng: props.deviceDetails.deviceData.longitude} )
         return null
     }
 
@@ -64,6 +65,8 @@ const EditDeviceBody = (props) => {
         {
             // set all your device details here
             setName(props.deviceDetails.deviceName)
+            setLatitude(props.deviceDetails.deviceData.latitude)
+            setLongitude(props.deviceDetails.deviceData.longitude)
         }
     },[props.deviceDetails])
 
@@ -153,11 +156,11 @@ const EditDeviceBody = (props) => {
                                 />
                                 <Marker position={[latitude, longitude]}>
                                     <Popup>
-                                        <h3>{name}</h3>
+                                        <p><b>{name}</b></p>
                                         location
                                     </Popup>
                                 </Marker>
-                                <MapEvents/>
+                                <MapEvents deviceDetails={props.deviceDetails}/>
                             </MapContainer>}
                         </div>
                     </Col>
