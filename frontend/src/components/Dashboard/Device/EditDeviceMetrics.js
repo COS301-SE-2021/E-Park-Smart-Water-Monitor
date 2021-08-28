@@ -35,9 +35,9 @@ const overlay = css`
 const useStyles = makeStyles(componentStyles);
 
 const EditDeviceMetricsBody = (props) => {
-    const [value, setValue] = useState("")
-    const [show, setShow] = useState(false)
-    const [loading, setLoading] = useState(false)
+    const [seconds, setSeconds] = useState("") // value in seconds
+    const [value, setValue] = useState("") // value in seconds
+    const [readable, setReadable] = useState("")
 
     const toggleLoading = useContext(LoadingContext).toggleLoading
     const user = useContext(UserContext)
@@ -55,12 +55,14 @@ const EditDeviceMetricsBody = (props) => {
             }
         ).then((res)=>{
 
-            console.log(JSON.stringify(res.data))
+            // console.log(JSON.stringify(res.data))
 
             let freq = res.data.device.deviceData.deviceConfiguration.filter((elem)=>{
                 return elem.settingType==="reportingFrequency"
             })
-            setValue(freq[0].value)
+            let sec = freq[0].value*60*60
+            setSeconds(sec)
+            setReadable(secondsToDhms(sec))
 
         }).catch((res)=>{
             console.log("response getById:"+JSON.stringify(res))
@@ -76,7 +78,7 @@ const EditDeviceMetricsBody = (props) => {
         // set the frequency
         let obj = {
             id: props.deviceDetails.deviceId,
-            value: value
+            value: Number((seconds/60/60).toFixed(6))
         }
 
         axios.put('http://localhost:8080/api/devices/setMetricFrequency', obj
@@ -89,34 +91,70 @@ const EditDeviceMetricsBody = (props) => {
         }).catch((res)=>{
 
             toggleLoading()
-            console.log("response setMetricFrequency:"+JSON.stringify(res))
+            // console.log("response setMetricFrequency:"+JSON.stringify(res))
         });
 
+    }
+
+    // https://stackoverflow.com/questions/846221/logarithmic-slider
+    function logslider(position) {
+        // position will be between 0 and 100
+        var minp = 0;
+        var maxp = 100;
+
+        // The result should be between 100 an 10000000
+        var minv = Math.log(100);
+        var maxv = Math.log(10000000);
+
+        // calculate adjustment factor
+        var scale = (maxv-minv) / (maxp-minp);
+
+        return Math.exp(minv + scale*(position-minp)); // will return number of seconds
+    }
+
+    // https://www.codegrepper.com/code-examples/javascript/js+convert+minutes+to+days+hours+minutes
+    function secondsToDhms(seconds) {
+        seconds = Number(seconds);
+        var d = Math.floor(seconds / (3600*24));
+        var h = Math.floor(seconds % (3600*24) / 3600);
+        var m = Math.floor(seconds % 3600 / 60);
+        var s = Math.floor(seconds % 60);
+
+        var dDisplay = d > 0 ? d + (d === 1 ? " day, " : " days, ") : "";
+        var hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
+        var mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
+        var sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
+        return dDisplay + hDisplay + mDisplay + sDisplay;
+    }
+
+    function getSliderValue(val){
+        setValue(val) // the real value from the slider
+        let log = logslider(val) // get number of seconds
+        setReadable(secondsToDhms(log)) // make seconds something to read
+        setSeconds(log)
     }
 
 
     return (
         <>
             <Form onSubmit={ submit }>
+                
                 <Row>
                     <Col>
-                        { value &&
+                        { seconds &&
                             <>
-                                <Form.Label>Hourly Frequency: {value}</Form.Label>
+                                <Form.Label>The device will take a reading every <br/> {readable}</Form.Label>
                                 <input
                                 style={{width:"100%"}}
                                 type="range"
-                                min="0" max="48"
-                                value={value}
-                                onChange={e => setValue(e.target.value)}
+                                min="0" max="100"
+                                // value={Number(seconds/60/60).toFixed(0)} // get the hour equivalent of the seconds
+                                onChange={e => getSliderValue(e.target.value)}
                                 step="0.1"/>
 
-                                <Form.Text className="text-muted">
-                                eg. {value} would map to a reading every {value*60} mins
-                                </Form.Text>
                             </>
                         }
-                        { !value &&
+                        { !seconds &&
                             <ScaleLoader size={50} color={"#5E72E4"} speedMultiplier={1.5} />
                         }
                     </Col>

@@ -4,9 +4,6 @@ import DashboardLayout from "./layouts/Dashboard";
 import AdminLayout from "./layouts/Admin";
 import React, {useContext} from "react";
 import {UserContext} from "./Context/UserContext";
-import {PuffLoader} from "react-spinners";
-import Modal from "./components/Modals/Modal";
-import {css} from "@emotion/react";
 
 const Routing = () => {
 
