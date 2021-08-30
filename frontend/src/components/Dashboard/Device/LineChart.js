@@ -71,7 +71,35 @@ function LineChart(props) {
 
     // GET THE PROJECTION DATA
     useEffect(()=>{
-        setProjectionsData("")
+        setProjectionsData(() => {
+            return {
+                labels: [],
+                datasets: [
+                    {
+                        label: "Optimistic",
+                        data: [],
+                        fill: false,
+
+                    },
+                    {
+                        label: "Realistic",
+                        data: [],
+                        backgroundColor: "orange",
+                        borderColor: "orange",
+                        borderDash: [12],
+                        fill: false,
+                    },
+                    {
+                        label: "Conservative",
+                        data: [],
+                        backgroundColor: "red",
+                        borderColor: "red",
+                        borderDash: [12],
+                        fill: false,
+                    },
+                ],
+            };
+        })
         setReset(false)
         let obj = {
             id: props.device.deviceId,

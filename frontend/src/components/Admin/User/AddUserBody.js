@@ -11,6 +11,7 @@ import AdminContext from "../AdminContext";
 import {DotLoader} from "react-spinners";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
+import {Alert} from "@material-ui/lab";
 const { Form } = require( "react-bootstrap" );
 
 const styles = {
@@ -36,6 +37,7 @@ const AddUserBody = (props) => {
     const [role, setRole] = useState("")
     const [cellNumber, setCellNumber] = useState("")
     const [parkOptions, setParkOptions] = useState("")
+    const [error, setError] = useState("")
 
     let userRoles = [
         { value: 'ADMIN', label: 'Admin' },
@@ -88,11 +90,13 @@ const AddUserBody = (props) => {
             }
         ).then((res)=>{
 
-            // reload the parent to refetch the data with out reloading the whole page
             toggleLoading()
-            props.closeModal()
-            props.reloadUserTable();
-
+            if(res.data.success === false){
+                setError(res.data.status)
+            }else{
+                props.closeModal()
+                props.reloadUserTable();
+            }
 
         }).catch((res)=>{
             console.log("response:"+JSON.stringify(res))
@@ -168,7 +172,7 @@ const AddUserBody = (props) => {
                                             {/*Shows the +27 for the user so they know only to type the rest of the number*/}
                                             <Form.Control
                                                 type="text"
-                                                editable={false}
+                                                editable={"false"}
                                                 placeholder="+27"
                                                 value="+27"
                                                 disabled={true}
@@ -204,6 +208,9 @@ const AddUserBody = (props) => {
                     </Col>
                 </Row>
 
+                { error &&
+                <Alert severity={"warning"} className="mb-3">{error}</Alert>
+                }
 
                 <Button variant="primary" type="submit" >
                     Submit

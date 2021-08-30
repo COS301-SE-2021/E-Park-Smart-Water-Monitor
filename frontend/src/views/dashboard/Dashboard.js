@@ -32,7 +32,7 @@ function Dashboard() {
   const classes = useStyles();
   const [devices, setDevices] = useState([])
   const [device, setDevice] = useState(null)
-  const [inspections, setInspections] = useState([])
+  const [inspections, setInspections] = useState(null)
   const [value, setValue] = useState(0)
 
   const user = useContext(UserContext)
@@ -60,7 +60,6 @@ function Dashboard() {
         {
           setDevice(site[0])
         }
-        // console.log(JSON.stringify(site))
 
       }else{
         console.log('res.data null')
@@ -70,17 +69,45 @@ function Dashboard() {
     });
   }, [value]) // second param [] is a list of dependency to watch and run useEffect
 
+  // useEffect(() => {
+  //   if (device != null) {
+  //     axios.post('http://localhost:8080/api/inspections/getDeviceInspections', {
+  //       deviceId: device.deviceId
+  //     }).then((res) => {
+  //       if (res.data) {
+  //         setInspections(res.data.inspectionList)
+  //       }
+  //     })
+  //   }
+  // }, [device])
+
+  // Get all inspections for the park
   useEffect(() => {
-    if (device != null) {
-      axios.post('http://localhost:8080/api/inspections/getDeviceInspections', {
-        deviceId: device.deviceId
-      }).then((res) => {
-        if (res.data) {
-          setInspections(res.data.inspectionList)
+    axios.get('http://localhost:8080/api/inspections/getAllInspections', {
+      headers: {
+        'Authorization': "Bearer " + user.token
+      }
+    }).then((res) => {
+      if (res.data) {
+
+        if (res.data && res.data.inspections) {
+          // get the inspections for the user logged in
+          let parkIndex = -1;
+          for (let i = 0; i < res.data.parkId.length; i++) {
+            if (res.data.parkId[i] == user.parkID) {
+              parkIndex = i;
+            }
+          }
+
+          setInspections(res.data.inspections[parkIndex])
+
         }
-      })
-    }
-  }, [device])
+      }
+    })
+
+
+
+  }, [])
 
   const load_device = (device) =>
   {
@@ -109,7 +136,8 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            { devices && <Map load_device={load_device} devices={ devices }/>}
+            {/*if a device changes in the table then the map must rerender*/}
+            { device && devices && <Map load_device={load_device} devices={ devices } device={device} />}
           </Grid>
         </Grid>
 
@@ -153,18 +181,20 @@ function Dashboard() {
         </Grid>
 
 
-        {/*<Grid container component={Box} marginTop="3rem!important">*/}
-        {/*  <Grid*/}
-        {/*      item*/}
-        {/*      xs={12}*/}
-        {/*      xl={12}*/}
-        {/*      component={Box}*/}
-        {/*      marginBottom="3rem!important"*/}
-        {/*      classes={{ root: classes.gridItemRoot }}*/}
-        {/*  >*/}
-        {/*    <InspectionTable inspections={inspections}></InspectionTable>*/}
-        {/*  </Grid>*/}
-        {/*</Grid>*/}
+        <Grid container component={Box} marginTop="3rem!important">
+          <Grid
+              item
+              xs={12}
+              xl={12}
+              component={Box}
+              marginBottom="3rem!important"
+              classes={{ root: classes.gridItemRoot }}
+          >
+            { inspections &&
+              <InspectionTable inspections={inspections}/>
+            }
+          </Grid>
+        </Grid>
 
       </Container>
       <br/><br/>
