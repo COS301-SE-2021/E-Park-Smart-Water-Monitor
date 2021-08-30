@@ -9,6 +9,7 @@ import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leafle
 import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
+import {Alert} from "@material-ui/lab";
 
 
 const mapStyles = {
@@ -29,6 +30,7 @@ const AddDeviceBody = (props) => {
     const [model, setModel] = useState("ESP32")
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
+    const [error, setError] = useState(null)
 
     // use the context supplied from the admin component to get the parks and sites
     const user = useContext(UserContext)
@@ -94,6 +96,8 @@ const AddDeviceBody = (props) => {
     const createDevice = (e) => {
         toggleLoading()
         e.preventDefault()
+        setError(null)
+
         let obj = {
             parkName: park.label,
             siteId: site.value,
@@ -109,10 +113,14 @@ const AddDeviceBody = (props) => {
                 'Authorization': "Bearer " + user.token
             }
         }).then((res) => {
-
             toggleLoading();
-            props.closeModal()
-            props.reloadDeviceTable();
+            if(res.data.success === false)
+            {
+                setError(res.data.status)
+            }else{
+                props.closeModal()
+                props.reloadDeviceTable()
+            }
 
         }).catch((res) => {
 
@@ -195,6 +203,9 @@ const AddDeviceBody = (props) => {
                     </Col>
                 </Row>
 
+                { error &&
+                    <Alert severity={"warning"} className="mb-3">{error}</Alert>
+                }
 
                 <Button background-color="primary" variant="primary" type="submit">
                     Submit

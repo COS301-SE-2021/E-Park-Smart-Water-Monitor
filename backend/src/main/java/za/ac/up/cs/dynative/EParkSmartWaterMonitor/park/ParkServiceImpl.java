@@ -24,10 +24,13 @@ public class ParkServiceImpl implements ParkService {
     }
 
     @Override
-    public CreateParkResponse createPark(CreateParkRequest request) {
+    public CreateParkResponse createPark(CreateParkRequest request)
+    {
         CreateParkResponse response = new CreateParkResponse();
-        if (!request.getParkName().equals("")) {
-            if (parkRepo.findParkByParkName(request.getParkName()).size()>0){
+        if (!request.getParkName().equals(""))
+        {
+            if (parkRepo.findParkByParkName(request.getParkName()).size()>0)
+            {
                 response.setStatus("Park "+request.getParkName()+" already exists!");
                 response.setSuccess(false);
                 return response;

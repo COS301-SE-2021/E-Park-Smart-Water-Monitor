@@ -17,7 +17,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.*;
 import java.util.*;
 
 @Service("WaterSiteServiceImpl")
-public class WaterSiteServicesImpl implements WaterSiteService {
+public class WaterSiteServicesImpl implements WaterSiteService
+{
     ParkServiceImpl parkService;
     WaterSiteRepo waterSiteRepo;
 
@@ -38,24 +39,30 @@ public class WaterSiteServicesImpl implements WaterSiteService {
         if (request.getParkId() != null) {
             if (Objects.equals(request.getShape(), "circle") || Objects.equals(request.getShape(), "rectangle")
                     && (request.getLength() >= 0 && request.getWidth() >= 0 && request.getRadius() >= 0)) {
-                WaterSite waterSite = new WaterSite(UUID.randomUUID(),
-                        request.getSiteName(),
-                        request.getLatitude(),
-                        request.getLongitude(),
-                        request.getShape(),
-                        request.getLength(),
-                        request.getWidth(),
-                        request.getRadius());
+//                WaterSite waterSite = new WaterSite(UUID.randomUUID(),
+//                        request.getSiteName(),
+//                        request.getLatitude(),
+//                        request.getLongitude(),
+//                        request.getShape(),
+//                        request.getLength(),
+//                        request.getWidth(),
+//                        request.getRadius());
 
                 FindByParkIdResponse findByParkIdResponse = parkService.findByParkId(new FindByParkIdRequest(request.getParkId()));
 
                 if (findByParkIdResponse != null) {
-                    findByParkIdResponse.getPark().addWaterSite(waterSite);
-                    waterSiteRepo.save(waterSite);
-                    parkService.savePark(new SaveParkRequest(findByParkIdResponse.getPark()));
+                    UUID siteID =UUID.randomUUID();
+                    waterSiteRepo.addWatersite(siteID,
+                            request.getSiteName(),
+                            request.getLatitude(),
+                            request.getLongitude(),
+                            request.getShape(),
+                            request.getLength(),
+                            request.getWidth(),
+                            request.getRadius(),request.getParkId());
                     response.setStatus("Successfully added: " + request.getSiteName());
                     response.setSuccess(true);
-                    response.setId(waterSite.getId());
+                    response.setId(siteID);
                 }else {
                     response.setStatus("Park not found");
                     response.setSuccess(false);

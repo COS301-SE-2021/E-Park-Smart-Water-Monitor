@@ -101,6 +101,7 @@ public class InspectionControllerTest {
     @Test
     public void setComments(){
         SetInspectionCommentsRequest request = new SetInspectionCommentsRequest(UUID.fromString("4875fbe1-640d-4797-910a-c487a43346b9"),"Integration testing is going good ;)");
+
         ResponseEntity<SetInspectionCommentsResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
                 .postForEntity("/api/inspections/setComments",request,SetInspectionCommentsResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
