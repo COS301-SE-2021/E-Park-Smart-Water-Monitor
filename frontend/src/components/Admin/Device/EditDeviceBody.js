@@ -12,7 +12,6 @@ import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leafle
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 import { Form } from  "react-bootstrap";
-import Box from "@material-ui/core/Box";
 import {Alert} from "@material-ui/lab";
 
 const mapStyles = {
@@ -25,9 +24,6 @@ const EditDeviceBody = (props) => {
     // park must be selected before the site can be selected to maintain validity
 
     const [name, setName] = useState("")
-    const [id, setId] = useState("")
-    const [park] = useState("") // id and name stored
-    const [site] = useState("") // id and name stored
     const [model] = useState("ESP32")
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
@@ -57,7 +53,6 @@ const EditDeviceBody = (props) => {
             setName(props.deviceDetails.deviceName)
             setLatitude(props.deviceDetails.deviceData.latitude)
             setLongitude(props.deviceDetails.deviceData.longitude)
-            setId(props.deviceId)
         }
     },[props.deviceDetails])
 
