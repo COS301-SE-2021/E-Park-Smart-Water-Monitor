@@ -40,7 +40,7 @@ const AuthHeader = () => {
                   lineHeight="1.7"
                   fontSize="1rem"
                 >
-                  An IoT based system for the maintenance and protection of South Africa's parks
+                  An IoT based system for the maintenance and protection of South Africa&apos;s parks
                 </Box>
               </Grid>
             </Box>
