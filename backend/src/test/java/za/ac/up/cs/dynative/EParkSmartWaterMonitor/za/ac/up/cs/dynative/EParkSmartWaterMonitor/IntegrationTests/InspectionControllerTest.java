@@ -46,7 +46,7 @@ public class InspectionControllerTest {
 
     @Test
     public void setStatusInspection(){
-        SetInspectionStatusRequest request = new SetInspectionStatusRequest(UUID.fromString("a0317d1b-9d49-4bc6-9feb-16c36ccf9dfc"),"completed");
+        SetInspectionStatusRequest request = new SetInspectionStatusRequest(UUID.fromString("4875fbe1-640d-4797-910a-c487a43346b9"),"completed");
         ResponseEntity<SetInspectionStatusResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
                 .postForEntity("/api/inspections/setStatus",request,SetInspectionStatusResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -100,7 +100,8 @@ public class InspectionControllerTest {
 
     @Test
     public void setComments(){
-        SetInspectionCommentsRequest request = new SetInspectionCommentsRequest(UUID.fromString("a0317d1b-9d49-4bc6-9feb-16c36ccf9dfc"),"Integration testing is going good ;)");
+        SetInspectionCommentsRequest request = new SetInspectionCommentsRequest(UUID.fromString("4875fbe1-640d-4797-910a-c487a43346b9"),"Integration testing is going good ;)");
+
         ResponseEntity<SetInspectionCommentsResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
                 .postForEntity("/api/inspections/setComments",request,SetInspectionCommentsResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
