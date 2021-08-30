@@ -143,7 +143,7 @@ export default function NavbarDropdown() {
       >
         <Avatar
           alt="..."
-          {/* eslint-disable-next-line no-undef */}
+          /* eslint-disable-next-line no-undef */
           src={require("assets/img/icons/common/empty-profile.png").default}
           classes={{
             root: classes.avatarRoot,
