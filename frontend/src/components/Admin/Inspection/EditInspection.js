@@ -1,8 +1,5 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Button, Form} from 'react-bootstrap';
-
-import { makeStyles } from "@material-ui/core/styles";
-import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addDevice.css";
 import axios from "axios";
 import {UserContext} from "../../../Context/UserContext";
@@ -23,9 +20,6 @@ const EditInspection = (props) => {
     const loader = useContext(LoadingContext)
     const toggleLoading = loader.toggleLoading
 
-    const selectDescription = (event) => {
-      setDescription(event.target.value)
-    }
 
     useEffect(() => {
         if (props){
