@@ -30,7 +30,7 @@ const useStyles = makeStyles(componentStyles);
 
 function Dashboard() {
   const classes = useStyles();
-  const [devices, setDevices] = useState([])
+  const [devices, setDevices] = useState(null)
   const [device, setDevice] = useState(null)
   const [inspections, setInspections] = useState(null)
   const [value, setValue] = useState(0)
@@ -69,17 +69,6 @@ function Dashboard() {
     });
   }, [value]) // second param [] is a list of dependency to watch and run useEffect
 
-  // useEffect(() => {
-  //   if (device != null) {
-  //     axios.post('http://localhost:8080/api/inspections/getDeviceInspections', {
-  //       deviceId: device.deviceId
-  //     }).then((res) => {
-  //       if (res.data) {
-  //         setInspections(res.data.inspectionList)
-  //       }
-  //     })
-  //   }
-  // }, [device])
 
   // Get all inspections for the park
   useEffect(() => {
