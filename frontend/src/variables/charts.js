@@ -1,5 +1,7 @@
-const Chart = import("chart.js");
-const themeColors = import("assets/theme/colors.js").default;
+/*eslint no-undef: "error"*/
+/*eslint-env node*/
+const Chart = require("chart.js");
+const themeColors = require("assets/theme/colors.js").default;
 //
 // Chart extension for making the bars rounded
 // Code from: https://codepen.io/jedtrow/full/ygRYgo
@@ -385,7 +387,7 @@ let chartExample2 = {
   },
 };
 
-export default {
+module.exports = {
   chartOptions, // used inside src/views/Index.js
   parseOptions, // used inside src/views/Index.js
   chartExample1, // used inside src/views/Index.js

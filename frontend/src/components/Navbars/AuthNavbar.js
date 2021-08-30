@@ -31,7 +31,8 @@ export default function AuthNavbar() {
               height="60px"
               component="img"
               className={classes.headerImg}
-              src={import("assets/img/brand/ERP-logo.png").default}
+              {/* eslint-disable-next-line no-undef */}
+              src={require("assets/img/brand/ERP-logo.png").default}
             />
 
           </Container>

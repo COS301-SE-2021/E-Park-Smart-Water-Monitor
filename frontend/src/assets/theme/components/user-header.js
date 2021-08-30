@@ -6,7 +6,8 @@ const componentStyles = (theme) => ({
     backgroundSize: "cover",
     backgroundPosition: "center top",
     backgroundImage:
-      "url(" + import("assets/img/theme/profile-cover.jpg").default + ")",
+    // eslint-disable-next-line no-undef
+      "url(" + require("assets/img/theme/profile-cover.jpg").default + ")",
   },
   overlayBox: {
     transition: "all .15s ease",
