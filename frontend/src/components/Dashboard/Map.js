@@ -12,7 +12,6 @@ import CardContent from "@material-ui/core/CardContent";
 import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
 import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
-import axios from 'axios'
 import {UserContext} from "../../Context/UserContext";
 
 const useStyles = makeStyles(componentStyles);
@@ -26,7 +25,6 @@ function Map(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [response, setResponse] = useState(null)
-    const [position, setPosition] = useState(null)
 
     const user = useContext(UserContext)
 
@@ -87,7 +85,7 @@ function Map(props) {
               marginBottom: "0!important",
               color: "initial",
             }}
-        ></CardHeader>
+        />
         <CardContent>
 
           <div style={ { height: 350 } }>

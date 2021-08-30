@@ -5,7 +5,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import axios from "axios";
 import LoadingContext from "../../Context/LoadingContext";
-import {UserContext} from "../../Context/UserContext";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -20,9 +19,7 @@ import {useTheme} from "@material-ui/core/styles";
 
 const ResetPassword = (props) => {
     const theme = useTheme();
-
     const [username, setUsername] = useState("")
-    const [code, setCode] = useState(false) // code on our side, can be used to match
     const [resetCode, setResetCode] = useState(false) // the code they type in to verify on backend on second API call
     const [error, setError] = useState(false)
     const [errorConfirmation, setErrorConfirmation] = useState(false)
@@ -46,16 +43,10 @@ const ResetPassword = (props) => {
         axios.post('http://localhost:8080/api/user/resetPassword', obj).then((res) => {
 
             toggleLoading();
-
-            // console.log(JSON.stringify(res.data))
-
             if(res.data.code === "User not found"){
                 setError(res.data.code)
             }else{
-                setCode(res.data.code)
                 setNext(true)
-                // console.log("code: "+code)
-                // console.log("next")
             }
 
         }).catch((res) => {
@@ -80,7 +71,6 @@ const ResetPassword = (props) => {
             setErrorConfirmation("Passwords do not match")
         }else{
             toggleLoading()
-            // console.log("submitting new password")
 
             let obj = {
                 username: username,
@@ -92,7 +82,6 @@ const ResetPassword = (props) => {
             axios.post('http://localhost:8080/api/user/resetPasswordFinalize', obj).then((res) => {
 
                 toggleLoading();
-                // console.log(JSON.stringify(res))
 
                 if(res.data.success === false)
                 {
@@ -113,10 +102,6 @@ const ResetPassword = (props) => {
 
             });
         }
-
-
-
-
 
     }
 

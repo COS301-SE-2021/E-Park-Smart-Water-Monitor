@@ -23,22 +23,20 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 import {UserContext} from "../../../Context/UserContext";
-import LoadingContext from "../../../Context/LoadingContext";
 import Chart from "chart.js";
 import Button from "@material-ui/core/Button";
 
 
 import componentStyles from "assets/theme/views/dashboard/dashboard.js";
 import {ScaleLoader} from "react-spinners";
-import {Add, ArrowDropDown, ArrowDropUp, Remove} from "@material-ui/icons";
+import {Add, Remove} from "@material-ui/icons";
 const useStyles = makeStyles(componentStyles);
 
 function LineChart(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [activeNav, setActiveNav] = React.useState(1);
-  const [readingType, setReadingType] = React.useState("waterlevel");
-  const [chartExample1Data, setChartExample1Data] = React.useState("data1");
+  const [readingType] = React.useState("waterlevel");
   const [projectionsData, setProjectionsData] = React.useState(""); // this will be a function like "data1" passed
   const [numPredictions, setNumPredictions] = React.useState(5); // this will be a function like "data1" passed
   const [reset, setReset] = React.useState(false); // this will be a function like "data1" passed
@@ -51,7 +49,7 @@ function LineChart(props) {
     // move between prediction types
       const toggleNavs = (index) => {
         setActiveNav(index);
-        setChartExample1Data("data" + index);
+        //setChartExample1Data("data" + index);
       };
 
     const increaseNumProjections = () =>{
@@ -67,7 +65,6 @@ function LineChart(props) {
 
 
     const user = useContext(UserContext)
-    const toggleLoading = useContext(LoadingContext).toggleLoading
 
     // GET THE PROJECTION DATA
     useEffect(()=>{
@@ -114,7 +111,6 @@ function LineChart(props) {
             }
         ).then((res)=>{
             setReset(true)
-            let data = res.data.optimisticProjections // just one of the lines
             let labels = res.data.labelDates
 
             let x = res.data
@@ -164,7 +160,7 @@ function LineChart(props) {
             })
 
 
-        }).catch((res)=>{
+        }).catch(()=>{
             console.log("Projections failed.")
         });
     },[props.device, numPredictions])

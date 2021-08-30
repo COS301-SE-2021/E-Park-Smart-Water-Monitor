@@ -2,24 +2,19 @@ import React, {useContext, useEffect, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
-
-// core components
 import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import {CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
+import {CardContent} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import EditDeviceMetrics from "./EditDeviceMetrics";
 import Modal from "../../Modals/Modal";
 import {UserContext} from "../../../Context/UserContext";
 import Divider from "@material-ui/core/Divider";
 import {BatteryStd, CheckCircle, Visibility} from "@material-ui/icons";
-import Clear from "@material-ui/icons/Clear";
 import axios from "axios";
-import ResetPassword from "../../Auth/ResetPassword";
 import LoadingContext from "../../../Context/LoadingContext";
-
 
 const useStyles = makeStyles(componentStyles);
 
@@ -29,7 +24,6 @@ function DeviceDetails(props) {
   const [access, setAccess] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
   const [showPing, setShowPing] = useState(false)
-  const [metrics, setMetrics] = useState("")
   const [pingMessage, setPingMessage] = useState("") // will show a loader while waiting for ping response
 
     const user = useContext(UserContext)

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
@@ -60,7 +60,7 @@ function InspectionTable({ inspections }) {
                     </Grid>
                 }
                 classes={{ root: classes.cardHeaderRoot }}
-            ></CardHeader>
+            />
 
             <div className="table-container">
                 <TableContainer>
