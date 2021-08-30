@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import { useTheme } from "@material-ui/core/styles";
@@ -22,12 +22,9 @@ import axios from "axios";
 import {ScaleLoader} from "react-spinners";
 import {useHistory} from "react-router-dom";
 import { UserContext } from '../../Context/UserContext';
-import LoadingContext from "../../Context/LoadingContext";
-import AddDeviceBody from "../../components/Admin/Device/AddDeviceBody";
 import Modal from "../../components/Modals/Modal";
 import ResetPassword from "../../components/Auth/ResetPassword";
-import {Alert} from "react-bootstrap";
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
+import {Dialog, DialogActions, DialogContent, DialogContentText} from "@material-ui/core";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -44,8 +41,6 @@ function Login() {
     const [dialogShow, setDialogShow] = useState(false)
 
     const user = useContext(UserContext)
-    const loader = useContext(LoadingContext)
-
 
     const login = () => {
         setLoading(true)
@@ -75,7 +70,7 @@ function Login() {
                 setError("Login details incorrect")
             }
 
-        }).catch((res)=>{
+        }).catch(()=>{
           console.log("login request failed")
         });
 
@@ -135,7 +130,7 @@ function Login() {
               marginTop: "0.5rem!important",
               fontSize: "1rem!important",
             }}
-          ></CardHeader>
+          />
           <CardContent classes={{ root: classes.cardContent }}>
             <FormControl
               variant="filled"
@@ -196,7 +191,7 @@ function Login() {
           <Grid container component={Box} marginTop="1rem">
               <Grid item xs={6} component={Box} textAlign="left">
                   <a
-                      href="#admui"
+                      href="#"
                       onClick={(e) => {
                           e.preventDefault()
                           // show modal
@@ -211,7 +206,7 @@ function Login() {
               {/*Add a mui popup for telling them to contact their administrator*/}
               <Grid item xs={6} component={Box} textAlign="right">
                   <a
-                      href="#admui"
+                      href="#"
                       onClick={(e) => e.preventDefault(
                           setDialogShow(true)
                       )}

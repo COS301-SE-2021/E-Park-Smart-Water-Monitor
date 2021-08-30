@@ -8,8 +8,6 @@ import Profile from "views/dashboard/Profile.js";
 import Device from "views/dashboard/Device.js";
 import Admin from "views/admin/Admin";
 
-// import Register from "views/auth/Register.js";
-// import Tables from "views/admin/Tables.js";
 // @material-ui/icons components
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Dns from "@material-ui/icons/Dns";
