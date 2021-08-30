@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
 
-import {makeStyles, withStyles} from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -26,7 +25,6 @@ import TableHead from "@material-ui/core/TableHead";
 import IconButton from "@material-ui/core/IconButton";
 import {Tooltip} from "@material-ui/core";
 import AddInspectionBody from "../Inspection/AddInspectionBody";
-import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 import {ScaleLoader} from "react-spinners";
@@ -37,9 +35,6 @@ const useStyles = makeStyles(componentStyles);
 
 const DeviceTable = () => {
     const classes = useStyles();
-    const theme = useTheme();
-   // const [result, setResult] = useState(null)
-    const [showAdd, setShowAdd] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [showInspection, setShowInspection] = useState(false);
     const [show, setShow] = useState(false);
@@ -69,7 +64,7 @@ const DeviceTable = () => {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }
-            }).then((res)=> {
+            }).then(()=> {
                 toggleLoading()
                 setValue(value => value+1 ) // returns an updated value
             }).catch((res)=>{
