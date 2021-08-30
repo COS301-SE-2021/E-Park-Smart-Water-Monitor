@@ -203,7 +203,7 @@ const DeviceTable = () => {
                                     </Grid>
                                 }
                                 classes={{ root: classes.cardHeaderRoot }}
-                            ></CardHeader>
+                            />
                             <TableContainer
                                 style={{maxHeight:"300px",overflowY:"auto"}}>
                                 <Box
