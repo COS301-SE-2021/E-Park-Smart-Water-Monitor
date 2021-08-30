@@ -32,14 +32,6 @@ function Map(props) {
 
     // https://react-leaflet.js.org/docs/example-events/
 
-
-    useEffect(()=>{
-        if(props.device)
-        {
-
-        }
-    },[props.device])
-
     // functional component declared
     function MapEvents(p) {
         const map = useMapEvents({})
