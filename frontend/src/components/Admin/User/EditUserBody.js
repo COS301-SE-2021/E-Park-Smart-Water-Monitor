@@ -8,6 +8,7 @@ import axios from "axios";
 import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
+import {Alert} from "@material-ui/lab";
 const { Form } = require( "react-bootstrap" );
 
 const styles = {
@@ -84,6 +85,8 @@ const EditUserBody = (props) => {
 
         toggleLoading()
 
+        setError(false)
+
         if(props && props.userDetails)
         {
             // accomodate for provided email is already in use error
@@ -121,12 +124,11 @@ const EditUserBody = (props) => {
             ).then((res)=>{
 
                 console.log("response:"+JSON.stringify(res))
-                if(res.data.success === "false")
+                toggleLoading()
+                if(res.data.success === false)
                 {
                     setError(res.data.status)
-                    console.log("error with editing user")
                 }else{
-                    toggleLoading()
                     props.closeModal()
                     props.reloadUserTable()
                 }
@@ -235,9 +237,10 @@ const EditUserBody = (props) => {
 
                     </Col>
                 </Row>
-
-
-
+                
+                { error &&
+                <Alert severity={"warning"} className="mb-3">{error}</Alert>
+                }
 
                 <Button variant="primary" type="submit" >
                     Edit

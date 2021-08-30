@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useContext} from "react";
 // import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,6 +13,7 @@ import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
 import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import axios from 'axios'
+import {UserContext} from "../../Context/UserContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -22,9 +23,31 @@ const mapStyles = {
 };
 
 function Map(props) {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [response, setResponse] = useState(null)
+    const classes = useStyles();
+    const theme = useTheme();
+    const [response, setResponse] = useState(null)
+    const [position, setPosition] = useState(null)
+
+    const user = useContext(UserContext)
+
+    // https://react-leaflet.js.org/docs/example-events/
+
+
+    useEffect(()=>{
+        if(props.device)
+        {
+
+        }
+    },[props.device])
+
+    // functional component declared
+    function MapEvents(p) {
+        const map = useMapEvents({})
+        let obj = { lat: p.device.deviceData.latitude, lng: p.device.deviceData.longitude }
+        map.flyTo(obj)
+        return null
+    }
+
 
     useEffect(() => {
         if (props.devices) {
@@ -44,6 +67,8 @@ function Map(props) {
         }
     },[props.devices])
 
+
+
   return (
     <>
       <Card>
@@ -53,7 +78,7 @@ function Map(props) {
                 device layout
               </Box>
             }
-            subheader="Park Map"
+            subheader={user.parkName+" Map"}
             classes={{ root: classes.cardHeaderRoot }}
             titleTypographyProps={{
               component: Box,
@@ -81,7 +106,7 @@ function Map(props) {
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
                 { response }
-
+                <MapEvents device={props.device}/>
             </MapContainer>
           </div>
 

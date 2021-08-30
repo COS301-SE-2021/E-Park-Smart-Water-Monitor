@@ -12,7 +12,8 @@ import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leafle
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 import { Form } from  "react-bootstrap";
-
+import Box from "@material-ui/core/Box";
+import {Alert} from "@material-ui/lab";
 
 const mapStyles = {
     width: `100%`,
@@ -24,6 +25,7 @@ const EditDeviceBody = (props) => {
     // park must be selected before the site can be selected to maintain validity
 
     const [name, setName] = useState("")
+    const [id, setId] = useState("")
     const [park] = useState("") // id and name stored
     const [site] = useState("") // id and name stored
     const [model] = useState("ESP32")
@@ -35,13 +37,14 @@ const EditDeviceBody = (props) => {
     const loader = useContext(LoadingContext)
     const toggleLoading = loader.toggleLoading
 
-    function MapEvents() {
+    function MapEvents(props) {
         const map = useMapEvents({
             click: (e) => {
                 setLatitude(e.latlng.lat)
                 setLongitude(e.latlng.lng)
             }
         })
+        map.setView({lat: props.deviceDetails.deviceData.latitude, lng: props.deviceDetails.deviceData.longitude} )
         return null
     }
 
@@ -52,19 +55,22 @@ const EditDeviceBody = (props) => {
         {
             // set all your device details here
             setName(props.deviceDetails.deviceName)
+            setLatitude(props.deviceDetails.deviceData.latitude)
+            setLongitude(props.deviceDetails.deviceData.longitude)
+            setId(props.deviceId)
         }
     },[props.deviceDetails])
 
     const submit = (e) => {
         toggleLoading()
         e.preventDefault()
+        setError(null)
 
         if(props && props.deviceDetails)
         {
             // device edit request
             let obj = {
-                parkName: park,
-                siteId: site,
+                deviceId: props.deviceDetails.deviceId,
                 deviceModel: model,
                 deviceType: "WaterSource",
                 deviceName: name,
@@ -72,8 +78,7 @@ const EditDeviceBody = (props) => {
                 longitude: longitude
             }
 
-
-            axios.post('http://localhost:8080/api/user/editDevice', obj, {
+            axios.put('http://localhost:8080/api/devices/editDevice', obj, {
                     headers: {
                         'Authorization': "Bearer " + user.token
                     }
@@ -81,7 +86,7 @@ const EditDeviceBody = (props) => {
             ).then((res)=>{
                 toggleLoading()
                 console.log("response:"+JSON.stringify(res))
-                if(res.data.success === "false")
+                if(res.data.success === false)
                 {
                     setError(res.data.status)
                     console.log("error with editing device")
@@ -95,8 +100,6 @@ const EditDeviceBody = (props) => {
                 console.log("response:"+JSON.stringify(res))
             });
         }
-
-
     }
 
 
@@ -141,16 +144,19 @@ const EditDeviceBody = (props) => {
                                 />
                                 <Marker position={[latitude, longitude]}>
                                     <Popup>
-                                        <h3>{name}</h3>
+                                        <p><b>{name}</b></p>
                                         location
                                     </Popup>
                                 </Marker>
-                                <MapEvents/>
+                                <MapEvents deviceDetails={props.deviceDetails}/>
                             </MapContainer>}
                         </div>
                     </Col>
                 </Row>
 
+                { error &&
+                    <Alert severity={"warning"} className="mb-3">{error}</Alert>
+                }
 
                 <Button background-color="primary" variant="primary" type="submit">
                     Edit

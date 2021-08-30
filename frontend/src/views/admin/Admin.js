@@ -45,16 +45,11 @@ function Admin() {
     const [value, setValue] = useState(0)
 
     const user = useContext(UserContext)
-    const toggleGeneralLoading = useContext(LoadingContext).toggleLoading
 
     const selectPark = (details) => {
         setPark(details)
     }
 
-    const toggleLoading = ()=>{
-        setShow(show=>!show)
-        setLoading(loading=>!loading)
-    }
 
     // get all the park and site data to populate the park and site tables
     // as well as the modals which require you select a park and a site
@@ -68,13 +63,11 @@ function Admin() {
     // to child components easily in future
 
     useEffect(() => {
-        // toggleGeneralLoading()
         axios.get('http://localhost:8080/api/park/getAllParksAndSites', {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
         }).then((res)=>{
-            // toggleGeneralLoading()
             if(res)
             {
                 setParksAndSites(res.data)
@@ -85,7 +78,6 @@ function Admin() {
     // Context explained
     // https://medium.com/nerd-for-tech/using-context-api-in-react-with-functional-components-dbc653c7d485
     // https://medium.com/@danfyfe/using-react-context-with-functional-components-153cbd9ba214
-
 
     return (
         <>
@@ -110,13 +102,15 @@ function Admin() {
                             marginBottom="3rem!important"
                             classes={{root: classes.gridItemRoot}}
                         >
+                            {user.role === "ADMIN" &&
                             <UserTable/>
+                            }
                             <DeviceTable/>
                             <InspectionTable/>
                         </Grid>
 
                         {/* Sites altered on the change of park */}
-
+                        {user.role === "ADMIN" &&
                         <Grid
                             item
                             xs={12}
@@ -127,9 +121,10 @@ function Admin() {
                         >
                             <SiteTable park={park}/>
                         </Grid>
+                        }
 
 
-
+                        {user.role === "ADMIN" &&
                         <Grid
                             item
                             xs={12}
@@ -141,6 +136,7 @@ function Admin() {
                         >
                             <ParkTable select={selectPark}/>
                         </Grid>
+                        }
 
                     </Grid>
                 </Container>
