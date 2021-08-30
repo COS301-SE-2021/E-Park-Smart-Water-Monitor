@@ -167,23 +167,12 @@ const SiteTable = () => {
                                                 marginBottom="0!important"
                                             >
                                                 Watersites for {user.parkName}
-
-                                                {/*Reload Button*/}
-                                                {/*<Box*/}
-                                                {/*    component={Replay}*/}
-                                                {/*    width="1rem!important"*/}
-                                                {/*    height="1rem!important"*/}
-                                                {/*    marginLeft="1.25rem"*/}
-                                                {/*    onClick={()=>{return reloadSiteTable}}*/}
-                                                {/*/>*/}
                                             </Box>
-
                                         </Grid>
-
                                     </Grid>
                                 }
                                 classes={{ root: classes.cardHeaderRoot }}
-                            ></CardHeader>
+                            />
                             <TableContainer
                                 style={{maxHeight:"300px",overflowY:"auto"}}>
                                 <Box

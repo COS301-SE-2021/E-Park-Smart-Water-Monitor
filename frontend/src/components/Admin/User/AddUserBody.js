@@ -1,18 +1,14 @@
 import React, {useContext, useEffect, useState} from "react";
 import "../../../assets/css/addUser.css";
 import Select from 'react-select';
-import { css } from "@emotion/react";
-import ClipLoader from "react-spinners/ClipLoader";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
-import AdminContext from "../AdminContext";
-import {DotLoader} from "react-spinners";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 import {Alert} from "@material-ui/lab";
-const { Form } = require( "react-bootstrap" );
+import { Form } from "react-bootstrap";
 
 const styles = {
     col_left: {

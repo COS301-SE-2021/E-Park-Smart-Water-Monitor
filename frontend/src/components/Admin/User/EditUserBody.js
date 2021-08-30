@@ -5,11 +5,10 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
-import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 import {Alert} from "@material-ui/lab";
-const { Form } = require( "react-bootstrap" );
+import { Form } from "react-bootstrap";
 
 const styles = {
     col_left: {
@@ -26,16 +25,14 @@ const styles = {
 
 
 const EditUserBody = (props) => {
-    const [park, setPark] = useState("")
+
     const [idNumber, setIDNumber] = useState("")
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
     const [name, setName] = useState("")
     const [surname, setSurname] = useState("")
     const [username, setUsername] = useState("")
     const [role, setRole] = useState("")
     const [cellNumber, setCellNumber] = useState("")
-    const [parkOptions, setParkOptions] = useState("")
     const [error, setError] = useState("")
 
     const user = useContext(UserContext)
@@ -66,10 +63,8 @@ const EditUserBody = (props) => {
             let cell = p.cellNumber;
             cell = cell.substr(3)
 
-            setPark(p.park)
             setIDNumber(p.idNumber)
             setEmail(p.email)
-            setPassword(p.password)
             setName(p.name)
             setSurname(p.surname)
             setUsername(p.username)
