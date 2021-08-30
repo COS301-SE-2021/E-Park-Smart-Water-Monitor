@@ -5,7 +5,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Tv from "@material-ui/icons/Tv";
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 
-var routes = [
+let routes = [
   {
     path: "/index",
     name: "Dashboard",
@@ -22,22 +22,6 @@ var routes = [
     component: Admin,
     layout: "/admin",
   },
- // {
-    // path: "/device",
-    // name: "Device",
-    // icon: Person,
-    // iconColor: "WarningLight",
-    // component: Device,
-    // layout: "/dashboard",
-//  },
-  // {
-  //   path: "/index",
-  //   name: "Login",
-  //   icon: VpnKey,
-  //   iconColor: "Info",
-  //   component: Login,
-  //   layout: "/auth",
-  // },
   {
     path: "/index",
     name: "Logout",
