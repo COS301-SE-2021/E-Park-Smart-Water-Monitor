@@ -2,29 +2,19 @@ import React, {useContext, useEffect, useState} from "react";
 import Grid from "@material-ui/core/Grid";
 import InsertChartOutlined from "@material-ui/icons/InsertChartOutlined";
 import Box from "@material-ui/core/Box";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import PieChart from "@material-ui/icons/PieChart";
-import ArrowDownward from "@material-ui/icons/ArrowDownward";
-import GroupAdd from "@material-ui/icons/GroupAdd";
-import EmojiEvents from "@material-ui/icons/EmojiEvents";
-import {useTheme} from "@material-ui/core/styles";
 import CardStats from "./CardStats";
 import axios from "axios";
 import {UserContext} from "../../Context/UserContext";
-import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import {AssignmentTurnedIn, Error as ErrorIcon, CheckCircleOutline} from "@material-ui/icons";
 
 
 const Stats = () => {
-    const theme = useTheme();
-    const [devices, setDevices] = useState(0)
     const [numConnected, setNumConnected] = useState(0)
     const [numCritical, setNumCritical] = useState(0)
     const [numFine, setNumFine] = useState(0)
     const [numInspections, setNumInspections] = useState(0)
     const [loaded, setLoaded] = useState(false)
     const [loadedInspections, setLoadedInspections] = useState(false)
-
 
     const user = useContext(UserContext)
 
@@ -44,12 +34,13 @@ const Stats = () => {
             if(res.data)
             {
                 const site = res.data.site; // site array
-                setDevices(site)
 
                 site.forEach(elem => {
                     // count number connected
+                    // eslint-disable-next-line no-unused-vars
                     let a = elem.deviceData.lastSeen ? setNumConnected(numConnected => numConnected +1) : ""
                     // count number critical and not critical
+                    // eslint-disable-next-line no-unused-vars
                     let b = elem.deviceData.deviceStatus !== "FINE" ? setNumCritical(numCritical => numCritical +1) : setNumFine(numFine => numFine +1)
                 })
                 setLoaded(true)
@@ -79,6 +70,7 @@ const Stats = () => {
                     }
 
                     res.data.inspections[parkIndex].forEach((inspection) => {
+                        // eslint-disable-next-line no-unused-vars
                         let a = inspection.status !== "DONE" ? setNumInspections(numInspections => numInspections +1) : ""
                     })
                     setLoadedInspections(true)

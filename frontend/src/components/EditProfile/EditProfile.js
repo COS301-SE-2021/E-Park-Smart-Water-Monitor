@@ -1,15 +1,12 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import "../../assets/css/addUser.css";
-import Select from 'react-select';
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
-import AdminContext from "../Admin/AdminContext";
 import {UserContext} from "../../Context/UserContext";
-import LoadingContext from "../../Context/LoadingContext";
 import EditProfileContext from "../../Context/EditProfileContext";
-const { Form } = require( "react-bootstrap" );
+import { Form } from "react-bootstrap" ;
 const styles = {
     col_left: {
         paddingRight:'3px'
@@ -24,7 +21,6 @@ const styles = {
 }
 
 const EditProfile = (props) => {
-    const context = useContext(AdminContext)
     const user = useContext(UserContext)
 
     const [idNumber, setIDNumber] = useState(user.IDNumber)
@@ -36,6 +32,7 @@ const EditProfile = (props) => {
     let cell = user.cellNumber;
     cell = cell.substr(3)
     const [cellNumber, setCellNumber] = useState(cell)
+    // eslint-disable-next-line no-unused-vars
     const [error, setError] = useState("")
 
 
