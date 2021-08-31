@@ -3,6 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.IntegrationTests;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,33 @@ import static org.junit.jupiter.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DeviceControllerTest {
+
+    @Value("${app.watersiteID}")
+    private String waterSiteID;
+    @Value("${app.userName1}")
+    private String userName1;
+    @Value("${app.userP1}")
+    private String userPassword1;
+    @Value("${app.parkID}")
+    private String parkID;
+    @Value("${app.userName3}")
+    private String userName3;
+    @Value("${app.userP3}")
+    private String userPassword3;
+    @Value("${app.userID3}")
+    private String userID3;
+    @Value("${app.userName2}")
+    private String userName2;
+    @Value("${app.userP2}")
+    private String userPassword2;
+    @Value("${app.userID2}")
+    private String userID2;
+    @Value("${app.userResponseName}")
+    private String responseName;
+    @Value("${app.deviceID}")
+    private String deviceID;
+    @Value("${app.inspectionID}")
+    private String inspectionID;
 
     @Autowired
     private TestRestTemplate restTemplate;
