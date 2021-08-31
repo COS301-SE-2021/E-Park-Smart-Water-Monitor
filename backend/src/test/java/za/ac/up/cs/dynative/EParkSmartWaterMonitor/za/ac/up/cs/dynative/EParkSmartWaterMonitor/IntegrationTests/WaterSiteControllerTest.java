@@ -12,9 +12,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.DeleteWaterSiteInternalRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.DeleteWaterSiteRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.AddSiteResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.DeleteWaterSiteInternalResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.DeleteWaterSiteResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
 import java.util.UUID;
@@ -124,12 +126,11 @@ public class WaterSiteControllerTest {
 
         id=response.getBody().getId();
 
-        DeleteWaterSiteRequest requestt = new DeleteWaterSiteRequest(id);
-        requestt.setWaterSiteRequestId(response.getBody().getId());
-        ResponseEntity<DeleteWaterSiteResponse> responsee = restTemplate.withBasicAuth(userName1,userPassword1)
-                .postForEntity("/api/sites/deleteInternal", requestt,DeleteWaterSiteResponse.class);
+        DeleteWaterSiteInternalRequest requestt = new DeleteWaterSiteInternalRequest(id);
+        ResponseEntity<DeleteWaterSiteInternalResponse> responsee = restTemplate.withBasicAuth(userName1,userPassword1)
+                .postForEntity("/api/sites/deleteInternal", requestt,DeleteWaterSiteInternalResponse.class);
         assertEquals(HttpStatus.OK,responsee.getStatusCode());
-//        assertEquals(true,responsee.getBody().getSuccess());
+        assertEquals(true,responsee.getBody().getSuccess());
     }
 
 }
