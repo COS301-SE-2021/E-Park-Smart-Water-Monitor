@@ -22,8 +22,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ParkControllerTest {
 
-    @Value("${app.watersiteID}")
-    private String waterSiteID;
     @Value("${app.userName1}")
     private String userName1;
     @Value("${app.userP1}")
@@ -31,23 +29,6 @@ public class ParkControllerTest {
     @Value("${app.parkID}")
     private String parkID;
     @Value("${app.userName3}")
-    private String userName3;
-    @Value("${app.userP3}")
-    private String userPassword3;
-    @Value("${app.userID3}")
-    private String userID3;
-    @Value("${app.userName2}")
-    private String userName2;
-    @Value("${app.userP2}")
-    private String userPassword2;
-    @Value("${app.userID2}")
-    private String userID2;
-    @Value("${app.userResponseName}")
-    private String responseName;
-    @Value("${app.userResponseEmail}")
-    private String responseEmail;
-    @Value("${app.userResponseUserName}")
-    private String responseUserName;
 
     @Autowired
     private TestRestTemplate restTemplate;
