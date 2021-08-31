@@ -74,7 +74,7 @@ public class WaterSiteControllerTest {
     @Test
     public void editWaterSiteIdNull(){
 //        EditWaterSiteRequest request = new EditWaterSiteRequest(null,"",90,9);
-//        ResponseEntity<EditWaterSiteResponse> response = restTemplate.withBasicAuth("testingOne","test1")
+//        ResponseEntity<EditWaterSiteResponse> response = restTemplate.withBasicAuth(userName1",userPassword1")
 //                .postForEntity("/api/sites/editWaterSite", request,EditWaterSiteResponse.class);
 //        assertEquals(HttpStatus.OK,response.getStatusCode());
 //        assertEquals("No watersite id specified",response.getBody().getStatus());
@@ -84,7 +84,7 @@ public class WaterSiteControllerTest {
     @Test
     public void editWaterSiteDNE(){
 //        EditWaterSiteRequest request = new EditWaterSiteRequest(UUID.randomUUID(),"",90,9);
-//        ResponseEntity<EditWaterSiteResponse> response = restTemplate.withBasicAuth("testingOne","test1")
+//        ResponseEntity<EditWaterSiteResponse> response = restTemplate.withBasicAuth(userName1",userPassword1")
 //                .postForEntity("/api/sites/editWaterSite", request,EditWaterSiteResponse.class);
 //        assertEquals(HttpStatus.OK,response.getStatusCode());
 //        assertEquals("Watersite does not exist.",response.getBody().getStatus());
@@ -94,7 +94,7 @@ public class WaterSiteControllerTest {
     @Test
     public void editWaterSite(){
 //        EditWaterSiteRequest request = new EditWaterSiteRequest(UUID.fromString("91d05eb1-2a35-4e44-9726-631d83121edb"),"ROT Water Site",-25.892494434,28.289765508);
-//        ResponseEntity<EditWaterSiteResponse> response = restTemplate.withBasicAuth("testingOne","test1")
+//        ResponseEntity<EditWaterSiteResponse> response = restTemplate.withBasicAuth(userName1,userPassword1")
 //                .postForEntity("/api/sites/editWaterSite", request,EditWaterSiteResponse.class);
 //        assertEquals(HttpStatus.OK,response.getStatusCode());
 //        assertEquals("Watersite successfully edited.",response.getBody().getStatus());
