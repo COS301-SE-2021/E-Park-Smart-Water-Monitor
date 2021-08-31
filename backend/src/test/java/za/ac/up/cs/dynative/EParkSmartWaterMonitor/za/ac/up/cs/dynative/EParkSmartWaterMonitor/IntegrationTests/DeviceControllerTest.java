@@ -22,32 +22,12 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DeviceControllerTest {
 
-    @Value("${app.watersiteID}")
-    private String waterSiteID;
     @Value("${app.userName1}")
     private String userName1;
     @Value("${app.userP1}")
     private String userPassword1;
-    @Value("${app.parkID}")
-    private String parkID;
-    @Value("${app.userName3}")
-    private String userName3;
-    @Value("${app.userP3}")
-    private String userPassword3;
-    @Value("${app.userID3}")
-    private String userID3;
-    @Value("${app.userName2}")
-    private String userName2;
-    @Value("${app.userP2}")
-    private String userPassword2;
-    @Value("${app.userID2}")
-    private String userID2;
-    @Value("${app.userResponseName}")
-    private String responseName;
     @Value("${app.deviceID}")
     private String deviceID;
-    @Value("${app.inspectionID}")
-    private String inspectionID;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -55,7 +35,7 @@ public class DeviceControllerTest {
     //get: /api/devices/getAllDevices
     @Test
     public void getAllDevices(){
-        ResponseEntity<GetAllDevicesResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<GetAllDevicesResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .getForEntity("/api/devices/getAllDevices",GetAllDevicesResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response);
@@ -67,7 +47,7 @@ public class DeviceControllerTest {
     @Test
     public void getDeviceIdNull(){
         FindDeviceRequest request = new FindDeviceRequest(null);
-        ResponseEntity<FindDeviceResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<FindDeviceResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/devices/getById", request, FindDeviceResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("No device ID specified", response.getBody().getStatus());
@@ -77,7 +57,7 @@ public class DeviceControllerTest {
     @Test
     public void getDeviceDNE(){
         FindDeviceRequest request = new FindDeviceRequest(UUID.randomUUID());
-        ResponseEntity<FindDeviceResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<FindDeviceResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/devices/getById", request, FindDeviceResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Device not found", response.getBody().getStatus());
@@ -86,8 +66,8 @@ public class DeviceControllerTest {
 
     @Test
     public void getDevice(){
-        FindDeviceRequest request = new FindDeviceRequest(UUID.fromString("af603639-3406-4362-a7dc-3a1e2b5174a0"));
-        ResponseEntity<FindDeviceResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        FindDeviceRequest request = new FindDeviceRequest(UUID.fromString(deviceID));
+        ResponseEntity<FindDeviceResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/devices/getById", request, FindDeviceResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Device found", response.getBody().getStatus());
@@ -99,7 +79,7 @@ public class DeviceControllerTest {
     @Test
     public void getNumDevicesIdNull(){
         GetNumDevicesRequest request = new GetNumDevicesRequest(null);
-        ResponseEntity<GetNumDevicesResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<GetNumDevicesResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/devices/getNumDevices", request, GetNumDevicesResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(-3, response.getBody().getNumDevices());
@@ -109,7 +89,7 @@ public class DeviceControllerTest {
     @Test
     public void getNumDevicesParkDNE(){
         GetNumDevicesRequest request = new GetNumDevicesRequest(UUID.randomUUID());
-        ResponseEntity<GetNumDevicesResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<GetNumDevicesResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/devices/getNumDevices", request, GetNumDevicesResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(-2, response.getBody().getNumDevices());
@@ -132,7 +112,7 @@ public class DeviceControllerTest {
     @Test
     public void getParkDevicesIdNull(){
         GetParkDevicesRequest request = new GetParkDevicesRequest(null);
-        ResponseEntity<GetParkDevicesResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<GetParkDevicesResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/devices/getParkDevices", request, GetParkDevicesResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("No Park ID specified", response.getBody().getStatus());
@@ -141,8 +121,8 @@ public class DeviceControllerTest {
 
     @Test
     public void getParkDevices(){
-        GetParkDevicesRequest request = new GetParkDevicesRequest(UUID.fromString("af603639-3406-4362-a7dc-3a1e2b5174a0"));
-        ResponseEntity<GetParkDevicesResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        GetParkDevicesRequest request = new GetParkDevicesRequest(UUID.fromString(deviceID));
+        ResponseEntity<GetParkDevicesResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/devices/getParkDevices", request, GetParkDevicesResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Successfully got the Park's devices", response.getBody().getStatus());
@@ -154,7 +134,7 @@ public class DeviceControllerTest {
     @Test
     public void receiveDeviceDataNameNull(){
         ReceiveDeviceDataRequest request = new ReceiveDeviceDataRequest("",new ArrayList<>());
-        ResponseEntity<ReceiveDeviceDataResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<ReceiveDeviceDataResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/devices/receiveDeviceData", request, ReceiveDeviceDataResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("No device name is specified.", response.getBody().getStatus());
@@ -164,7 +144,7 @@ public class DeviceControllerTest {
     @Test
     public void receiveDeviceData(){
         ReceiveDeviceDataRequest request = new ReceiveDeviceDataRequest("IntTesting123123",new ArrayList<>());
-        ResponseEntity<ReceiveDeviceDataResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<ReceiveDeviceDataResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/devices/receiveDeviceData", request, ReceiveDeviceDataResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Device with that name does not exist", response.getBody().getStatus());
@@ -175,7 +155,7 @@ public class DeviceControllerTest {
     /*@Test
     public void setMetricFreqIdNull(){
         SetMetricFrequencyRequest request = new SetMetricFrequencyRequest(null,2);
-        ResponseEntity<SetMetricFrequencyResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<SetMetricFrequencyResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/devices/setMetricFrequency", request, SetMetricFrequencyResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("No device id specified.", response.getBody().getStatus());
@@ -185,7 +165,7 @@ public class DeviceControllerTest {
     @Test
     public void setMetricFreqDeviceDNE(){
         SetMetricFrequencyRequest request = new SetMetricFrequencyRequest(UUID.randomUUID(),2);
-        ResponseEntity<SetMetricFrequencyResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<SetMetricFrequencyResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/devices/setMetricFrequency", request, SetMetricFrequencyResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("No device configurations set.", response.getBody().getStatus());
