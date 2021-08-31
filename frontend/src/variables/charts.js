@@ -1,3 +1,5 @@
+/*eslint no-undef: "error"*/
+/*eslint-env node*/
 const Chart = require("chart.js");
 const themeColors = require("assets/theme/colors.js").default;
 //
@@ -185,7 +187,7 @@ function chartOptions() {
           },
           line: {
             tension: 0.4,
-            borderWidth: 4,
+            borderWidth: 2,
             borderColor: colors.theme["primary"],
             backgroundColor: colors.transparent,
             borderCapStyle: "rounded",
@@ -244,7 +246,7 @@ function chartOptions() {
       zeroLineBorderDashOffset: [2],
     },
     ticks: {
-      beginAtZero: true,
+      beginAtZero: false,
       padding: 10,
       callback: function (value) {
         if (!(value % 10)) {
@@ -262,7 +264,7 @@ function chartOptions() {
       drawTicks: false,
     },
     ticks: {
-      padding: 20,
+      padding: 1,
     },
   });
 
@@ -292,8 +294,8 @@ let chartExample1 = {
           },
           ticks: {
             callback: function (value) {
-              if (!(value % 10)) {
-                return "$" + value + "k";
+              if (!(value % 0.5)) {
+                return value + "cm";
               }
             },
           },
@@ -304,14 +306,14 @@ let chartExample1 = {
       callbacks: {
         label: function (item, data) {
           var label = data.datasets[item.datasetIndex].label || "";
-          var yLabel = item.yLabel;
+          var yLabel = "Prediction "+item.yLabel;
           var content = "";
 
           if (data.datasets.length > 1) {
             content += label;
           }
 
-          content += "$" + yLabel + "k";
+          content += yLabel + "cm";
           return content;
         },
       },

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
@@ -16,11 +16,14 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 
 import "../../index.css"
+import {UserContext} from "../../Context/UserContext";
 
 const useStyles = makeStyles(componentStyles);
 
 function InspectionTable({ inspections }) {
   const classes = useStyles();
+
+  const user = useContext(UserContext)
 
   return (
     <>
@@ -43,7 +46,7 @@ function InspectionTable({ inspections }) {
                                 variant="h3"
                                 marginBottom="0!important"
                             >
-                                Inspections
+                                Inspections for { user.parkName }
                             </Box>
                         </Grid>
                         <Grid item xs="auto">
@@ -57,7 +60,7 @@ function InspectionTable({ inspections }) {
                     </Grid>
                 }
                 classes={{ root: classes.cardHeaderRoot }}
-            ></CardHeader>
+            />
 
             <div className="table-container">
                 <TableContainer>

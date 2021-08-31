@@ -45,4 +45,19 @@ public class InspectionController {
     public ResponseEntity<Object> setInspectionComments(@RequestBody SetInspectionCommentsRequest request) {
         return new ResponseEntity<>(inspectionService.setInspectionComments(request), HttpStatus.OK);
     }
+
+    @PostMapping("/setDescription")
+    public ResponseEntity<Object> setInspectionDescription(@RequestBody SetInspectionDescriptionRequest request) {
+        return new ResponseEntity<>(inspectionService.setInspectionDescription(request), HttpStatus.OK);
+    }
+
+    @PostMapping("/deleteInternal")
+    public ResponseEntity<Object> deleteInternal(@RequestBody DeleteInternalRequest request) {
+        return new ResponseEntity<>(inspectionService.deleteInternal(request), HttpStatus.OK);
+    }
+
+    @GetMapping("/getAllInspections")
+    public ResponseEntity<Object> getAllInspections() {
+        return new ResponseEntity<>(inspectionService.getAllInspections(),HttpStatus.OK);
+    }
 }

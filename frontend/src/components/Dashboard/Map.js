@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useContext} from "react";
 // import PropTypes from "prop-types";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -11,8 +11,8 @@ import CardContent from "@material-ui/core/CardContent";
 // core components
 import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
-import {MapContainer, Marker, Popup, TileLayer} from "react-leaflet";
-import axios from 'axios'
+import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
+import {UserContext} from "../../Context/UserContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -22,14 +22,30 @@ const mapStyles = {
 };
 
 function Map(props) {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [response, setResponse] = useState(null)
+    const classes = useStyles();
+    const theme = useTheme();
+    const [response, setResponse] = useState(null)
+
+    const user = useContext(UserContext)
+
+    // https://react-leaflet.js.org/docs/example-events/
+
+    // functional component declared
+    function MapEvents(p) {
+        const map = useMapEvents({})
+        let obj = { lat: p.device.deviceData.latitude, lng: p.device.deviceData.longitude }
+        map.flyTo(obj)
+        return null
+    }
+
 
     useEffect(() => {
         if (props.devices) {
             const m = props.devices.map((device) =>
-                <Marker key={device.deviceId} position={[device.deviceData.latitude, device.deviceData.longitude]}>
+                <Marker
+                    key={device.deviceId}
+                    position={[device.deviceData.latitude, device.deviceData.longitude]}
+                >
                     <Popup>
                         {device.deviceName}
                     </Popup>
@@ -41,6 +57,8 @@ function Map(props) {
         }
     },[props.devices])
 
+
+
   return (
     <>
       <Card>
@@ -50,7 +68,7 @@ function Map(props) {
                 device layout
               </Box>
             }
-            subheader="Park Map"
+            subheader={user.parkName+" Map"}
             classes={{ root: classes.cardHeaderRoot }}
             titleTypographyProps={{
               component: Box,
@@ -67,17 +85,18 @@ function Map(props) {
               marginBottom: "0!important",
               color: "initial",
             }}
-        ></CardHeader>
+        />
         <CardContent>
 
           <div style={ { height: 350 } }>
             {/*rietvlei centre*/}
             <MapContainer style={mapStyles} center={[-25.88536975144579, 28.277796392845673]} zoom={14} scrollWheelZoom={false}>
-              <TileLayer
-                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              { response }
+                  <TileLayer
+                      attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  />
+                { response }
+                <MapEvents device={props.device}/>
             </MapContainer>
           </div>
 

@@ -32,12 +32,12 @@ public class UserController {
         return new ResponseEntity<>(userService.findUserById(findUserByIdRequest), HttpStatus.OK);
     }
 
-    @PostMapping("/deleteUser")
+    @DeleteMapping("/deleteUser")
     public ResponseEntity<Object> deleteUser(@RequestBody DeleteUserRequest deleteUserRequest) {
         return new ResponseEntity<>(userService.deleteUser(deleteUserRequest), HttpStatus.OK);
     }
 
-    @PostMapping("/editUser")
+    @PutMapping("/editUser")
     public ResponseEntity<Object> editUser(@RequestBody EditUserRequest editUserRequest) {
         return new ResponseEntity<>(userService.editUser(editUserRequest), HttpStatus.OK);
     }
@@ -51,4 +51,20 @@ public class UserController {
     public ResponseEntity<Object> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
+
+    @PostMapping("/resetPassword")
+    public ResponseEntity<Object> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) throws InvalidRequestException {
+        return new ResponseEntity<>(userService.resetPassword(resetPasswordRequest), HttpStatus.OK);
+    }
+
+    @PostMapping("/deleteInternal")
+    public ResponseEntity<Object> deleteInternal(@RequestBody DeleteUserRequest deleteUserRequest) {
+        return new ResponseEntity<>(userService.deleteUser(deleteUserRequest), HttpStatus.OK);
+    }
+
+    @PostMapping("/resetPasswordFinalize")
+    public ResponseEntity<Object> resetPassword(@RequestBody ResetPasswordFinalizeRequest resetPasswordFinalizeRequest) {
+        return new ResponseEntity<>(userService.resetPasswordFinalize(resetPasswordFinalizeRequest), HttpStatus.OK);
+    }
+
 }

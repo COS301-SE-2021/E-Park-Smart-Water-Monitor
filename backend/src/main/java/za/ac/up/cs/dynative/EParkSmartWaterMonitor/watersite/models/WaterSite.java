@@ -3,11 +3,11 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.InfrastructureDevice;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.WaterSourceDevice;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.inspection.models.Inspection;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -23,30 +23,54 @@ public class WaterSite {
 
     private double longitude;
 
-    @Relationship(type = "WATER_MONITORED_BY", direction = Relationship.Direction.OUTGOING)
-    private Set<WaterSourceDevice> waterSourceDevices;
+    private String shape;
 
-    @Relationship(type = "INFRASTRUCTURE_MONITORED_BY", direction = Relationship.Direction.OUTGOING)
-    private Set<InfrastructureDevice> infrastructureDevices;
+    private double length;
+
+    private double width;
+
+    private double radius;
+
+    @Relationship(type = "WATER_MONITORED_BY", direction = Relationship.Direction.OUTGOING)
+    private Set<Device> devices;
 
     @Relationship(type = "HAS", direction = Relationship.Direction.OUTGOING)
     private Set<Inspection> inspections;
 
-    public WaterSite(UUID id, String waterSiteName, double latitude, double longitude) {
+    public WaterSite(UUID id,
+                     String waterSiteName,
+                     double latitude,
+                     double longitude,
+                     String shape,
+                     double length,
+                     double width,
+                     double radius) {
         this.id = id;
         this.waterSiteName = waterSiteName;
         this.latitude = latitude;
         this.longitude = longitude;
-    }
-
-    public WaterSite() {
-    }
-
-    public void addWaterSourceDevice(WaterSourceDevice waterSourceDevice) {
-        if ( waterSourceDevices== null) {
-            waterSourceDevices = new HashSet<>();
+        this.shape = shape;
+        if (Objects.equals(shape, "circle")) {
+            this.length = 0;
+            this.width = 0;
+            this.radius = radius;
         }
-        waterSourceDevices.add(waterSourceDevice);
+        else if (Objects.equals(shape, "rectangle")) {
+            this.radius = 0;
+            this.length = length;
+            this.width = width;
+        }
+    }
+
+    public WaterSite()
+    {
+    }
+
+    public void addWaterSourceDevice(Device device) {
+        if ( devices == null) {
+            devices = new HashSet<>();
+        }
+        devices.add(device);
     }
 
     public void addInspection(Inspection inspection) {
@@ -88,20 +112,52 @@ public class WaterSite {
         this.waterSiteName = waterSiteName;
     }
 
-    public Set<WaterSourceDevice> getWaterSourceDevices() {
-        return waterSourceDevices;
+    public Set<Device> getDevices() {
+        return devices;
     }
 
-    public void setWaterSourceDevices(Set<WaterSourceDevice> waterSourceDevices) {
-        this.waterSourceDevices = waterSourceDevices;
+    public void setDevices(Set<Device> devices) {
+        this.devices = devices;
     }
 
-    public Set<InfrastructureDevice> getInfrastructureDevices() {
-        return infrastructureDevices;
+    public String getShape() {
+        return shape;
     }
 
-    public void setInfrastructureDevices(Set<InfrastructureDevice> infrastructureDevices) {
-        this.infrastructureDevices = infrastructureDevices;
+    public void setShape(String shape) {
+        this.shape = shape;
+    }
+
+    public double getLength() {
+        return length;
+    }
+
+    public void setLength(double length) {
+        this.length = length;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
+    }
+
+    public Set<Inspection> getInspections() {
+        return inspections;
+    }
+
+    public void setInspections(Set<Inspection> inspections) {
+        this.inspections = inspections;
     }
 
     @Override
@@ -111,8 +167,12 @@ public class WaterSite {
                 ", waterSiteName='" + waterSiteName + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
-                ", waterSourceDevices=" + waterSourceDevices +
-                ", infrastructureDevices=" + infrastructureDevices +
+                ", shape='" + shape + '\'' +
+                ", length=" + length +
+                ", width=" + width +
+                ", radius=" + radius +
+                ", devices=" + devices +
+                ", inspections=" + inspections +
                 '}';
     }
 }

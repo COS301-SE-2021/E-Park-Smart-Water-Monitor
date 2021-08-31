@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 // javascript plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
@@ -6,23 +6,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Typography from "@material-ui/core/Typography";
-
 import Map from "components/Dashboard/Map.js"
-import BarChart from "components/Dashboard/BarChart.js"
-import LineChart from "components/Dashboard/LineChart.js"
-import DeviceTable from "../../components/Dashboard/DeviceTable";
-import DeviceDetails from "../../components/Dashboard/DeviceDetails";
+import LineChart from "components/Dashboard/Device/LineChart.js"
+import DeviceTable from "../../components/Dashboard/Device/DeviceTable";
+import DeviceDetails from "../../components/Dashboard/Device/DeviceDetails";
+import { UserContext } from '../../Context/UserContext';
 
 
 // core components
 import Header from "components/Headers/Header.js";
+
 
 import {
   chartOptions,
@@ -32,25 +25,32 @@ import {
 import axios from "axios";
 import componentStyles from "assets/theme/views/dashboard/dashboard.js";
 import InspectionTable from "components/Dashboard/InspectionTable.js";
+
 const useStyles = makeStyles(componentStyles);
 
 function Dashboard() {
   const classes = useStyles();
-  // const [response, setResponse] = useState(null)
-  const [devices, setDevices] = useState([])
+  const [devices, setDevices] = useState(null)
   const [device, setDevice] = useState(null)
-  const [inspections, setInspections] = useState([])
+  const [inspections, setInspections] = useState(null)
+  const [value, setValue] = useState(0)
+
+  const user = useContext(UserContext)
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
 
+  const reloadDeviceTable = () => {
+    setValue(value => value+1)
+  }
 
-  axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-
-  // MONOLITH of SITES
   useEffect(() => {
-    axios.get('http://localhost:8080/api/devices/getAllDevices').then((res)=>{
+    axios.get('http://localhost:8080/api/devices/getAllDevices',{
+      headers: {
+        'Authorization': "Bearer " + user.token
+      }
+    }).then((res)=>{
       if(res.data)
       {
         const site = res.data.site; // site array
@@ -60,37 +60,48 @@ function Dashboard() {
         {
           setDevice(site[0])
         }
-        // console.log(JSON.stringify(site))
 
       }else{
         console.log('res.data null')
       }
+    }).catch((res)=>{
+      console.log(JSON.stringify(res))
     });
-  }, []) // second param [] is a list of dependency to watch and run useEffect
+  }, [value]) // second param [] is a list of dependency to watch and run useEffect
 
+
+  // Get all inspections for the park
   useEffect(() => {
-    if (device != null) {
-      axios.post('http://localhost:8080/api/inspections/getDeviceInspections', {
-        deviceId: device.deviceId
-      }).then((res) => {
-        if (res.data) {
-          setInspections(res.data.inspectionList)
-        }
-      })
-    }
-  }, [device])
-
-  const load_device = (device_id) =>
-  {
-    // get the device from the monolith of devices to render the specific details
-    for(let i =0; i<devices.length;i++)
-    {
-      if(devices[i].deviceId == device_id)
-      {
-        setDevice(devices[i])
+    axios.get('http://localhost:8080/api/inspections/getAllInspections', {
+      headers: {
+        'Authorization': "Bearer " + user.token
       }
-    }
+    }).then((res) => {
+      if (res.data) {
 
+        if (res.data && res.data.inspections) {
+          // get the inspections for the user logged in
+          let parkIndex = -1;
+          for (let i = 0; i < res.data.parkId.length; i++) {
+            if (res.data.parkId[i] == user.parkID) {
+              parkIndex = i;
+            }
+          }
+
+          setInspections(res.data.inspections[parkIndex])
+
+        }
+      }
+    })
+
+
+
+  }, [])
+
+  const load_device = (device) =>
+  {
+    // console.log(JSON.stringify(device))
+    setDevice(device)
   }
 
   return (
@@ -114,7 +125,8 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            { devices && <Map devices={ devices }></Map> }
+            {/*if a device changes in the table then the map must rerender*/}
+            { device && devices && <Map load_device={load_device} devices={ devices } device={device} />}
           </Grid>
         </Grid>
 
@@ -128,7 +140,7 @@ function Dashboard() {
               classes={{ root: classes.gridItemRoot }}
           >
 
-            { devices && <DeviceTable onSelectDevice={load_device} devices={ devices }></DeviceTable> }
+            { devices && <DeviceTable load_device={load_device} devices={ devices }/> }
 
           </Grid>
 
@@ -140,7 +152,7 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            { device && <DeviceDetails device={ device }></DeviceDetails> }
+            { device && <DeviceDetails reloadDeviceTable={reloadDeviceTable} device={ device }/> }
           </Grid>
         </Grid>
 
@@ -153,7 +165,7 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            <LineChart></LineChart>
+            { device && <LineChart reloadDeviceTable={reloadDeviceTable} device={ device }/> }
           </Grid>
         </Grid>
 
@@ -167,7 +179,9 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            <InspectionTable inspections={inspections}></InspectionTable>
+            { inspections &&
+              <InspectionTable inspections={inspections}/>
+            }
           </Grid>
         </Grid>
 

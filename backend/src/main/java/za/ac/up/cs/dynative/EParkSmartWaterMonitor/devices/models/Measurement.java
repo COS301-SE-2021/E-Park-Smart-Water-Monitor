@@ -16,21 +16,25 @@ public class Measurement {
     private String unitOfMeasurement;
     private double value;
     private String deviceDateTime;
+    private double estimateValue;
+    private double estimateError;
     private Date dateTime;
 
     public Measurement(
             @JsonProperty("type") String type,
             @JsonProperty("value") double value,
             @JsonProperty("unitOfMeasurement") String unitOfMeasurement,
-            @JsonProperty("deviceDateTime") String deviceDateTime
-)
+            @JsonProperty("deviceDateTime") String deviceDateTime,
+            @JsonProperty("estimateValue") double estimateValue,
+            @JsonProperty("estimateError") double estimateError)
     {
         this.dataId = UUID.randomUUID();
 
         this.type = type;
         this.unitOfMeasurement = unitOfMeasurement;
         this.value = value;
-
+        this.estimateError = estimateError;
+        this.estimateValue = estimateValue;
         this.deviceDateTime = deviceDateTime;
         this.dateTime = new Date();
     }
@@ -46,12 +50,14 @@ public class Measurement {
 
     @Override
     public String toString() {
-        return "measurement{" +
+        return "Measurement{" +
                 "dataId=" + dataId +
                 ", type='" + type + '\'' +
                 ", unitOfMeasurement='" + unitOfMeasurement + '\'' +
                 ", value=" + value +
                 ", deviceDateTime='" + deviceDateTime + '\'' +
+                ", estimateValue='" + estimateValue + '\'' +
+                ", estimateError='" + estimateError + '\'' +
                 ", dateTime=" + dateTime +
                 '}';
     }
@@ -92,6 +98,10 @@ public class Measurement {
         return deviceDateTime;
     }
 
+    public String getDeviceDate() {
+        return deviceDateTime.substring(0,10);
+    }
+
     public void setDeviceDateTime(String deviceDateTime) {
         this.deviceDateTime = deviceDateTime;
     }
@@ -104,5 +114,19 @@ public class Measurement {
         this.dateTime = dateTime;
     }
 
+    public double getEstimateValue() {
+        return estimateValue;
+    }
 
+    public void setEstimateValue(Double estimateValue) {
+        this.estimateValue = estimateValue;
+    }
+
+    public double getEstimateError() {
+        return estimateError;
+    }
+
+    public void setEstimateError(Double estimateError) {
+        this.estimateError = estimateError;
+    }
 }
