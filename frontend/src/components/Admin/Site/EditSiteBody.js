@@ -3,7 +3,6 @@ import "../../../assets/css/addDevice.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Button, Form} from "react-bootstrap";
-import Select from "react-select";
 import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import LoadingContext from "../../../Context/LoadingContext";
 import {UserContext} from "../../../Context/UserContext";
@@ -29,6 +28,7 @@ const EditSiteBody = (props) => {
                 setLongitude(e.latlng.lng)
             }
         })
+        map.setView({lat: props.siteDetails.latitude, lng: props.siteDetails.longitude} )
         return null
     }
 
@@ -57,8 +57,7 @@ const EditSiteBody = (props) => {
                     'Authorization': "Bearer " + user.token
                 }
             }
-        ).then((res) => {
-
+        ).then(() => {
 
             toggleLoading();
             props.closeModal()

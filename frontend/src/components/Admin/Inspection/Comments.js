@@ -1,37 +1,17 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import {Button, Form} from 'react-bootstrap';
-
-import { makeStyles } from "@material-ui/core/styles";
-import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addDevice.css";
 import axios from "axios";
-import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
-import Select from "react-select";
 import PrevComments from "./PrevComments";
-
-const useStyles = makeStyles(componentStyles);
-
-const statusOptions = [
-    { value: "NOT STARTED", label: "Not Started" },
-    { value: "DONE", label: "Done" }
-]
 
 const Comments = (props) => {
 
-    const [comments, setComments] = useState([])
     const [newComments, setNewComments] = useState("")
-
     const user = useContext(UserContext)
     const loader = useContext(LoadingContext)
     const toggleLoading = loader.toggleLoading
-
-    useEffect(() => {
-        setComments(props.inspectionDetails.comments)
-        //alert(JSON.stringify(comments))
-    },[])
-
 
     const handleSubmit = (event) => {
         toggleLoading()
@@ -45,7 +25,6 @@ const Comments = (props) => {
         comments: comm,
       }
       console.log("body: ", body)
-        //toggleLoading()
       axios.post('http://localhost:8080/api/inspections/setComments', body, {
           headers: {
               'Authorization': "Bearer " + user.token

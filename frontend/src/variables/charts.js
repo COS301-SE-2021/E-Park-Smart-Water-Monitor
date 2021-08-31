@@ -1,3 +1,5 @@
+/*eslint no-undef: "error"*/
+/*eslint-env node*/
 const Chart = require("chart.js");
 const themeColors = require("assets/theme/colors.js").default;
 //

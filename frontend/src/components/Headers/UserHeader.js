@@ -58,7 +58,7 @@ const UserHeader = () => {
                 lineHeight="1.7"
                 fontSize="1rem"
               >
-                This is your profile page. You can see the progress you've made
+                This is your profile page. You can see the progress you&apos;ve made
                 with your work and manage your projects or assigned tasks
               </Box>
               <Button

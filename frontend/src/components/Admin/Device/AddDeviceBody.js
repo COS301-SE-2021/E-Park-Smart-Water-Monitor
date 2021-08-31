@@ -6,7 +6,6 @@ import Col from "react-bootstrap/Col";
 import Select from "react-select";
 import axios from "axios";
 import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
-import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 import {Alert} from "@material-ui/lab";
@@ -27,7 +26,7 @@ const AddDeviceBody = (props) => {
     const [name, setName] = useState("")
     const [park, setPark] = useState("") // id and name stored
     const [site, setSite] = useState("") // id and name stored
-    const [model, setModel] = useState("ESP32")
+    const [model] = useState("ESP32")
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
     const [error, setError] = useState(null)
@@ -38,7 +37,7 @@ const AddDeviceBody = (props) => {
 
     // getting the clicked location on
     function MapEvents() {
-        const map = useMapEvents({
+        useMapEvents({
             click: (e) => {
                 setLatitude(e.latlng.lat)
                 setLongitude(e.latlng.lng)

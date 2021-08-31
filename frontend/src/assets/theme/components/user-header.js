@@ -6,6 +6,7 @@ const componentStyles = (theme) => ({
     backgroundSize: "cover",
     backgroundPosition: "center top",
     backgroundImage:
+    // eslint-disable-next-line no-undef
       "url(" + require("assets/img/theme/profile-cover.jpg").default + ")",
   },
   overlayBox: {

@@ -1,9 +1,6 @@
-import React, {useContext, useEffect, useState} from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import componentStyles from "assets/theme/views/admin/admin";
+import React, {useEffect, useState} from "react";
 import "../../../assets/css/addDevice.css";
 
-const useStyles = makeStyles(componentStyles);
 
 const PrevComments = (props) => {
     const [response, setResponse] = useState([])

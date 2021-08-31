@@ -1,42 +1,17 @@
 import React, {useContext, useEffect, useState} from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addUser.css";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
-import { Range, getTrackBackground } from "react-range";
-import AdminContext from "../../Admin/AdminContext";
-import {PuffLoader, ScaleLoader} from "react-spinners";
-import Modal from "../../Modals/Modal";
-import {css} from "@emotion/react";
+import {ScaleLoader} from "react-spinners";
 import LoadingContext from "../../../Context/LoadingContext";
 import {UserContext} from "../../../Context/UserContext";
-const { Form } = require( "react-bootstrap" );
+import { Form } from "react-bootstrap";
 
-
-
-const override = css`
-  display: block;
-  margin: 0 auto;
-  border-color: red;
-`;
-
-const overlay = css`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
-`;
-
-const useStyles = makeStyles(componentStyles);
 
 const EditDeviceMetricsBody = (props) => {
     const [seconds, setSeconds] = useState("") // value in seconds
-    const [value, setValue] = useState("") // value in seconds
     const [readable, setReadable] = useState("")
 
     const toggleLoading = useContext(LoadingContext).toggleLoading
@@ -82,16 +57,15 @@ const EditDeviceMetricsBody = (props) => {
         }
 
         axios.put('http://localhost:8080/api/devices/setMetricFrequency', obj
-        ).then((res)=>{
+        ).then(()=>{
 
             toggleLoading()
             props.closeModal()
             props.reloadDeviceTable()
 
-        }).catch((res)=>{
+        }).catch(()=>{
 
             toggleLoading()
-            // console.log("response setMetricFrequency:"+JSON.stringify(res))
         });
 
     }
@@ -99,15 +73,15 @@ const EditDeviceMetricsBody = (props) => {
     // https://stackoverflow.com/questions/846221/logarithmic-slider
     function logslider(position) {
         // position will be between 0 and 100
-        var minp = 0;
-        var maxp = 100;
+        let minp = 0;
+        let maxp = 100;
 
         // The result should be between 100 an 10000000
-        var minv = Math.log(100);
-        var maxv = Math.log(10000000);
+        let minv = Math.log(100);
+        let maxv = Math.log(10000000);
 
         // calculate adjustment factor
-        var scale = (maxv-minv) / (maxp-minp);
+        let scale = (maxv-minv) / (maxp-minp);
 
         return Math.exp(minv + scale*(position-minp)); // will return number of seconds
     }
@@ -115,20 +89,19 @@ const EditDeviceMetricsBody = (props) => {
     // https://www.codegrepper.com/code-examples/javascript/js+convert+minutes+to+days+hours+minutes
     function secondsToDhms(seconds) {
         seconds = Number(seconds);
-        var d = Math.floor(seconds / (3600*24));
-        var h = Math.floor(seconds % (3600*24) / 3600);
-        var m = Math.floor(seconds % 3600 / 60);
-        var s = Math.floor(seconds % 60);
+        let d = Math.floor(seconds / (3600*24));
+        let h = Math.floor(seconds % (3600*24) / 3600);
+        let m = Math.floor(seconds % 3600 / 60);
+        let s = Math.floor(seconds % 60);
 
-        var dDisplay = d > 0 ? d + (d === 1 ? " day, " : " days, ") : "";
-        var hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
-        var mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
-        var sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
+        let dDisplay = d > 0 ? d + (d === 1 ? " day, " : " days, ") : "";
+        let hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
+        let mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
+        let sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
         return dDisplay + hDisplay + mDisplay + sDisplay;
     }
 
     function getSliderValue(val){
-        setValue(val) // the real value from the slider
         let log = logslider(val) // get number of seconds
         setReadable(secondsToDhms(log)) // make seconds something to read
         setSeconds(log)

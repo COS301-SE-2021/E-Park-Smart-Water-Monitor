@@ -14,11 +14,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
-
 import "../../../index.css"
 import {Refresh} from "@material-ui/icons";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
 import {Tooltip} from "@material-ui/core";
 
 const useStyles = makeStyles(componentStyles);
@@ -144,7 +141,7 @@ function DeviceTable(props) {
                     </Grid>
                 }
                 classes={{ root: classes.cardHeaderRoot }}
-            ></CardHeader>
+            />
 
             <div className="table-container">
                 <TableContainer style={{maxHeight:"400px",overflowY:"auto"}}>
