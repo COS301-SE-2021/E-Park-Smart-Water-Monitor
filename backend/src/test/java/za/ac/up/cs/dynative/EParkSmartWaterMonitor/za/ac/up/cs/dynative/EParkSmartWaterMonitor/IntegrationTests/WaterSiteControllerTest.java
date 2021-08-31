@@ -3,6 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.IntegrationTests;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class WaterSiteControllerTest {
 
+    @Value("${app.watersiteID}")
+    private String waterSiteID;
+    @Value("${app.userName1}")
+    private String userName1;
+    @Value("${app.userP1}")
+    private String userPassword1;
+    @Value("${app.parkID}")
+    private String parkID;
+
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -33,7 +43,7 @@ public class WaterSiteControllerTest {
     @Test
     public void getSiteIdNull(){
         GetSiteByIdRequest request = new GetSiteByIdRequest(null);
-        ResponseEntity<GetSiteByIdResponse> response = restTemplate.withBasicAuth("testingOne","test1")
+        ResponseEntity<GetSiteByIdResponse> response = restTemplate.withBasicAuth(userName1,userPassword1)
                 .postForEntity("/api/sites/getSite", request,GetSiteByIdResponse.class);
         assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
         assertEquals("No id specified",response.getBody().getStatus());
@@ -43,7 +53,7 @@ public class WaterSiteControllerTest {
     @Test
     public void getSiteDNE(){
         GetSiteByIdRequest request = new GetSiteByIdRequest(UUID.randomUUID());
-        ResponseEntity<GetSiteByIdResponse> response = restTemplate.withBasicAuth("testingOne","test1")
+        ResponseEntity<GetSiteByIdResponse> response = restTemplate.withBasicAuth(userName1,userPassword1)
                 .postForEntity("/api/sites/getSite", request,GetSiteByIdResponse.class);
         assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
         assertEquals("Site does not exist.",response.getBody().getStatus());
@@ -52,8 +62,8 @@ public class WaterSiteControllerTest {
 
     @Test
     public void getSite(){
-        GetSiteByIdRequest request = new GetSiteByIdRequest(UUID.fromString("c5f5afee-e0c8-4357-930a-e6c4ae910c38"));
-        ResponseEntity<GetSiteByIdResponse> response = restTemplate.withBasicAuth("testingOne","test1")
+        GetSiteByIdRequest request = new GetSiteByIdRequest(UUID.fromString(waterSiteID));
+        ResponseEntity<GetSiteByIdResponse> response = restTemplate.withBasicAuth(userName1,userPassword1)
                 .postForEntity("/api/sites/getSite", request,GetSiteByIdResponse.class);
         assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
         assertEquals("Successfully found site.",response.getBody().getStatus());
@@ -95,7 +105,7 @@ public class WaterSiteControllerTest {
     @Test
     public void addWaterSiteParkIdNull(){
         AddSiteRequest request = new AddSiteRequest(null,"IntTesting123123",-25.6637895,28.271731499999998,"circle",0,0,1);
-        ResponseEntity<AddSiteResponse> response = restTemplate.withBasicAuth("testingOne","test1")
+        ResponseEntity<AddSiteResponse> response = restTemplate.withBasicAuth(userName1,userPassword1)
                 .postForEntity("/api/sites/addSite", request,AddSiteResponse.class);
         assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
         assertEquals("No park id specified",response.getBody().getStatus());
@@ -104,9 +114,9 @@ public class WaterSiteControllerTest {
 
     @Test
     public void addWaterSiteSuccess(){
-        UUID id = UUID.fromString("8f38a427-a5b6-4552-af52-920ae090a012");
+        UUID id = UUID.fromString(parkID);
         AddSiteRequest request = new AddSiteRequest(id,"IntTesting123123",-25.6637895,28.271731499999998,"circle", 0,0,1);
-        ResponseEntity<AddSiteResponse> response = restTemplate.withBasicAuth("testingOne","test1")
+        ResponseEntity<AddSiteResponse> response = restTemplate.withBasicAuth(userName1,userPassword1)
                 .postForEntity("/api/sites/addSite", request,AddSiteResponse.class);
         assertEquals(HttpStatus.ACCEPTED,response.getStatusCode());
         assertEquals("Successfully added: IntTesting123123",response.getBody().getStatus());
@@ -116,7 +126,7 @@ public class WaterSiteControllerTest {
 
         DeleteWaterSiteRequest requestt = new DeleteWaterSiteRequest(id);
         requestt.setWaterSiteRequestId(response.getBody().getId());
-        ResponseEntity<DeleteWaterSiteResponse> responsee = restTemplate.withBasicAuth("testingOne","test1")
+        ResponseEntity<DeleteWaterSiteResponse> responsee = restTemplate.withBasicAuth(userName1,userPassword1)
                 .postForEntity("/api/sites/deleteInternal", requestt,DeleteWaterSiteResponse.class);
         assertEquals(HttpStatus.OK,responsee.getStatusCode());
 //        assertEquals(true,responsee.getBody().getSuccess());
