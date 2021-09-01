@@ -97,7 +97,7 @@ function DeviceDetails(props) {
             numResults: 1, // will get the ping results
             sorted: true
         }
-        axios.post('http://localhost:8080/api/devices/getDeviceData', obj, {
+        axios.post('/devices/getDeviceData', obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }

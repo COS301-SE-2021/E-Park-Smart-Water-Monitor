@@ -73,7 +73,7 @@ const EditDeviceBody = (props) => {
                 longitude: longitude
             }
 
-            axios.put('http://localhost:8080/api/devices/editDevice', obj, {
+            axios.put('/devices/editDevice', obj, {
                     headers: {
                         'Authorization': "Bearer " + user.token
                     }

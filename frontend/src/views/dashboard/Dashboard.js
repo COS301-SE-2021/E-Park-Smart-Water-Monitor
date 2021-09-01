@@ -46,7 +46,7 @@ function Dashboard() {
   }
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/devices/getAllDevices',{
+    axios.get('/devices/getAllDevices',{
       headers: {
         'Authorization': "Bearer " + user.token
       }
@@ -72,7 +72,7 @@ function Dashboard() {
 
   // Get all inspections for the park
   useEffect(() => {
-    axios.get('http://localhost:8080/api/inspections/getAllInspections', {
+    axios.get('/inspections/getAllInspections', {
       headers: {
         'Authorization': "Bearer " + user.token
       }

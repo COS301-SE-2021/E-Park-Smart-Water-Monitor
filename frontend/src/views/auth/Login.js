@@ -50,7 +50,7 @@ function Login() {
             password: password
         }
 
-        axios.post('http://localhost:8080/api/user/login', obj
+        axios.post('/user/login', obj
         ).then((res)=>{
             setLoading(false)
             let x = res.data;
