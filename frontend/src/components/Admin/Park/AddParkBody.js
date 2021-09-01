@@ -43,7 +43,7 @@ const AddParkBody = (props) => {
         }
 
         console.log("Adding Park: "+JSON.stringify(obj))
-        axios.post('http://localhost:8080/api/park/addPark',
+        axios.post('/park/addPark',
             obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
