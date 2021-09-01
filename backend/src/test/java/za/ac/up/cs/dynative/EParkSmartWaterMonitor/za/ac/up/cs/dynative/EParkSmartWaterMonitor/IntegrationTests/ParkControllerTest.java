@@ -22,6 +22,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ParkControllerTest {
 
+    @Autowired
+    private TestRestTemplate restTemplate;
+
     @Value("${app.userName1}")
     private String userName1;
     @Value("${app.userP1}")
@@ -29,9 +32,6 @@ public class ParkControllerTest {
     @Value("${app.parkID}")
     private String parkID;
     @Value("${app.userName3}")
-
-    @Autowired
-    private TestRestTemplate restTemplate;
 
     //post: /api/park/getParkWaterSites
     @Test
