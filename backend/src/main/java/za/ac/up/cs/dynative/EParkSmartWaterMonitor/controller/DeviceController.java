@@ -11,19 +11,35 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 
+/**
+ * This class will map all the http requests made related to devices to their
+ * appropriate functions in the device service implementation
+ */
+
 @CrossOrigin
 @RestController
 @RequestMapping("/api/devices")
 public class DeviceController {
-
+    /**
+     * the deviceService will be used to call functions in the device service implementation.
+     */
     DevicesService devicesService;
 
-
+    /**
+     * This constructor will set the deviceService variable defined previously so that it is not of null value
+     * @param devicesService will be set and used across the rest of this class.
+     */
     @Autowired
     DeviceController(@Qualifier("DeviceServiceImpl") DevicesService devicesService){
         this.devicesService = devicesService;
     }
 
+    /**
+     * When a post http request is made with the url /api/devices/receiveDeviceDate this function will send
+     * the JSON object to the device service implementation for processing.
+     * @param request will contain a list of measurements and the device name.
+     * @return This function will return a ReceiveDeviceDataResponse object containing a success and status value
+     */
     @PostMapping("/receiveDeviceData")
     public ResponseEntity<Object> receiveWaterDeviceData(@RequestBody ReceiveDeviceDataRequest request) {
         return new ResponseEntity<>(devicesService.receiveWaterDeviceData(request),HttpStatus.OK);
