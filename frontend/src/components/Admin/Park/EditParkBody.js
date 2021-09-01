@@ -58,7 +58,7 @@ const EditParkBody = (props) => {
                 longitude: longitude
             }
 
-            axios.post('http://localhost:8080/api/park/editPark', obj, {
+            axios.post('/park/editPark', obj, {
                     headers: {
                         'Authorization': "Bearer " + user.token
                     }

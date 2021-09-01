@@ -60,7 +60,7 @@ const AddSiteBody = (props) => {
         }
 
         console.log("Adding watersite: "+JSON.stringify(obj))
-        axios.post('http://localhost:8080/api/sites/addSite',
+        axios.post('/sites/addSite',
             obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
