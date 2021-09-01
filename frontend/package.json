@@ -20,7 +20,8 @@
     "lint": "eslint ./src/**/*.js"
   },
   "dependencies": {
-    "@capacitor/android": "^3.0.2",
+    "@capacitor-community/http": "^1.2.0",
+    "@capacitor/android": "^3.2.0",
     "@capacitor/cli": "^3.0.2",
     "@capacitor/core": "^3.0.2",
     "@emotion/react": "11.1.5",
@@ -33,6 +34,7 @@
     "bootstrap": "^4.6.0",
     "chart.js": "2.9.4",
     "disable-scroll": "^0.6.0",
+    "jetifier": "^2.0.0",
     "leaflet": "^1.7.1",
     "nouislider": "14.6.3",
     "prop-types": "15.7.2",

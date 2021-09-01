@@ -70,8 +70,8 @@ function Login() {
                 setError("Login details incorrect")
             }
 
-        }).catch(()=>{
-          console.log("login request failed")
+        }).catch((res)=>{
+          console.log("login request failed with: "+JSON.stringify(res))
         });
 
     }
