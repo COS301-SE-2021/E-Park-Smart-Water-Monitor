@@ -20,7 +20,7 @@ const EditDeviceMetricsBody = (props) => {
     useEffect(() => {
 
         // get the device details by id
-        axios.post('http://localhost:8080/api/devices/getById', {
+        axios.post('/devices/getById', {
                 deviceID: props.deviceDetails.deviceId
             },
             {

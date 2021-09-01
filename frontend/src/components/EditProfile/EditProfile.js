@@ -68,7 +68,7 @@ const EditProfile = (props) => {
             cellNumber: "+27"+cellNumber
         }
 
-        axios.put('http://localhost:8080/api/user/editUser', obj, {
+        axios.put('/user/editUser', obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }

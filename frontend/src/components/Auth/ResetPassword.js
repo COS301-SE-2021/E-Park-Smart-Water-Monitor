@@ -40,7 +40,7 @@ const ResetPassword = (props) => {
             username : username
         }
 
-        axios.post('http://localhost:8080/api/user/resetPassword', obj).then((res) => {
+        axios.post('/user/resetPassword', obj).then((res) => {
 
             toggleLoading();
             if(res.data.code === "User not found"){

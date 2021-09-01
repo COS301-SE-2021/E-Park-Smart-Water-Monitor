@@ -45,7 +45,7 @@ const EditInspection = (props) => {
       }
       console.log("body: ", body)
         //toggleLoading()
-      axios.post('http://localhost:8080/api/inspections/setStatus', body, {
+      axios.post('/inspections/setStatus', body, {
           headers: {
               'Authorization': "Bearer " + user.token
           }
@@ -63,7 +63,7 @@ const EditInspection = (props) => {
             description: description,
         }
         console.log("body: ", body)
-        axios.post('http://localhost:8080/api/inspections/setDescription', body, {
+        axios.post('/inspections/setDescription', body, {
             headers: {
                 'Authorization': "Bearer " + user.token
             }

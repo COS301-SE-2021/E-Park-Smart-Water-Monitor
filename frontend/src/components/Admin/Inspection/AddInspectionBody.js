@@ -34,7 +34,7 @@ const AddInspectionBody = (props) => {
       console.log("body: ", body)
 
         toggleLoading()
-      axios.post('http://localhost:8080/api/inspections/addInspection', body, {
+      axios.post('/inspections/addInspection', body, {
           headers: {
               'Authorization': "Bearer " + user.token
           }

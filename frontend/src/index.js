@@ -14,6 +14,7 @@ import {PuffLoader} from "react-spinners";
 import Modal from "./components/Modals/Modal";
 import EditProfile from "./components/EditProfile/EditProfile";
 import {css} from "@emotion/react";
+import axios from "axios";
 
 
 const override = css`
@@ -26,6 +27,8 @@ const override = css`
 const App = () => {
     const [loading, setLoading] = useState(false)
     const [showEditProfile, setShowEditProfile] = useState(false)
+
+    axios.defaults.baseURL = 'https://e-park-backend.herokuapp.com/api';
 
     const toggleLoading = ()=>{
         setLoading(loading=>!loading)

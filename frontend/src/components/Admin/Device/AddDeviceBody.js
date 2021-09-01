@@ -107,7 +107,7 @@ const AddDeviceBody = (props) => {
             longitude: longitude
         }
         console.log("Adding Device: "+JSON.stringify(obj))
-        axios.post('http://localhost:8080/api/devices/addDevice', obj, {
+        axios.post('/devices/addDevice', obj, {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
