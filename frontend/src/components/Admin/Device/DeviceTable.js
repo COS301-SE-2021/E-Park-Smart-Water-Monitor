@@ -56,7 +56,7 @@ const DeviceTable = () => {
         return ()=>{
 
             toggleLoading()
-            axios.delete('/devices/deleteDevice', {
+            axios.delete('http://localhost:8080/api/devices/deleteDevice', {
                 data: {
                          id: id
                       }

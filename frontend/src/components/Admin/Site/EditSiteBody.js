@@ -51,7 +51,7 @@ const EditSiteBody = (props) => {
             longitude: longitude,
         }
 
-        axios.put('/sites/editWaterSite',
+        axios.put('http://localhost:8080/api/sites/editWaterSite',
             obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token

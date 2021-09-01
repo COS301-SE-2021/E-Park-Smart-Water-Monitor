@@ -25,7 +25,7 @@ const Comments = (props) => {
         comments: comm,
       }
       console.log("body: ", body)
-      axios.post('/api/inspections/setComments', body, {
+      axios.post('http://localhost:8080/api/inspections/setComments', body, {
           headers: {
               'Authorization': "Bearer " + user.token
           }

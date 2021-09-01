@@ -50,7 +50,7 @@ function Login() {
             password: password
         }
 
-        axios.post('/user/login', obj
+        axios.post('http://localhost:8080/api/user/login', obj
         ).then((res)=>{
             setLoading(false)
             let x = res.data;
@@ -70,8 +70,8 @@ function Login() {
                 setError("Login details incorrect")
             }
 
-        }).catch((res)=>{
-          console.log("login request failed with: "+JSON.stringify(res))
+        }).catch(()=>{
+          console.log("login request failed")
         });
 
     }

@@ -26,7 +26,7 @@ const Stats = () => {
         setLoadedInspections(false)
 
         // get the devices
-        axios.get('/devices/getAllDevices',{
+        axios.get('http://localhost:8080/api/devices/getAllDevices',{
             headers: {
                 'Authorization': "Bearer " + user.token
             }
@@ -52,7 +52,7 @@ const Stats = () => {
             console.log(JSON.stringify(res))
         });
 
-        axios.get('/inspections/getAllInspections', {
+        axios.get('http://localhost:8080/api/inspections/getAllInspections', {
             headers: {
                 'Authorization': "Bearer " + user.token
             }

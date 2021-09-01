@@ -104,7 +104,7 @@ function LineChart(props) {
             length: numPredictions
         }
 
-        axios.post('/analytics/deviceProjection', obj, {
+        axios.post('http://localhost:8080/api/analytics/deviceProjection', obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }
