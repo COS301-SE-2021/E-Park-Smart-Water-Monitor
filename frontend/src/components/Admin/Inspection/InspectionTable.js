@@ -53,7 +53,7 @@ const InspectionTable = () => {
 
     useEffect(() => {
         setReload(true)
-        axios.get('http://localhost:8080/api/inspections/getAllInspections', {
+        axios.get('/inspections/getAllInspections', {
             headers: {
                 'Authorization': "Bearer " + user.token
             }

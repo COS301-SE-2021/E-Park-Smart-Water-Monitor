@@ -114,7 +114,7 @@ function DeviceDetails(props) {
         let obj = {
             deviceID: device.deviceId
         }
-        axios.post('http://localhost:8080/api/devices/pingDevice', obj, {
+        axios.post('/devices/pingDevice', obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }

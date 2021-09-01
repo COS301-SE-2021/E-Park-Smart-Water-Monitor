@@ -56,7 +56,11 @@ const DeviceTable = () => {
         return ()=>{
 
             toggleLoading()
-            axios.delete('http://localhost:8080/api/devices/deleteDevice', {
+            axios.delete('/devices/deleteDevice', {
+                data: {
+                         id: id
+                      }
+            },{
                 headers: {
                     Authorization: "Bearer " + user.token
                 },
