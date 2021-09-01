@@ -3,6 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.IntegrationTests;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,17 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class InspectionControllerTest {
 
+    @Value("${app.watersiteID}")
+    private String waterSiteID;
+    @Value("${app.userName1}")
+    private String userName1;
+    @Value("${app.userP1}")
+    private String userPassword1;
+    @Value("${app.deviceID}")
+    private String deviceID;
+    @Value("${app.inspectionID}")
+    private String inspectionID;
+
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -27,7 +39,7 @@ public class InspectionControllerTest {
     @Test
     public void setStatusIdNull(){
         SetInspectionStatusRequest request = new SetInspectionStatusRequest(null,"");
-        ResponseEntity<SetInspectionStatusResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<SetInspectionStatusResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/inspections/setStatus",request,SetInspectionStatusResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Failed to set inspection status! Invalid inspectionId!", response.getBody().getStatus());
@@ -37,7 +49,7 @@ public class InspectionControllerTest {
     @Test
     public void setStatusInspectionDNE(){
         SetInspectionStatusRequest request = new SetInspectionStatusRequest(UUID.randomUUID(),"");
-        ResponseEntity<SetInspectionStatusResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<SetInspectionStatusResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/inspections/setStatus",request,SetInspectionStatusResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Failed to set inspection status! Inspection not found!", response.getBody().getStatus());
@@ -46,8 +58,8 @@ public class InspectionControllerTest {
 
     @Test
     public void setStatusInspection(){
-        SetInspectionStatusRequest request = new SetInspectionStatusRequest(UUID.fromString("4875fbe1-640d-4797-910a-c487a43346b9"),"completed");
-        ResponseEntity<SetInspectionStatusResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        SetInspectionStatusRequest request = new SetInspectionStatusRequest(UUID.fromString(inspectionID),"completed");
+        ResponseEntity<SetInspectionStatusResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/inspections/setStatus",request,SetInspectionStatusResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Inspection status successfully set!", response.getBody().getStatus());
@@ -59,7 +71,7 @@ public class InspectionControllerTest {
     @Test
     public void getWaterSiteInspectionIdNull(){
         GetWaterSiteInspectionsRequest request = new GetWaterSiteInspectionsRequest(null);
-        ResponseEntity<GetWaterSiteInspectionsResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<GetWaterSiteInspectionsResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/inspections/getSiteInspections",request,GetWaterSiteInspectionsResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Failed to get inspection! Invalid waterSiteId!", response.getBody().getStatus());
@@ -68,8 +80,8 @@ public class InspectionControllerTest {
 
     @Test
     public void getWaterSiteInspection(){
-        GetWaterSiteInspectionsRequest request = new GetWaterSiteInspectionsRequest(UUID.fromString("c5f5afee-e0c8-4357-930a-e6c4ae910c38"));
-        ResponseEntity<GetWaterSiteInspectionsResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        GetWaterSiteInspectionsRequest request = new GetWaterSiteInspectionsRequest(UUID.fromString(waterSiteID));
+        ResponseEntity<GetWaterSiteInspectionsResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/inspections/getSiteInspections",request,GetWaterSiteInspectionsResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Inspections retrieved successfully!", response.getBody().getStatus());
@@ -81,7 +93,7 @@ public class InspectionControllerTest {
     @Test
     public void setCommentsIdNull(){
         SetInspectionCommentsRequest request = new SetInspectionCommentsRequest(null,"Integration testing is going good ;)");
-        ResponseEntity<SetInspectionCommentsResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<SetInspectionCommentsResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/inspections/setComments",request,SetInspectionCommentsResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Failed to set inspection comments! Invalid inspectionId!", response.getBody().getStatus());
@@ -91,7 +103,7 @@ public class InspectionControllerTest {
     @Test
     public void setCommentsInspectionDNE(){
         SetInspectionCommentsRequest request = new SetInspectionCommentsRequest(UUID.randomUUID(),"Integration testing is going good ;)");
-        ResponseEntity<SetInspectionCommentsResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<SetInspectionCommentsResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/inspections/setComments",request,SetInspectionCommentsResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Failed to set inspection comments! Inspection not found!", response.getBody().getStatus());
@@ -100,9 +112,9 @@ public class InspectionControllerTest {
 
     @Test
     public void setComments(){
-        SetInspectionCommentsRequest request = new SetInspectionCommentsRequest(UUID.fromString("4875fbe1-640d-4797-910a-c487a43346b9"),"Integration testing is going good ;)");
+        SetInspectionCommentsRequest request = new SetInspectionCommentsRequest(UUID.fromString(inspectionID),"Integration testing is going good ;)");
 
-        ResponseEntity<SetInspectionCommentsResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<SetInspectionCommentsResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/inspections/setComments",request,SetInspectionCommentsResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Inspection comments successfully set!", response.getBody().getStatus());
@@ -114,7 +126,7 @@ public class InspectionControllerTest {
     @Test
     public void getDeviceInspectionIdNull(){
         GetDeviceInspectionsRequest request = new GetDeviceInspectionsRequest(null);
-        ResponseEntity<GetDeviceInspectionsResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<GetDeviceInspectionsResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/inspections/getDeviceInspections",request,GetDeviceInspectionsResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Failed to get inspection! Invalid deviceId!", response.getBody().getStatus());
@@ -123,8 +135,8 @@ public class InspectionControllerTest {
 
     @Test
     public void getDeviceInspection(){
-        GetDeviceInspectionsRequest request = new GetDeviceInspectionsRequest(UUID.fromString("af603639-3406-4362-a7dc-3a1e2b5174a0"));
-        ResponseEntity<GetDeviceInspectionsResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        GetDeviceInspectionsRequest request = new GetDeviceInspectionsRequest(UUID.fromString(deviceID));
+        ResponseEntity<GetDeviceInspectionsResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/inspections/getDeviceInspections",request,GetDeviceInspectionsResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Inspections retrieved successfully!", response.getBody().getStatus());
@@ -135,7 +147,7 @@ public class InspectionControllerTest {
     //get: /api/inspections/getAllInspections
     @Test
     public void getAllInspections(){
-        ResponseEntity<GetAllInspectionsResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<GetAllInspectionsResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .getForEntity("/api/inspections/getAllInspections",GetAllInspectionsResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response);
@@ -145,7 +157,7 @@ public class InspectionControllerTest {
     @Test
     public void addInspectionDeviceIdNull(){
         AddInspectionRequest request = new AddInspectionRequest(null, new Date(), "Integration Testing");
-        ResponseEntity<AddInspectionResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<AddInspectionResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/inspections/addInspection",request,AddInspectionResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Failed to add inspection! No deviceId specified!", response.getBody().getStatus());
@@ -155,7 +167,7 @@ public class InspectionControllerTest {
     @Test
     public void addInspectionDeviceDNE(){
         AddInspectionRequest request = new AddInspectionRequest(UUID.randomUUID(), new Date(), "Integration Testing");
-        ResponseEntity<AddInspectionResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<AddInspectionResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/inspections/addInspection",request,AddInspectionResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Failed to add inspection! Failure to get device!", response.getBody().getStatus());
@@ -164,15 +176,15 @@ public class InspectionControllerTest {
 
     @Test
     public void addInspection(){
-        AddInspectionRequest request = new AddInspectionRequest(UUID.fromString("af603639-3406-4362-a7dc-3a1e2b5174a0"), new Date(), "Integration Testing:  "+ new Date().toString());
-        ResponseEntity<AddInspectionResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        AddInspectionRequest request = new AddInspectionRequest(UUID.fromString(deviceID), new Date(), "Integration Testing:  "+ new Date().toString());
+        ResponseEntity<AddInspectionResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/inspections/addInspection",request,AddInspectionResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Inspection successfully added!", response.getBody().getStatus());
         assertEquals(true, response.getBody().getSuccess());
 
         DeleteInternalRequest requestt= new DeleteInternalRequest(response.getBody().getId());
-        ResponseEntity<DeleteInternalResponse> responsee = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<DeleteInternalResponse> responsee = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/inspections/deleteInternal",requestt,DeleteInternalResponse.class);
         assertEquals(HttpStatus.OK, responsee.getStatusCode());
         assertEquals(true, responsee.getBody().getSuccess());

@@ -9,10 +9,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestExce
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.Site;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.WaterSiteService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.AddSiteRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.DeleteWaterSiteRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.EditWaterSiteRequest;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
 
 @CrossOrigin
@@ -33,8 +30,8 @@ public class WaterSiteController {
     }
 
     @PostMapping("/deleteInternal")
-    public ResponseEntity<Object> deleteInternal(@RequestBody DeleteWaterSiteRequest deleteWaterSiteRequest) {
-        return new ResponseEntity<>(waterSiteService.deleteWaterSite(deleteWaterSiteRequest), HttpStatus.OK);
+    public ResponseEntity<Object> deleteInternal(@RequestBody DeleteWaterSiteInternalRequest deleteWaterSiteRequest) {
+        return new ResponseEntity<>(waterSiteService.deleteInternal(deleteWaterSiteRequest), HttpStatus.OK);
     }
 
     @GetMapping("/getAllSites")

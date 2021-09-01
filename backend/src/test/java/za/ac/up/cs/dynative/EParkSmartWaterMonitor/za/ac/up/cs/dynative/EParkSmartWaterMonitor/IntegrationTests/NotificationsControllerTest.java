@@ -3,6 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.IntegrationTests;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class NotificationsControllerTest {
 
+    @Value("${app.userName1}")
+    private String userName1;
+    @Value("${app.userP1}")
+    private String userPassword1;
+    @Value("${app.userID2}")
+    private String userID2;
+    @Value("${app.userResponseEmail}")
+    private String responseEmail;
+    
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -33,7 +43,7 @@ public class NotificationsControllerTest {
         ArrayList<String> list= new ArrayList<>();
         EmailRequest request= new EmailRequest("", "Hello",list,null,
                 null, Topic.ALERT,"E-Park","Testing","problem");
-        ResponseEntity<EmailResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<EmailResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/notifications/mail",request, EmailResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Request is missing parameters", response.getBody().getStatus());
@@ -41,7 +51,7 @@ public class NotificationsControllerTest {
 
         request= new EmailRequest("ff", "",list,null,
                 null, Topic.ALERT,"E-Park","","problem");
-        response = restTemplate.withBasicAuth("testingOne", "test1")
+        response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/notifications/mail",request, EmailResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Request is missing parameters", response.getBody().getStatus());
@@ -53,7 +63,7 @@ public class NotificationsControllerTest {
         ArrayList<String> list= new ArrayList<>();
         EmailRequest request= new EmailRequest("EPark Smart Water Monitoring System", "Integration Testing",list,null,
                 null, Topic.ALERT,"Joanita","Please tell me you got this email","Integration testing ;)");
-        ResponseEntity<EmailResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<EmailResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/notifications/mail",request, EmailResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("No recipients specified", response.getBody().getStatus());
@@ -63,11 +73,11 @@ public class NotificationsControllerTest {
     @Test
     public void sendMail(){
         ArrayList<String> list= new ArrayList<>();
-        String email = "u19006812@tuks.co.za";
+        String email = responseEmail;
         list.add(email);
         EmailRequest request= new EmailRequest("EPark Smart Water Monitoring System", "Integration Testing",list,null,
                 null, Topic.ALERT,"Joanita","Please tell me you got this email 🙏🏻","Integration testing ;)");
-        ResponseEntity<EmailResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<EmailResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/notifications/mail",request, EmailResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Email sent successfully", response.getBody().getStatus());
@@ -79,7 +89,7 @@ public class NotificationsControllerTest {
     public void sendSmsRecipientsDNE(){
         List<UUID> recipients = new ArrayList<>();
         SMSRequest request= new SMSRequest(recipients,"hi");
-        ResponseEntity<SMSResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<SMSResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/notifications/sms",request, SMSResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("No recipients specified", response.getBody().getStatus());
@@ -89,9 +99,9 @@ public class NotificationsControllerTest {
     @Test
     public void sendSmsSuccess(){
         List<UUID> recipients = new ArrayList<>();
-        recipients.add(UUID.fromString("4b40d223-b086-4109-b48f-8bc998c83829"));
+        recipients.add(UUID.fromString(userID2));
         SMSRequest request= new SMSRequest(recipients,"this is an integration test 🍑");
-        ResponseEntity<SMSResponse> response = restTemplate.withBasicAuth("testingOne", "test1")
+        ResponseEntity<SMSResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
                 .postForEntity("/api/notifications/sms",request, SMSResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Messages sent successfully", response.getBody().getStatus());
