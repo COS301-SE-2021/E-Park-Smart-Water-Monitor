@@ -13,7 +13,8 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestExce
 
 /**
  * This class will map all the http requests made related to devices to their
- * appropriate functions in the device service implementation
+ * appropriate functions in the device service implementation.
+ * The http methods that will be used: get, post, delete and put.
  */
 
 @CrossOrigin
@@ -21,7 +22,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestExce
 @RequestMapping("/api/devices")
 public class DeviceController {
     /**
-     * the deviceService will be used to call functions in the device service implementation.
+     * The deviceService will be used to call functions in the device service implementation.
      */
     DevicesService devicesService;
 
@@ -45,6 +46,9 @@ public class DeviceController {
         return new ResponseEntity<>(devicesService.receiveWaterDeviceData(request),HttpStatus.OK);
     }
 
+    /**
+     * @return all the the devices in the form of a collection.
+     */
     @GetMapping("/getDevice")
     public java.util.Collection<Device> getDevice() {
         return devicesService.getAll();
@@ -55,11 +59,26 @@ public class DeviceController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * This post http request will add a device to a specific water site within a park. The request sent in will be
+     * directed as input for the device service's addDevice method.
+     * @param addWSDRequest will be an object of type AddDeviceRequest containing the device id,
+     *      the water site id, the device model, the device name, the device coordinates in the form of
+     *      longitude and latitude and lastly also the park name.
+     * @return AddDeviceResponse will be an object containing the success and status values respectively.
+     * @throws InvalidRequestException
+     */
     @PostMapping("/addDevice")
     public ResponseEntity<Object> addDevice(@RequestBody AddDeviceRequest addWSDRequest) throws InvalidRequestException {
         return new ResponseEntity<>(devicesService.addDevice(addWSDRequest),HttpStatus.OK);
     }
 
+    /**
+     * When this post request is made a park id will be used to determine how many devices there are and return that number
+     * @param getNumDevicesRequest will contain the park id that is given as input to the device service's getNumDevices method.
+     * @return A GetNumDevicesResponse object will be returned, this object will contain a number and the success value.
+     * @throws InvalidRequestException
+     */
     @PostMapping("/getNumDevices")
     public ResponseEntity<Object> getNumDevices(@RequestBody GetNumDevicesRequest getNumDevicesRequest) throws InvalidRequestException {
         return new ResponseEntity<>(devicesService.getNumDevices(getNumDevicesRequest),HttpStatus.OK);
@@ -100,11 +119,21 @@ public class DeviceController {
         devicesService.getDataNotification(dataNotificationRequest);
     }
 
+    /**
+     *
+     * @param deleteDeviceRequest
+     * @return
+     */
     @DeleteMapping("/deleteDevice")
-    public ResponseEntity<Object> deleteDevice(@RequestBody DeleteDeviceRequest deleteDeviceRequest) throws InvalidRequestException {
+    public ResponseEntity<Object> deleteDevice(@RequestBody DeleteDeviceRequest deleteDeviceRequest){
         return new ResponseEntity<>(devicesService.deleteDevice(deleteDeviceRequest),HttpStatus.OK);
     }
 
+    /**
+     * This post endpoint will activate the device to send current readings.
+     * @param pingDeviceRequest will contain the id of the device that needs to be pinged and this will be used as input in the device service.
+     * @return A PingDeviceResponse object containing a status, success and deviceName along with an inner response containing measurements.
+     */
     @PostMapping("/pingDevice")
     public ResponseEntity<Object> pingDevice(@RequestBody PingDeviceRequest pingDeviceRequest) {
         return new ResponseEntity<>(devicesService.pingDevice(pingDeviceRequest), HttpStatus.OK);
