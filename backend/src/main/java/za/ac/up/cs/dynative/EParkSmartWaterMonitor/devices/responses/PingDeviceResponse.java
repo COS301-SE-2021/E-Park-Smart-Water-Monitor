@@ -6,13 +6,23 @@ public class PingDeviceResponse {
     private String status;
     private Boolean success;
     private String deviceName;
+    private String deviceStatus;
     private GetDeviceInnerResponse innerResponses;
 
-    public PingDeviceResponse(String status, Boolean success, String deviceName, GetDeviceInnerResponse innerResponses) {
+    public PingDeviceResponse(String status, Boolean success, String deviceName, String deviceStatus, GetDeviceInnerResponse innerResponses) {
         this.status = status;
         this.success = success;
         this.deviceName = deviceName;
         this.innerResponses = innerResponses;
+        this.deviceStatus = deviceStatus;
+    }
+
+    public String getDeviceStatus() {
+        return deviceStatus;
+    }
+
+    public void setDeviceStatus(String deviceStatus) {
+        this.deviceStatus = deviceStatus;
     }
 
     public String getStatus() {
