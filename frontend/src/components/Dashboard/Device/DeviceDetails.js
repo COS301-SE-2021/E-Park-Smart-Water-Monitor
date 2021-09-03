@@ -66,7 +66,7 @@ function DeviceDetails(props) {
     const filterMetrics = ()=>{
         let filteredMetrics = props.device.deviceData.deviceConfiguration.map((elem)=>{
             if(elem.settingType === "reportingFrequency"){
-                return {settingType: "Reporting Frequency", value: elem.value}
+                return {settingType: "Reporting Frequency", value: secondsToDhms(elem.value*60*60)}
             }
         })
         return filteredMetrics
@@ -118,6 +118,20 @@ function DeviceDetails(props) {
             toggleLoading()
             console.log("response getDeviceData:"+JSON.stringify(res))
         });
+    }
+
+    function secondsToDhms(seconds) {
+        seconds = Number(seconds);
+        let d = Math.floor(seconds / (3600*24));
+        let h = Math.floor(seconds % (3600*24) / 3600);
+        let m = Math.floor(seconds % 3600 / 60);
+        let s = Math.floor(seconds % 60);
+
+        let dDisplay = d > 0 ? d + (d === 1 ? " day, " : " days, ") : "";
+        let hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
+        let mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
+        let sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
+        return dDisplay + hDisplay + mDisplay + sDisplay;
     }
 
   return (
@@ -210,7 +224,7 @@ function DeviceDetails(props) {
                     </Grid>
                 }
                 classes={{ root: classes.cardHeaderRoot }}
-            ></CardHeader>
+            />
             <CardContent>
                 <Grid container>
                     <Grid
