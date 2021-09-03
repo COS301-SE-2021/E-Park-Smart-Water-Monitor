@@ -93,16 +93,15 @@ function DeviceDetails(props) {
         setPingMessage("")
         // call the device readings to see if device is active
         let obj = {
-            deviceName: device.deviceName,
-            numResults: 1, // will get the ping results
-            sorted: true
+            deviceID: device.deviceId
         }
-        axios.post('http://localhost:8080/api/devices/getDeviceData', obj, {
+        axios.post('http://localhost:8080/api/devices/pingDevice', obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }
             }
         ).then((res)=>{
+
             toggleLoading()
             setShowPing(true)
             console.log(JSON.stringify(res.data))
@@ -116,7 +115,7 @@ function DeviceDetails(props) {
 
         }).catch((res)=>{
             toggleLoading()
-            console.log("response getDeviceData:"+JSON.stringify(res))
+            console.log("response ping:"+JSON.stringify(res))
         });
     }
 
@@ -199,7 +198,7 @@ function DeviceDetails(props) {
                                     <Button
                                         variant={"contained"}
                                         size={"small"}
-                                        onClick={ ping }
+                                        onClick={ ()=>{ ping } }
                                     >
                                         Ping
                                     </Button>
