@@ -32,7 +32,6 @@ public class AnalyticsServiceImpl implements AnalyticsService
     @Autowired
     public AnalyticsServiceImpl(@Qualifier("DeviceServiceImpl") DevicesService devicesService,
                                 @Qualifier("WaterSiteServiceImpl") WaterSiteService waterSiteService)
-
     {
         this.devicesService = devicesService;
         this.waterSiteService = waterSiteService;
@@ -85,7 +84,7 @@ public class AnalyticsServiceImpl implements AnalyticsService
 
                 if (deviceDataResponse.getSuccess())
                 {
-                    if (request.getLength() >= 0 && request.getLength() <= 20)
+                    if (request.getLength() >= 0 && request.getLength() <= 10)
                     {
                         switch (request.getType().toLowerCase())
                         {

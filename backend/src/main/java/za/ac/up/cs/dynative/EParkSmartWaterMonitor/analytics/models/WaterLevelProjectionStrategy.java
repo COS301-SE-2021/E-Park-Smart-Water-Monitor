@@ -60,7 +60,6 @@ public class WaterLevelProjectionStrategy extends AbstractProjectionStrategy
                                         FindWaterSiteByDeviceResponse waterSiteByDeviceResponse,
                                         String apikey,
                                         String weatherUrl)
-
     {
         super(deviceProjectionRequest, deviceDataResponse, waterSiteByDeviceResponse);
         this.apikey = apikey;
