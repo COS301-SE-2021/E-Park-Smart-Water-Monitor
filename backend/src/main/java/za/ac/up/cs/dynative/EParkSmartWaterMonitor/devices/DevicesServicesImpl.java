@@ -7,6 +7,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -497,10 +498,10 @@ public class DevicesServicesImpl implements DevicesService
                         .build());
 
                 try {
-                    TimeUnit.SECONDS.sleep(45);
+                    TimeUnit.SECONDS.sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                    return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
+                    return adjustDeviceStatus(deviceName, findDeviceResponse);
                 }
 
                 GetDeviceDataResponse deviceDataResponse = getDeviceData(new GetDeviceDataRequest(deviceName, 1, true));
@@ -515,22 +516,43 @@ public class DevicesServicesImpl implements DevicesService
                         Date latestServerTimeDate = new SimpleDateFormat(dateTimeFormat).parse(latestServerTime);
                         Date latestDeviceTimeDate = new SimpleDateFormat(dateTimeFormat).parse(latestDeviceTime);
 
-                        if (Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 1
-                                || Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 0) {
+                        if (Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) <= 3)
+                        {
                             findDeviceResponse.getDevice().getDeviceData().setLastSeen(latestDeviceTimeDate);
+                            findDeviceResponse.getDevice().getDeviceData().setDeviceStatus("FINE");
                             deviceRepo.save(findDeviceResponse.getDevice());
-                            return new PingDeviceResponse("Device " + deviceName + " says hello.", true, deviceName, deviceDataResponse.getInnerResponses().get(0));
+                            return new PingDeviceResponse("Device: " + deviceName + " says hello.", true, deviceName, findDeviceResponse.getDevice().getDeviceData().getDeviceStatus(), deviceDataResponse.getInnerResponses().get(0));
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
+                        return adjustDeviceStatus(deviceName, findDeviceResponse);
                     }
                 }
-                return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
+                return adjustDeviceStatus(deviceName, findDeviceResponse);
             }
-            return new PingDeviceResponse("Device does not exist.", false, deviceName, null);
+            return new PingDeviceResponse("Device does not exist.", false, deviceName,"", null);
         }
-        return new PingDeviceResponse("No device ID specified.", false, deviceName, null);
+        return new PingDeviceResponse("No device ID specified.", false, deviceName,"", null);
+    }
+
+    @NotNull
+    private PingDeviceResponse adjustDeviceStatus(String deviceName, FindDeviceResponse findDeviceResponse) {
+        if (findDeviceResponse.getDevice().getDeviceData().getDeviceStatus().equals("FINE")) {
+            findDeviceResponse.getDevice().getDeviceData().setDeviceStatus("WARN");
+        }
+        else if (findDeviceResponse.getDevice().getDeviceData().getDeviceStatus().equals("WARN")) {
+            findDeviceResponse.getDevice().getDeviceData().setDeviceStatus("CRITICAL");
+            long oneWeekLater = System.currentTimeMillis() + (86400 * 7 * 1000);
+            Date dueDate =new Date(oneWeekLater);
+            AddInspectionRequest inspectionForFailedPingOnWarnLevel = new AddInspectionRequest(findDeviceResponse.getDevice().getDeviceId(),dueDate, findDeviceResponse.getDevice().getDeviceName()+" automated Inspection - device failed to respond to a ping and had a WARN condition. Device is now CRITICAL");
+            try {
+                inspectionService.addInspection(inspectionForFailedPingOnWarnLevel);
+            } catch (InvalidRequestException e) {
+                e.printStackTrace();
+            }
+        }
+        deviceRepo.save(findDeviceResponse.getDevice());
+        return new PingDeviceResponse("Device failed to respond.", false, deviceName, findDeviceResponse.getDevice().getDeviceData().getDeviceStatus(), null);
     }
 
     public void getDataNotification(DataNotificationRequest dataNotificationRequest) throws InvalidRequestException {
