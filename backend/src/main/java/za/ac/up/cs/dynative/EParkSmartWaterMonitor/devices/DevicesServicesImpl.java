@@ -524,14 +524,19 @@ public class DevicesServicesImpl implements DevicesService
                         if (Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 1
                                 || Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 0) {
                             findDeviceResponse.getDevice().getDeviceData().setLastSeen(latestDeviceTimeDate);
+                            findDeviceResponse.getDevice().getDeviceData().setDeviceStatus("FINE");
                             deviceRepo.save(findDeviceResponse.getDevice());
                             return new PingDeviceResponse("Device " + deviceName + " says hello.", true, deviceName, deviceDataResponse.getInnerResponses().get(0));
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
+                        findDeviceResponse.getDevice().getDeviceData().setDeviceStatus("WARN");
+                        deviceRepo.save(findDeviceResponse.getDevice());
                         return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
                     }
                 }
+                findDeviceResponse.getDevice().getDeviceData().setDeviceStatus("WARN");
+                deviceRepo.save(findDeviceResponse.getDevice());
                 return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
             }
             return new PingDeviceResponse("Device does not exist.", false, deviceName, null);
