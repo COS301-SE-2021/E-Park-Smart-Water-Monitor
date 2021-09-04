@@ -12,6 +12,13 @@ import java.util.List;
 public class GeoDataServiceImpl
 {
     Coordinate firstPoint;
+    int[][] dataGrid = new int[1261][1175];
+    //[long][lat]
+    //  |   _
+    //  y    x
+    //1175, 1261
+    int blocksWidth=1261;
+    int blocksBreadth=1261;
 
     public void lineApproximation(Point from, Point to)
     {
@@ -72,6 +79,8 @@ public class GeoDataServiceImpl
         {
             String line;
             int count =0;
+            int longNum =0;
+            int latNumb =0;
             while ((line = br.readLine()) != null)
             {
                 count++;
@@ -82,6 +91,16 @@ public class GeoDataServiceImpl
                     firstPoint = new Coordinate(Double.parseDouble(auxLine[0]),Double.parseDouble(auxLine[1]));
                 }
                 System.out.println(line);
+
+                dataGrid[longNum][latNumb]=Integer.parseInt(auxLine[2]);
+
+                latNumb++;
+
+                if (latNumb==blocksWidth-1)
+                {
+                    latNumb=0;
+                    longNum++;
+                }
             }
         }
         catch (IOException e)
