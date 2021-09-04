@@ -20,7 +20,7 @@ public class GeoDataController
     }
 
 
-    @GetMapping("/getParkDevices")
+    @GetMapping("/getElevation")
     public void getElevation() {
          geoDataService.lineApproximation(new Point(1,1),new Point(9,9));
     }

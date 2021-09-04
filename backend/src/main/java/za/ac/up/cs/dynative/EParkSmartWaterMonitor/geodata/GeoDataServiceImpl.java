@@ -20,7 +20,7 @@ public class GeoDataServiceImpl implements GeoDataService
     //  |   _
     //  y    x
     //1175, 1261
-    int blocksWidth=1261;
+    int blocksWidth=1175;
     int blocksBreadth=1261;
 
     public GeoDataServiceImpl()
@@ -83,7 +83,7 @@ public class GeoDataServiceImpl implements GeoDataService
 
     public void loadElevation(Coordinate startingLocation, double SquaredKm)
     {
-        try (BufferedReader br = new BufferedReader(new FileReader("PtaJhb.xyz")))
+        try (BufferedReader br = new BufferedReader(new FileReader("src/main/java/za/ac/up/cs/dynative/EParkSmartWaterMonitor/geodata/PtaJhb.xyz")))
         {
             String line;
             int count =0;
@@ -92,6 +92,7 @@ public class GeoDataServiceImpl implements GeoDataService
             while ((line = br.readLine()) != null)
             {
                 count++;
+                System.out.print("Line#"+count +" ");
                 String[] auxLine = line.split(" ");
 
                 if (count==1)
@@ -99,13 +100,14 @@ public class GeoDataServiceImpl implements GeoDataService
                     firstPoint = new Coordinate(Double.parseDouble(auxLine[0]),Double.parseDouble(auxLine[1]));
                 }
                 System.out.println(line);
-
+                System.out.println("Setting: ["+longNum+"]["+latNumb+"]");
                 dataGrid[longNum][latNumb]=Integer.parseInt(auxLine[2]);
 
                 latNumb++;
 
-                if (latNumb==blocksWidth-1)
+                if (latNumb==blocksWidth)
                 {
+                    System.out.println("RESET");
                     latNumb=0;
                     longNum++;
                 }
