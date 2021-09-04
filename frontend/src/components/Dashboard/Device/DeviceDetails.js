@@ -6,7 +6,7 @@ import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import {CardContent} from "@material-ui/core";
+import {CardContent, Tooltip} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import EditDeviceMetrics from "./EditDeviceMetrics";
 import Modal from "../../Modals/Modal";
@@ -15,16 +15,22 @@ import Divider from "@material-ui/core/Divider";
 import {BatteryStd, CheckCircle, Visibility} from "@material-ui/icons";
 import axios from "axios";
 import LoadingContext from "../../../Context/LoadingContext";
+import {ScaleLoader} from "react-spinners";
 
 const useStyles = makeStyles(componentStyles);
 
 function DeviceDetails(props) {
   const classes = useStyles();
   const [device, setDevice] = useState(null)
+    // eslint-disable-next-line no-unused-vars
+  const [battery, setBattery] = useState(null)
+  const [status, setStatus] = useState(null)
+  const [measurements, setMeasurements] = useState(null)
   const [access, setAccess] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
   const [showPing, setShowPing] = useState(false)
   const [pingMessage, setPingMessage] = useState("") // will show a loader while waiting for ping response
+  const [pinging, setPinging] = useState(false)
 
     const user = useContext(UserContext)
     const toggleLoading = useContext(LoadingContext).toggleLoading
@@ -42,6 +48,9 @@ function DeviceDetails(props) {
         if(props.device != null)
         {
             setDevice(props.device);
+            setStatus(props.device.deviceData.deviceStatus)
+            setBattery(props.device.deviceData.deviceBattery)
+            setMeasurements(props.device.measurementSet)
             filterMetrics()
 
         }else{
@@ -89,7 +98,7 @@ function DeviceDetails(props) {
     }
 
     const ping = ()=>{
-        toggleLoading()
+        setPinging(true)
         setPingMessage("")
         // call the device readings to see if device is active
         let obj = {
@@ -101,13 +110,14 @@ function DeviceDetails(props) {
                 }
             }
         ).then((res)=>{
-
-            toggleLoading()
+            setPinging(false)
             setShowPing(true)
             console.log(JSON.stringify(res.data))
             if(res.data.success === true){
                 //ping successful
                 setPingMessage(res.data.status)
+                setMeasurements(res.data.measurements)
+                setStatus(res.data.deviceStatus)
             }else
             {
                 setPingMessage(res.data.status)
@@ -198,7 +208,7 @@ function DeviceDetails(props) {
                                 <Box
                                     paddingLeft="1.25rem"
                                 >
-                                    { device && device.deviceData && device.deviceData.deviceStatus }
+                                    { status }
                                 </Box>
 
                                 <Box
@@ -206,18 +216,30 @@ function DeviceDetails(props) {
                                     width="1rem!important"
                                     height="1rem!important"
                                 />
-                                <Box
-                                    paddingLeft="1.25rem"
-                                >
-                                    <Button
-                                        variant={"contained"}
-                                        size={"small"}
-                                        onClick={ ()=>{ ping } }
+                                { !pinging &&
+                                    <Box
+                                        paddingLeft="1.25rem"
                                     >
-                                        Ping
-                                    </Button>
-                                </Box>
-
+                                        <Button
+                                            variant={"contained"}
+                                            size={"small"}
+                                            onClick={() => {
+                                                ping()
+                                            }}
+                                        >
+                                            Ping
+                                        </Button>
+                                    </Box>
+                                }
+                                { pinging &&
+                                    <Box
+                                        paddingLeft="1.25rem"
+                                    >
+                                        <Tooltip title="Ping..." arrow>
+                                            <ScaleLoader size={10} height={15} color={"#5E72E4"} speedMultiplier={1.5} />
+                                        </Tooltip>
+                                    </Box>
+                                }
                             </Box>
                         </Grid>
                     </Grid>
@@ -343,7 +365,7 @@ function DeviceDetails(props) {
                         <b>Latest Device Readings</b>
                     </Grid>
 
-                    { device && device.measurementSet && filterMeasurementSet(device.measurementSet).map((item)=>{
+                    { measurements && filterMeasurementSet(measurements).map((item)=>{
                         return (
                             <>
                             { gridItem(item.type) }
