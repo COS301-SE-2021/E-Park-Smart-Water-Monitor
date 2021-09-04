@@ -1,5 +1,7 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.Coordinate;
 
 import java.awt.*;
@@ -9,7 +11,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GeoDataServiceImpl
+@Service("GeoDataServiceImpl")
+public class GeoDataServiceImpl implements GeoDataService
 {
     Coordinate firstPoint;
     int[][] dataGrid = new int[1261][1175];
@@ -19,6 +22,11 @@ public class GeoDataServiceImpl
     //1175, 1261
     int blocksWidth=1261;
     int blocksBreadth=1261;
+
+    public GeoDataServiceImpl()
+    {
+        loadElevation(new Coordinate(28.1677777778889364 ,-25.7566666668889752),1.5);
+    }
 
     public void lineApproximation(Point from, Point to)
     {
@@ -73,7 +81,7 @@ public class GeoDataServiceImpl
 
     }
 
-    public void loadElevation()
+    public void loadElevation(Coordinate startingLocation, double SquaredKm)
     {
         try (BufferedReader br = new BufferedReader(new FileReader("PtaJhb.xyz")))
         {
