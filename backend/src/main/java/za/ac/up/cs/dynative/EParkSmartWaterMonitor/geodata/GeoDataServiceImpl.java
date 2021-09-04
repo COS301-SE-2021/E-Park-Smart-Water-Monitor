@@ -15,7 +15,8 @@ import java.util.List;
 public class GeoDataServiceImpl implements GeoDataService
 {
     Coordinate firstPoint=new Coordinate(28.1677777778889364 ,-25.7566666668889752);
-    int[][] dataGrid = new int[1261][1175];
+//    int[][] dataGrid = new int[1261][1175];
+    int[][] dataGrid = new int[1175][1261];
     //[long][lat]
     //  |   _
     //  y    x
@@ -101,7 +102,7 @@ public class GeoDataServiceImpl implements GeoDataService
                 }
                 System.out.println(line);
                 System.out.println("Setting: ["+longNum+"]["+latNumb+"]");
-                dataGrid[longNum][latNumb]=Integer.parseInt(auxLine[2]);
+                dataGrid[latNumb][longNum]=Integer.parseInt(auxLine[2]);
 
                 latNumb++;
 
@@ -125,7 +126,8 @@ public class GeoDataServiceImpl implements GeoDataService
         int x =Math.abs((int) Math.floor(Math.abs(inCoordinate.getX()-firstPoint.getX())/0.000277777778));
         int y =Math.abs((int) Math.floor(Math.abs(inCoordinate.getY()-firstPoint.getY())/0.000277777778));
 
-        System.out.println("GRID LOCATION ["+y+"]["+x+"]");
+        System.out.println("GRID LOCATION ["+x+"]["+y+"]");
+        System.out.println(dataGrid[2][2]);
         return new Point(x,y);
     }
 }
