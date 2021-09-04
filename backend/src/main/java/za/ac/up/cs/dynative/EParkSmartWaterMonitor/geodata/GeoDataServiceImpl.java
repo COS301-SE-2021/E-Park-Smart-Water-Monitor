@@ -1,22 +1,29 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata;
 
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.Coordinate;
+
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GeoDataServiceImpl
 {
-    public void lineApproxcimation(Point from, Point to)
+    Coordinate firstPoint;
+
+    public void lineApproximation(Point from, Point to)
     {
 
         Point[][] grid =new Point[10][10];
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 10; j++)
                 grid[i][j] = new Point(i, j);
-        int startX=2;
-        int startY=2;
-        int endX=2;
-        int endY=5;
+        int startX=from.x;
+        int startY=from.y;
+        int endX=to.x;
+        int endY=to.y;
 
         int diffX = Math.abs(endX - startX);
         int diffY = Math.abs(endY - startY);
@@ -57,5 +64,29 @@ public class GeoDataServiceImpl
 
         System.out.println(approximatedPath.toString());
 
+    }
+
+    public void loadElevation()
+    {
+        try (BufferedReader br = new BufferedReader(new FileReader("PtaJhb.xyz")))
+        {
+            String line;
+            int count =0;
+            while ((line = br.readLine()) != null)
+            {
+                count++;
+                String[] auxLine = line.split(" ");
+
+                if (count==1)
+                {
+                    firstPoint = new Coordinate(Double.parseDouble(auxLine[0]),Double.parseDouble(auxLine[1]));
+                }
+                System.out.println(line);
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
