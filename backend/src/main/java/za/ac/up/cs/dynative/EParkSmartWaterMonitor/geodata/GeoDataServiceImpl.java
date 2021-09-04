@@ -6,7 +6,7 @@ import java.util.List;
 
 public class GeoDataServiceImpl
 {
-    public void lineApproxcimation()
+    public void lineApproxcimation(Point from, Point to)
     {
 
         Point[][] grid =new Point[10][10];
