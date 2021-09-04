@@ -134,14 +134,17 @@ function LineChart(props) {
                     labels: labels,
                     datasets: [
                         {
-                            label: "Optimistic",
-                            data: optimisticProjections,
+                            label: "Realistic",
+                            data: realisticProjections,
                             fill: false,
+                            backgroundColor: "#5E72E4",
+                            borderColor: "#5E72E4",
+                            borderDash: [0],
 
                         },
                         {
-                            label: "Realistic",
-                            data: realisticProjections,
+                            label: "Optimistic",
+                            data: optimisticProjections,
                             backgroundColor: "orange",
                             borderColor: "orange",
                             borderDash: [12],
