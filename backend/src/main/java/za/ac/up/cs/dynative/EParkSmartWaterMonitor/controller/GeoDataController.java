@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.GeoDataService;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.Coordinate;
 
 import java.awt.*;
 
@@ -24,6 +25,6 @@ public class GeoDataController
 
     @GetMapping("/getElevation")
     public void getElevation() {
-         geoDataService.lineApproximation(new Point(1,1),new Point(9,9));
+         geoDataService.convertCoordToGridBlock(new Coordinate(28.1681,-25.7569444446669315));
     }
 }

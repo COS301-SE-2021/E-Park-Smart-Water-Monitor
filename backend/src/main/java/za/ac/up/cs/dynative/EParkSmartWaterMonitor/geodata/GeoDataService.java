@@ -8,4 +8,6 @@ public interface GeoDataService
 {
     public void loadElevation(Coordinate startingLocation, double SquaredKm);
     public void lineApproximation(Point from, Point to);
+    public Point convertCoordToGridBlock(Coordinate inCoordinate);
+
 }

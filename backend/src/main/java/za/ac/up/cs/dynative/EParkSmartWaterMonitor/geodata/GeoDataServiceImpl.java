@@ -14,7 +14,7 @@ import java.util.List;
 @Service("GeoDataServiceImpl")
 public class GeoDataServiceImpl implements GeoDataService
 {
-    Coordinate firstPoint;
+    Coordinate firstPoint=new Coordinate(28.1677777778889364 ,-25.7566666668889752);
     int[][] dataGrid = new int[1261][1175];
     //[long][lat]
     //  |   _
@@ -118,11 +118,14 @@ public class GeoDataServiceImpl implements GeoDataService
             e.printStackTrace();
         }
     }
-    public Point ConvertCoordToGridBlock(Coordinate inCoordinate)
+    public Point convertCoordToGridBlock(Coordinate inCoordinate)
     {
-        int x =(int) Math.floor((inCoordinate.getX()-firstPoint.getX())/0.000277777778);
-        int y =(int) Math.floor((inCoordinate.getY()-firstPoint.getY())/0.000277777778);
+        System.out.println("X CALC: " + inCoordinate.getX()+"-"+firstPoint.getX()+" ="+(inCoordinate.getX()-firstPoint.getX()));
+        System.out.println("Y CALC: " + inCoordinate.getY()+"-"+firstPoint.getY()+" ="+(inCoordinate.getY()-firstPoint.getY()) +"  /0.000277777778 ="+((inCoordinate.getY()-firstPoint.getY())/0.000277777778)+"  FLOORED:"+ Math.floor((inCoordinate.getY()-firstPoint.getY())/0.000277777778));
+        int x =Math.abs((int) Math.floor(Math.abs(inCoordinate.getX()-firstPoint.getX())/0.000277777778));
+        int y =Math.abs((int) Math.floor(Math.abs(inCoordinate.getY()-firstPoint.getY())/0.000277777778));
 
+        System.out.println("GRID LOCATION ["+y+"]["+x+"]");
         return new Point(x,y);
     }
 }
