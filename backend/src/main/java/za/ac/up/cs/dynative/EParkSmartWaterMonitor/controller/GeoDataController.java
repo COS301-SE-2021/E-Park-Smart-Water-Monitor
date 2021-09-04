@@ -16,7 +16,9 @@ public class GeoDataController
 {
     GeoDataService geoDataService;
     @Autowired
-    GeoDataController(@Qualifier("GeoDataServiceImpl") GeoDataService geoDataServiceService) {
+    GeoDataController(@Qualifier("GeoDataServiceImpl") GeoDataService geoDataServiceService)
+    {
+        this.geoDataService=geoDataServiceService;
     }
 
 
