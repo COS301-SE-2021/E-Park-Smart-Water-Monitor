@@ -118,4 +118,11 @@ public class GeoDataServiceImpl implements GeoDataService
             e.printStackTrace();
         }
     }
+    public Point ConvertCoordToGridBlock(Coordinate inCoordinate)
+    {
+        int x =(int) Math.floor((inCoordinate.getX()-firstPoint.getX())/0.000277777778);
+        int y =(int) Math.floor((inCoordinate.getY()-firstPoint.getY())/0.000277777778);
+
+        return new Point(x,y);
+    }
 }
