@@ -114,9 +114,6 @@ function LineChart(props) {
             let labels = res.data.labelDates
 
             let x = res.data
-            for(let i =0; i<numPredictions;i++){
-                labels.push("Prediction "+(i+1))
-            }
 
             let roundingValue = 3
             let optimisticProjections = x.optimisticProjections.map(function(each_element){
