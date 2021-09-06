@@ -5,9 +5,9 @@ import axios from "axios";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 import PrevComments from "./PrevComments";
-import Grid from "@material-ui/core/Grid";
-import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import Grid from "@material-ui/core/Grid";
 
 const Comments = (props) => {
 
@@ -46,25 +46,25 @@ const Comments = (props) => {
 
     return (
         <>
+            <PrevComments comments={props.inspectionDetails.comments} inspection={props.inspectionDetails} user={user.username}/>
+            <br/>
             <Form onSubmit={handleSubmit}>
-                <PrevComments comments={props.inspectionDetails.comments} inspection={props.inspectionDetails} user={user.username}/>
-                <br/>
-                <Grid>
-                    <Row>
-                        <Col xs={12}>
-                            <Form.Label>Add a comment</Form.Label>
-                        </Col>
-                        <Col xs={10} >
-                            <Form.Control type="text" Required={"required"} placeholder="" onChange={e => setNewComments(e.target.value)}/>
-                        </Col>
-                        <Col xs={2} >
-                            <Button background-color="primary" variant="primary" type="submit" >
-                                Post
-                            </Button>
-                        </Col>
-                    </Row>
-                </Grid>
 
+                    <Grid>
+                        <Row >
+                            <Col xs={12}>
+                                <Form.Label>Add a comment</Form.Label>
+                            </Col>
+                            <Col xs={9} sm={10} m={0} p={0}>
+                                <Form.Control type="text" Required={"required"} placeholder="" onChange={e => setNewComments(e.target.value)}/>
+                            </Col>
+                            <Col xs={3} sm={2} style={{ paddingLeft: 0 }}>
+                                <Button background-color="primary" variant="primary" type="submit" >
+                                    Post
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Grid>
 
             </Form>
         </>

@@ -46,7 +46,7 @@ const PrevComments = (props) => {
     return (
         <>
             {response}
-            { !response && <div>Chat for {props.inspection.description} is empty.</div> }
+            { !response && <div>Chat for &quot;{props.inspection.description}&quot; is empty.</div> }
         </>
     );
 };
