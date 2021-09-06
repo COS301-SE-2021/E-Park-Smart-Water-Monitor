@@ -5,6 +5,9 @@ import axios from "axios";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 import PrevComments from "./PrevComments";
+import Grid from "@material-ui/core/Grid";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 const Comments = (props) => {
 
@@ -44,15 +47,25 @@ const Comments = (props) => {
     return (
         <>
             <Form onSubmit={handleSubmit}>
-                <PrevComments comments={props.inspectionDetails.comments} user={user.username}/>
+                <PrevComments comments={props.inspectionDetails.comments} inspection={props.inspectionDetails} user={user.username}/>
                 <br/>
-                <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Add a comment:</Form.Label>
-                    <Form.Control type="text" Required={"required"} placeholder="..." onChange={e => setNewComments(e.target.value)}/>
-                </Form.Group>
-                <Button background-color="primary" variant="primary" type="submit" >
-                    Post
-                </Button>
+                <Grid>
+                    <Row>
+                        <Col xs={12}>
+                            <Form.Label>Add a comment</Form.Label>
+                        </Col>
+                        <Col xs={10} >
+                            <Form.Control type="text" Required={"required"} placeholder="" onChange={e => setNewComments(e.target.value)}/>
+                        </Col>
+                        <Col xs={2} >
+                            <Button background-color="primary" variant="primary" type="submit" >
+                                Post
+                            </Button>
+                        </Col>
+                    </Row>
+                </Grid>
+
+
             </Form>
         </>
     );
