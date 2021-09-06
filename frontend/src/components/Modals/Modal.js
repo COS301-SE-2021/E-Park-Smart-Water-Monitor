@@ -27,8 +27,12 @@ const Modal = props => {
             <div className="modal" onClick={props.onClose}>
                 <div className="modal-content" onClick={e => e.stopPropagation()}>
                     { props.title && <div className="modal-header">
+
                         <h3 className="modal-title">{props.title}</h3>
+                        <button type="button" className="close" data-dismiss="modal" onClick={()=>{props.onClose()}}>&times;</button>
+
                     </div> }
+
                     <div className="modal-body">{props.children}</div>
                 </div>
             </div>
