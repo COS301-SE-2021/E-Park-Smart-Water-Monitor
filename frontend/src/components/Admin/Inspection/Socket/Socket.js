@@ -2,9 +2,13 @@ import io from 'socket.io-client';
 let socket;
 export const initiateSocket = (room) => {
     // the server connection
-    socket = io('http://localhost:3000');
+    socket = io('http://localhost:5000'); // server address
     console.log(`Connecting socket...`);
-    if (socket && room) socket.emit('join', room);
+    if (socket && room) {
+        alert("joining")
+        socket.emit('join', room)
+    }
+    
 }
 export const disconnectSocket = () => {
     console.log('Disconnecting socket...');
@@ -21,6 +25,9 @@ export const subscribeToChat = (cb) => {
 }
 
 
-export const sendMessage = (room, message) => {
-    if (socket) socket.emit('chat', { message, room });
+export const sendMessage = (room, message, token) => {
+    if (socket) {
+        alert(`${room}  ${message}`)
+        socket.emit('chat', { message, room, token });
+    }
 }

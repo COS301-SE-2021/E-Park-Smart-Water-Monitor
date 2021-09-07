@@ -1,6 +1,3 @@
-// var http = require('http').createServer().listen(7777);
-// var io = require('socket.io').listen(http);
-
 let app = require('express')();
 const cors = require('cors');
 app.use(cors());
@@ -12,7 +9,7 @@ const io = require('socket.io')(server)
 let PORT = process.env.PORT || 5000;
 server.listen(PORT, console.log(`Socket server running on port: ${PORT}`))
 
-// const axios = require('axios')
+const axios = require('axios')
 //https://flaviocopes.com/node-http-post/
 
 // const clients = [];
@@ -38,8 +35,25 @@ io.on('connection', (socket) => {
     // the chat information sent to the server for that room
     // data contains inspection id (room) and the message sent
     socket.on('chat', (data) => {
-        const { message, room } = data;
+        const { message, room, token } = data;
         console.log(`msg: ${message}, room: ${room}`);
+        // sends the message to the db o keep it in storage
+        let body = {
+            inspectionId: room, // inspection id
+            comments: message,
+        }
+        console.log("body: ", body)
+        axios.post('http://localhost:8080/api/inspections/setComments', body, {
+          headers: {
+              'Authorization': "Bearer " + token
+          }
+        }).then((res)=>{
+            // confirm that the inspection was set
+            console.log(JSON.stringify(res))
+        }).catch( (res)=> {
+            console.log(JSON.stringify(res))
+        });
+
         // sends the message back to the room for all other clients to be able to see
         io.to(room).emit('chat', message);
     });

@@ -13,7 +13,7 @@ const PrevComments = (props) => {
                 com = comment.split("\n")
                 if (com[0] == props.user+":"){
                     return(
-                        <div style={{
+                        <div key={comment.id} style={{
                             backgroundColor: "#4c7870",
                             padding: 10,
                             marginLeft: '50%',
@@ -21,18 +21,18 @@ const PrevComments = (props) => {
                             maxWidth: '50%',
                             alignSelf: 'flex-end',
                             borderRadius: 15,
-                        }}> <b><h9 style={{color: "#fff"}}> {com[0]}</h9></b>
+                        }}> <b><h6 style={{color: "#fff"}}> {com[0]}</h6></b>
                             <p style={{fontSize: 16, color: "#fff",overflowWrap: "break-word"}}> {com[1]}</p>
                         </div>)
                 }else{
-                    return(<div style={{
+                    return(<div key={comment.id} style={{
                         backgroundColor: "#dedede",
                         padding: 10,
                         marginTop: 5,
                         maxWidth: '50%',
                         alignSelf: 'flex-start',
                         borderRadius: 15,
-                    }}><b><h9 style={{color: "#000000"}}> {com[0]}</h9></b>
+                    }}><b><h6 style={{color: "#000000"}}> {com[0]}</h6></b>
                         <p style={{fontSize: 16, color: "#000000", justifyContent: "center", overflowWrap: "break-word"}}> {com[1]}</p>
                     </div>)
                 }
