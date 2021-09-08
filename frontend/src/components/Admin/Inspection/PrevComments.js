@@ -40,8 +40,6 @@ const PrevComments = (props) => {
             setResponse(m)
         }
 
-        
-
     },[props.comments])
 
     return (

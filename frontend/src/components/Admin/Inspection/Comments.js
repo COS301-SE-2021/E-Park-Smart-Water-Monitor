@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import {Button, Form} from 'react-bootstrap';
 import "../../../assets/css/addDevice.css";
 // eslint-disable-next-line no-unused-vars
@@ -16,9 +16,10 @@ const Comments = (props) => {
     // eslint-disable-next-line no-unused-vars
     const [newComments, setNewComments] = useState("")
     const [comments, setComments] = useState(null)
-    const [reset, setReset] = useState(true)
     const user = useContext(UserContext)
     const loader = useContext(LoadingContext)
+
+    const commentsEndRef = useRef(null);
     // eslint-disable-next-line no-unused-vars
     const toggleLoading = loader.toggleLoading
 
@@ -31,7 +32,7 @@ const Comments = (props) => {
 
         // on load of page make a temporary array for when inspections get added from the socket or the user
         setComments(props.inspectionDetails.comments)
-
+        
         // initialise socket
         if (props.inspectionDetails.id) initiateSocket(props.inspectionDetails.id);
         subscribeToChat((err, data) => {
@@ -47,14 +48,30 @@ const Comments = (props) => {
 
 
     const send = ()=>{
-        setReset(false)
         let comm= user.username+":\n"+ newComments
         // on the socket server the message is sent to the database via an API
         sendMessage(props.inspectionDetails.id, comm, user.token)
         // add the message to the local messages array
         setComments(comments => [...comments, comm])
-        setReset(true)
+        if (comments && commentsEndRef.current) {
+            const timer = setTimeout(() => {
+                commentsEndRef.current.scrollIntoView();
+            }, 5);
+            return () => clearTimeout(timer);
+        }
     };
+
+    // scroll to bottom when new message is added
+    useEffect(()=>{
+        if (comments && commentsEndRef.current) {
+            const timer = setTimeout(() => {
+                commentsEndRef.current.scrollIntoView();
+            }, 5);
+            return () => clearTimeout(timer);
+        }
+    },[comments]);
+
+
 
     // eslint-disable-next-line no-unused-vars
     // const handleSubmit = (event) => {
@@ -92,9 +109,10 @@ const Comments = (props) => {
 
 
     return (
-        <>
-            { reset && comments && <PrevComments comments={ comments } inspection={props.inspectionDetails} user={user.username}/> }
+        <div>
+            { comments && <PrevComments comments={ comments } inspection={props.inspectionDetails} user={user.username}/> }
             <br/>
+
             <Form>
 
                     <Grid>
@@ -114,7 +132,8 @@ const Comments = (props) => {
                     </Grid>
 
             </Form>
-        </>
+            { comments && <div ref={ commentsEndRef }/> }
+        </div>
     );
 };
 
