@@ -1,19 +1,30 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.responses;
 
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.GeoJSON;
+
 public class GetElevationDataResponse
 {
-
     private String status;
     private Boolean success;
     private  double min;
     private  double max;
+    private GeoJSON geoJSON;
 
-    public GetElevationDataResponse(String status, Boolean success, double min, double max)
+    public GetElevationDataResponse(String status, Boolean success, double min, double max, GeoJSON geoJSON)
     {
         this.status = status;
         this.success = success;
         this.min = min;
         this.max = max;
+        this.geoJSON = geoJSON;
+    }
+
+    public GeoJSON getGeoJSON() {
+        return geoJSON;
+    }
+
+    public void setGeoJSON(GeoJSON geoJSON) {
+        this.geoJSON = geoJSON;
     }
 
     public String getStatus() {
