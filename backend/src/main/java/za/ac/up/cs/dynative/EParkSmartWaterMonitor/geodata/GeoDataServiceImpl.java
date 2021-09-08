@@ -3,12 +3,14 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.Coordinate;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.responses.GetElevationDataResponse;
 
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service("GeoDataServiceImpl")
@@ -131,5 +133,28 @@ public class GeoDataServiceImpl implements GeoDataService
         System.out.println(dataGrid[2][2]);
         return new Point(x,y);
     }
+    public ArrayList<ArrayList<Double>> geoSquareBuilder(Coordinate coordinate)
+    {
+        ArrayList<ArrayList<Double>> geoSquare = new ArrayList<>();
+        double geoOffset = 0.000277777778;
 
+        ArrayList<Double> upperLeftCorner = new ArrayList<Double>(Arrays.asList(coordinate.getX(),coordinate.getY()));
+        ArrayList<Double> lowerLeftCorner = new ArrayList<Double>(Arrays.asList(coordinate.getX(),coordinate.getY()+geoOffset));
+        ArrayList<Double> lowerRightCorner = new ArrayList<Double>(Arrays.asList(coordinate.getX()+geoOffset,coordinate.getY()+geoOffset));
+        ArrayList<Double> upperRightCorner = new ArrayList<Double>(Arrays.asList(coordinate.getX(),coordinate.getY()+geoOffset));
+
+        geoSquare.add(upperLeftCorner);
+        geoSquare.add(lowerLeftCorner);
+        geoSquare.add(lowerRightCorner);
+        geoSquare.add(upperRightCorner);
+        geoSquare.add(upperLeftCorner);
+
+        return geoSquare;
+
+    }
+    public GetElevationDataResponse getElevationData()
+    {
+
+        return null;
+    }
 }
