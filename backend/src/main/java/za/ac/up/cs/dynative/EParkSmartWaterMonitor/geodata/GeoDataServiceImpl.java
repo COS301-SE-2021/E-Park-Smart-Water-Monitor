@@ -167,14 +167,15 @@ public class GeoDataServiceImpl implements GeoDataService
     {
         Double min = 99999.0;
         Double max = -99999.0;
-        ArrayList<GeoFeatures> features;
+        ArrayList<GeoFeatures> features = new ArrayList<>();
 
         for (int lng = 0; lng < blocksBreadth; lng++)
         {
             for (int lat = 0; lat < blocksWidth; lat++)
             {
                 FeatureProperties auxProperties = new FeatureProperties(dataGrid[lng][lat]);
-                GeometryData auxGeometry = new GeometryData(geoSquareBuilder())
+                GeometryData auxGeometry = new GeometryData(geoSquareBuilder( convertGridBlockToCoord(lat,lng)));
+                features.add(new GeoFeatures(auxProperties,auxGeometry));
             }
         }
 
