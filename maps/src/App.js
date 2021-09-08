@@ -24,6 +24,87 @@ function App() {
     // [51.49, -0.08],
     // [51.5, -0.06],
   ]
+  var myGJ ={
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "Name":"Area One",
+          "stroke": "#cb2a2a",
+          "stroke-width": 2,
+          "stroke-opacity": 0.5,
+          "fill": "#b72a2a",
+          "fill-opacity": 0.5
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                28.274345397949215,
+                -25.893202651527982
+              ],
+              [
+                28.28996658325195,
+                -25.893202651527982
+              ],
+              [
+                28.28996658325195,
+                -25.879303293404806
+              ],
+              [
+                28.274345397949215,
+                -25.879303293404806
+              ],
+              [
+                28.274345397949215,
+                -25.893202651527982
+              ]
+            ]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "Name":"Area Two",
+          "stroke": "#555555",
+          "stroke-width": 2,
+          "stroke-opacity": 0.4,
+          "fill": "red",
+          "fill-opacity": 1
+        },
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                28.274345397949215,
+                -25.903819114210975
+              ],
+              [
+                28.289923667907715,
+                -25.903819114210975
+              ],
+              [
+                28.289923667907715,
+                -25.893241258577042
+              ],
+              [
+                28.274345397949215,
+                -25.893241258577042
+              ],
+              [
+                28.274345397949215,
+                -25.903819114210975
+              ]
+            ]
+          ]
+        }
+      }
+    ]
+  };
 
   var radius = 0.1;
 
@@ -83,6 +164,7 @@ function App() {
         {/*</Marker>*/}
         {/*<Polygon data={poly}/>*/}
         {/*<Rectangle bounds={rectangle} pathOptions={blackOptions} />*/}
+        <GeoJSON data={myGJ.features} style={areaStyle} />
       </MapContainer>
   );
 }
