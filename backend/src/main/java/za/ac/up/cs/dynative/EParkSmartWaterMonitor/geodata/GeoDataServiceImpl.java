@@ -16,13 +16,13 @@ public class GeoDataServiceImpl implements GeoDataService
 {
     Coordinate firstPoint=new Coordinate(28.1677777778889364 ,-25.7566666668889752);
 //    int[][] dataGrid = new int[1261][1175];
-    int[][] dataGrid = new int[1175][1261];
+    int[][] dataGrid = new int[257][336];
     //[long][lat]
     //  |   _
     //  y    x
     //1175, 1261
-    int blocksWidth=1175;
-    int blocksBreadth=1261;
+    int blocksWidth=257;
+    int blocksBreadth=336;
 
     public GeoDataServiceImpl()
     {
@@ -102,6 +102,7 @@ public class GeoDataServiceImpl implements GeoDataService
                 }
                 System.out.println(line);
                 System.out.println("Setting: ["+longNum+"]["+latNumb+"]");
+                System.out.println("Setting: ["+auxLine[0]+"]["+auxLine[1]+"]");
                 dataGrid[latNumb][longNum]=Integer.parseInt(auxLine[2]);
 
                 latNumb++;
