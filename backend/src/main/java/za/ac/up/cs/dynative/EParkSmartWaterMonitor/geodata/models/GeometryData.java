@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class GeometryData {
     private String type;
-    private ArrayList<ArrayList<ArrayList<Double>>> coordinates;
+    private ArrayList<ArrayList<ArrayList<Double>>> coordinates = new ArrayList<>();
 
     public GeometryData(ArrayList<ArrayList<Double>> coordinates) {
         this.type = "Polygon";

@@ -147,9 +147,9 @@ public class GeoDataServiceImpl implements GeoDataService
         double geoOffset = 0.000277777778;
 
         ArrayList<Double> upperLeftCorner = new ArrayList<Double>(Arrays.asList(coordinate.getX(),coordinate.getY()));
-        ArrayList<Double> lowerLeftCorner = new ArrayList<Double>(Arrays.asList(coordinate.getX(),coordinate.getY()+geoOffset));
-        ArrayList<Double> lowerRightCorner = new ArrayList<Double>(Arrays.asList(coordinate.getX()+geoOffset,coordinate.getY()+geoOffset));
-        ArrayList<Double> upperRightCorner = new ArrayList<Double>(Arrays.asList(coordinate.getX(),coordinate.getY()+geoOffset));
+        ArrayList<Double> lowerLeftCorner = new ArrayList<Double>(Arrays.asList(coordinate.getX(),coordinate.getY()-geoOffset));
+        ArrayList<Double> lowerRightCorner = new ArrayList<Double>(Arrays.asList(coordinate.getX()+geoOffset,coordinate.getY()-geoOffset));
+        ArrayList<Double> upperRightCorner = new ArrayList<Double>(Arrays.asList(coordinate.getX()+geoOffset,coordinate.getY()));
 
         geoSquare.add(upperLeftCorner);
         geoSquare.add(lowerLeftCorner);
@@ -170,8 +170,8 @@ public class GeoDataServiceImpl implements GeoDataService
         {
             for (int lat = 0; lat < blocksWidth; lat++)
             {
-                double elevationValue = dataGrid[lng][lat];
-                FeatureProperties auxProperties = new FeatureProperties(dataGrid[lng][lat]);
+                double elevationValue = dataGrid[lat][lng];
+                FeatureProperties auxProperties = new FeatureProperties(dataGrid[lat][lng]);
                 GeometryData auxGeometry = new GeometryData(geoSquareBuilder( convertGridBlockToCoord(lat,lng)));
                 features.add(new GeoFeatures(auxProperties,auxGeometry));
 

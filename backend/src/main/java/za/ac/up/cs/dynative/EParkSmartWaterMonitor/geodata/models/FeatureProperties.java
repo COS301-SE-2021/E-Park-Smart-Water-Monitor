@@ -6,4 +6,12 @@ public class FeatureProperties {
     public FeatureProperties(double dataValue) {
         this.dataValue = dataValue;
     }
+
+    public double getDataValue() {
+        return dataValue;
+    }
+
+    public void setDataValue(double dataValue) {
+        this.dataValue = dataValue;
+    }
 }

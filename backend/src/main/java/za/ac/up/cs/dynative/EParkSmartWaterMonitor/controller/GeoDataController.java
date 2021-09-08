@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.GeoDataService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.Coordinate;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.responses.GetElevationDataResponse;
 
 import java.awt.*;
 
@@ -24,7 +25,8 @@ public class GeoDataController
 
 
     @GetMapping("/getElevation")
-    public void getElevation() {
-         geoDataService.convertCoordToGridBlock(new Coordinate(28.1681,-25.7569444446669315));
+    public GetElevationDataResponse getElevation()
+    {
+         return geoDataService.getElevationData();
     }
 }
