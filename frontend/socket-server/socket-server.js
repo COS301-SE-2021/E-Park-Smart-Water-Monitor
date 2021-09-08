@@ -42,19 +42,21 @@ io.on('connection', (socket) => {
             inspectionId: room, // inspection id
             comments: message,
         }
-        console.log("body: ", body)
+        console.log("sending body: ", body)
         axios.post('http://localhost:8080/api/inspections/setComments', body, {
           headers: {
               'Authorization': "Bearer " + token
           }
         }).then((res)=>{
             // confirm that the inspection was set
-            console.log(JSON.stringify(res))
+            console.log("Message "+message+" sent successfully")
+            console.log("res "+JSON.stringify(res))
+            io.to(room).emit('chat', message);
         }).catch( (res)=> {
             console.log(JSON.stringify(res))
         });
 
         // sends the message back to the room for all other clients to be able to see
-        io.to(room).emit('chat', message);
+
     });
 });

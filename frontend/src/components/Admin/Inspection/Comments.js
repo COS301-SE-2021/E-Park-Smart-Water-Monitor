@@ -15,6 +15,8 @@ const Comments = (props) => {
 
     // eslint-disable-next-line no-unused-vars
     const [newComments, setNewComments] = useState("")
+    const [comments, setComments] = useState(null)
+    const [reset, setReset] = useState(true)
     const user = useContext(UserContext)
     const loader = useContext(LoadingContext)
     // eslint-disable-next-line no-unused-vars
@@ -26,22 +28,32 @@ const Comments = (props) => {
 
     // socket connections
     useEffect(() => {
+
+        // on load of page make a temporary array for when inspections get added from the socket or the user
+        setComments(props.inspectionDetails.comments)
+
+        // initialise socket
         if (props.inspectionDetails.id) initiateSocket(props.inspectionDetails.id);
         subscribeToChat((err, data) => {
+            console.log("receiving")
             if(err) return;
-            console.log(data)
+            console.log("data from sent message "+data)
             // setChat(oldChats =>[data, ...oldChats])
         });
         return () => {
             disconnectSocket();
         }
-    }, [props.inspectionDetails.id]);
+    }, []);
 
 
     const send = ()=>{
-        alert(`sending`)
+        setReset(false)
         let comm= user.username+":\n"+ newComments
+        // on the socket server the message is sent to the database via an API
         sendMessage(props.inspectionDetails.id, comm, user.token)
+        // add the message to the local messages array
+        setComments(comments => [...comments, comm])
+        setReset(true)
     };
 
     // eslint-disable-next-line no-unused-vars
@@ -81,7 +93,7 @@ const Comments = (props) => {
 
     return (
         <>
-            <PrevComments comments={props.inspectionDetails.comments} inspection={props.inspectionDetails} user={user.username}/>
+            { reset && comments && <PrevComments comments={ comments } inspection={props.inspectionDetails} user={user.username}/> }
             <br/>
             <Form>
 

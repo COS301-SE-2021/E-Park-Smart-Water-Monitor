@@ -5,7 +5,6 @@ export const initiateSocket = (room) => {
     socket = io('http://localhost:5000'); // server address
     console.log(`Connecting socket...`);
     if (socket && room) {
-        alert("joining")
         socket.emit('join', room)
     }
     
@@ -27,7 +26,6 @@ export const subscribeToChat = (cb) => {
 
 export const sendMessage = (room, message, token) => {
     if (socket) {
-        alert(`${room}  ${message}`)
         socket.emit('chat', { message, room, token });
     }
 }
