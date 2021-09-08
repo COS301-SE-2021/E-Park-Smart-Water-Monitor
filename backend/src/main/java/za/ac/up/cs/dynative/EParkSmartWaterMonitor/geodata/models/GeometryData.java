@@ -6,9 +6,9 @@ public class GeometryData {
     private String type;
     private ArrayList<ArrayList<ArrayList<Double>>> coordinates;
 
-    public GeometryData(ArrayList<ArrayList<ArrayList<Double>>> coordinates) {
+    public GeometryData(ArrayList<ArrayList<Double>> coordinates) {
         this.type = "Polygon";
-        this.coordinates = coordinates;
+        this.coordinates.add(coordinates);
     }
 
     public String getType() {

@@ -2,12 +2,12 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models;
 
 import java.util.ArrayList;
 
-public class geoFeatures {
+public class GeoFeatures {
     private String type;
     private FeatureProperties properties;
     private ArrayList<ArrayList<ArrayList<Double>>> coordinates;
 
-    public geoFeatures(FeatureProperties properties, ArrayList<ArrayList<ArrayList<Double>>> coordinates)
+    public GeoFeatures(FeatureProperties properties, ArrayList<ArrayList<ArrayList<Double>>> coordinates)
     {
         this.type = "geometry";
         this.properties = properties;

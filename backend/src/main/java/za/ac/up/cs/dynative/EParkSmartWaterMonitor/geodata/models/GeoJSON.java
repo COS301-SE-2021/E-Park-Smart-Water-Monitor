@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class GeoJSON {
     private String type;
-    private ArrayList<geoFeatures> features;
+    private ArrayList<GeoFeatures> features;
 
-    public GeoJSON(ArrayList<geoFeatures> features)
+    public GeoJSON(ArrayList<GeoFeatures> features)
     {
         this.type="FeatureCollection";
         this.features = features;
@@ -20,11 +20,11 @@ public class GeoJSON {
         this.type = type;
     }
 
-    public ArrayList<geoFeatures> getFeatures() {
+    public ArrayList<GeoFeatures> getFeatures() {
         return features;
     }
 
-    public void setFeatures(ArrayList<geoFeatures> features) {
+    public void setFeatures(ArrayList<GeoFeatures> features) {
         this.features = features;
     }
 }

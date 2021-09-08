@@ -3,6 +3,9 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.Coordinate;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.FeatureProperties;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.GeoFeatures;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.GeometryData;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.responses.GetElevationDataResponse;
 
 import java.awt.*;
@@ -19,6 +22,8 @@ public class GeoDataServiceImpl implements GeoDataService
     Coordinate firstPoint=new Coordinate(28.1677777778889364 ,-25.7566666668889752);
 //    int[][] dataGrid = new int[1261][1175];
     int[][] dataGrid = new int[257][336];
+    double geoOffset = 0.000277777778;
+
     //[long][lat]
     //  |   _
     //  y    x
@@ -133,6 +138,12 @@ public class GeoDataServiceImpl implements GeoDataService
         System.out.println(dataGrid[2][2]);
         return new Point(x,y);
     }
+
+    public Coordinate convertGridBlockToCoord(int x,int y)
+    {
+        return new Coordinate(firstPoint.getX()+(x*geoOffset),firstPoint.getY()+(-y*geoOffset));
+    }
+
     public ArrayList<ArrayList<Double>> geoSquareBuilder(Coordinate coordinate)
     {
         ArrayList<ArrayList<Double>> geoSquare = new ArrayList<>();
@@ -154,6 +165,18 @@ public class GeoDataServiceImpl implements GeoDataService
     }
     public GetElevationDataResponse getElevationData()
     {
+        Double min = 99999.0;
+        Double max = -99999.0;
+        ArrayList<GeoFeatures> features;
+
+        for (int lng = 0; lng < blocksBreadth; lng++)
+        {
+            for (int lat = 0; lat < blocksWidth; lat++)
+            {
+                FeatureProperties auxProperties = new FeatureProperties(dataGrid[lng][lat]);
+                GeometryData auxGeometry = new GeometryData(geoSquareBuilder())
+            }
+        }
 
         return null;
     }
