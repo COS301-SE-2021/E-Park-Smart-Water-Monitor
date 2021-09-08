@@ -187,6 +187,6 @@ public class GeoDataServiceImpl implements GeoDataService
         GeoJSON responseGeoJSON = new GeoJSON(features);
 
 
-        return new GetElevationDataResponse("Data succesfully retreived",true,min,max,responseGeoJSON);
+        return new GetElevationDataResponse("Data successfully retrieved",true,min,max,responseGeoJSON);
     }
 }
