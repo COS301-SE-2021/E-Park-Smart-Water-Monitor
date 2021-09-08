@@ -131,4 +131,5 @@ public class GeoDataServiceImpl implements GeoDataService
         System.out.println(dataGrid[2][2]);
         return new Point(x,y);
     }
+
 }
