@@ -84,7 +84,7 @@ public class GeoDataServiceImpl implements GeoDataService
 
     public void loadElevation(Coordinate startingLocation, double SquaredKm)
     {
-        try (BufferedReader br = new BufferedReader(new FileReader("src/main/java/za/ac/up/cs/dynative/EParkSmartWaterMonitor/geodata/PtaJhb.xyz")))
+        try (BufferedReader br = new BufferedReader(new FileReader("src/main/java/za/ac/up/cs/dynative/EParkSmartWaterMonitor/geodata/rietvlei.xyz")))
         {
             String line;
             int count =0;
