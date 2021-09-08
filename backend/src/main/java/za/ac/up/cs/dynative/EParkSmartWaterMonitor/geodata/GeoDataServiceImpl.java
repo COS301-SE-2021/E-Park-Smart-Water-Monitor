@@ -2,10 +2,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.Coordinate;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.FeatureProperties;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.GeoFeatures;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.GeometryData;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.responses.GetElevationDataResponse;
 
 import java.awt.*;
@@ -21,7 +18,7 @@ public class GeoDataServiceImpl implements GeoDataService
 {
     Coordinate firstPoint=new Coordinate(28.1677777778889364 ,-25.7566666668889752);
 //    int[][] dataGrid = new int[1261][1175];
-    int[][] dataGrid = new int[257][336];
+    double[][] dataGrid = new double[257][336];
     double geoOffset = 0.000277777778;
 
     //[long][lat]
@@ -173,12 +170,23 @@ public class GeoDataServiceImpl implements GeoDataService
         {
             for (int lat = 0; lat < blocksWidth; lat++)
             {
+                double elevationValue = dataGrid[lng][lat];
                 FeatureProperties auxProperties = new FeatureProperties(dataGrid[lng][lat]);
                 GeometryData auxGeometry = new GeometryData(geoSquareBuilder( convertGridBlockToCoord(lat,lng)));
                 features.add(new GeoFeatures(auxProperties,auxGeometry));
+
+                if (elevationValue>max)
+                    max = elevationValue;
+
+                if (elevationValue<min)
+                    min = elevationValue;
+
             }
         }
 
-        return null;
+        GeoJSON responseGeoJSON = new GeoJSON(features);
+
+
+        return new GetElevationDataResponse("Data succesfully retreived",true,min,max);
     }
 }
