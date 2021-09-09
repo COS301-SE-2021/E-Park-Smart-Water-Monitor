@@ -132,7 +132,7 @@ const InspectionTable = () => {
                 marginTop="-3rem"
                 classes={{ root: classes.containerRoot }}
             >
-                <Modal title= "Edit Inspection" onClose={() => setShowEditInspection(false)} show={showEditInspection}>
+                <Modal title= "Edit Inspection" onClose={() => {reloadInspectionTable(); setShowEditInspection(false)}} show={showEditInspection}>
                     <EditInspection reloadInspectionTable={ reloadInspectionTable } inspectionDetails={inspec} tog={() =>toggleshowEditInspection() }/>
                 </Modal>
                 <Modal title= "Inspection Comments" onClose={() => setShowComments(false)} show={showComments}>

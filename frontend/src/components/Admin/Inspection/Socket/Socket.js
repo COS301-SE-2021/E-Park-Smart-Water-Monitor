@@ -3,28 +3,29 @@ let socket;
 export const initiateSocket = (room) => {
     // the server connection
     socket = io('http://localhost:5000'); // server address
-    console.log(`Connecting socket...`);
+    console.log(`Connecting to chat...`);
     if (socket && room) {
         socket.emit('join', room)
     }
     
 }
 export const disconnectSocket = () => {
-    console.log('Disconnecting socket...');
+    console.log('Disconnecting from chat...');
     if(socket) socket.disconnect();
 }
 
 // will get other users chat messages when they are sent from a specific inspection
 export const subscribeToChat = (cb) => {
-    if (!socket) return(true);
+    if (!socket) {
+        return(true);
+    }
     socket.on('chat', msg => {
-        console.log('Websocket event received!');
         return cb(null, msg);
     });
 }
 
 
-export const sendMessage = (room, message, token) => {
+export const sendMessage = (message, room, token) => {
     if (socket) {
         socket.emit('chat', { message, room, token });
     }

@@ -37,7 +37,10 @@ io.on('connection', (socket) => {
     socket.on('chat', (data) => {
         const { message, room, token } = data;
         console.log(`msg: ${message}, room: ${room}`);
-        // sends the message to the db o keep it in storage
+        io.to(room).emit('chat', message);
+
+
+        // sends the message to the db to keep it in storage
         let body = {
             inspectionId: room, // inspection id
             comments: message,
@@ -51,7 +54,7 @@ io.on('connection', (socket) => {
             // confirm that the inspection was set
             console.log("Message "+message+" sent successfully")
             console.log("res "+JSON.stringify(res))
-            io.to(room).emit('chat', message);
+
         }).catch( (res)=> {
             console.log(JSON.stringify(res))
         });
