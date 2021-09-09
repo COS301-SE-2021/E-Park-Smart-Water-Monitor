@@ -162,6 +162,7 @@ public class GeoDataServiceImpl implements GeoDataService
     }
     public GetElevationDataResponse getElevationData()
     {
+        int count = 0;
         Double min = 99999.0;
         Double max = -99999.0;
         ArrayList<GeoFeatures> features = new ArrayList<>();
@@ -170,6 +171,7 @@ public class GeoDataServiceImpl implements GeoDataService
         {
             for (int lat = 0; lat < blocksWidth; lat++)
             {
+                count++;
                 double elevationValue = dataGrid[lat][lng];
                 FeatureProperties auxProperties = new FeatureProperties(dataGrid[lat][lng]);
                 GeometryData auxGeometry = new GeometryData(geoSquareBuilder( convertGridBlockToCoord(lat,lng)));
@@ -181,7 +183,11 @@ public class GeoDataServiceImpl implements GeoDataService
                 if (elevationValue<min)
                     min = elevationValue;
 
+                if (count==3114)
+                    break;
             }
+            if (count==3114)
+                break;
         }
 
         GeoJSON responseGeoJSON = new GeoJSON(features);
