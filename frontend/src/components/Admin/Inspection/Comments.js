@@ -20,6 +20,7 @@ const Comments = (props) => {
     const loader = useContext(LoadingContext)
 
     const commentsEndRef = useRef(null);
+    const input = useRef(null);
     // eslint-disable-next-line no-unused-vars
     const toggleLoading = loader.toggleLoading
 
@@ -38,6 +39,10 @@ const Comments = (props) => {
             setComments(comments => [...comments, data])
 
         });
+
+        // set input to focussed element
+        input.current.focus();
+
         return () => {
             disconnectSocket();
         }
@@ -50,10 +55,16 @@ const Comments = (props) => {
         // the message will be sent to all clients in the room
         sendMessage(comm, props.inspectionDetails.id, user.token)
 
+        // clear input component
+        setNewComment("")
+
+        // set input to focussed element
+        input.current.focus();
+
         if (comments && commentsEndRef.current) {
             const timer = setTimeout(() => {
                 commentsEndRef.current.scrollIntoView();
-            }, 5);
+            }, 1);
             return () => clearTimeout(timer);
         }
     };
@@ -83,7 +94,7 @@ const Comments = (props) => {
                                 <Form.Label>Add a comment</Form.Label>
                             </Col>
                             <Col xs={9} sm={10} m={0} p={0}>
-                                <Form.Control type="text" Required={"required"} placeholder="" onChange={e => setNewComment(e.target.value)}/>
+                                <Form.Control ref={ input } type="text" Required={"required"} value={newComment} placeholder="" onChange={e => setNewComment(e.target.value)}/>
                             </Col>
                             <Col xs={3} sm={2} style={{ paddingLeft: 0 }}>
                                 <Button background-color="primary" variant="primary" onClick={()=>{send()}}>
