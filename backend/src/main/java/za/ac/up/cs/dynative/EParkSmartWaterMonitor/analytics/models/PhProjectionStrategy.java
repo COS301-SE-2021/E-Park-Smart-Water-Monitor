@@ -1,26 +1,44 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.analytics.models;
 
-import org.apache.commons.math3.fitting.PolynomialCurveFitter;
-import org.apache.commons.math3.fitting.WeightedObservedPoints;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.analytics.requests.DeviceProjectionRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.analytics.responses.DeviceProjectionResponse;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Measurement;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetDeviceDataResponse;
-import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetDeviceInnerResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.FindWaterSiteByDeviceResponse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class PhProjectionStrategy implements ProjectionStrategyInterface {
+public class PhProjectionStrategy extends AbstractProjectionStrategy
+{
 
     private final DeviceProjectionRequest deviceProjectionRequest;
     private final GetDeviceDataResponse deviceDataResponse;
+    private final String arimaUrl;
 
-    public PhProjectionStrategy(DeviceProjectionRequest deviceProjectionRequest, GetDeviceDataResponse deviceDataResponse) {
+    public PhProjectionStrategy(DeviceProjectionRequest deviceProjectionRequest,
+                                GetDeviceDataResponse deviceDataResponse,
+                                FindWaterSiteByDeviceResponse waterSiteByDeviceResponse,
+                                String arimaUrl)
+    {
+        super(deviceProjectionRequest,deviceDataResponse,waterSiteByDeviceResponse);
         this.deviceProjectionRequest = deviceProjectionRequest;
         this.deviceDataResponse = deviceDataResponse;
+        this.arimaUrl = arimaUrl;
     }
 
     public DeviceProjectionRequest getDeviceProjectionRequest() {
@@ -28,77 +46,106 @@ public class PhProjectionStrategy implements ProjectionStrategyInterface {
     }
 
     @Override
-    public DeviceProjectionResponse predict() {
-        final int regressionDegree = 3;
-        final WeightedObservedPoints dataPoints = new WeightedObservedPoints();
-        final PolynomialCurveFitter fitter;
-        final double[] coefficients;
-        Map<String, List<Measurement>> groupedTemperatureMeasurements;
-        ArrayList<Double> dailyAveragePhMeasurements = new ArrayList<>();
-        ArrayList<Measurement> phMeasurements = new ArrayList<>();
-        ArrayList<String> labelDates = new ArrayList<>();
-
-        latestPhMeasurements(phMeasurements);
-
-        groupedTemperatureMeasurements = phMeasurements.stream().collect(Collectors.groupingBy(Measurement::getDeviceDate));
-        groupedTemperatureMeasurements.forEach((key, value) -> {
-            dailyAveragePhMeasurements.add(average(value));
-            labelDates.add(value.get(0).getDeviceDateTime().substring(0,10));
-        });
-        labelDates.sort(String::compareTo);
-
-        System.out.println("dailyAverages=" + dailyAveragePhMeasurements);
-
-        for (int x = 0; x < dailyAveragePhMeasurements.size(); x++){
-            dataPoints.add(x,dailyAveragePhMeasurements.get(x));
+    public DeviceProjectionResponse predict()
+    {
+        if (getDeviceProjectionRequest().getLength() != 5) {
+            return failedProjection("Invalid projection period. Period must be 5!", "ph");
         }
+        else {
+            Map<String, List<Measurement>> groupedPhMeasurements;
+            ArrayList<Double> dailyAveragePhMeasurements = new ArrayList<>();
+            ArrayList<String> labelDates = new ArrayList<>();
 
-        fitter = PolynomialCurveFitter.create(regressionDegree);
-        coefficients = fitter.fit(dataPoints.toList());
-        polynomialRegressionPrediction(dailyAveragePhMeasurements, coefficients);
+            ArrayList<Measurement> phMeasurements = extractData("WATER_QUALITY");
+            groupedPhMeasurements = phMeasurements.stream().collect(Collectors.groupingBy(Measurement::getDeviceDate));
+            groupedPhMeasurements.forEach((key, value) -> {
+                dailyAveragePhMeasurements.add(average(value,false) / 10 + 3);
+                labelDates.add(value.get(0).getDeviceDateTime().substring(0,10));
+            });
 
-        return new DeviceProjectionResponse(
-                "PH",
-                true,
-                "ph",
-                deviceProjectionRequest.getLength(),
-                null,
-                dailyAveragePhMeasurements,
-                null,
-                labelDates);
+            ArrayList<String> labelDatesFinal = labelDates;
+            ArrayList<Double> dailyAveragePhFinal = dailyAveragePhMeasurements;
+
+            if (labelDates.size() > 30)
+            {
+                labelDatesFinal = (ArrayList<String>) labelDates.subList(0, 30);
+            }
+            if (dailyAveragePhMeasurements.size() > 30)
+            {
+                dailyAveragePhFinal = (ArrayList<Double>) dailyAveragePhMeasurements.subList(0,30);
+            }
+            labelDates.sort(String::compareTo);
+
+            ArrayList<Double> phPedictions;
+            try
+            {
+                phPedictions = getArimaPrediction(dailyAveragePhFinal);
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+                return failedProjection("Couldn't generate a prediction","ph");
+            }
+            addLabelDates(labelDatesFinal,labelDatesFinal.get(labelDatesFinal.size()-1));
+
+
+            return new DeviceProjectionResponse(
+                    "PH",
+                    true,
+                    "ph",
+                    deviceProjectionRequest.getLength(),
+                    null,
+                    phPedictions,
+                    null,
+                    labelDates);
+        }
     }
 
-    private void polynomialRegressionPrediction(ArrayList<Double> dailyAveragePhMeasurements, double[] coefficients) {
-        int size = dailyAveragePhMeasurements.size();
-        for (int counter = 0; counter < deviceProjectionRequest.getLength(); counter++) {
-            dailyAveragePhMeasurements.add(coefficients[0]
-                    + coefficients[1] * (counter + 1 + size)
-                    + coefficients[2] * (Math.pow(counter + 1 + size, 2))
-                    + coefficients[3] * (Math.pow(counter + 1 + size, 3)));
+    private ArrayList<Double> getArimaPrediction(ArrayList<Double> thirtyDayDailyAveragePhLevel) throws IOException
+    {
+        String phLevels = thirtyDayDailyAveragePhLevel.toString().replaceAll("\\[+|]+","");
+
+        phLevels = sendPost(phLevels);
+
+        if (phLevels.equals("")) {
+            return null;
         }
+        return processModelOutput(phLevels.trim());
     }
 
-    private void latestPhMeasurements(ArrayList<Measurement> temperatureData) {
-        for (GetDeviceInnerResponse innerData :
-                deviceDataResponse.getInnerResponses()) {
-            for (Measurement phMeasurement :
-                    innerData.getMeasurements()) {
-                if (phMeasurement.getType().equals("WATER_QUALITY")) {
-                    temperatureData.add(phMeasurement);
-                }
+    private String sendPost(String phLevels) throws IOException
+    {
+        HttpPost post = new HttpPost(arimaUrl);
+
+        JSONObject json = new JSONObject();
+        json.put("phLevels",phLevels);
+
+        StringEntity param = new StringEntity(json.toString());
+        post.addHeader("Content-type", "application/json");
+        post.setEntity(param);
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+             CloseableHttpResponse response = httpClient.execute(post))
+        {
+            if (response.getStatusLine().getStatusCode() == 200) {
+                    return EntityUtils.toString(response.getEntity());
             }
         }
+        return "";
     }
 
-    private double average(List<Measurement> value) {
-        double total = 0;
-        if (value != null) {
-            for (Measurement m :
-                    value) {
-                total += m.getEstimateValue();
-            }
-            return total/value.size();
+    private ArrayList<Double> processModelOutput(String predictions)
+    {
+        predictions = predictions.replaceAll("\\[+|]+|'","");
+        predictions = predictions.replaceAll(",,",",");
+        String[] predictedStringValues = predictions.split(",");
+
+        ArrayList<Double> predictionVals = new ArrayList<>();
+        for (String value :
+                predictedStringValues)
+        {
+            predictionVals.add(Double.parseDouble(value));
         }
-        else return 0;
+        return predictionVals;
     }
 }
