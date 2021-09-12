@@ -15,7 +15,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.EditWaterS
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.GetSiteByIdRequest;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
 
-@CrossOrigin(origins = "http://localhost:300")
+@CrossOrigin
 @RestController
 @RequestMapping("/api/sites")
 public class WaterSiteController {
