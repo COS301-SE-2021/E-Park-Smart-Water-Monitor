@@ -25,6 +25,8 @@ public class AnalyticsServiceImpl implements AnalyticsService
     private String apikey;
     @Value("${weather.url}")
     private String weatherUrl;
+    @Value("${arima.model.url}")
+    private String arimaUrl;
     private final DevicesService devicesService;
     private final WaterSiteService waterSiteService;
     private ProjectionStrategyInterface projectionStrategy;
@@ -89,7 +91,10 @@ public class AnalyticsServiceImpl implements AnalyticsService
                         switch (request.getType().toLowerCase())
                         {
                             case "ph":
-                                projectionStrategy = new PhProjectionStrategy(request, deviceDataResponse);
+                                projectionStrategy = new PhProjectionStrategy(request,
+                                        deviceDataResponse,
+                                        waterSiteByDeviceResponse,
+                                        arimaUrl);
                                 return projectionStrategy.predict();
                             case "waterlevel":
                                 projectionStrategy = new WaterLevelProjectionStrategy(request,

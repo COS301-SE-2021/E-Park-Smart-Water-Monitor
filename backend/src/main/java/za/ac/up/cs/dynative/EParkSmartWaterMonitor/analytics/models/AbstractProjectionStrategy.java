@@ -10,7 +10,10 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.responses.GetDeviceIn
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.FindWaterSiteByDeviceResponse;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public abstract class AbstractProjectionStrategy implements ProjectionStrategyInterface
@@ -44,6 +47,29 @@ public abstract class AbstractProjectionStrategy implements ProjectionStrategyIn
         this.waterSiteByDeviceResponse = waterSiteByDeviceResponse;
         this.dataPoints = new WeightedObservedPoints();
 
+    }
+
+    /**
+     * Utility function that adds the future dates to the labels array to make it easier to process on the
+     * front end
+     * @param labelDatesFinal: array to which future dates are added
+     * @param currDate: current date of last measurement
+     */
+    protected void addLabelDates(ArrayList<String> labelDatesFinal, String currDate) {
+        int year = Integer.parseInt(currDate.substring(0,4));
+        int month = Integer.parseInt(currDate.substring(5,7)) - 1;
+        int dayOfMonth = Integer.parseInt(currDate.substring(8));
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+        for (int i = 0; i < getDeviceProjectionRequest().getLength(); i++) {
+            calendar.add(Calendar.DATE,1);
+            labelDatesFinal.add(dateFormat.format(calendar.getTime()));
+        }
     }
 
     /**
@@ -109,8 +135,12 @@ public abstract class AbstractProjectionStrategy implements ProjectionStrategyIn
         return data;
     }
 
-    /**
+    /***
      * Helper function to calculate the average of a measurement
+     *
+     * @param value the list of values
+     * @param isError flag to vary what field gets averaged in a measurement, see Measurement.java
+     * @return either the averaged error or the average estimated value.
      */
     public double average(List<Measurement> value, boolean isError)
     {
