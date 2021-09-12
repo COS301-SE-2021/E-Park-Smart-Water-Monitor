@@ -3,6 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.user;
 import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,6 +32,9 @@ import java.util.regex.Pattern;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService {
+
+    @Value("${app.codeValidatrionPeriodHours}")
+    private int passwordExpirationPeriod;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -360,7 +364,7 @@ public class UserServiceImpl implements UserService {
             user.setActivationCode(code);
 
             //code expiration
-            user.setResetPasswordExpiration(LocalDateTime.now().plusHours(2));
+            user.setResetPasswordExpiration(LocalDateTime.now().plusHours(passwordExpirationPeriod));
 
             String message = "We received your request to reset your password. The code that follows will be valid for 2 hours. ";
 
