@@ -20,7 +20,7 @@ export default function AuthNavbar() {
         <Toolbar>
           <Container
             display="flex!important"
-            justifyContent="space-between"
+            justifyContent="flex-start"
             alignItems="center"
             marginTop=".75rem"
             component={Box}
@@ -34,7 +34,6 @@ export default function AuthNavbar() {
               /* eslint-disable-next-line no-undef */
               src={require("assets/img/brand/ERP-logo.png").default}
             />
-
           </Container>
         </Toolbar>
       </AppBar>

@@ -31,20 +31,20 @@ describe("inspection comments chat", () => {
     });
 
 
-    test("send message", (done) => {
+    test("send chat message from server to all clients", (done) => {
         clientSocket.on("chat", (arg) => {
             expect(arg).toBe("inspection complete.");
             done();
         });
-        serverSocket.emit("hello", "world");
+        serverSocket.emit("chat", "inspection complete.");
     });
 
-    test("should work (with ack)", (done) => {
+    test("send message from client to server", (done) => {
         serverSocket.on("hi", (cb) => {
-            cb("hola");
+            cb("inspection complete.");
         });
         clientSocket.emit("hi", (arg) => {
-            expect(arg).toBe("hola");
+            expect(arg).toBe("inspection complete.");
             done();
         });
     });
