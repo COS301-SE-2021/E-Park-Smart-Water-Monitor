@@ -596,29 +596,6 @@ public class WaterLevelProjectionStrategy extends AbstractProjectionStrategy
     }
 
     /**
-     * Utility function that adds the future dates to the labels array to make it easier to process on the
-     * front end
-     * @param labelDatesFinal: array that to which future dates are added
-     * @param currDate: current date of last measurement
-     */
-    private void addLabelDates(ArrayList<String> labelDatesFinal, String currDate) {
-        int year = Integer.parseInt(currDate.substring(0,4));
-        int month = Integer.parseInt(currDate.substring(5,7)) - 1;
-        int dayOfMonth = Integer.parseInt(currDate.substring(8));
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-        for (int i = 0; i < getDeviceProjectionRequest().getLength(); i++) {
-            calendar.add(Calendar.DATE,1);
-            labelDatesFinal.add(dateFormat.format(calendar.getTime()));
-        }
-    }
-
-    /**
      * Utility function that averages the error in the device's measurements over a certain period
      * @param dailyAverageWaterLevelErrorFinal: array of error in measurements
      * @return the average error over a certain period of time
