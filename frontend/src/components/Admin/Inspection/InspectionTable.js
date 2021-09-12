@@ -90,7 +90,7 @@ const InspectionTable = () => {
                             <TableCell classes={{ root: classes.tableCellRoot }}>
                                 { inspection.status }
                             </TableCell>
-                            <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
+                            <TableCell classes={{ root: classes.tableCellRoot }}>
                                 { inspection.description }
                             </TableCell>
                             <TableCell classes={{root: classes.tableCellRoot}}
@@ -202,7 +202,12 @@ const InspectionTable = () => {
                                     marginBottom="0!important"
                                 >
                                     <TableHead>
-                                        <TableRow style={{background: 'rgb(243 243 243)'}}>
+                                        <TableRow
+                                            style={{
+                                                backgroundColor: '#F3F3F3',
+                                                position: "sticky",
+                                                top: 0
+                                            }}>
                                             <TableCell
                                                 classes={{
                                                     root:
