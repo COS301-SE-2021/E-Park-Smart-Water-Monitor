@@ -20,6 +20,8 @@ public class GeoDataServiceImpl implements GeoDataService
 //    int[][] dataGrid = new int[1261][1175];
     double[][] dataGrid = new double[257][336];
     double geoOffset = 0.000277777778;
+    Double min = 99999.0;
+    Double max = -99999.0;
 
     //[long][lat]
     //  |   _
@@ -88,8 +90,12 @@ public class GeoDataServiceImpl implements GeoDataService
 
     public void loadElevation(Coordinate startingLocation, double SquaredKm)
     {
+
         try (BufferedReader br = new BufferedReader(new FileReader("src/main/java/za/ac/up/cs/dynative/EParkSmartWaterMonitor/geodata/rietvlei.xyz")))
         {
+            min = 99999.0;
+            max = -99999.0;
+
             String line;
             int count =0;
             int longNum =0;
@@ -107,7 +113,14 @@ public class GeoDataServiceImpl implements GeoDataService
                 System.out.println(line);
                 System.out.println("Setting: ["+longNum+"]["+latNumb+"]");
                 System.out.println("Setting: ["+auxLine[0]+"]["+auxLine[1]+"]");
-                dataGrid[latNumb][longNum]=Integer.parseInt(auxLine[2]);
+                int eVal=Integer.parseInt(auxLine[2]);
+                dataGrid[latNumb][longNum]=eVal;
+
+                if (eVal>max)
+                    max = (double) eVal;
+
+                if (eVal<min)
+                    min = (double) eVal;
 
                 latNumb++;
 
@@ -160,6 +173,63 @@ public class GeoDataServiceImpl implements GeoDataService
         return geoSquare;
 
     }
+
+    public String getAreaColor(double height){
+        double range = max-min;
+        double segmentSize = range/13;
+        if (height-min<segmentSize)
+        {
+            return "#ff0000";
+        }
+        else if (height-min<segmentSize*2)
+        {
+            return "#ff3200";
+        }
+        else if (height-min<segmentSize*3)
+        {
+            return "#ff6400";
+        }
+        else if (height-min<segmentSize*4)
+        {
+            return "#ff9600";
+        }
+        else if (height-min<segmentSize*5)
+        {
+            return "#ffc800";
+        }
+        else if (height-min<segmentSize*6)
+        {
+            return "#fffa00";
+        }
+        else if (height-min<segmentSize*7)
+        {
+            return "#d2ff00";
+        }
+        else if (height-min<segmentSize*8)
+        {
+            return "#9fff00";
+        }
+        else if (height-min<segmentSize*9)
+        {
+            return "#6dff00";
+        }
+        else if (height-min<segmentSize*10)
+        {
+            return "#3bff00";
+        }
+        else if (height-min<segmentSize*11)
+        {
+            return "#09ff00";
+        }
+        else if (height-min<segmentSize*12)
+        {
+            return "#00ff29";
+        }
+        else return "#00ff5b";
+
+    };
+
+
     public GetElevationDataResponse getElevationData()
     {
         int count = 0;
@@ -183,11 +253,11 @@ public class GeoDataServiceImpl implements GeoDataService
                 if (elevationValue<min)
                     min = elevationValue;
 
-                if (count==3114)
-                    break;
+//                if (count==3114)
+//                    break;
             }
-            if (count==3114)
-                break;
+//            if (count==3114)
+//                break;
         }
 
         GeoJSON responseGeoJSON = new GeoJSON(features);
