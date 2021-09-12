@@ -243,7 +243,7 @@ public class GeoDataServiceImpl implements GeoDataService
             {
                 count++;
                 double elevationValue = dataGrid[lat][lng];
-                FeatureProperties auxProperties = new FeatureProperties(dataGrid[lat][lng]);
+                FeatureProperties auxProperties = new FeatureProperties(elevationValue,getAreaColor(elevationValue));
                 GeometryData auxGeometry = new GeometryData(geoSquareBuilder( convertGridBlockToCoord(lat,lng)));
                 features.add(new GeoFeatures(auxProperties,auxGeometry));
 
