@@ -157,7 +157,7 @@ public class DevicesServicesImpl implements DevicesService
                         new HashSet<>(),
                         UUID.randomUUID(),
                         100.0,
-                        "FINE",
+                        "NOT CONNECTED",
                         new Date(),
                         addDeviceRequest.getLatitude(),
                         addDeviceRequest.getLongitude(),
