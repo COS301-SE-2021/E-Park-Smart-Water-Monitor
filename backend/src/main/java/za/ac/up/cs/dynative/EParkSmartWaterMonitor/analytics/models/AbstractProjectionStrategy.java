@@ -28,7 +28,7 @@ public abstract class AbstractProjectionStrategy implements ProjectionStrategyIn
     /**
      * Regression variables
      */
-    private WeightedObservedPoints dataPoints;;
+    private WeightedObservedPoints dataPoints;
     private PolynomialCurveFitter fitter;
     private double[] coefficients;
 
@@ -93,7 +93,7 @@ public abstract class AbstractProjectionStrategy implements ProjectionStrategyIn
      * Helper function to give custom status message if a projection can't be
      * calculated for some reason.
     */
-    public DeviceProjectionResponse succesfulProjection(String status,
+    public DeviceProjectionResponse successfulProjection(String status,
                                                         String type,
                                                         ArrayList<Double> realisticWaterLevelPredictions,
                                                         ArrayList<Double> optimisticWaterLevelPredictions,

@@ -22,11 +22,24 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.FindWater
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/***
+ * This class forecasts the future water level.
+ * It does this by doing a polynomial regression on the latest observed data.
+ * The degree of the polynomial is dynamically determined by minimizing the Root Mean Squared Error(RMSE)
+ * To avoid overfitting a cap is placed on the upperlimit of the polynomial.
+ *
+ * The Evaporation rate for a forecasted day is taken into consideration.
+ * This is done by using the forecasted average temperature over a period of time and the surface area of the water source
+ * and calculating the drop in water level.
+ *
+ * Then optimistic and conservative forecasts are produced by adjusting the forecasts
+ * either upward or downward based on if our observed values are overestimating or underestimating the true value.
+ *
+ * Lastly future dates are added to match with the forecasted period.
+ */
 public class WaterLevelProjectionStrategy extends AbstractProjectionStrategy
 {
     /**
@@ -51,7 +64,7 @@ public class WaterLevelProjectionStrategy extends AbstractProjectionStrategy
      *
      * @param deviceProjectionRequest request for the projections
      * @param deviceDataResponse metrics gathered by a specific device
-     * @param waterSiteByDeviceResponse water site thath is monitored by this specific device
+     * @param waterSiteByDeviceResponse water site that is monitored by this specific device
      * @param apikey weather api key
      * @param weatherUrl url for the weather api
      */
@@ -209,7 +222,7 @@ public class WaterLevelProjectionStrategy extends AbstractProjectionStrategy
                 // add dates as labels to the dataset
                 addLabelDates(labelDatesFinal,labelDatesFinal.get(labelDatesFinal.size()-1));
 
-                return succesfulProjection("Success",
+                return successfulProjection("Success",
                         "waterlevel",
                         realisticWaterLevelPredictions,
                         optimisticWaterLevelPrediction,

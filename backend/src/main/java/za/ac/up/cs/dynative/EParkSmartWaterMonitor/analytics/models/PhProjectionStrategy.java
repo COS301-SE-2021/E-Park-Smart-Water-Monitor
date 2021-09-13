@@ -1,14 +1,10 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.analytics.models;
 
-
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.analytics.requests.DeviceProjectionRequest;
@@ -23,13 +19,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/***
+ * This class forecasts the future ph level of a water source.
+ * Making use of an ARIMA model a 5-day forecast is made into the future.
+ */
 public class PhProjectionStrategy extends AbstractProjectionStrategy
 {
 
     private final DeviceProjectionRequest deviceProjectionRequest;
-    private final GetDeviceDataResponse deviceDataResponse;
     private final String arimaUrl;
 
+    /**
+     * Constructor for the WaterLevelProjectionStrategy
+     * Initialized the necessary variables and calls the super class
+     *
+     * @param deviceProjectionRequest request for the projections
+     * @param deviceDataResponse metrics gathered by a specific device
+     * @param waterSiteByDeviceResponse water site that is monitored by this specific device
+     * @param arimaUrl ARIMA model server url
+     */
     public PhProjectionStrategy(DeviceProjectionRequest deviceProjectionRequest,
                                 GetDeviceDataResponse deviceDataResponse,
                                 FindWaterSiteByDeviceResponse waterSiteByDeviceResponse,
@@ -37,7 +45,6 @@ public class PhProjectionStrategy extends AbstractProjectionStrategy
     {
         super(deviceProjectionRequest,deviceDataResponse,waterSiteByDeviceResponse);
         this.deviceProjectionRequest = deviceProjectionRequest;
-        this.deviceDataResponse = deviceDataResponse;
         this.arimaUrl = arimaUrl;
     }
 
@@ -45,13 +52,24 @@ public class PhProjectionStrategy extends AbstractProjectionStrategy
         return deviceProjectionRequest;
     }
 
+    /***
+     * Prediction strategy for ph level.
+     *
+     * Step 1: Group, sort & filter the data.
+     * Step 2: Get forecast from the ARIMA model
+     * Step 3: Add dates to match forecast period.
+     * @return successful forecast
+     */
     @Override
     public DeviceProjectionResponse predict()
     {
-        if (getDeviceProjectionRequest().getLength() != 5) {
+        if (getDeviceProjectionRequest().getLength() != 5)
+        {
             return failedProjection("Invalid projection period. Period must be 5!", "ph");
         }
-        else {
+        else
+        {
+            // Step 1:
             Map<String, List<Measurement>> groupedPhMeasurements;
             ArrayList<Double> dailyAveragePhMeasurements = new ArrayList<>();
             ArrayList<String> labelDates = new ArrayList<>();
@@ -76,36 +94,42 @@ public class PhProjectionStrategy extends AbstractProjectionStrategy
             }
             labelDates.sort(String::compareTo);
 
-            ArrayList<Double> phPedictions;
+            // Step 2:
+            ArrayList<Double> phPredictions;
             try
             {
-                phPedictions = getArimaPrediction(dailyAveragePhFinal);
+                phPredictions = getArimaPrediction(dailyAveragePhFinal);
             }
             catch (IOException e)
             {
                 e.printStackTrace();
                 return failedProjection("Couldn't generate a prediction","ph");
             }
+            // Step 3:
             addLabelDates(labelDatesFinal,labelDatesFinal.get(labelDatesFinal.size()-1));
 
-
-            return new DeviceProjectionResponse(
+            return successfulProjection("Success",
                     "PH",
-                    true,
-                    "ph",
-                    deviceProjectionRequest.getLength(),
+                    phPredictions,
                     null,
-                    phPedictions,
                     null,
                     labelDates);
         }
     }
 
+    /**
+     * This functions acts as a helper wrapper function that sends a post http request.
+     * It receives the 5 day ph prediction as a string response back and passes it to
+     * a function where this string is processed.
+     *
+     * @param thirtyDayDailyAveragePhLevel latest dailyAveragePhLevel readings of a specific device
+     * @return returns the new array with the forecasts
+     * @throws IOException when an exception is thrown during the http request
+     */
     private ArrayList<Double> getArimaPrediction(ArrayList<Double> thirtyDayDailyAveragePhLevel) throws IOException
     {
         String phLevels = thirtyDayDailyAveragePhLevel.toString().replaceAll("\\[+|]+","");
-
-        phLevels = sendPost(phLevels);
+        phLevels = sendPostRequest(phLevels);
 
         if (phLevels.equals("")) {
             return null;
@@ -113,7 +137,18 @@ public class PhProjectionStrategy extends AbstractProjectionStrategy
         return processModelOutput(phLevels.trim());
     }
 
-    private String sendPost(String phLevels) throws IOException
+    /**
+     * sendPostRequest sends a post request to a python server hosting the ARIMA model
+     * The json object passed with the post request looks like:
+     * {
+     *     "phLevels": "6.2,6.4,..."
+     * }
+     *
+     * @param phLevels latest observed ph levels as a string
+     * @return concatenates forecasts to the passed in string of values or the empty string if an error has occurred
+     * @throws IOException when an exception is thrown during the http request
+     */
+    private String sendPostRequest(String phLevels) throws IOException
     {
         HttpPost post = new HttpPost(arimaUrl);
 
@@ -128,24 +163,29 @@ public class PhProjectionStrategy extends AbstractProjectionStrategy
              CloseableHttpResponse response = httpClient.execute(post))
         {
             if (response.getStatusLine().getStatusCode() == 200) {
-                    return EntityUtils.toString(response.getEntity());
+                return EntityUtils.toString(response.getEntity());
             }
         }
         return "";
     }
 
+    /***
+     * Utility function that tris any unwanted characters from the forecasted ph levels.
+     * @param predictions forecasted ph levels
+     * @return processed forecasted output
+     */
     private ArrayList<Double> processModelOutput(String predictions)
     {
         predictions = predictions.replaceAll("\\[+|]+|'","");
         predictions = predictions.replaceAll(",,",",");
         String[] predictedStringValues = predictions.split(",");
 
-        ArrayList<Double> predictionVals = new ArrayList<>();
+        ArrayList<Double> forecastValues = new ArrayList<>();
         for (String value :
                 predictedStringValues)
         {
-            predictionVals.add(Double.parseDouble(value));
+            forecastValues.add(Double.parseDouble(value));
         }
-        return predictionVals;
+        return forecastValues;
     }
 }
