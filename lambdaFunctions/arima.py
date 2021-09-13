@@ -1,4 +1,3 @@
-  GNU nano 4.8                                              arima_server.py
 from flask import Flask, request, jsonify, redirect, url_for, render_template
 from statsmodels.tsa.ar_model import AR
 from statsmodels.tsa.arima_model import ARIMA
