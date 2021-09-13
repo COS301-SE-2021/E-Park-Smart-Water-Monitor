@@ -69,38 +69,45 @@ const ResetPassword = (props) => {
         if(newPassword !== newPasswordConfirmed)
         {
             setErrorConfirmation("Passwords do not match")
-        }else{
-            toggleLoading()
-
-            let obj = {
-                username: username,
-                resetCode: resetCode,
-                newPassword: newPassword,
-                newPasswordConfirmed: newPasswordConfirmed
+        }else {
+            let passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$/;
+            if (!passwordRegex.test(newPassword)) {
+                setErrorConfirmation("The password does not comply with the minimum requirements. " +
+                    "Your password should contain atleast 10 characters, one capital letter, one lower case letter, " +
+                    "one number and finally a minimum of one special character: #, ?, !, @, $, %, ^, &, *, -")
             }
+            else{
+                toggleLoading()
 
-            axios.post('http://localhost:8080/api/user/resetPasswordFinalize', obj).then((res) => {
-
-                toggleLoading();
-
-                if(res.data.success === false)
-                {
-                    setErrorConfirmation(res.data.message)
-                }else{
-                    setShowAlert(true)
-                    setTimeout(()=>{
-                        setShowAlert(false)
-                        props.closeModal()
-                    }, 5000)
+                let obj = {
+                    username: username,
+                    resetCode: resetCode,
+                    newPassword: newPassword,
+                    newPasswordConfirmed: newPasswordConfirmed
                 }
 
+                axios.post('http://localhost:8080/api/user/resetPasswordFinalize', obj).then((res) => {
 
-            }).catch((res) => {
+                    toggleLoading();
 
-                toggleLoading()
-                console.log("error sending username to reset password: "+JSON.stringify(res))
+                    if (res.data.success === false) {
+                        setErrorConfirmation(res.data.message)
+                    } else {
+                        setShowAlert(true)
+                        setTimeout(() => {
+                            setShowAlert(false)
+                            props.closeModal()
+                        }, 5000)
+                    }
 
-            });
+
+                }).catch((res) => {
+
+                    toggleLoading()
+                    console.log("error sending username to reset password: " + JSON.stringify(res))
+
+                });
+        }
         }
 
     }
