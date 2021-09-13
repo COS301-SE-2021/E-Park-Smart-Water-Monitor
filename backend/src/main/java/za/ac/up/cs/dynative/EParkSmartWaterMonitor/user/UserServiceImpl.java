@@ -366,7 +366,7 @@ public class UserServiceImpl implements UserService {
             //code expiration
             user.setResetPasswordExpiration(LocalDateTime.now().plusHours(passwordExpirationPeriod));
 
-            String message = "We received your request to reset your password. The code that follows will be valid for 2 hours. ";
+            String message = "We received your request to reset your password. The code that follows will be valid for "+passwordExpirationPeriod+" hours. ";
 
             //send email
             ArrayList<String> to= new ArrayList<>();
