@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.responses.GetElevationDataResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.responses.GetLossDataResponse;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -266,5 +267,11 @@ public class GeoDataServiceImpl implements GeoDataService
 
         return new GetElevationDataResponse("Data successfully retrieved",true,min,max,responseGeoJSON);
 //        return responseGeoJSON;
+    }
+
+
+    public GetLossDataResponse getSignalLoss()
+    {
+        return null;
     }
 }
