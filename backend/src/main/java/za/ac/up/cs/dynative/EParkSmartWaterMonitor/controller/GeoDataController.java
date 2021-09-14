@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.GeoDataService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.Coordinate;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.GeoJSON;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.responses.GetElevationDataResponse;
 
 import java.awt.*;
