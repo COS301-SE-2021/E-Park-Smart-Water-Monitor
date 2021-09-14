@@ -270,6 +270,15 @@ public class GeoDataServiceImpl implements GeoDataService
     }
 
 
+    public double calculateFreeSpaceLoss(double frequency, int numberOfBlocks)
+    {
+        double kilometerToMileRatio= 0.621;
+        int meters = numberOfBlocks*30;
+        double totalInMiles = (meters/1000.0)*kilometerToMileRatio;
+
+        return   36.56 + (20*Math.log(10))*(frequency) + (20*Math.log(10))*totalInMiles;
+
+    }
     public GetLossDataResponse getSignalLoss()
     {
         return null;
