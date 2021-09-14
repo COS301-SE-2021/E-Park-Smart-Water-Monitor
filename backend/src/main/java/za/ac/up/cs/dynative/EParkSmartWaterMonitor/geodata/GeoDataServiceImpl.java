@@ -231,6 +231,7 @@ public class GeoDataServiceImpl implements GeoDataService
 
 
     public GetElevationDataResponse getElevationData()
+//    public GeoJSON getElevationData()
     {
         int count = 0;
         Double min = 99999.0;
@@ -264,5 +265,6 @@ public class GeoDataServiceImpl implements GeoDataService
 
 
         return new GetElevationDataResponse("Data successfully retrieved",true,min,max,responseGeoJSON);
+//        return responseGeoJSON;
     }
 }
