@@ -15,6 +15,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 
 import {
     chartExample1,
+    chartExample2,
     chartOptions,
     parseOptions,
 } from "variables/charts.js";
@@ -36,7 +37,7 @@ function LineChart(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [activeNav, setActiveNav] = React.useState(1);
-  const [readingType] = React.useState("waterlevel");
+  const [readingType, setReadingType] = React.useState("waterlevel");
   const [projectionsData, setProjectionsData] = React.useState(""); // this will be a function like "data1" passed
   const [numPredictions, setNumPredictions] = React.useState(5); // this will be a function like "data1" passed
   const [reset, setReset] = React.useState(false); // this will be a function like "data1" passed
@@ -50,6 +51,16 @@ function LineChart(props) {
       const toggleNavs = (index) => {
         setActiveNav(index);
         //setChartExample1Data("data" + index);
+          // 1 is waterlevel
+          // 2 is PH
+            if(index === 1)
+            {
+                setReadingType("waterlevel")
+            }
+            if(index === 2)
+            {
+              setReadingType("ph")
+            }
       };
 
     const increaseNumProjections = () =>{
@@ -68,6 +79,8 @@ function LineChart(props) {
 
     // GET THE PROJECTION DATA
     useEffect(()=>{
+        console.log(props.device)
+
         setProjectionsData(() => {
             return {
                 labels: [],
@@ -171,7 +184,7 @@ function LineChart(props) {
                     fill: false,
                 })
             }
-            
+
 
             setProjectionsData( () => {
                 return displayObj
@@ -181,7 +194,8 @@ function LineChart(props) {
         }).catch(()=>{
             console.log("Projections failed.")
         });
-    },[props.device, numPredictions])
+    },[props.device, numPredictions, readingType])
+
 
 
   return (
@@ -217,10 +231,65 @@ function LineChart(props) {
                                 marginBottom="0!important"
                             >
                                 <Box component="span" color={theme.palette.white.main}>
-                                    {props.device.deviceName} Waterlevel Readings
+                                    {props.device.deviceName} Readings
                                 </Box>
                             </Box>
                         </Grid>
+
+
+                        <Grid item xs="auto">
+                            <Box
+                                component={Typography}
+                                variant="h6"
+                                letterSpacing=".0625rem"
+                                marginBottom=".25rem!important"
+                                className={classes.textUppercase}
+                            >
+                                <Box component="span" color={theme.palette.gray[400]}>
+                                    Prediction Type
+                                </Box>
+                            </Box>
+
+                            <Box
+                                justifyContent="flex-end"
+                                display="flex"
+                                flexWrap="wrap"
+                            >
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
+                                    component={Box}
+                                    marginRight="1rem!important"
+                                    onClick={() => {toggleNavs(1); }  }
+                                    classes={{
+                                        root:
+                                            activeNav === 1
+                                                ? ""
+                                                : classes.buttonRootUnselected,
+                                    }}
+                                >
+                                   Waterlevel
+                                </Button>
+
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
+                                    onClick={() => {toggleNavs(2);} }
+                                    classes={{
+                                        root:
+                                            activeNav === 2
+                                                ? ""
+                                                : classes.buttonRootUnselected,
+                                    }}
+                                >
+                                    PH
+                                </Button>
+                            </Box>
+                        </Grid>
+
+
                         <Grid item xs="auto">
                             <Box
                                 component={Typography}
@@ -245,12 +314,9 @@ function LineChart(props) {
                                     size="small"
                                     component={Box}
                                     marginRight="1rem!important"
-                                    onClick={() => {toggleNavs(1); decreaseNumProjections()}  }
+                                    onClick={() => { decreaseNumProjections()}  }
                                     classes={{
-                                        root:
-                                            activeNav === 1
-                                                ? ""
-                                                : classes.buttonRootUnselected,
+                                        root: classes.buttonRootUnselected,
                                     }}
                                 >
                                     <Box
@@ -273,12 +339,9 @@ function LineChart(props) {
                                     variant="contained"
                                     color="primary"
                                     size="small"
-                                    onClick={() => {toggleNavs(2); increaseNumProjections()} }
+                                    onClick={() => { increaseNumProjections()} }
                                     classes={{
-                                        root:
-                                            activeNav === 2
-                                                ? ""
-                                                : classes.buttonRootUnselected,
+                                        root: classes.buttonRootUnselected,
                                     }}
                                 >
                                     <Box
@@ -293,15 +356,25 @@ function LineChart(props) {
                     </Grid>
                 }
                 classes={{ root: classes.cardHeaderRoot }}
-            ></CardHeader>
+            />
             <CardContent>
             { reset &&
                 <Box position="relative" height="350px">
-                    <Line
-                        data={projectionsData} // your own chart info obtained from request
-                        options={chartExample1.options}
-                        getDatasetAtEvent={(e) => console.log(e)}
-                    />
+                    { readingType === "waterlevel" &&
+                        <Line
+                            data={projectionsData} // your own chart info obtained from request
+                            options={ chartExample1.options }
+                            getDatasetAtEvent={(e) => console.log(e)}
+                        />
+                    }
+                    { readingType === "ph" &&
+                        <Line
+                            data={projectionsData} // your own chart info obtained from request
+                            options={ chartExample2.options }
+                            getDatasetAtEvent={(e) => console.log(e)}
+                        />
+                    }
+
                 </Box>
             }
             { !reset &&

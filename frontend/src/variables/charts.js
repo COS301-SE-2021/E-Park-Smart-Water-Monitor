@@ -306,7 +306,7 @@ let chartExample1 = {
       callbacks: {
         label: function (item, data) {
           var label = data.datasets[item.datasetIndex].label || "";
-          var yLabel = "Prediction "+item.yLabel;
+          var yLabel = " Prediction "+item.yLabel;
           var content = "";
 
           if (data.datasets.length > 1) {
@@ -349,12 +349,15 @@ let chartExample2 = {
     scales: {
       yAxes: [
         {
+          gridLines: {
+            color: colors.gray[900],
+            zeroLineColor: colors.gray[900],
+          },
           ticks: {
             callback: function (value) {
-              if (!(value % 10)) {
-                //return '$' + value + 'k'
-                return value;
-              }
+              // if (!(value % 0.5)) {
+                return value + "ph";
+              // }
             },
           },
         },
@@ -366,10 +369,12 @@ let chartExample2 = {
           var label = data.datasets[item.datasetIndex].label || "";
           var yLabel = item.yLabel;
           var content = "";
+
           if (data.datasets.length > 1) {
             content += label;
           }
-          content += yLabel;
+
+          content += yLabel + "ph";
           return content;
         },
       },
