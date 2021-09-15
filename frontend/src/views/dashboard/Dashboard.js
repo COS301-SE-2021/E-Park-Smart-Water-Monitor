@@ -134,7 +134,7 @@ function Dashboard() {
           <Grid
               item
               xs={12}
-              xl={6}
+              xl={5}
               component={Box}
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
@@ -147,7 +147,7 @@ function Dashboard() {
           <Grid
               item
               xs={12}
-              xl={6}
+              xl={7}
               component={Box}
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}

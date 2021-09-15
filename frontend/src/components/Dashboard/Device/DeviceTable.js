@@ -140,8 +140,9 @@ function DeviceTable(props) {
                 classes={{ root: classes.cardHeaderRoot }}
             />
 
-            <div className="table-container">
-                <TableContainer style={{maxHeight:"600px"}}>
+
+            <div className="table-container" style={{ scrollY:"auto"}}>
+                <TableContainer style={{ scrollY:"auto"}}>
                     <Box
                         component={Table}
                         alignItems="center"

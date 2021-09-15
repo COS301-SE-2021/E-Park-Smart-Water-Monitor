@@ -84,13 +84,21 @@ function DeviceDetails(props) {
     const filterMeasurementSet = (measurements) => {
       if(measurements) {
           let filteredMetrics = measurements.map((elem) => {
+              let obj
               if (elem.type === "WATER_QUALITY") {
-                  return {type: "Water Quality", value: elem.value, measurement: "PH"}
+                  obj = {type: "Water Quality", value: elem.value, measurement: "PH"}
               } else if (elem.type === "WATER_TEMP") {
-                  return {type: "Water Temperature", value: elem.value, measurement: "°C"}
+                  obj =  {type: "Water Temperature", value: elem.value, measurement: "°C"}
               } else if (elem.type === "WATER_LEVEL") {
-                  return {type: "Water Depth", value: elem.value, measurement: "cm"}
+                  obj =  {type: "Water Depth", value: elem.value, measurement: "cm"}
               }
+              if (elem.value === -999)
+              {
+                  obj.measurement = ""
+                  obj.value = "NA"
+              }
+              return obj;
+
           })
           return filteredMetrics
       }
