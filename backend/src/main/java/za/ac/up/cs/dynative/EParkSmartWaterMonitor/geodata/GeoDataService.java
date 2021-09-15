@@ -6,11 +6,12 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.responses.GetElevatio
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface GeoDataService
 {
     public void loadElevation(Coordinate startingLocation, double SquaredKm);
-    public void lineApproximation(Point from, Point to);
+    public List<Point> lineApproximation(Point from, Point to);
     public Point convertCoordToGridBlock(Coordinate inCoordinate);
     public Coordinate convertGridBlockToCoord(int x,int y);
     public ArrayList<ArrayList<Double>> geoSquareBuilder(Coordinate coordinate);

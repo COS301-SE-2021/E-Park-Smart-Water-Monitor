@@ -1,6 +1,7 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.responses.GetElevationDataResponse;
@@ -23,6 +24,8 @@ public class GeoDataServiceImpl implements GeoDataService
     double geoOffset = 0.000277777778;
     Double min = 99999.0;
     Double max = -99999.0;
+    Double minLoss = 99999.0;
+    Double maxLoss = -99999.0;
 
     //[long][lat]
     //  |   _
@@ -36,7 +39,7 @@ public class GeoDataServiceImpl implements GeoDataService
         loadElevation(new Coordinate(28.1677777778889364 ,-25.7566666668889752),1.5);
     }
 
-    public void lineApproximation(Point from, Point to)
+    public List<Point> lineApproximation(Point from, Point to)
     {
 
         Point[][] grid =new Point[10][10];
@@ -87,6 +90,7 @@ public class GeoDataServiceImpl implements GeoDataService
         approximatedPath.add(new Point(startX,startY));
 
         System.out.println(approximatedPath.toString());
+        return approximatedPath;
 
     }
 
@@ -233,53 +237,53 @@ public class GeoDataServiceImpl implements GeoDataService
 
 
     public String getLossColor(double loss){
-        double range = max-min;
+        double range = maxLoss-minLoss;
         double segmentSize = range/13;
-        if (loss-min<segmentSize)
+        if (loss-minLoss<segmentSize)
         {
             return "#00ff5b";//
         }
-        else if (loss-min<segmentSize*2)
+        else if (loss-minLoss<segmentSize*2)
         {
             return "#00ff29";//
         }
-        else if (loss-min<segmentSize*3)
+        else if (loss-minLoss<segmentSize*3)
         {
             return "#09ff00";//
         }
-        else if (loss-min<segmentSize*4)
+        else if (loss-minLoss<segmentSize*4)
         {
             return "#3bff00";//
         }
-        else if (loss-min<segmentSize*5)
+        else if (loss-minLoss<segmentSize*5)
         {
             return "#6dff00";//
         }
-        else if (loss-min<segmentSize*6)
+        else if (loss-minLoss<segmentSize*6)
         {
             return "#9fff00";//
         }
-        else if (loss-min<segmentSize*7)
+        else if (loss-minLoss<segmentSize*7)
         {
             return "#d2ff00";
         }
-        else if (loss-min<segmentSize*8)
+        else if (loss-minLoss<segmentSize*8)
         {
             return "#fffa00";
         }
-        else if (loss-min<segmentSize*9)
+        else if (loss-minLoss<segmentSize*9)
         {
             return "#ffc800";//
         }
-        else if (loss-min<segmentSize*10)
+        else if (loss-minLoss<segmentSize*10)
         {
             return "#ff9600";//
         }
-        else if (loss-min<segmentSize*11)
+        else if (loss-minLoss<segmentSize*11)
         {
             return "#ff6400";//
         }
-        else if (loss-min<segmentSize*12)
+        else if (loss-minLoss<segmentSize*12)
         {
             return "#ff3200";//
         }
@@ -321,7 +325,7 @@ public class GeoDataServiceImpl implements GeoDataService
     }
 
 
-    public double calculateFreeSpaceLoss(double frequency,double dbm, int numberOfBlocks)
+    public double calculateFreeSpaceLoss(double frequency, int numberOfBlocks)
     {
         double kilometerToMileRatio= 0.621;
         int meters = numberOfBlocks*30;
@@ -332,11 +336,12 @@ public class GeoDataServiceImpl implements GeoDataService
     }
     public GetLossDataResponse getSignalLoss(double gatewayX ,double gatewayY)
     {
-
-
+        Coordinate startingCoord= new Coordinate(gatewayX,gatewayY);
+        Point startingPoint = convertCoordToGridBlock(startingCoord);
         int count = 0;
         min = 99999.0;
         max = -99999.0;
+
         ArrayList<GeoFeatures> features = new ArrayList<>();
 
         for (int lng = 0; lng < blocksBreadth; lng++)
@@ -344,16 +349,22 @@ public class GeoDataServiceImpl implements GeoDataService
             for (int lat = 0; lat < blocksWidth; lat++)
             {
                 count++;
-                double elevationValue = dataGrid[lat][lng];
-                FeatureProperties auxProperties = new FeatureProperties(elevationValue,getAreaColor(elevationValue));
+                List<Point> approximatedLine= lineApproximation(startingPoint,new Point(lat,lng));
+                double lossValue =calculateFreeSpaceLoss(2400,approximatedLine.size()-1);//loss calc
+                // augment value based on elevation interception
+//                                                            ^
+
+
+//                ^
+                FeatureProperties auxProperties = new FeatureProperties(lossValue,getLossColor(lossValue));
                 GeometryData auxGeometry = new GeometryData(geoSquareBuilder( convertGridBlockToCoord(lat,lng)));
                 features.add(new GeoFeatures(auxProperties,auxGeometry));
 
-                if (elevationValue>max)
-                    max = elevationValue;
+                if (lossValue>maxLoss)
+                    maxLoss = lossValue;
 
-                if (elevationValue<min)
-                    min = elevationValue;
+                if (lossValue<minLoss)
+                    minLoss = lossValue;
 
             }
         }
