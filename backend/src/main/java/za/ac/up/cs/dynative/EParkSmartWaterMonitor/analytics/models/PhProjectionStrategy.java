@@ -86,7 +86,8 @@ public class PhProjectionStrategy extends AbstractProjectionStrategy
                 e.printStackTrace();
                 return failedProjection("Couldn't generate a prediction","ph");
             }
-            addLabelDates(labelDatesFinal,labelDatesFinal.get(labelDatesFinal.size()-1));
+            if(phPedictions != null && (phPedictions.size() > labelDates.size()))
+                addLabelDates(labelDatesFinal,labelDatesFinal.get(labelDatesFinal.size()-1));
 
 
             return new DeviceProjectionResponse(
