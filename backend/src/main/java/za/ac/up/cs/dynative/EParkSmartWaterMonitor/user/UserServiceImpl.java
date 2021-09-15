@@ -27,8 +27,10 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService {
@@ -404,8 +406,50 @@ public class UserServiceImpl implements UserService {
         if (userList.get(0).getResetPasswordExpiration().isAfter(LocalDateTime.now())){
             if (code.equals(userList.get(0).getActivationCode()) && password1.equals(password2)){
 
+                //-----------decode password-----------
+
+                //get the values of d, num1, num2 and x
+                int split = password1.lastIndexOf('|');
+                split--;
+                String info= password1.substring(split);
+                String salted= password1.substring(0,split);
+
+                int d= Integer.parseInt(String.valueOf(info.charAt(0)));
+                info= info.substring(2);
+                int num1= Integer.parseInt(info.substring(0,info.indexOf('?')));
+                info=info.substring(info.indexOf('?')+1, info.length()-1);
+                int x= Integer.parseInt(String.valueOf(info.charAt(info.length()-1)));
+                info= info.substring(0,info.indexOf('*'));
+                int num2= Integer.parseInt(String.valueOf(info));
+
+                //shift the characters back to their original characters.
+                for (int i = x+d -1 ; i< salted.length() ; i+= x+d){
+                    char chr = salted.charAt(i);
+                    chr -= d;
+                    salted = salted.substring(0,i)+chr+salted.substring(i+1);
+                }
+
+                // remove extra characters
+                AtomicInteger splitCounter = new AtomicInteger(0);
+                Collection<String> pieces = salted
+                        .chars()
+                        .mapToObj(_char -> String.valueOf((char)_char))
+                        .collect(Collectors.groupingBy(stringChar -> splitCounter.getAndIncrement() / x
+                                ,Collectors.joining()))
+                        .values();
+                String orginal="";
+                for (String s: pieces){
+                    orginal+= s.substring(0,s.length()-1);
+                }
+
+                System.out.println(orginal);
+
+                //-------------------------------------
+
+
+
                 BCryptPasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
-                String passwordNew= passwordEncoder.encode(password1);
+                String passwordNew= passwordEncoder.encode(orginal);
                 userList.get(0).setPassword(passwordNew);
                 userList.get(0).setResetPasswordExpiration(LocalDateTime.now());
 
