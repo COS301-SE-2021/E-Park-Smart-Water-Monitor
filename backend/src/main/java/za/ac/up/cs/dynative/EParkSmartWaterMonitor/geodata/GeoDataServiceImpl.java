@@ -232,6 +232,62 @@ public class GeoDataServiceImpl implements GeoDataService
     };
 
 
+    public String getLossColor(double loss){
+        double range = max-min;
+        double segmentSize = range/13;
+        if (loss-min<segmentSize)
+        {
+            return "#00ff5b";//
+        }
+        else if (loss-min<segmentSize*2)
+        {
+            return "#00ff29";//
+        }
+        else if (loss-min<segmentSize*3)
+        {
+            return "#09ff00";//
+        }
+        else if (loss-min<segmentSize*4)
+        {
+            return "#3bff00";//
+        }
+        else if (loss-min<segmentSize*5)
+        {
+            return "#6dff00";//
+        }
+        else if (loss-min<segmentSize*6)
+        {
+            return "#9fff00";//
+        }
+        else if (loss-min<segmentSize*7)
+        {
+            return "#d2ff00";
+        }
+        else if (loss-min<segmentSize*8)
+        {
+            return "#fffa00";
+        }
+        else if (loss-min<segmentSize*9)
+        {
+            return "#ffc800";//
+        }
+        else if (loss-min<segmentSize*10)
+        {
+            return "#ff9600";//
+        }
+        else if (loss-min<segmentSize*11)
+        {
+            return "#ff6400";//
+        }
+        else if (loss-min<segmentSize*12)
+        {
+            return "#ff3200";//
+        }
+        else return "#ff0000";//
+
+    };
+
+
     public GetElevationDataResponse getElevationData()
 //    public GeoJSON getElevationData()
     {
@@ -265,13 +321,13 @@ public class GeoDataServiceImpl implements GeoDataService
     }
 
 
-    public double calculateFreeSpaceLoss(double frequency, int numberOfBlocks)
+    public double calculateFreeSpaceLoss(double frequency,double dbm, int numberOfBlocks)
     {
         double kilometerToMileRatio= 0.621;
         int meters = numberOfBlocks*30;
         double totalInMiles = (meters/1000.0)*kilometerToMileRatio;
 
-        return   36.56 + (20*Math.log(10))*(frequency) + (20*Math.log(10))*totalInMiles;
+        return   36.56 + (20*Math.log10(frequency) + (20*Math.log10(totalInMiles)));
 
     }
     public GetLossDataResponse getSignalLoss(double gatewayX ,double gatewayY)
