@@ -116,47 +116,65 @@ function LineChart(props) {
             let x = res.data
 
             let roundingValue = 3
-            let optimisticProjections = x.optimisticProjections.map(function(each_element){
-                return Number(each_element.toFixed(roundingValue));
-            });
-            let realisticProjections = x.realisticProjections.map(function(each_element){
-                return Number(each_element.toFixed(roundingValue));
-            });
-            let concervativeProjections = x.concervativeProjections.map(function(each_element){
-                return Number(each_element.toFixed(roundingValue));
-            });
+
+            let realisticProjections
+            // only for waterlevel
+            let optimisticProjections
+            let concervativeProjections
+
+            let displayObj = {}
+            displayObj.labels = labels
+            displayObj.datasets =[]
+
+            if(x.realisticProjections)
+            {
+                realisticProjections = x.realisticProjections.map(function(each_element){
+                    return Number(each_element.toFixed(roundingValue));
+                });
+                displayObj.datasets.push({
+                    label: "Realistic",
+                    data: realisticProjections,
+                    fill: false,
+                    backgroundColor: "#5E72E4",
+                    borderColor: "#5E72E4",
+                    borderDash: [0],
+
+                })
+            }
+
+            if(x.optimisticProjections)
+            {
+                optimisticProjections = x.optimisticProjections.map(function(each_element){
+                    return Number(each_element.toFixed(roundingValue));
+                });
+                displayObj.datasets.push({
+                    label: "Optimistic",
+                    data: optimisticProjections,
+                    backgroundColor: "orange",
+                    borderColor: "orange",
+                    borderDash: [12],
+                })
+            }
+
+
+            if(x.concervativeProjections)
+            {
+                concervativeProjections = x.concervativeProjections.map(function (each_element) {
+                    return Number(each_element.toFixed(roundingValue));
+                });
+                displayObj.datasets.push({
+                    label: "Conservative",
+                    data: concervativeProjections,
+                    backgroundColor: "red",
+                    borderColor: "red",
+                    borderDash: [12],
+                    fill: false,
+                })
+            }
+            
 
             setProjectionsData( () => {
-                return {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: "Realistic",
-                            data: realisticProjections,
-                            fill: false,
-                            backgroundColor: "#5E72E4",
-                            borderColor: "#5E72E4",
-                            borderDash: [0],
-
-                        },
-                        {
-                            label: "Optimistic",
-                            data: optimisticProjections,
-                            backgroundColor: "orange",
-                            borderColor: "orange",
-                            borderDash: [12],
-                            fill: false,
-                        },
-                        {
-                            label: "Conservative",
-                            data: concervativeProjections,
-                            backgroundColor: "red",
-                            borderColor: "red",
-                            borderDash: [12],
-                            fill: false,
-                        },
-                    ],
-                };
+                return displayObj
             })
 
 
