@@ -129,7 +129,7 @@ const ResetPassword = (props) => {
 
                 scramble1+=d+"|"+num1+"?"+num2+"*"+x+f
                 scramble2+=d+"|"+num1+"?"+num2+"*"+x+f
-
+                
                 let obj = {
                     username: username,
                     resetCode: resetCode,
