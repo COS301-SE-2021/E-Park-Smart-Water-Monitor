@@ -65,7 +65,22 @@ public class UserServiceImpl implements UserService {
         String name = request.getName();
         String surname = request.getSurname();
         String email = request.getEmail();
-        String password = request.getPassword();
+        //create a random password:
+        String upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
+        String numbers = "0123456789";
+        String specials= "?/.,><)({}[];:'|";
+        String alphaNumeric = upperAlphabet + lowerAlphabet + numbers + specials;
+        StringBuilder sb = new StringBuilder();
+        Random random= new Random();
+
+        int length= 10;
+        for (int i= 0; i<length; i++){
+            int index= random.nextInt(alphaNumeric.length());
+            char randomChar = alphaNumeric.charAt(index);
+            sb.append(randomChar);
+        }
+        String password= sb.toString();
         String username = request.getUsername();
         String role = request.getRole();
         String cellNumber = request.getCellNumber();
