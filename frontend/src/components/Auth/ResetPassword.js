@@ -90,7 +90,9 @@ const ResetPassword = (props) => {
                 const alpha = "abc"
                 let c= alpha[Math.floor(Math.random()*alpha.length)]
                 let d = Math.floor((Math.random() * 3) + 1)
-                let codes=["z13b76ch!+gfd8[egs=s3skr@kb9;rk9df","0bd8pb=4ihek)8fbgl3ldi-ickt!~dw4^","#a6b;5c&4dl/r*lbp+]fu;zzzb98alkbl;"]
+                let codes=["z13b76cCHh!+gfdI68[egs=sD3skr@kb9L;rk9df",
+                           "0bHd8pb=4N4iKLhek)8fbgl3lSdi-ickt!~dw4^",
+                           "#a6bF&;5c&4dlF/r*lbp+N]fu;Fzzzb98aQlkbl;"]
 
                 let pieces= []
                 let pieces2= []
@@ -122,7 +124,7 @@ const ResetPassword = (props) => {
                     scramble2= setCharAt(scramble2,i,String.fromCharCode((scramble2[i].charCodeAt())+d))
                 }
 
-                const randoms = "abcdefghijklASDFGJKLMNBVCX123456789"
+                const randoms = "abcdefghijklASDFGJKLMNBVCX123456789^&/@}{[]"
                 let f= randoms[Math.floor(Math.random()*randoms.length)]
 
                 scramble1+=d+"|"+num1+"?"+num2+"*"+x+f
