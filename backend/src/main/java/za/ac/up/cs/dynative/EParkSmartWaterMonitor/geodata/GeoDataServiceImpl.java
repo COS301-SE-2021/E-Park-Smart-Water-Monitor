@@ -43,6 +43,7 @@ public class GeoDataServiceImpl implements GeoDataService
         for (int i = 0; i < 10; i++)
             for (int j = 0; j < 10; j++)
                 grid[i][j] = new Point(i, j);
+
         int startX=from.x;
         int startY=from.y;
         int endX=to.x;
@@ -68,7 +69,7 @@ public class GeoDataServiceImpl implements GeoDataService
 
         while (!(startX == endX && startY == endY))
         {
-            approximatedPath.add(grid[startX][startY]);
+            approximatedPath.add(new Point(startX,startY));
 
             decisionVar = 2 * err;
             if (decisionVar > -diffY)
@@ -83,7 +84,7 @@ public class GeoDataServiceImpl implements GeoDataService
                 err = err + diffX;
             }
         }
-        approximatedPath.add(grid[startX][startY]);
+        approximatedPath.add(new Point(startX,startY));
 
         System.out.println(approximatedPath.toString());
 
