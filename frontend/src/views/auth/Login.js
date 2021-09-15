@@ -71,7 +71,9 @@ function Login() {
             }
 
         }).catch(()=>{
-          console.log("login request failed")
+            console.log("login request failed")
+            setError("Network Error")
+            setLoading(false)
         });
 
     }
