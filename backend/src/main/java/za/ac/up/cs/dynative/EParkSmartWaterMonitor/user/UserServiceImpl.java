@@ -241,6 +241,44 @@ public class UserServiceImpl implements UserService {
             return new LoginResponse("", false);
         }
         String JWTToken = "";
+        //-----------decode password-----------
+        //get the values of d, num1, num2 and x
+        int split = password.lastIndexOf('|');
+        split--;
+        String info= password.substring(split);
+        String salted= password.substring(0,split);
+
+        int d= Integer.parseInt(String.valueOf(info.charAt(0)));
+        info= info.substring(2);
+        int num1= Integer.parseInt(info.substring(0,info.indexOf('?')));
+        info=info.substring(info.indexOf('?')+1, info.length()-1);
+        int x= Integer.parseInt(String.valueOf(info.charAt(info.length()-1)));
+        info= info.substring(0,info.indexOf('*'));
+        int num2= Integer.parseInt(String.valueOf(info));
+
+        //shift the characters back to their original characters.
+        for (int i = x+d -1 ; i< salted.length() ; i+= x+d){
+            char chr = salted.charAt(i);
+            chr -= d;
+            salted = salted.substring(0,i)+chr+salted.substring(i+1);
+        }
+
+        // remove extra characters
+        AtomicInteger splitCounter = new AtomicInteger(0);
+        Collection<String> pieces = salted
+                .chars()
+                .mapToObj(_char -> String.valueOf((char)_char))
+                .collect(Collectors.groupingBy(stringChar -> splitCounter.getAndIncrement() / x
+                        ,Collectors.joining()))
+                .values();
+        String orginal="";
+        for (String s: pieces){
+            orginal+= s.substring(0,s.length()-1);
+        }
+
+        password=orginal;
+
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
         assert userRepo != null;
         List<User> users = userRepo.findUserByUsername(username);
