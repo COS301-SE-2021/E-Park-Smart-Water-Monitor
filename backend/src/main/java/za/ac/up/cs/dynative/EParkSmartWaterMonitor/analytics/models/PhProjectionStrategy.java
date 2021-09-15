@@ -89,7 +89,6 @@ public class PhProjectionStrategy extends AbstractProjectionStrategy
             if(phPedictions != null && (phPedictions.size() > labelDates.size()))
                 addLabelDates(labelDatesFinal,labelDatesFinal.get(labelDatesFinal.size()-1));
 
-
             return new DeviceProjectionResponse(
                     "PH",
                     true,
