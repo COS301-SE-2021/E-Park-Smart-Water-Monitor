@@ -133,7 +133,9 @@ public class UserServiceImpl implements UserService {
                     Park park = findByParkIdResponse.getPark();
                     if (park != null) {
                         User user = new User(Long.parseLong(idNumber), email, name, surname, passwordEncoder.encode(password), username, role, park, cellNumber);
-                        userRepo.save(user);
+//                        userRepo.save(user);
+                        userRepo.addUser( UUID.randomUUID(),user.getIdNumber(),user.getEmail(), user.getName(),user.getName(),user.getSurname(),user.getUsername(),user.getRole(),user.getPark().getId(),user.getPark().getParkName(),user.getCellNumber());
+
                         response.setStatus("Successfully create user: "
                                 + name
                                 + " "
