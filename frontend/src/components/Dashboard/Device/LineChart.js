@@ -60,18 +60,27 @@ function LineChart(props) {
             if(index === 2)
             {
               setReadingType("ph")
+              setNumPredictions(5)
             }
       };
 
     const increaseNumProjections = () =>{
-        if(numPredictions < 10){
-            setNumPredictions(numPredictions=>numPredictions+1)
+        if(readingType !== "ph") {
+            if (numPredictions < 10)
+            {
+                setNumPredictions(numPredictions => numPredictions + 1)
+            }
         }
     }
     const decreaseNumProjections = () =>{
-        if(numPredictions > 0){
-            setNumPredictions(numPredictions=>numPredictions-1)
+        if(readingType !== "ph")
+        {
+            if(numPredictions > 0)
+            {
+                setNumPredictions(numPredictions=>numPredictions-1)
+            }
         }
+
     }
 
 
@@ -110,11 +119,19 @@ function LineChart(props) {
                 ],
             };
         })
+
+
         setReset(false)
+
+        let num = numPredictions
+        if(readingType === "ph")
+        {
+            num = 5 // conditional based on the API endpoint
+        }
         let obj = {
             id: props.device.deviceId,
             type: readingType,
-            length: numPredictions
+            length: num
         }
 
         axios.post('http://localhost:8080/api/analytics/deviceProjection', obj, {
