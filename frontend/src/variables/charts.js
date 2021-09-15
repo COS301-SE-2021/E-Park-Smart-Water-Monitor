@@ -301,6 +301,22 @@ let chartExample1 = {
           },
         },
       ],
+      xAxes: [
+        {
+          ticks: {
+            callback: function (value) {
+              if (!(value % 0.5)) {
+                return value;
+              }
+            },
+            padding: 20
+          },
+          type: 'time',
+          time: {
+            unit: 'day'
+          }
+        }
+      ]
     },
     tooltips: {
       callbacks: {
@@ -362,6 +378,22 @@ let chartExample2 = {
           },
         },
       ],
+      xAxes: [
+        {
+          ticks: {
+            callback: function (value) {
+              if (!(value % 0.5)) {
+                return value;
+              }
+            },
+            padding: 20
+          },
+          type: 'time',
+          time: {
+            unit: 'day'
+          }
+        }
+      ]
     },
     tooltips: {
       callbacks: {
