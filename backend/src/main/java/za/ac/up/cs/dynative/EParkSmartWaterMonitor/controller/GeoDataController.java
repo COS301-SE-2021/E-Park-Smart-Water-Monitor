@@ -9,8 +9,10 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.GeoDataService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.Coordinate;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.GeoJSON;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.responses.GetElevationDataResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.responses.GetLossDataResponse;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 @CrossOrigin
 @RestController
@@ -24,10 +26,20 @@ public class GeoDataController
         this.geoDataService=geoDataServiceService;
     }
 
-
     @GetMapping("/getElevation")
     public GetElevationDataResponse getElevation()
     {
          return geoDataService.getElevationData();
+    }
+
+    @GetMapping("/getLine")
+    public void getLine()
+    {
+          geoDataService.lineApproximation(geoDataService.convertCoordToGridBlock(new Coordinate(28.28863, -25.88380)),geoDataService.convertCoordToGridBlock(new Coordinate(28.28877, -25.87522)));
+    }
+    @GetMapping("/getSignalLoss")
+    public GeoJSON getSignalLoss()
+    {
+         return geoDataService.getSignalLoss(28.28863, -25.88380);
     }
 }

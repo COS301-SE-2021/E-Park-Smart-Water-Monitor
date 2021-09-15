@@ -3,6 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.Coordinate;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models.GeoJSON;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.responses.GetElevationDataResponse;
+import za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.responses.GetLossDataResponse;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public interface GeoDataService
     public Coordinate convertGridBlockToCoord(int x,int y);
     public ArrayList<ArrayList<Double>> geoSquareBuilder(Coordinate coordinate);
     public GetElevationDataResponse getElevationData();
+    public GeoJSON getSignalLoss(double gatewayX ,double gatewayY);
 //    public GeoJSON getElevationData();
 
 

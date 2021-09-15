@@ -241,35 +241,88 @@ public class GeoDataServiceImpl implements GeoDataService
 
     public String getLossColor(double loss){
         double range = maxLoss-minLoss;
-        double segmentSize = range/7;
+        double segmentSize = range/9;
         if (loss-minLoss<segmentSize)
         {
             return "#00ff5b";
         }
         else if (loss-minLoss<segmentSize*3)
         {
-            return "#09ff00";
+            return "#00ff29";//
         }
-        else if (loss-minLoss<segmentSize*5)
+        else if (loss-minLoss<segmentSize*6)
         {
-            return "#6dff00";
+            return "#09ff00";
         }
         else if (loss-minLoss<segmentSize*7)
         {
+            return "#6dff00";
+        }
+        else if (loss-minLoss<segmentSize*8.2)
+        {
             return "#d2ff00";
         }
-        else if (loss-minLoss<segmentSize*9)
+        else if (loss-minLoss<segmentSize*8.8)
         {
             return "#ffc800";
         }
-        else if (loss-minLoss<segmentSize*11)
-        {
-            return "#ff6400";
-        }
-        else return "#ff0000";
+//        else if (loss-minLoss<segmentSize*8)
+//        {
+        else   return "#ff6400";
+//        if (loss-minLoss<segmentSize)
+//        {
+//            return "#00ff5b";
+//        }
+//        else if (loss-minLoss<segmentSize*3)
+//        {
+//            return "#09ff00";
+//        }
+//        else if (loss-minLoss<segmentSize*6)
+//        {
+//            return "#6dff00";
+//        }
+//        else if (loss-minLoss<segmentSize*7)
+//        {
+//            return "#d2ff00";
+//        }
+//        else if (loss-minLoss<segmentSize*8)
+//        {
+//            return "#ffc800";
+//        }
+////        else if (loss-minLoss<segmentSize*8)
+////        {
+//         else   return "#ff6400";
+//        }
+//        else return "#ff0000";
 
 
     };
+
+
+//        if (loss-minLoss<segmentSize)
+//    {
+//        return "#00ff5b";
+//    }
+//        else if (loss-minLoss<segmentSize*3)
+//    {
+//        return "#09ff00";
+//    }
+//        else if (loss-minLoss<segmentSize*6)
+//    {
+//        return "#6dff00";
+//    }
+//        else if (loss-minLoss<segmentSize*7)
+//    {
+//        return "#d2ff00";
+//    }
+//        else if (loss-minLoss<segmentSize*8)
+//    {
+//        return "#ffc800";
+//    }
+//        else if (loss-minLoss<segmentSize*8)
+//        {
+//         else   return "#ff6400";
+//        }
 
 
     public GetElevationDataResponse getElevationData()
