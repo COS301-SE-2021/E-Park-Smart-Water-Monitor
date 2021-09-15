@@ -80,10 +80,7 @@ function DeviceTable(props) {
                         { device.deviceData.deviceStatus }
                     </TableCell>
                     <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
-                        { device.deviceData.battery }%
-                    </TableCell>
-                    <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
-                        { device.deviceData.lastSeen ? device.deviceData.lastSeen.substr(0,10) : "Not Connected"}
+                        { device.deviceData.lastSeen && device.deviceData.deviceStatus !== "NOT CONNECTED" ? device.deviceData.lastSeen.substr(0,10) : "NA"}
                     </TableCell>
                 </TableRow>
 
@@ -143,8 +140,9 @@ function DeviceTable(props) {
                 classes={{ root: classes.cardHeaderRoot }}
             />
 
-            <div className="table-container">
-                <TableContainer style={{maxHeight:"400px",overflowY:"auto"}}>
+
+            <div className="table-container" style={{ scrollY:"auto"}}>
+                <TableContainer style={{ scrollY:"auto"}}>
                     <Box
                         component={Table}
                         alignItems="center"
@@ -171,16 +169,6 @@ function DeviceTable(props) {
                                     }}
                                 >
                                     Status
-                                </TableCell>
-                                <TableCell
-                                    classes={{
-                                        root:
-                                            classes.tableCellRoot +
-                                            " " +
-                                            classes.tableCellRootHead,
-                                    }}
-                                >
-                                    Battery Level
                                 </TableCell>
                                 <TableCell
                                     classes={{
