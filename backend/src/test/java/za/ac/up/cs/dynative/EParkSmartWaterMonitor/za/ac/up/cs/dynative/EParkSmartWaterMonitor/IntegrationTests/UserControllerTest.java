@@ -46,6 +46,10 @@ public class UserControllerTest {
     private String responseEmail;
     @Value("${app.userResponseUserName}")
     private String responseUserName;
+    @Value("${app.user1SaltedP}")
+    private String passSalted1;
+    @Value("${app.user2SaltedP}")
+    private String passSalted2;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -394,7 +398,7 @@ public class UserControllerTest {
     @Test
     @Order(16)
     public void LoginUserWrongPassword() {
-        LoginRequest request = new LoginRequest(userName1, "dynativ");
+        LoginRequest request = new LoginRequest(userName1, passSalted2);
         ResponseEntity<LoginResponse> response = restTemplate.postForEntity("/api/user/login", request, LoginResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(false, response.getBody().getSuccess());
@@ -404,7 +408,7 @@ public class UserControllerTest {
     @Test
     @Order(17)
     public void LoginSuccess() {
-        LoginRequest request = new LoginRequest(userName1, "test1");
+        LoginRequest request = new LoginRequest(userName1, passSalted1);
         ResponseEntity<LoginResponse> response = restTemplate.postForEntity("/api/user/login", request, LoginResponse.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(true, response.getBody().getSuccess());
@@ -483,7 +487,7 @@ public class UserControllerTest {
         assertNotEquals("User not found", response.getBody().getCode());
 
         //step 2:
-        ResetPasswordFinalizeRequest request2 = new ResetPasswordFinalizeRequest(userName2, response.getBody().getCode(), userPassword2, "test");
+        ResetPasswordFinalizeRequest request2 = new ResetPasswordFinalizeRequest(userName2, response.getBody().getCode(), passSalted2, "test");
         ResponseEntity<ResetPasswordFinalizeResponse> response2 = restTemplate.postForEntity("/api/user/resetPasswordFinalize", request2, ResetPasswordFinalizeResponse.class);
         assertEquals(HttpStatus.OK, response2.getStatusCode());
         assertEquals("There seems to be a typo in the code or provided password", response2.getBody().getMessage());
@@ -500,7 +504,7 @@ public class UserControllerTest {
         assertNotEquals("User not found", response.getBody().getCode());
 
         //step 2:
-        ResetPasswordFinalizeRequest request2 = new ResetPasswordFinalizeRequest(userName2, response.getBody().getCode(), userPassword2, userPassword2);
+        ResetPasswordFinalizeRequest request2 = new ResetPasswordFinalizeRequest(userName2, response.getBody().getCode(), passSalted2, passSalted2);
         ResponseEntity<ResetPasswordFinalizeResponse> response2 = restTemplate.postForEntity("/api/user/resetPasswordFinalize", request2, ResetPasswordFinalizeResponse.class);
         assertEquals(HttpStatus.OK, response2.getStatusCode());
         assertEquals("Password successfully changed", response2.getBody().getMessage());
