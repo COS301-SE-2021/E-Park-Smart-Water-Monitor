@@ -236,8 +236,8 @@ public class GeoDataServiceImpl implements GeoDataService
 //    public GeoJSON getElevationData()
     {
         int count = 0;
-        Double min = 99999.0;
-        Double max = -99999.0;
+         min = 99999.0;
+         max = -99999.0;
         ArrayList<GeoFeatures> features = new ArrayList<>();
 
         for (int lng = 0; lng < blocksBreadth; lng++)
@@ -256,11 +256,7 @@ public class GeoDataServiceImpl implements GeoDataService
                 if (elevationValue<min)
                     min = elevationValue;
 
-//                if (count==3114)
-//                    break;
             }
-//            if (count==3114)
-//                break;
         }
 
         GeoJSON responseGeoJSON = new GeoJSON(features);
