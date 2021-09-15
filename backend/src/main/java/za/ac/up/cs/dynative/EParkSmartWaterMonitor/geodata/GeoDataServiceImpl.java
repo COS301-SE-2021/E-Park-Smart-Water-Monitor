@@ -89,7 +89,10 @@ public class GeoDataServiceImpl implements GeoDataService
         }
         approximatedPath.add(new Point(startX,startY));
 
-        System.out.println(approximatedPath.toString());
+//        System.out.println(approximatedPath.toString());
+
+//      t
+        System.out.println("LENGTH: "+approximatedPath.size());
         return approximatedPath;
 
     }
@@ -238,56 +241,33 @@ public class GeoDataServiceImpl implements GeoDataService
 
     public String getLossColor(double loss){
         double range = maxLoss-minLoss;
-        double segmentSize = range/13;
+        double segmentSize = range/7;
         if (loss-minLoss<segmentSize)
         {
-            return "#00ff5b";//
-        }
-        else if (loss-minLoss<segmentSize*2)
-        {
-            return "#00ff29";//
+            return "#00ff5b";
         }
         else if (loss-minLoss<segmentSize*3)
         {
-            return "#09ff00";//
-        }
-        else if (loss-minLoss<segmentSize*4)
-        {
-            return "#3bff00";//
+            return "#09ff00";
         }
         else if (loss-minLoss<segmentSize*5)
         {
-            return "#6dff00";//
-        }
-        else if (loss-minLoss<segmentSize*6)
-        {
-            return "#9fff00";//
+            return "#6dff00";
         }
         else if (loss-minLoss<segmentSize*7)
         {
             return "#d2ff00";
         }
-        else if (loss-minLoss<segmentSize*8)
-        {
-            return "#fffa00";
-        }
         else if (loss-minLoss<segmentSize*9)
         {
-            return "#ffc800";//
-        }
-        else if (loss-minLoss<segmentSize*10)
-        {
-            return "#ff9600";//
+            return "#ffc800";
         }
         else if (loss-minLoss<segmentSize*11)
         {
-            return "#ff6400";//
+            return "#ff6400";
         }
-        else if (loss-minLoss<segmentSize*12)
-        {
-            return "#ff3200";//
-        }
-        else return "#ff0000";//
+        else return "#ff0000";
+
 
     };
 
@@ -330,11 +310,24 @@ public class GeoDataServiceImpl implements GeoDataService
         double kilometerToMileRatio= 0.621;
         int meters = numberOfBlocks*30;
         double totalInMiles = (meters/1000.0)*kilometerToMileRatio;
+//        System.out.println(meters);
+        double dBLoss;
 
-        return   36.56 + (20*Math.log10(frequency) + (20*Math.log10(totalInMiles)));
+        if (numberOfBlocks==0) {
+//            System.out.println("zero");
+            dBLoss = 36.56 + (20 * Math.log10(frequency)+(20 * Math.log10(0.03*kilometerToMileRatio)));
+        }
+        else {
+//            System.out.println("not zero");
+            dBLoss = 36.56 + (20 * Math.log10(frequency) + (20 * Math.log10(totalInMiles)));
+        }
+//        System.out.println(dBLoss);
+        if (numberOfBlocks==50)
+        System.out.println("VYFTIG BLOK: "+dBLoss);
+        return  dBLoss;
 
     }
-    public GetLossDataResponse getSignalLoss(double gatewayX ,double gatewayY)
+    public GeoJSON getSignalLoss(double gatewayX ,double gatewayY)
     {
         Coordinate startingCoord= new Coordinate(gatewayX,gatewayY);
         Point startingPoint = convertCoordToGridBlock(startingCoord);
@@ -343,6 +336,13 @@ public class GeoDataServiceImpl implements GeoDataService
         max = -99999.0;
 
         ArrayList<GeoFeatures> features = new ArrayList<>();
+        ArrayList<Double> lossArray = new ArrayList<>();
+
+        ArrayList<Double> a20 = new ArrayList<>();
+        ArrayList<Double> a40 = new ArrayList<>();
+        ArrayList<Double> a60 = new ArrayList<>();
+        ArrayList<Double> a80 = new ArrayList<>();
+
 
         for (int lng = 0; lng < blocksBreadth; lng++)
         {
@@ -350,15 +350,22 @@ public class GeoDataServiceImpl implements GeoDataService
             {
                 count++;
                 List<Point> approximatedLine= lineApproximation(startingPoint,new Point(lat,lng));
+
+
                 double lossValue =calculateFreeSpaceLoss(2400,approximatedLine.size()-1);//loss calc
+                if (approximatedLine.size()==20)
+                a20.add(lossValue);
+                if (approximatedLine.size()==40)
+                    a40.add(lossValue);
+                if (approximatedLine.size()==60)
+                    a60.add(lossValue);
+                if (approximatedLine.size()==80)
+                    a80.add(lossValue);
                 // augment value based on elevation interception
-//                                                            ^
-
-
+//
+//
 //                ^
-                FeatureProperties auxProperties = new FeatureProperties(lossValue,getLossColor(lossValue));
-                GeometryData auxGeometry = new GeometryData(geoSquareBuilder( convertGridBlockToCoord(lat,lng)));
-                features.add(new GeoFeatures(auxProperties,auxGeometry));
+                lossArray.add(lossValue);
 
                 if (lossValue>maxLoss)
                     maxLoss = lossValue;
@@ -369,8 +376,48 @@ public class GeoDataServiceImpl implements GeoDataService
             }
         }
 
+        int lossCounter = 0;
+        for (int lng = 0; lng < blocksBreadth; lng++)
+        {
+            for (int lat = 0; lat < blocksWidth; lat++)
+            {
+
+                FeatureProperties auxProperties = new FeatureProperties(lossArray.get(lossCounter),getLossColor(lossArray.get(lossCounter++)));
+                GeometryData auxGeometry = new GeometryData(geoSquareBuilder( convertGridBlockToCoord(lat,lng)));
+                features.add(new GeoFeatures(auxProperties,auxGeometry));
+
+
+            }
+        }
+
+
+        System.out.println("=============20s=============");
+        for (Double here:a20)
+        {
+            System.out.println(here.toString());
+        }
+
+
+        System.out.println("=============40s=============");
+        for (Double here:a40)
+        {
+            System.out.println(here.toString());
+        }
+
+        System.out.println("=============60s=============");
+        for (Double here:a60)
+        {
+            System.out.println(here.toString());
+        }
+        System.out.println("=============80s=============");
+        for (Double here:a80)
+        {
+            System.out.println(here.toString());
+        }
+
         GeoJSON responseGeoJSON = new GeoJSON(features);
-        return new GetLossDataResponse("Data successfully retrieved",true,min,max,responseGeoJSON);
+        return responseGeoJSON;
+//        return new GetLossDataResponse("Data successfully retrieved",true,minLoss,maxLoss,responseGeoJSON);
 
     }
 }
