@@ -38,9 +38,10 @@ function LineChart(props) {
   const theme = useTheme();
   const [activeNav, setActiveNav] = React.useState(1);
   const [readingType, setReadingType] = React.useState("waterlevel");
-  const [projectionsData, setProjectionsData] = React.useState(""); // this will be a function like "data1" passed
-  const [numPredictions, setNumPredictions] = React.useState(5); // this will be a function like "data1" passed
-  const [reset, setReset] = React.useState(false); // this will be a function like "data1" passed
+  const [projectionsData, setProjectionsData] = React.useState("");
+  const [numPredictions, setNumPredictions] = React.useState(5);
+  const [reset, setReset] = React.useState(false); // sets loader for the table
+  const [unsuccessful, setUnsuccessful] = React.useState(false); // sets loader for the table
     // in the chartOptions1 in the chart.js file
 
     if (window.Chart) {
@@ -50,7 +51,6 @@ function LineChart(props) {
     // move between prediction types
       const toggleNavs = (index) => {
         setActiveNav(index);
-        //setChartExample1Data("data" + index);
           // 1 is waterlevel
           // 2 is PH
             if(index === 1)
@@ -89,6 +89,7 @@ function LineChart(props) {
     // GET THE PROJECTION DATA
     useEffect(()=>{
         console.log(props.device)
+        setUnsuccessful(false)
 
         setProjectionsData(() => {
             return {
@@ -140,72 +141,81 @@ function LineChart(props) {
                 }
             }
         ).then((res)=>{
-            setReset(true)
-            let labels = res.data.labelDates
-
-            let x = res.data
-
-            let roundingValue = 3
-
-            let realisticProjections
-            // only for waterlevel
-            let optimisticProjections
-            let concervativeProjections
-
-            let displayObj = {}
-            displayObj.labels = labels
-            displayObj.datasets =[]
-
-            if(x.realisticProjections)
+            if(res.data.success === true)
             {
-                realisticProjections = x.realisticProjections.map(function(each_element){
-                    return Number(each_element.toFixed(roundingValue));
-                });
-                displayObj.datasets.push({
-                    label: "Realistic",
-                    data: realisticProjections,
-                    fill: false,
-                    backgroundColor: "#5E72E4",
-                    borderColor: "#5E72E4",
-                    borderDash: [0],
+                setReset(true)
 
+                let labels = res.data.labelDates
+
+                let x = res.data
+
+                let roundingValue = 3
+
+                let realisticProjections
+                // only for waterlevel
+                let optimisticProjections
+                let concervativeProjections
+
+                let displayObj = {}
+                displayObj.labels = labels
+                displayObj.datasets =[]
+
+                if(x.realisticProjections)
+                {
+                    realisticProjections = x.realisticProjections.map(function(each_element){
+                        return Number(each_element.toFixed(roundingValue));
+                    });
+                    displayObj.datasets.push({
+                        label: "Realistic",
+                        data: realisticProjections,
+                        fill: false,
+                        backgroundColor: "#5E72E4",
+                        borderColor: "#5E72E4",
+                        borderDash: [0],
+
+                    })
+                }
+
+                if(x.optimisticProjections)
+                {
+                    optimisticProjections = x.optimisticProjections.map(function(each_element){
+                        return Number(each_element.toFixed(roundingValue));
+                    });
+                    displayObj.datasets.push({
+                        label: "Optimistic",
+                        data: optimisticProjections,
+                        backgroundColor: "orange",
+                        borderColor: "orange",
+                        borderDash: [12],
+                    })
+                }
+
+
+                if(x.concervativeProjections)
+                {
+                    concervativeProjections = x.concervativeProjections.map(function (each_element) {
+                        return Number(each_element.toFixed(roundingValue));
+                    });
+                    displayObj.datasets.push({
+                        label: "Conservative",
+                        data: concervativeProjections,
+                        backgroundColor: "red",
+                        borderColor: "red",
+                        borderDash: [12],
+                        fill: false,
+                    })
+                }
+
+
+                setProjectionsData( () => {
+                    return displayObj
                 })
+
+            }else{
+                setReset(true) // remove loader
+                setUnsuccessful(true)
             }
 
-            if(x.optimisticProjections)
-            {
-                optimisticProjections = x.optimisticProjections.map(function(each_element){
-                    return Number(each_element.toFixed(roundingValue));
-                });
-                displayObj.datasets.push({
-                    label: "Optimistic",
-                    data: optimisticProjections,
-                    backgroundColor: "orange",
-                    borderColor: "orange",
-                    borderDash: [12],
-                })
-            }
-
-
-            if(x.concervativeProjections)
-            {
-                concervativeProjections = x.concervativeProjections.map(function (each_element) {
-                    return Number(each_element.toFixed(roundingValue));
-                });
-                displayObj.datasets.push({
-                    label: "Conservative",
-                    data: concervativeProjections,
-                    backgroundColor: "red",
-                    borderColor: "red",
-                    borderDash: [12],
-                    fill: false,
-                })
-            }
-
-
-            setProjectionsData( () => {
-                return displayObj
-            })
 
 
         }).catch(()=>{
@@ -375,7 +385,7 @@ function LineChart(props) {
                 classes={{ root: classes.cardHeaderRoot }}
             />
             <CardContent>
-            { reset &&
+            { !unsuccessful && reset &&
                 <Box position="relative" height="350px">
                     { readingType === "waterlevel" &&
                         <Line
@@ -396,6 +406,19 @@ function LineChart(props) {
             }
             { !reset &&
                 <ScaleLoader size={50} color={"#5E72E4"} speedMultiplier={1.5} />
+            }
+            {   unsuccessful &&
+                    <Box
+                        component={Typography}
+                        variant="h6"
+                        letterSpacing=".0625rem"
+                        marginBottom=".25rem!important"
+                        className={classes.textUppercase}
+                    >
+                        <Box component="span" color={theme.palette.gray[400]}>
+                            No data to display
+                        </Box>
+                    </Box>
             }
             </CardContent>
 
