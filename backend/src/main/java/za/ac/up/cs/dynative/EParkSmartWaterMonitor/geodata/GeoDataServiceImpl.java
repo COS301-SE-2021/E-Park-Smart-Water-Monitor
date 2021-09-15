@@ -269,61 +269,9 @@ public class GeoDataServiceImpl implements GeoDataService
 //        else if (loss-minLoss<segmentSize*8)
 //        {
         else   return "#ff6400";
-//        if (loss-minLoss<segmentSize)
-//        {
-//            return "#00ff5b";
-//        }
-//        else if (loss-minLoss<segmentSize*3)
-//        {
-//            return "#09ff00";
-//        }
-//        else if (loss-minLoss<segmentSize*6)
-//        {
-//            return "#6dff00";
-//        }
-//        else if (loss-minLoss<segmentSize*7)
-//        {
-//            return "#d2ff00";
-//        }
-//        else if (loss-minLoss<segmentSize*8)
-//        {
-//            return "#ffc800";
-//        }
-////        else if (loss-minLoss<segmentSize*8)
-////        {
-//         else   return "#ff6400";
-//        }
-//        else return "#ff0000";
 
 
     };
-
-
-//        if (loss-minLoss<segmentSize)
-//    {
-//        return "#00ff5b";
-//    }
-//        else if (loss-minLoss<segmentSize*3)
-//    {
-//        return "#09ff00";
-//    }
-//        else if (loss-minLoss<segmentSize*6)
-//    {
-//        return "#6dff00";
-//    }
-//        else if (loss-minLoss<segmentSize*7)
-//    {
-//        return "#d2ff00";
-//    }
-//        else if (loss-minLoss<segmentSize*8)
-//    {
-//        return "#ffc800";
-//    }
-//        else if (loss-minLoss<segmentSize*8)
-//        {
-//         else   return "#ff6400";
-//        }
-
 
     public GetElevationDataResponse getElevationData()
 //    public GeoJSON getElevationData()
@@ -367,11 +315,9 @@ public class GeoDataServiceImpl implements GeoDataService
         double dBLoss;
 
         if (numberOfBlocks==0) {
-//            System.out.println("zero");
             dBLoss = 36.56 + (20 * Math.log10(frequency)+(20 * Math.log10(0.03*kilometerToMileRatio)));
         }
         else {
-//            System.out.println("not zero");
             dBLoss = 36.56 + (20 * Math.log10(frequency) + (20 * Math.log10(totalInMiles)));
         }
 //        System.out.println(dBLoss);
@@ -403,7 +349,6 @@ public class GeoDataServiceImpl implements GeoDataService
             {
                 count++;
                 List<Point> approximatedLine= lineApproximation(startingPoint,new Point(lat,lng));
-
 
                 double lossValue =calculateFreeSpaceLoss(2400,approximatedLine.size()-1);//loss calc
                 if (approximatedLine.size()==20)
