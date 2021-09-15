@@ -260,8 +260,6 @@ public class GeoDataServiceImpl implements GeoDataService
         }
 
         GeoJSON responseGeoJSON = new GeoJSON(features);
-
-
         return new GetElevationDataResponse("Data successfully retrieved",true,min,max,responseGeoJSON);
 //        return responseGeoJSON;
     }
@@ -276,8 +274,36 @@ public class GeoDataServiceImpl implements GeoDataService
         return   36.56 + (20*Math.log(10))*(frequency) + (20*Math.log(10))*totalInMiles;
 
     }
-    public GetLossDataResponse getSignalLoss()
+    public GetLossDataResponse getSignalLoss(double gatewayX ,double gatewayY)
     {
-        return null;
+
+
+        int count = 0;
+        min = 99999.0;
+        max = -99999.0;
+        ArrayList<GeoFeatures> features = new ArrayList<>();
+
+        for (int lng = 0; lng < blocksBreadth; lng++)
+        {
+            for (int lat = 0; lat < blocksWidth; lat++)
+            {
+                count++;
+                double elevationValue = dataGrid[lat][lng];
+                FeatureProperties auxProperties = new FeatureProperties(elevationValue,getAreaColor(elevationValue));
+                GeometryData auxGeometry = new GeometryData(geoSquareBuilder( convertGridBlockToCoord(lat,lng)));
+                features.add(new GeoFeatures(auxProperties,auxGeometry));
+
+                if (elevationValue>max)
+                    max = elevationValue;
+
+                if (elevationValue<min)
+                    min = elevationValue;
+
+            }
+        }
+
+        GeoJSON responseGeoJSON = new GeoJSON(features);
+        return new GetLossDataResponse("Data successfully retrieved",true,min,max,responseGeoJSON);
+
     }
 }
