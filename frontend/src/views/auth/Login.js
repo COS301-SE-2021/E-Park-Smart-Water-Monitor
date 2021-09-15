@@ -42,12 +42,57 @@ function Login() {
 
     const user = useContext(UserContext)
 
+    function setCharAt(str,index,chr) {
+        if(index > str.length-1) return str;
+        return str.substring(0,index) + chr + str.substring(index+1);
+    }
+
     const login = () => {
         setLoading(true)
         setError("")
+
+        let num1= Math.floor((Math.random() * password.length) + 1)
+        let num2= password.length- num1
+        let x = Math.floor((Math.random() * 3) + 2)
+        const alpha = "abc"
+        let c= alpha[Math.floor(Math.random()*alpha.length)]
+        let d = Math.floor((Math.random() * 3) + 1)
+        let codes=["z13b76cCHh!+gfdI68[egs=sD3skr@kb9L;rk9df",
+            "0bHd8pb=4N4iKLhek)8fbgl3lSdi-ickt!~dw4^",
+            "#a6bF&;5c&4dlF/r*lbp+N]fu;Fzzzb98aQlkbl;"]
+
+        let pieces= []
+
+        for (let i = 0, charsLength = password.length; i < charsLength; i += (x-1)) {
+            pieces.push(password.substring(i, i + (x-1)));
+        }
+
+        let word=""
+        if (c=="a"){
+            word = codes[0]
+        }else if (c=="b"){
+            word = codes[1]
+        }else if (c=="c"){
+            word = codes[2]
+        }
+
+        let scramble1 =""
+        for (let i =0; i<pieces.length; i++){
+            scramble1+=pieces[i]+word[i]
+        }
+
+        for (let i =(x+d-1); i<scramble1.length;i+=(x+d)){
+            scramble1= setCharAt(scramble1,i,String.fromCharCode((scramble1[i].charCodeAt())+d))
+        }
+
+        const randoms = "abcdefghijklASDFGJKLMNBVCX123456789^&/@}{[]"
+        let f= randoms[Math.floor(Math.random()*randoms.length)]
+
+        scramble1+=d+"|"+num1+"?"+num2+"*"+x+f
+
         let obj = {
             username: username,
-            password: password
+            password: scramble1
         }
 
         axios.post('http://localhost:8080/api/user/login', obj
