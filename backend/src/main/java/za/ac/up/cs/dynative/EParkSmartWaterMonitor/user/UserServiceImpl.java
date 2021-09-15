@@ -407,7 +407,6 @@ public class UserServiceImpl implements UserService {
             if (code.equals(userList.get(0).getActivationCode()) && password1.equals(password2)){
 
                 //-----------decode password-----------
-
                 //get the values of d, num1, num2 and x
                 int split = password1.lastIndexOf('|');
                 split--;
@@ -442,11 +441,14 @@ public class UserServiceImpl implements UserService {
                     orginal+= s.substring(0,s.length()-1);
                 }
 
-                System.out.println(orginal);
-
-                //-------------------------------------
-
-
+                //-----------confirm the password is valid-----------
+                Pattern p = Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$");
+                Matcher m = p.matcher(orginal);
+                if (!m.find()){
+                    return new ResetPasswordFinalizeResponse("The password does not comply with the minimum requirements. " +
+                            "Your password should contain atleast 10 characters, one capital letter, one lower case letter, " +
+                            "one number and finally a minimum of one special character: #, ?, !, @, $, %, ^, &, *, -",false);
+                }
 
                 BCryptPasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
                 String passwordNew= passwordEncoder.encode(orginal);
