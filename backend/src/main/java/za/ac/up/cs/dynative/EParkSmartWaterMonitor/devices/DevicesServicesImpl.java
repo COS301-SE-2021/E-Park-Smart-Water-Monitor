@@ -110,7 +110,7 @@ public class DevicesServicesImpl implements DevicesService
             return response;
         }
         List<Device> devices = deviceRepo.findDeviceByDeviceName(addDeviceRequest.getDeviceName());
-        if (devices.size() == 0) {
+        if (devices.size() == 0 && !doesExistOnAws(addDeviceRequest.getDeviceName())) {
             CanAttachWaterSourceDeviceResponse canAttachWaterSourceDeviceResponse =
                     waterSiteService.canAttachWaterSourceDevice(new CanAttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId()));
             if (!canAttachWaterSourceDeviceResponse.getSuccess()) {
@@ -308,7 +308,7 @@ public class DevicesServicesImpl implements DevicesService
     }
 
     @Override
-    public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request)  {
+    public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request) {
         if (request==null){
             GetDeviceDataResponse response =  new GetDeviceDataResponse
                     ("Request is null",false);
@@ -404,7 +404,8 @@ public class DevicesServicesImpl implements DevicesService
                     List<Device> devicesWithSameName = deviceRepo.findDeviceByDeviceName(editDeviceRequest.getDeviceName());
                     if (devicesWithSameName.size() == 0) {
                         deviceToChange.get().setDeviceName(editDeviceRequest.getDeviceName());
-                    }else if(!deviceToChange.get().getDeviceName().equals(editDeviceRequest.getDeviceName())){
+                    } else if(!deviceToChange.get().getDeviceName().equals(editDeviceRequest.getDeviceName())
+                            || doesExistOnAws(editDeviceRequest.getDeviceName())){
                         response.setStatus("A device with that name already exists");
                         response.setSuccess(false);
                         return response;
@@ -646,5 +647,19 @@ public class DevicesServicesImpl implements DevicesService
                     .build();
             UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
         }
+    }
+
+    private boolean doesExistOnAws(String deviceName) {
+        boolean doesExist = false;
+        ListThingsResponse listThingsResponse = iotClient.listThings();
+        for (ThingAttribute thingAttribute :
+                listThingsResponse.things())
+        {
+            if (deviceName.equals(thingAttribute.thingName())) {
+                doesExist = true;
+                break;
+            }
+        }
+        return doesExist;
     }
 }
