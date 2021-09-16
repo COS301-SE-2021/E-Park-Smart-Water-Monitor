@@ -23,7 +23,6 @@ public class AnalyticsController {
      */
     AnalyticsService analyticsService;
 
-
     /**
      * This constructor will set the analyticsService variable defined previously so that it is not of null value
      * @param analyticsService will be set and used across the rest of this class.
