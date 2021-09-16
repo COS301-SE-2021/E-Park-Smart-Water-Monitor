@@ -90,7 +90,7 @@ const InspectionTable = () => {
                             <TableCell classes={{ root: classes.tableCellRoot }}>
                                 { inspection.status }
                             </TableCell>
-                            <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
+                            <TableCell classes={{ root: classes.tableCellRoot }}>
                                 { inspection.description }
                             </TableCell>
                             <TableCell classes={{root: classes.tableCellRoot}}
@@ -135,7 +135,7 @@ const InspectionTable = () => {
                 <Modal title= "Edit Inspection" onClose={() => setShowEditInspection(false)} show={showEditInspection}>
                     <EditInspection reloadInspectionTable={ reloadInspectionTable } inspectionDetails={inspec} tog={() =>toggleshowEditInspection() }/>
                 </Modal>
-                <Modal title= "Inspection Comments" onClose={() => setShowComments(false)} show={showComments}>
+                <Modal title= "Inspection Comments" onClose={() => {reloadInspectionTable(); setShowComments(false)}} show={showComments}>
                     <Comments reloadInspectionTable={ reloadInspectionTable } inspectionDetails={inspec} tog={() =>toggleshowComments() }/>
                 </Modal>
                 <Grid container component={Box} marginTop="3rem">
@@ -202,7 +202,12 @@ const InspectionTable = () => {
                                     marginBottom="0!important"
                                 >
                                     <TableHead>
-                                        <TableRow style={{background: 'rgb(243 243 243)'}}>
+                                        <TableRow
+                                            style={{
+                                                backgroundColor: '#F3F3F3',
+                                                position: "sticky",
+                                                top: 0
+                                            }}>
                                             <TableCell
                                                 classes={{
                                                     root:

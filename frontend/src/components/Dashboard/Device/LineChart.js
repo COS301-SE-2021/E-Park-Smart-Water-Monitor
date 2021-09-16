@@ -15,6 +15,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 
 import {
     chartExample1,
+    chartExample2,
     chartOptions,
     parseOptions,
 } from "variables/charts.js";
@@ -36,10 +37,11 @@ function LineChart(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [activeNav, setActiveNav] = React.useState(1);
-  const [readingType] = React.useState("waterlevel");
-  const [projectionsData, setProjectionsData] = React.useState(""); // this will be a function like "data1" passed
-  const [numPredictions, setNumPredictions] = React.useState(5); // this will be a function like "data1" passed
-  const [reset, setReset] = React.useState(false); // this will be a function like "data1" passed
+  const [readingType, setReadingType] = React.useState("waterlevel");
+  const [projectionsData, setProjectionsData] = React.useState("");
+  const [numPredictions, setNumPredictions] = React.useState(5);
+  const [reset, setReset] = React.useState(false); // sets loader for the table
+  const [unsuccessful, setUnsuccessful] = React.useState(false); // sets loader for the table
     // in the chartOptions1 in the chart.js file
 
     if (window.Chart) {
@@ -49,18 +51,36 @@ function LineChart(props) {
     // move between prediction types
       const toggleNavs = (index) => {
         setActiveNav(index);
-        //setChartExample1Data("data" + index);
+          // 1 is waterlevel
+          // 2 is PH
+            if(index === 1)
+            {
+                setReadingType("waterlevel")
+            }
+            if(index === 2)
+            {
+              setReadingType("ph")
+              setNumPredictions(5)
+            }
       };
 
     const increaseNumProjections = () =>{
-        if(numPredictions < 10){
-            setNumPredictions(numPredictions=>numPredictions+1)
+        if(readingType !== "ph") {
+            if (numPredictions < 10)
+            {
+                setNumPredictions(numPredictions => numPredictions + 1)
+            }
         }
     }
     const decreaseNumProjections = () =>{
-        if(numPredictions > 0){
-            setNumPredictions(numPredictions=>numPredictions-1)
+        if(readingType !== "ph")
+        {
+            if(numPredictions > 0)
+            {
+                setNumPredictions(numPredictions=>numPredictions-1)
+            }
         }
+
     }
 
 
@@ -68,6 +88,9 @@ function LineChart(props) {
 
     // GET THE PROJECTION DATA
     useEffect(()=>{
+        console.log(props.device)
+        setUnsuccessful(false)
+
         setProjectionsData(() => {
             return {
                 labels: [],
@@ -97,11 +120,19 @@ function LineChart(props) {
                 ],
             };
         })
+
+
         setReset(false)
+
+        let num = numPredictions
+        if(readingType === "ph")
+        {
+            num = 5 // conditional based on the API endpoint
+        }
         let obj = {
             id: props.device.deviceId,
             type: readingType,
-            length: numPredictions
+            length: num
         }
 
         axios.post('http://localhost:8080/api/analytics/deviceProjection', obj, {
@@ -110,60 +141,88 @@ function LineChart(props) {
                 }
             }
         ).then((res)=>{
-            setReset(true)
-            let labels = res.data.labelDates
+            if(res.data.success === true)
+            {
+                setReset(true)
 
-            let x = res.data
-            for(let i =0; i<numPredictions;i++){
-                labels.push("Prediction "+(i+1))
+                let labels = res.data.labelDates
+
+                let x = res.data
+
+                let roundingValue = 3
+
+                let realisticProjections
+                // only for waterlevel
+                let optimisticProjections
+                let concervativeProjections
+
+                let displayObj = {}
+                displayObj.labels = labels
+                displayObj.datasets =[]
+
+                if(x.realisticProjections)
+                {
+                    realisticProjections = x.realisticProjections.map(function(each_element){
+                        return Number(each_element.toFixed(roundingValue));
+                    });
+                    displayObj.datasets.push({
+                        label: "Realistic",
+                        data: realisticProjections,
+                        fill: false,
+                        backgroundColor: "#5E72E4",
+                        borderColor: "#5E72E4",
+                        borderDash: [0],
+
+                    })
+                }
+
+                if(x.optimisticProjections)
+                {
+                    optimisticProjections = x.optimisticProjections.map(function(each_element){
+                        return Number(each_element.toFixed(roundingValue));
+                    });
+                    displayObj.datasets.push({
+                        label: "Optimistic",
+                        data: optimisticProjections,
+                        backgroundColor: "orange",
+                        borderColor: "orange",
+                        borderDash: [12],
+                    })
+                }
+
+
+                if(x.concervativeProjections)
+                {
+                    concervativeProjections = x.concervativeProjections.map(function (each_element) {
+                        return Number(each_element.toFixed(roundingValue));
+                    });
+                    displayObj.datasets.push({
+                        label: "Conservative",
+                        data: concervativeProjections,
+                        backgroundColor: "red",
+                        borderColor: "red",
+                        borderDash: [12],
+                        fill: false,
+                    })
+                }
+
+
+                setProjectionsData( () => {
+                    return displayObj
+                })
+
+            }else{
+                setReset(true) // remove loader
+                setUnsuccessful(true)
             }
 
-            let roundingValue = 3
-            let optimisticProjections = x.optimisticProjections.map(function(each_element){
-                return Number(each_element.toFixed(roundingValue));
-            });
-            let realisticProjections = x.realisticProjections.map(function(each_element){
-                return Number(each_element.toFixed(roundingValue));
-            });
-            let concervativeProjections = x.concervativeProjections.map(function(each_element){
-                return Number(each_element.toFixed(roundingValue));
-            });
-
-            setProjectionsData( () => {
-                return {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: "Optimistic",
-                            data: optimisticProjections,
-                            fill: false,
-
-                        },
-                        {
-                            label: "Realistic",
-                            data: realisticProjections,
-                            backgroundColor: "orange",
-                            borderColor: "orange",
-                            borderDash: [12],
-                            fill: false,
-                        },
-                        {
-                            label: "Conservative",
-                            data: concervativeProjections,
-                            backgroundColor: "red",
-                            borderColor: "red",
-                            borderDash: [12],
-                            fill: false,
-                        },
-                    ],
-                };
-            })
 
 
         }).catch(()=>{
             console.log("Projections failed.")
         });
-    },[props.device, numPredictions])
+    },[props.device, numPredictions, readingType])
+
 
 
   return (
@@ -199,10 +258,65 @@ function LineChart(props) {
                                 marginBottom="0!important"
                             >
                                 <Box component="span" color={theme.palette.white.main}>
-                                    {props.device.deviceName} Waterlevel Readings
+                                    {props.device.deviceName} Readings
                                 </Box>
                             </Box>
                         </Grid>
+
+
+                        <Grid item xs="auto">
+                            <Box
+                                component={Typography}
+                                variant="h6"
+                                letterSpacing=".0625rem"
+                                marginBottom=".25rem!important"
+                                className={classes.textUppercase}
+                            >
+                                <Box component="span" color={theme.palette.gray[400]}>
+                                    Prediction Type
+                                </Box>
+                            </Box>
+
+                            <Box
+                                justifyContent="flex-end"
+                                display="flex"
+                                flexWrap="wrap"
+                            >
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
+                                    component={Box}
+                                    marginRight="1rem!important"
+                                    onClick={() => {toggleNavs(1); }  }
+                                    classes={{
+                                        root:
+                                            activeNav === 1
+                                                ? ""
+                                                : classes.buttonRootUnselected,
+                                    }}
+                                >
+                                   Waterlevel
+                                </Button>
+
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
+                                    onClick={() => {toggleNavs(2);} }
+                                    classes={{
+                                        root:
+                                            activeNav === 2
+                                                ? ""
+                                                : classes.buttonRootUnselected,
+                                    }}
+                                >
+                                    PH
+                                </Button>
+                            </Box>
+                        </Grid>
+
+
                         <Grid item xs="auto">
                             <Box
                                 component={Typography}
@@ -227,12 +341,9 @@ function LineChart(props) {
                                     size="small"
                                     component={Box}
                                     marginRight="1rem!important"
-                                    onClick={() => {toggleNavs(1); decreaseNumProjections()}  }
+                                    onClick={() => { decreaseNumProjections()}  }
                                     classes={{
-                                        root:
-                                            activeNav === 1
-                                                ? ""
-                                                : classes.buttonRootUnselected,
+                                        root: classes.buttonRootUnselected,
                                     }}
                                 >
                                     <Box
@@ -255,12 +366,9 @@ function LineChart(props) {
                                     variant="contained"
                                     color="primary"
                                     size="small"
-                                    onClick={() => {toggleNavs(2); increaseNumProjections()} }
+                                    onClick={() => { increaseNumProjections()} }
                                     classes={{
-                                        root:
-                                            activeNav === 2
-                                                ? ""
-                                                : classes.buttonRootUnselected,
+                                        root: classes.buttonRootUnselected,
                                     }}
                                 >
                                     <Box
@@ -275,19 +383,42 @@ function LineChart(props) {
                     </Grid>
                 }
                 classes={{ root: classes.cardHeaderRoot }}
-            ></CardHeader>
+            />
             <CardContent>
-            { reset &&
+            { !unsuccessful && reset &&
                 <Box position="relative" height="350px">
-                    <Line
-                        data={projectionsData} // your own chart info obtained from request
-                        options={chartExample1.options}
-                        getDatasetAtEvent={(e) => console.log(e)}
-                    />
+                    { readingType === "waterlevel" &&
+                        <Line
+                            data={projectionsData} // your own chart info obtained from request
+                            options={ chartExample1.options }
+                            getDatasetAtEvent={(e) => console.log(e)}
+                        />
+                    }
+                    { readingType === "ph" &&
+                        <Line
+                            data={projectionsData} // your own chart info obtained from request
+                            options={ chartExample2.options }
+                            getDatasetAtEvent={(e) => console.log(e)}
+                        />
+                    }
+
                 </Box>
             }
             { !reset &&
                 <ScaleLoader size={50} color={"#5E72E4"} speedMultiplier={1.5} />
+            }
+            {   unsuccessful &&
+                    <Box
+                        component={Typography}
+                        variant="h6"
+                        letterSpacing=".0625rem"
+                        marginBottom=".25rem!important"
+                        className={classes.textUppercase}
+                    >
+                        <Box component="span" color={theme.palette.gray[400]}>
+                            No data to display
+                        </Box>
+                    </Box>
             }
             </CardContent>
 

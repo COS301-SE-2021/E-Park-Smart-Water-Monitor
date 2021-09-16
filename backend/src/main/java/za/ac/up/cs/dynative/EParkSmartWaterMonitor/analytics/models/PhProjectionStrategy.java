@@ -106,9 +106,10 @@ public class PhProjectionStrategy extends AbstractProjectionStrategy
                 return failedProjection("Couldn't generate a prediction","ph");
             }
             // Step 3:
-            addLabelDates(labelDatesFinal,labelDatesFinal.get(labelDatesFinal.size()-1));
+            if(phPedictions != null && (phPedictions.size() > labelDates.size()))
+                addLabelDates(labelDatesFinal,labelDatesFinal.get(labelDatesFinal.size()-1));
 
-            return successfulProjection("Success",
+            return new DeviceProjectionResponse(
                     "PH",
                     phPredictions,
                     null,
