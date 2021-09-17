@@ -4,6 +4,8 @@ import { CSSTransition } from "react-transition-group";
 import "../../assets/css/modal.css";
 
 const Modal = props => {
+
+
     const closeOnEscapeKeyDown = e => {
         if ((e.charCode || e.keyCode) === 27) {
             props.onClose();
@@ -11,10 +13,14 @@ const Modal = props => {
     };
 
     useEffect(() => {
-        document.body.addEventListener("keydown", closeOnEscapeKeyDown);
-        return function cleanup() {
-            document.body.removeEventListener("keydown", closeOnEscapeKeyDown);
-        };
+        if(props.title)
+        {
+            document.body.addEventListener("keydown", closeOnEscapeKeyDown);
+            return function cleanup() {
+                document.body.removeEventListener("keydown", closeOnEscapeKeyDown);
+            };
+        }
+
     }, []);
 
 
@@ -24,7 +30,7 @@ const Modal = props => {
             unmountOnExit
             timeout={{ enter: 0, exit: 300 }}
         >
-            <div className="modal" onClick={props.onClose}>
+             <div className="modal" >
                 <div className="modal-content" onClick={e => e.stopPropagation()}>
                     { props.title && <div className="modal-header">
 
