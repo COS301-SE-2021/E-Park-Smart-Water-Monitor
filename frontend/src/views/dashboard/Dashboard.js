@@ -140,7 +140,7 @@ function Dashboard() {
               classes={{ root: classes.gridItemRoot }}
           >
 
-            { devices && <DeviceTable reloadDeviceTable={reloadDeviceTable} load_device={load_device} devices={ devices }/> }
+            { device && devices && <DeviceTable device={ device } reloadDeviceTable={ reloadDeviceTable } load_device={load_device} devices={ devices }/> }
 
           </Grid>
 
@@ -152,7 +152,7 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            { device && <DeviceDetails reloadDeviceTable={reloadDeviceTable} device={ device }/> }
+            { device && <DeviceDetails reloadDeviceTable={ reloadDeviceTable } device={ device }/> }
           </Grid>
         </Grid>
 

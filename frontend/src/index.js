@@ -10,17 +10,10 @@ import Routing from "./Routing";
 import {UserProvider} from "./Context/UserContext";
 import {LoadingProvider} from "./Context/LoadingContext";
 import {EditProfileProvider} from "./Context/EditProfileContext";
-import {PuffLoader} from "react-spinners";
 import Modal from "./components/Modals/Modal";
+import Loader from "./components/Modals/Loader";
 import EditProfile from "./components/EditProfile/EditProfile";
-import {css} from "@emotion/react";
 
-
-const override = css`
-  display: block;
-  margin: 0 auto;
-  border-color: red;
-`;
 
 
 const App = () => {
@@ -37,9 +30,11 @@ const App = () => {
 
     return (<ThemeProvider theme={theme}>
         <UserProvider>
-            <Modal onClose={() => setLoading(false)} show={loading}>
-                <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
-            </Modal>
+            {/*<Modal onClose={() => setLoading(false)} show={loading}>*/}
+            {/*    <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />*/}
+            {/*</Modal>*/}
+            <Loader onClose={() => setLoading(false)} show={loading}/>
+
             <Modal title="Edit Profile" onClose={() => setShowEditProfile(false)} show={showEditProfile} >
                 <EditProfile  closeModall={() =>setShowEditProfile(false) } togglee={() =>toggleLoading}/>
 

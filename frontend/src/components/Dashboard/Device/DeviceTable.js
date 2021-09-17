@@ -27,6 +27,7 @@ function DeviceTable(props) {
   const [hover, setHover] = useState(true)
   const [viewReload, setViewReload] = useState(true)
 
+
     const handleDeviceSelection = (device) => {
         // so that it doesn't run on render
         return () =>{
@@ -35,15 +36,11 @@ function DeviceTable(props) {
     }
 
 
-
-
     const toggleHover = ()=>{
       setHover(!hover)
     }
 
     useEffect(() => {
-
-        setViewReload(true)
 
         let hoverStyle;
         if (hover) {
@@ -87,6 +84,8 @@ function DeviceTable(props) {
 
             );
             setResponse(m);
+
+            // props.load_device(props.device)
         }else{
             console.log("no device prop added")
         }
@@ -98,7 +97,7 @@ function DeviceTable(props) {
             classes={{
                 root: classes.cardRoot,
             }}
-            style = {{height:"100%", }}
+            style = {{height:"100%", maxHeight:"100%"}}
         >
             <CardHeader
                 subheader={
@@ -154,7 +153,7 @@ function DeviceTable(props) {
             />
 
 
-            <div className="table-container" style={{ maxHeight:"1000px", scrollY:"auto"}}>
+            <div className="table-container" style={{maxHeight:"100%"}} >
                 <TableContainer >
                     <Box
                         component={Table}

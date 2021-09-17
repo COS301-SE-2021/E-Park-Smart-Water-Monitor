@@ -25,4 +25,5 @@ code {
 .table-container {
   overflow-y: auto;
   width: 100%;
+  overscroll-behavior-y: auto
 }

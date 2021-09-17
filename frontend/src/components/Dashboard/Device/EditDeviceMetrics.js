@@ -56,7 +56,12 @@ const EditDeviceMetricsBody = (props) => {
             value: Number((seconds/60/60).toFixed(6))
         }
 
-        axios.put('http://localhost:8080/api/devices/setMetricFrequency', obj
+        axios.put('http://localhost:8080/api/devices/setMetricFrequency', obj ,
+            {
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
+            }
         ).then(()=>{
 
             toggleLoading()
