@@ -98,9 +98,9 @@ function DeviceTable(props) {
             classes={{
                 root: classes.cardRoot,
             }}
+            style = {{height:"100%", }}
         >
             <CardHeader
-                style={{paddingBottom:"27.4px",paddingTop:"29.4px"}}
                 subheader={
                     <Grid
                         container
@@ -154,12 +154,13 @@ function DeviceTable(props) {
             />
 
 
-            <div className="table-container" style={{ scrollY:"auto"}}>
-                <TableContainer style={{ scrollY:"auto"}}>
+            <div className="table-container" style={{ maxHeight:"1000px", scrollY:"auto"}}>
+                <TableContainer >
                     <Box
                         component={Table}
                         alignItems="center"
                         marginBottom="0!important"
+
                     >
                         <TableHead>
                             <TableRow>

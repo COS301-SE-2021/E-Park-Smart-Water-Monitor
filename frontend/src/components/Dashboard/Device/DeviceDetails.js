@@ -31,6 +31,7 @@ function DeviceDetails(props) {
   const [showPing, setShowPing] = useState(false)
   const [pingMessage, setPingMessage] = useState("") // will show a loader while waiting for ping response
   const [pinging, setPinging] = useState(false)
+  const [lastSeen, setLastSeen] = useState("")
 
     const user = useContext(UserContext)
     const toggleLoading = useContext(LoadingContext).toggleLoading
@@ -51,6 +52,7 @@ function DeviceDetails(props) {
             setStatus(props.device.deviceData.deviceStatus)
             setBattery(props.device.deviceData.deviceBattery)
             setMeasurements(props.device.measurementSet)
+            setLastSeen(props.device.deviceData.lastSeen)
             filterMetrics()
 
         }else{
@@ -126,6 +128,17 @@ function DeviceDetails(props) {
                 setPingMessage(res.data.status)
                 setMeasurements(res.data.innerResponses.measurements)
                 setStatus(res.data.deviceStatus)
+                let last
+                res.data.innerResponses.measurements.forEach((elem)=>{
+                    alert(elem)
+                if(elem.type === "WATER_QUALITY")
+                    alert(elem)
+                    {
+                        last = elem.deviceDateTime
+                    }
+                })
+
+                setLastSeen(last)
 
             }else
             {
@@ -273,7 +286,7 @@ function DeviceDetails(props) {
                                 marginRight="1.25rem!important"
                                 className={classes["text" + "PrimaryLight"]}
                             />
-                             { device && device.deviceData.lastSeen ? "Last Seen "+device.deviceData.lastSeen.substr(0,10) + "   at   "+device.deviceData.lastSeen.substr(11,8) : "Not Connected" }
+                             { lastSeen ? "Last Seen "+lastSeen.substr(0,10) + "   at   "+lastSeen.substr(11,8) : "Not Connected" }
                         </Box>
 
                     </Grid>
