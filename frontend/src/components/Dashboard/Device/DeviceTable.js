@@ -17,6 +17,7 @@ import TableBody from "@material-ui/core/TableBody";
 import "../../../index.css"
 import {Refresh} from "@material-ui/icons";
 import {Tooltip} from "@material-ui/core";
+import {ScaleLoader} from "react-spinners";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -24,7 +25,7 @@ function DeviceTable(props) {
   const classes = useStyles();
   const [response, setResponse] = useState(null)
   const [hover, setHover] = useState(true)
-  const [value, setValue] = useState(0)
+  const [viewReload, setViewReload] = useState(true)
 
     const handleDeviceSelection = (device) => {
         // so that it doesn't run on render
@@ -33,9 +34,6 @@ function DeviceTable(props) {
         }
     }
 
-    const reloadDeviceTable = () =>{
-      setValue(value=>value+1)
-    }
 
 
 
@@ -44,6 +42,8 @@ function DeviceTable(props) {
     }
 
     useEffect(() => {
+
+        setViewReload(true)
 
         let hoverStyle;
         if (hover) {
@@ -90,7 +90,7 @@ function DeviceTable(props) {
         }else{
             console.log("no device prop added")
         }
-    },[props.devices, value])
+    },[props.devices])
 
   return (
     <>
@@ -123,16 +123,29 @@ function DeviceTable(props) {
                                 display="flex"
                                 flexWrap="wrap"
                             >
-
-                                <Tooltip title="Refresh Devices" arrow>
+                                {
+                                    viewReload &&
+                                    <Tooltip title="Refresh Devices" arrow>
+                                        <Box
+                                            component={Refresh}
+                                            width="1.25rem!important"
+                                            height="1.25rem!important"
+                                            className={classes["text"]}
+                                            onClick={()=>{ props.reloadDeviceTable(); setViewReload(false) }}
+                                        />
+                                    </Tooltip>
+                                }
+                                {
+                                    !viewReload &&
                                     <Box
-                                        component={Refresh}
-                                        width="1.25rem!important"
-                                        height="1.25rem!important"
-                                        className={classes["text"]}
-                                        onClick={()=>{ reloadDeviceTable() }}
-                                    />
-                                </Tooltip>
+                                        paddingLeft="1.25rem"
+                                    >
+                                        <Tooltip title="Loading..." arrow>
+                                            <ScaleLoader size={10} height={15} color={"#5E72E4"} speedMultiplier={1.5} />
+                                        </Tooltip>
+                                    </Box>
+                                }
+
                             </Box>
                         </Grid>
                     </Grid>

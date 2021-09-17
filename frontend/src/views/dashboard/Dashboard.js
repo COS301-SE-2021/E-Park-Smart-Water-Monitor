@@ -140,7 +140,7 @@ function Dashboard() {
               classes={{ root: classes.gridItemRoot }}
           >
 
-            { devices && <DeviceTable load_device={load_device} devices={ devices }/> }
+            { devices && <DeviceTable reloadDeviceTable={reloadDeviceTable} load_device={load_device} devices={ devices }/> }
 
           </Grid>
 
