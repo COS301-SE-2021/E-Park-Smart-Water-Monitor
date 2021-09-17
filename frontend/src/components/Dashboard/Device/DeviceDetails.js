@@ -12,7 +12,7 @@ import EditDeviceMetrics from "./EditDeviceMetrics";
 import Modal from "../../Modals/Modal";
 import {UserContext} from "../../../Context/UserContext";
 import Divider from "@material-ui/core/Divider";
-import {BatteryStd, CheckCircle, Visibility} from "@material-ui/icons";
+import {CheckCircle, Visibility} from "@material-ui/icons";
 import axios from "axios";
 import LoadingContext from "../../../Context/LoadingContext";
 import {ScaleLoader} from "react-spinners";
@@ -124,8 +124,9 @@ function DeviceDetails(props) {
             if(res.data.success === true){
                 //ping successful
                 setPingMessage(res.data.status)
-                setMeasurements(res.data.measurements)
+                setMeasurements(res.data.innerResponses.measurements)
                 setStatus(res.data.deviceStatus)
+
             }else
             {
                 setPingMessage(res.data.status)
@@ -205,14 +206,14 @@ function DeviceDetails(props) {
                                 // paddingBottom="1rem"
                                 // className={classes.outlineNone}
                             >
-                                <Box>
-                                    { device && device.deviceData && device.deviceData.battery }%
-                                </Box>
-                                <Box
-                                    component={BatteryStd}
-                                    width="1rem!important"
-                                    height="1rem!important"
-                                />
+                                {/*<Box>*/}
+                                {/*    { device && device.deviceData && device.deviceData.battery }%*/}
+                                {/*</Box>*/}
+                                {/*<Box*/}
+                                {/*    component={BatteryStd}*/}
+                                {/*    width="1rem!important"*/}
+                                {/*    height="1rem!important"*/}
+                                {/*/>*/}
                                 <Box
                                     paddingLeft="1.25rem"
                                 >
