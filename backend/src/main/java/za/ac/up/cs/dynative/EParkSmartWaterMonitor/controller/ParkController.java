@@ -24,7 +24,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.requests.GetParkSitesReq
 public class ParkController {
 
     /**
-     * TparkService will be used to call functions in the park service implementation.
+     * The parkService will be used to call functions in the park service implementation.
      */
     ParkService parkService;
 
