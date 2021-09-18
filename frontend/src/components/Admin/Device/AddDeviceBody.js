@@ -80,8 +80,6 @@ const AddDeviceBody = (props) => {
             setPark(options[0])
         }
 
-
-
     },[])
 
     // get sites for this park when the park selected changes
