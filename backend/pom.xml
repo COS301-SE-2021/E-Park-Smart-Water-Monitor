@@ -176,7 +176,7 @@
 					<testSourceDirectory>${project.build.testSourceDirectory}</testSourceDirectory>
 					<includes>
 						<include>za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests/**.java</include>
-						<include>IntegrationTests/**.java</include>
+<!-- 						<include>IntegrationTests/**.java</include> -->
 					</includes>
 				</configuration>
 			</plugin>
