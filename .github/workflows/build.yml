@@ -41,7 +41,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=COS301-SE-2021_E-Park-Smart-Water-Monitor
+        run: cd /home/runner/work/E-Park-Smart-Water-Monitor/E-Park-Smart-Water-Monitor/backend; mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=COS301-SE-2021_E-Park-Smart-Water-Monitor
 
   #Test's job
   tests:
