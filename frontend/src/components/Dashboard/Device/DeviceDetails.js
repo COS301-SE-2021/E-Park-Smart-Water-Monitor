@@ -162,7 +162,14 @@ function DeviceDetails(props) {
         let hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
         let mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
         let sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
-        return dDisplay + hDisplay + mDisplay + sDisplay;
+        let result = dDisplay + hDisplay + mDisplay + sDisplay;
+
+        if(sDisplay === "" || (mDisplay === "" && sDisplay === "") || (hDisplay === "" && mDisplay === "" && sDisplay === ""))
+        {
+            result = result.slice(0, -2)
+        }
+
+        return result;
     }
 
   return (
