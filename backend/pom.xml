@@ -166,7 +166,7 @@
 	</dependencies>
 
 	<build>
-		<testSourceDirectory>src/test/java/za/ac/up/cs/dynative/EParkSmartWaterMonitor</testSourceDirectory>
+<!-- 		<testSourceDirectory>src/test/java/za/ac/up/cs/dynative/EParkSmartWaterMonitor</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -175,8 +175,8 @@
 				<configuration>
 					<testSourceDirectory>${project.build.testSourceDirectory}</testSourceDirectory>
 					<includes>
-<!-- 						<include>za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests/**.java</include> -->
-<!-- 						<include>IntegrationTests/**.java</include> -->
+						<include>za.ac.up.cs.dynative.EParkSmartWaterMonitor.UnitTests/**.java</include>
+						<include>IntegrationTests/**.java</include>
 					</includes>
 				</configuration>
 			</plugin>
@@ -184,6 +184,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-		</plugins>
+		</plugins> -->
 	</build>
 </project>
