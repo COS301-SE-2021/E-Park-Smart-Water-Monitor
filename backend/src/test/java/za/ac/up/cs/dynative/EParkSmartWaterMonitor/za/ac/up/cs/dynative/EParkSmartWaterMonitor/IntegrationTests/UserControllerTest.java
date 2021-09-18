@@ -195,24 +195,24 @@ public class UserControllerTest {
     }*/
 
     //post: /api/user/deleteUser
-    @Test
-    @Order(5)
-    public void createDeleteUser() {
-        CreateUserRequest request = new CreateUserRequest(UUID.fromString(parkID), "9871233577124", "nita.nell92@gmail.com", "dynative", "IntTesting123123", "surname", "IntTesting123123", "ADMIN", "0728480427");
-        ResponseEntity<CreateUserResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
-                .postForEntity("/api/user/createUser", request, CreateUserResponse.class);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Successfully create user: IntTesting123123 surname and added them to park: Rietvlei Nature Reserve", response.getBody().getStatus());
-        assertEquals(true, response.getBody().getSuccess());
+//     @Test
+//     @Order(5)
+//     public void createDeleteUser() {
+//         CreateUserRequest request = new CreateUserRequest(UUID.fromString(parkID), "9871233577124", "nita.nell92@gmail.com", "dynative", "IntTesting123123", "surname", "IntTesting123123", "ADMIN", "0728480427");
+//         ResponseEntity<CreateUserResponse> response = restTemplate.withBasicAuth(userName1, userPassword1)
+//                 .postForEntity("/api/user/createUser", request, CreateUserResponse.class);
+//         assertEquals(HttpStatus.OK, response.getStatusCode());
+//         assertEquals("Successfully create user: IntTesting123123 surname and added them to park: Rietvlei Nature Reserve", response.getBody().getStatus());
+//         assertEquals(true, response.getBody().getSuccess());
 
 
-        DeleteUserRequest requestD = new DeleteUserRequest(response.getBody().getId());
-        ResponseEntity<DeleteUserResponse> responseD = restTemplate.withBasicAuth(userName1, userPassword1)
-                .postForEntity("/api/user/deleteInternal", requestD, DeleteUserResponse.class);
-        assertEquals(HttpStatus.OK, responseD.getStatusCode());
-        assertEquals("Sucessfully deleteD user: IntTesting123123 surname", responseD.getBody().getStatus());
-        assertEquals(true, responseD.getBody().getSuccess());
-    }
+//         DeleteUserRequest requestD = new DeleteUserRequest(response.getBody().getId());
+//         ResponseEntity<DeleteUserResponse> responseD = restTemplate.withBasicAuth(userName1, userPassword1)
+//                 .postForEntity("/api/user/deleteInternal", requestD, DeleteUserResponse.class);
+//         assertEquals(HttpStatus.OK, responseD.getStatusCode());
+//         assertEquals("Sucessfully deleteD user: IntTesting123123 surname", responseD.getBody().getStatus());
+//         assertEquals(true, responseD.getBody().getSuccess());
+//     }
 
     //do not run this with createDeleteUser()
     /*@Test
