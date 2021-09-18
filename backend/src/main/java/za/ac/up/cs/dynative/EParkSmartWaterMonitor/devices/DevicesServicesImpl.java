@@ -7,6 +7,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
@@ -14,9 +15,7 @@ import org.springframework.stereotype.Service;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.iot.IotClient;
-import software.amazon.awssdk.services.iot.model.AttributePayload;
-import software.amazon.awssdk.services.iot.model.CreateThingRequest;
-import software.amazon.awssdk.services.iot.model.CreateThingResponse;
+import software.amazon.awssdk.services.iot.model.*;
 import software.amazon.awssdk.services.iotdataplane.IotDataPlaneClient;
 import software.amazon.awssdk.services.iotdataplane.model.PublishRequest;
 import software.amazon.awssdk.services.iotdataplane.model.PublishResponse;
@@ -111,7 +110,7 @@ public class DevicesServicesImpl implements DevicesService
             return response;
         }
         List<Device> devices = deviceRepo.findDeviceByDeviceName(addDeviceRequest.getDeviceName());
-        if (devices.size() == 0) {
+        if (devices.size() == 0 && !doesExistOnAws(addDeviceRequest.getDeviceName())) {
             CanAttachWaterSourceDeviceResponse canAttachWaterSourceDeviceResponse =
                     waterSiteService.canAttachWaterSourceDevice(new CanAttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId()));
             if (!canAttachWaterSourceDeviceResponse.getSuccess()) {
@@ -137,7 +136,7 @@ public class DevicesServicesImpl implements DevicesService
                         addDeviceRequest.getLongitude(),
                         addDeviceRequest.getLatitude());
 
-                AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse = waterSiteService.attachWaterSourceDevice(new AttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId(), newDevice));
+//                AttachWaterSourceDeviceResponse attachWaterSourceDeviceResponse = waterSiteService.attachWaterSourceDevice(new AttachWaterSourceDeviceRequest(addDeviceRequest.getSiteId(), newDevice));
 
                 String payload = "{\"state\": {\"reported\": {";
                 payload += newDevice.getDeviceData().toString();
@@ -149,7 +148,42 @@ public class DevicesServicesImpl implements DevicesService
                         .payload(shadowPayload)
                         .build();
                 UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
-                deviceRepo.save(newDevice);
+//                deviceRepo.save(newDevice);
+                deviceRepo.addDevice(addDeviceRequest.getSiteId(),
+                        UUID.randomUUID(),
+                        addDeviceRequest.getDeviceModel(),
+                        addDeviceRequest.getDeviceName(),
+                        addDeviceRequest.getDeviceType(),
+                        new HashSet<>(),
+                        UUID.randomUUID(),
+                        100.0,
+                        "NOT CONNECTED",
+                        null,
+                        addDeviceRequest.getLatitude(),
+                        addDeviceRequest.getLongitude(),
+                        100.0,
+                        100.0,
+                        UUID.randomUUID(),
+                        10.0,
+                        100.0,
+                        "reportingFrequency",
+                        4,
+                        UUID.randomUUID(),
+                        10.0,
+                        100.0,
+                        "WATER_QUALITY",
+                        5,
+                        UUID.randomUUID(),
+                        10.0,
+                        100.0,
+                        "WATER_TEMP",
+                        5,
+                        UUID.randomUUID(),
+                        10.0,
+                        100.0,
+                        "WATER_LEVEL",
+                        5
+                        );
                 response.setSuccess(true);
                 response.setStatus("Device " + addDeviceRequest.getDeviceName() + " successfully added");
             }
@@ -274,7 +308,7 @@ public class DevicesServicesImpl implements DevicesService
     }
 
     @Override
-    public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request)  {
+    public GetDeviceDataResponse getDeviceData(GetDeviceDataRequest request) {
         if (request==null){
             GetDeviceDataResponse response =  new GetDeviceDataResponse
                     ("Request is null",false);
@@ -355,7 +389,7 @@ public class DevicesServicesImpl implements DevicesService
             response.setSuccess(false);
             return response;
         }
-        if (editDeviceRequest.getDeviceName()=="" || editDeviceRequest.getDeviceType()==""|| editDeviceRequest.getDeviceId()==null || editDeviceRequest.getDeviceModel()==""){
+        if (editDeviceRequest.getDeviceType().equals("") || editDeviceRequest.getDeviceId()==null || editDeviceRequest.getDeviceModel().equals("")){
             response.setStatus("Request incomplete");
             response.setSuccess(false);
             return response;
@@ -370,11 +404,20 @@ public class DevicesServicesImpl implements DevicesService
                     List<Device> devicesWithSameName = deviceRepo.findDeviceByDeviceName(editDeviceRequest.getDeviceName());
                     if (devicesWithSameName.size() == 0) {
                         deviceToChange.get().setDeviceName(editDeviceRequest.getDeviceName());
-                    }else {
+                    } else if(!deviceToChange.get().getDeviceName().equals(editDeviceRequest.getDeviceName())
+                            || doesExistOnAws(editDeviceRequest.getDeviceName())){
                         response.setStatus("A device with that name already exists");
                         response.setSuccess(false);
                         return response;
                     }
+                }
+                if (editDeviceRequest.getLongitude() != 0) {
+                    deviceToChange.get().getDeviceData().setLongitude(editDeviceRequest.getLongitude());
+
+                    if (editDeviceRequest.getLatitude() != 0) {
+                        deviceToChange.get().getDeviceData().setLatitude(editDeviceRequest.getLatitude());
+                    }
+                    UpdateDeviceShadow(deviceToChange);
                 }
                 response.setStatus("Device successfully edited.");
                 response.setSuccess(true);
@@ -396,12 +439,13 @@ public class DevicesServicesImpl implements DevicesService
 
     @Override
     public DeleteDeviceResponse deleteDevice(DeleteDeviceRequest request) {
-        System.out.println("A");
         if (request.getDeviceId() == null) {
             return new DeleteDeviceResponse("No device id specified.", false);
         }
         Optional<Device> device = deviceRepo.findById(request.getDeviceId());
         if (device.isPresent()) {
+            DeleteThingRequest deleteThingRequest = DeleteThingRequest.builder().thingName(device.get().getDeviceName()).build();
+            iotClient.deleteThing(deleteThingRequest);
             deviceRepo.deleteDevice(device.get().getDeviceId());
             return new DeleteDeviceResponse("Successfully deleted the device and all related entities.", true);
         }
@@ -418,24 +462,11 @@ public class DevicesServicesImpl implements DevicesService
                 for (sensorConfiguration config : device.get().getDeviceData().getDeviceConfiguration()) {
                     if (config.getSettingType().equals("reportingFrequency")) {
                         if (request.getValue() >= 0) {
-                        config.setValue(request.getValue());
-                        deviceRepo.save(device.get());
-
-                        String payload = "{\"state\": {\"reported\": {";
-                        payload += device.get().getDeviceData().toString();
-                        payload += "}}}";
-
-                        SdkBytes shadowPayload = SdkBytes.fromUtf8String(payload);
-
-                        UpdateThingShadowRequest updateThingShadowRequest = UpdateThingShadowRequest.builder()
-                                .thingName(device.get().getDeviceName())
-                                .shadowName(device.get().getDeviceName()+"_Shadow")
-                                .payload(shadowPayload)
-                                .build();
-                        UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
-
-                        return new SetMetricFrequencyResponse("Successfully changed metric frequency to: " +
-                                request.getValue() + " hours.", true);
+                            config.setValue(request.getValue());
+                            deviceRepo.save(device.get());
+                            UpdateDeviceShadow(device);
+                            return new SetMetricFrequencyResponse("Successfully changed metric frequency to: " +
+                                    request.getValue() + " hours.", true);
                         }
                     }
                 }
@@ -468,10 +499,10 @@ public class DevicesServicesImpl implements DevicesService
                         .build());
 
                 try {
-                    TimeUnit.SECONDS.sleep(45);
+                    TimeUnit.SECONDS.sleep(50);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                    return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
+                    return adjustDeviceStatus(deviceName, findDeviceResponse);
                 }
 
                 GetDeviceDataResponse deviceDataResponse = getDeviceData(new GetDeviceDataRequest(deviceName, 1, true));
@@ -486,22 +517,43 @@ public class DevicesServicesImpl implements DevicesService
                         Date latestServerTimeDate = new SimpleDateFormat(dateTimeFormat).parse(latestServerTime);
                         Date latestDeviceTimeDate = new SimpleDateFormat(dateTimeFormat).parse(latestDeviceTime);
 
-                        if (Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 1
-                                || Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) == 0) {
+                        if (Math.abs(latestServerTimeDate.getMinutes() - latestDeviceTimeDate.getMinutes()) <= 3)
+                        {
                             findDeviceResponse.getDevice().getDeviceData().setLastSeen(latestDeviceTimeDate);
+                            findDeviceResponse.getDevice().getDeviceData().setDeviceStatus("FINE");
                             deviceRepo.save(findDeviceResponse.getDevice());
-                            return new PingDeviceResponse("Device " + deviceName + " says hello.", true, deviceName, deviceDataResponse.getInnerResponses().get(0));
+                            return new PingDeviceResponse("Device: " + deviceName + " says hello.", true, deviceName, findDeviceResponse.getDevice().getDeviceData().getDeviceStatus(), deviceDataResponse.getInnerResponses().get(0));
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
+                        return adjustDeviceStatus(deviceName, findDeviceResponse);
                     }
                 }
-                return new PingDeviceResponse("Device failed to respond.", false, deviceName, null);
+                return adjustDeviceStatus(deviceName, findDeviceResponse);
             }
-            return new PingDeviceResponse("Device does not exist.", false, deviceName, null);
+            return new PingDeviceResponse("Device does not exist.", false, deviceName,"", null);
         }
-        return new PingDeviceResponse("No device ID specified.", false, deviceName, null);
+        return new PingDeviceResponse("No device ID specified.", false, deviceName,"", null);
+    }
+
+    @NotNull
+    private PingDeviceResponse adjustDeviceStatus(String deviceName, FindDeviceResponse findDeviceResponse) {
+        if (findDeviceResponse.getDevice().getDeviceData().getDeviceStatus().equals("FINE")) {
+            findDeviceResponse.getDevice().getDeviceData().setDeviceStatus("WARN");
+        }
+        else if (findDeviceResponse.getDevice().getDeviceData().getDeviceStatus().equals("WARN")) {
+            findDeviceResponse.getDevice().getDeviceData().setDeviceStatus("CRITICAL");
+            long oneWeekLater = System.currentTimeMillis() + (86400 * 7 * 1000);
+            Date dueDate =new Date(oneWeekLater);
+            AddInspectionRequest inspectionForFailedPingOnWarnLevel = new AddInspectionRequest(findDeviceResponse.getDevice().getDeviceId(),dueDate, findDeviceResponse.getDevice().getDeviceName()+" automated Inspection - device failed to respond to a ping and had a WARN condition. Device is now CRITICAL");
+            try {
+                inspectionService.addInspection(inspectionForFailedPingOnWarnLevel);
+            } catch (InvalidRequestException e) {
+                e.printStackTrace();
+            }
+        }
+        deviceRepo.save(findDeviceResponse.getDevice());
+        return new PingDeviceResponse("Device failed to respond.", false, deviceName, findDeviceResponse.getDevice().getDeviceData().getDeviceStatus(), null);
     }
 
     public void getDataNotification(DataNotificationRequest dataNotificationRequest) throws InvalidRequestException {
@@ -580,4 +632,34 @@ public class DevicesServicesImpl implements DevicesService
 
     }
 
+    private void UpdateDeviceShadow(Optional<Device> deviceToChange) {
+        if (deviceToChange.isPresent()) {
+            String payload = "{\"state\": {\"reported\": {";
+            payload += deviceToChange.get().getDeviceData().toString();
+            payload += "}}}";
+
+            SdkBytes shadowPayload = SdkBytes.fromUtf8String(payload);
+
+            UpdateThingShadowRequest updateThingShadowRequest = UpdateThingShadowRequest.builder()
+                    .thingName(deviceToChange.get().getDeviceName())
+                    .shadowName(deviceToChange.get().getDeviceName()+"_Shadow")
+                    .payload(shadowPayload)
+                    .build();
+            UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
+        }
+    }
+
+    private boolean doesExistOnAws(String deviceName) {
+        boolean doesExist = false;
+        ListThingsResponse listThingsResponse = iotClient.listThings();
+        for (ThingAttribute thingAttribute :
+                listThingsResponse.things())
+        {
+            if (deviceName.equals(thingAttribute.thingName())) {
+                doesExist = true;
+                break;
+            }
+        }
+        return doesExist;
+    }
 }

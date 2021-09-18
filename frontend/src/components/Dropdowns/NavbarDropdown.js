@@ -11,10 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 // @material-ui/icons components
 import DirectionsRun from "@material-ui/icons/DirectionsRun";
-import EventNote from "@material-ui/icons/EventNote";
 import LiveHelp from "@material-ui/icons/LiveHelp";
-import Person from "@material-ui/icons/Person";
-import Settings from "@material-ui/icons/Settings";
 
 // core components
 import componentStyles from "assets/theme/components/navbar-dropdown.js";
@@ -146,6 +143,7 @@ export default function NavbarDropdown() {
       >
         <Avatar
           alt="..."
+          /* eslint-disable-next-line no-undef */
           src={require("assets/img/icons/common/empty-profile.png").default}
           classes={{
             root: classes.avatarRoot,

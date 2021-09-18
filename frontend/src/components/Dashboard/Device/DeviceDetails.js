@@ -2,35 +2,35 @@ import React, {useContext, useEffect, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
-
-// core components
 import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import {CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@material-ui/core";
+import {CardContent, Tooltip} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import EditDeviceMetrics from "./EditDeviceMetrics";
 import Modal from "../../Modals/Modal";
 import {UserContext} from "../../../Context/UserContext";
 import Divider from "@material-ui/core/Divider";
 import {BatteryStd, CheckCircle, Visibility} from "@material-ui/icons";
-import Clear from "@material-ui/icons/Clear";
 import axios from "axios";
-import ResetPassword from "../../Auth/ResetPassword";
 import LoadingContext from "../../../Context/LoadingContext";
-
+import {ScaleLoader} from "react-spinners";
 
 const useStyles = makeStyles(componentStyles);
 
 function DeviceDetails(props) {
   const classes = useStyles();
   const [device, setDevice] = useState(null)
+    // eslint-disable-next-line no-unused-vars
+  const [battery, setBattery] = useState(null)
+  const [status, setStatus] = useState(null)
+  const [measurements, setMeasurements] = useState(null)
   const [access, setAccess] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
   const [showPing, setShowPing] = useState(false)
-  const [metrics, setMetrics] = useState("")
   const [pingMessage, setPingMessage] = useState("") // will show a loader while waiting for ping response
+  const [pinging, setPinging] = useState(false)
 
     const user = useContext(UserContext)
     const toggleLoading = useContext(LoadingContext).toggleLoading
@@ -48,6 +48,9 @@ function DeviceDetails(props) {
         if(props.device != null)
         {
             setDevice(props.device);
+            setStatus(props.device.deviceData.deviceStatus)
+            setBattery(props.device.deviceData.deviceBattery)
+            setMeasurements(props.device.measurementSet)
             filterMetrics()
 
         }else{
@@ -72,7 +75,7 @@ function DeviceDetails(props) {
     const filterMetrics = ()=>{
         let filteredMetrics = props.device.deviceData.deviceConfiguration.map((elem)=>{
             if(elem.settingType === "reportingFrequency"){
-                return {settingType: "Reporting Frequency", value: elem.value}
+                return {settingType: "Reporting Frequency", value: secondsToDhms(elem.value*60*60)}
             }
         })
         return filteredMetrics
@@ -81,13 +84,21 @@ function DeviceDetails(props) {
     const filterMeasurementSet = (measurements) => {
       if(measurements) {
           let filteredMetrics = measurements.map((elem) => {
+              let obj
               if (elem.type === "WATER_QUALITY") {
-                  return {type: "Water Quality", value: elem.value, measurement: "PH"}
+                  obj = {type: "Water Quality", value: elem.value, measurement: "PH"}
               } else if (elem.type === "WATER_TEMP") {
-                  return {type: "Water Temperature", value: elem.value, measurement: "°C"}
+                  obj =  {type: "Water Temperature", value: elem.value, measurement: "°C"}
               } else if (elem.type === "WATER_LEVEL") {
-                  return {type: "Water Depth", value: elem.value, measurement: "cm"}
+                  obj =  {type: "Water Depth", value: elem.value, measurement: "cm"}
               }
+              if (elem.value === -999)
+              {
+                  obj.measurement = ""
+                  obj.value = "NA"
+              }
+              return obj;
+
           })
           return filteredMetrics
       }
@@ -95,26 +106,26 @@ function DeviceDetails(props) {
     }
 
     const ping = ()=>{
-        toggleLoading()
+        setPinging(true)
         setPingMessage("")
         // call the device readings to see if device is active
         let obj = {
-            deviceName: device.deviceName,
-            numResults: 1, // will get the ping results
-            sorted: true
+            deviceID: device.deviceId
         }
-        axios.post('http://localhost:8080/api/devices/getDeviceData', obj, {
+        axios.post('http://localhost:8080/api/devices/pingDevice', obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }
             }
         ).then((res)=>{
-            toggleLoading()
+            setPinging(false)
             setShowPing(true)
             console.log(JSON.stringify(res.data))
             if(res.data.success === true){
                 //ping successful
                 setPingMessage(res.data.status)
+                setMeasurements(res.data.measurements)
+                setStatus(res.data.deviceStatus)
             }else
             {
                 setPingMessage(res.data.status)
@@ -122,8 +133,22 @@ function DeviceDetails(props) {
 
         }).catch((res)=>{
             toggleLoading()
-            console.log("response getDeviceData:"+JSON.stringify(res))
+            console.log("response ping:"+JSON.stringify(res))
         });
+    }
+
+    function secondsToDhms(seconds) {
+        seconds = Number(seconds);
+        let d = Math.floor(seconds / (3600*24));
+        let h = Math.floor(seconds % (3600*24) / 3600);
+        let m = Math.floor(seconds % 3600 / 60);
+        let s = Math.floor(seconds % 60);
+
+        let dDisplay = d > 0 ? d + (d === 1 ? " day, " : " days, ") : "";
+        let hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
+        let mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
+        let sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
+        return dDisplay + hDisplay + mDisplay + sDisplay;
     }
 
   return (
@@ -191,7 +216,7 @@ function DeviceDetails(props) {
                                 <Box
                                     paddingLeft="1.25rem"
                                 >
-                                    { device && device.deviceData && device.deviceData.deviceStatus }
+                                    { status }
                                 </Box>
 
                                 <Box
@@ -199,24 +224,36 @@ function DeviceDetails(props) {
                                     width="1rem!important"
                                     height="1rem!important"
                                 />
-                                <Box
-                                    paddingLeft="1.25rem"
-                                >
-                                    <Button
-                                        variant={"contained"}
-                                        size={"small"}
-                                        onClick={ ping }
+                                { !pinging &&
+                                    <Box
+                                        paddingLeft="1.25rem"
                                     >
-                                        Ping
-                                    </Button>
-                                </Box>
-
+                                        <Button
+                                            variant={"contained"}
+                                            size={"small"}
+                                            onClick={() => {
+                                                ping()
+                                            }}
+                                        >
+                                            Ping
+                                        </Button>
+                                    </Box>
+                                }
+                                { pinging &&
+                                    <Box
+                                        paddingLeft="1.25rem"
+                                    >
+                                        <Tooltip title="Ping..." arrow>
+                                            <ScaleLoader size={10} height={15} color={"#5E72E4"} speedMultiplier={1.5} />
+                                        </Tooltip>
+                                    </Box>
+                                }
                             </Box>
                         </Grid>
                     </Grid>
                 }
                 classes={{ root: classes.cardHeaderRoot }}
-            ></CardHeader>
+            />
             <CardContent>
                 <Grid container>
                     <Grid
@@ -336,7 +373,7 @@ function DeviceDetails(props) {
                         <b>Latest Device Readings</b>
                     </Grid>
 
-                    { device && device.measurementSet && filterMeasurementSet(device.measurementSet).map((item)=>{
+                    { measurements && filterMeasurementSet(measurements).map((item)=>{
                         return (
                             <>
                             { gridItem(item.type) }

@@ -21,5 +21,6 @@ public interface WaterSiteService {
     EditWaterSiteResponse editWaterSite(EditWaterSiteRequest editWaterSiteRequest);
     FindWaterSiteByDeviceResponse findWaterSiteByDeviceId(FindWaterSiteByDeviceRequest findWaterSiteByDeviceRequest);
     WaterSite getWaterSiteByRelatedDevice( UUID id);
+    DeleteWaterSiteInternalResponse deleteInternal(DeleteWaterSiteInternalRequest request);
 }
 

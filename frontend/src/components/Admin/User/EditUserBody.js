@@ -5,10 +5,10 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
-import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
-const { Form } = require( "react-bootstrap" );
+import {Alert} from "@material-ui/lab";
+import { Form } from "react-bootstrap";
 
 const styles = {
     col_left: {
@@ -25,16 +25,14 @@ const styles = {
 
 
 const EditUserBody = (props) => {
-    const [park, setPark] = useState("")
+
     const [idNumber, setIDNumber] = useState("")
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
     const [name, setName] = useState("")
     const [surname, setSurname] = useState("")
     const [username, setUsername] = useState("")
     const [role, setRole] = useState("")
     const [cellNumber, setCellNumber] = useState("")
-    const [parkOptions, setParkOptions] = useState("")
     const [error, setError] = useState("")
 
     const user = useContext(UserContext)
@@ -65,10 +63,8 @@ const EditUserBody = (props) => {
             let cell = p.cellNumber;
             cell = cell.substr(3)
 
-            setPark(p.park)
             setIDNumber(p.idNumber)
             setEmail(p.email)
-            setPassword(p.password)
             setName(p.name)
             setSurname(p.surname)
             setUsername(p.username)
@@ -83,6 +79,8 @@ const EditUserBody = (props) => {
         e.preventDefault()
 
         toggleLoading()
+
+        setError(false)
 
         if(props && props.userDetails)
         {
@@ -121,12 +119,11 @@ const EditUserBody = (props) => {
             ).then((res)=>{
 
                 console.log("response:"+JSON.stringify(res))
-                if(res.data.success === "false")
+                toggleLoading()
+                if(res.data.success === false)
                 {
                     setError(res.data.status)
-                    console.log("error with editing user")
                 }else{
-                    toggleLoading()
                     props.closeModal()
                     props.reloadUserTable()
                 }
@@ -235,9 +232,10 @@ const EditUserBody = (props) => {
 
                     </Col>
                 </Row>
-
-
-
+                
+                { error &&
+                <Alert severity={"warning"} className="mb-3">{error}</Alert>
+                }
 
                 <Button variant="primary" type="submit" >
                     Edit

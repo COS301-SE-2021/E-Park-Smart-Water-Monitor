@@ -4,20 +4,11 @@ import { useLocation, Route, Switch, Redirect } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-import FormControl from "@material-ui/core/FormControl";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import InputLabel from "@material-ui/core/InputLabel";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-// @material-ui/icons components
-import Search from "@material-ui/icons/Search";
 
 // core components
 import DashboardNavbar from "components/Navbars/DashboardNavbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-import NavbarDropdown from "components/Dropdowns/NavbarDropdown.js";
-
 import routes from "routes.js";
-
 import componentStyles from "assets/theme/layouts/dashboard.js";
 
 const useStyles = makeStyles(componentStyles);
@@ -64,31 +55,10 @@ const Dashboard = () => {
           routes={routes}
           logo={{
             innerLink: "/dashboard/index",
+            // eslint-disable-next-line no-undef
             imgSrc: require("../assets/img/brand/erp-logo-blue.png").default,
             imgAlt: "...",
           }}
-          // dropdown={<NavbarDropdown />}
-          // input={
-          //   <FormControl variant="outlined" fullWidth>
-          //     <InputLabel htmlFor="outlined-adornment-search-responsive">
-          //       Search
-          //     </InputLabel>
-          //     <OutlinedInput
-          //       id="outlined-adornment-search-responsive"
-          //       type="text"
-          //       endAdornment={
-          //         <InputAdornment position="end">
-          //           <Box
-          //             component={Search}
-          //             width="1.25rem!important"
-          //             height="1.25rem!important"
-          //           />
-          //         </InputAdornment>
-          //       }
-          //       labelWidth={70}
-          //     />
-          //   </FormControl>
-          // }
         />
         <Box position="relative" className={classes.mainContent}>
           <DashboardNavbar brandText={getBrandText(location.pathname)} />
@@ -100,9 +70,7 @@ const Dashboard = () => {
             maxWidth={false}
             component={Box}
             classes={{ root: classes.containerRoot }}
-          >
-
-          </Container>
+          />
         </Box>
       </>
     </>

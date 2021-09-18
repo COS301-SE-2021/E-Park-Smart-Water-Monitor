@@ -22,7 +22,6 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditParkBody from "./EditParkBody";
 import {Tooltip} from "@material-ui/core";
-import AdminContext from '../AdminContext'
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 
@@ -128,10 +127,6 @@ const ParkTable = (props) => {
     // on delete of a park
     const removePark = (id) => {
 
-        const config = {
-            headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
-        };
-
         return ()=>{
             toggleLoading()
             axios.delete('http://localhost:8080/api/park/deletePark', {
@@ -142,7 +137,7 @@ const ParkTable = (props) => {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }
-            }).then((res)=> {
+            }).then(()=> {
                 toggleLoading()
                 reloadParkTable()
 
@@ -213,7 +208,7 @@ const ParkTable = (props) => {
                                     </Grid>
                                 }
                                 classes={{ root: classes.cardHeaderRoot }}
-                            ></CardHeader>
+                            />
                             <TableContainer
                                 style={{maxHeight:"300px",overflowY:"auto"}}>
                                 <Box

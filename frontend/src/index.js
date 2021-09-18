@@ -6,7 +6,6 @@ import theme from "assets/theme/theme.js";
 import "assets/plugins/nucleo/css/nucleo.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/argon-dashboard-react.scss";
-import axios from "axios";
 import Routing from "./Routing";
 import {UserProvider} from "./Context/UserContext";
 import {LoadingProvider} from "./Context/LoadingContext";
@@ -15,8 +14,6 @@ import {PuffLoader} from "react-spinners";
 import Modal from "./components/Modals/Modal";
 import EditProfile from "./components/EditProfile/EditProfile";
 import {css} from "@emotion/react";
-import {Alert} from "@material-ui/lab";
-
 
 
 const override = css`
@@ -25,14 +22,6 @@ const override = css`
   border-color: red;
 `;
 
-const overlay = {
-    width: '100%',
-    height: '100%',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    zIndex: '10'
-}
 
 const App = () => {
     const [loading, setLoading] = useState(false)

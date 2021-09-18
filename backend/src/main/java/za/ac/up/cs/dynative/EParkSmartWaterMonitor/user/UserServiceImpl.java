@@ -3,6 +3,7 @@ package za.ac.up.cs.dynative.EParkSmartWaterMonitor.user;
 import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,11 +27,16 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.responses.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service("UserService")
 public class UserServiceImpl implements UserService {
+
+    @Value("${app.codeValidatrionPeriodHours}")
+    private int passwordExpirationPeriod;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -59,7 +65,23 @@ public class UserServiceImpl implements UserService {
         String name = request.getName();
         String surname = request.getSurname();
         String email = request.getEmail();
-        String password = request.getPassword();
+
+        //create a random password:
+        String upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lowerAlphabet = "abcdefghijklmnopqrstuvwxyz";
+        String numbers = "0123456789";
+        String specials= "?/.,><)({}[];:'|";
+        String alphaNumeric = upperAlphabet + lowerAlphabet + numbers + specials;
+        StringBuilder sb = new StringBuilder();
+        Random random= new Random();
+        int length= 25;
+        for (int i= 0; i<length; i++){
+            int index= random.nextInt(alphaNumeric.length());
+            char randomChar = alphaNumeric.charAt(index);
+            sb.append(randomChar);
+        }
+        String password= sb.toString();
+
         String username = request.getUsername();
         String role = request.getRole();
         String cellNumber = request.getCellNumber();
@@ -111,7 +133,9 @@ public class UserServiceImpl implements UserService {
                     Park park = findByParkIdResponse.getPark();
                     if (park != null) {
                         User user = new User(Long.parseLong(idNumber), email, name, surname, passwordEncoder.encode(password), username, role, park, cellNumber);
-                        userRepo.save(user);
+//                        userRepo.save(user);
+                        userRepo.addUser( UUID.randomUUID(),user.getIdNumber(),user.getEmail(), user.getName(),user.getName(),user.getSurname(),user.getUsername(),user.getRole(),user.getPark().getId(),user.getPark().getParkName(),user.getCellNumber());
+
                         response.setStatus("Successfully create user: "
                                 + name
                                 + " "
@@ -235,6 +259,44 @@ public class UserServiceImpl implements UserService {
             return new LoginResponse("", false);
         }
         String JWTToken = "";
+        //-----------decode password-----------
+        //get the values of d, num1, num2 and x
+        int split = password.lastIndexOf('|');
+        split--;
+        String info= password.substring(split);
+        String salted= password.substring(0,split);
+
+        int d= Integer.parseInt(String.valueOf(info.charAt(0)));
+        info= info.substring(2);
+        int num1= Integer.parseInt(info.substring(0,info.indexOf('?')));
+        info=info.substring(info.indexOf('?')+1, info.length()-1);
+        int x= Integer.parseInt(String.valueOf(info.charAt(info.length()-1)));
+        info= info.substring(0,info.indexOf('*'));
+        int num2= Integer.parseInt(String.valueOf(info));
+
+        //shift the characters back to their original characters.
+        for (int i = x+d -1 ; i< salted.length() ; i+= x+d){
+            char chr = salted.charAt(i);
+            chr -= d;
+            salted = salted.substring(0,i)+chr+salted.substring(i+1);
+        }
+
+        // remove extra characters
+        AtomicInteger splitCounter = new AtomicInteger(0);
+        Collection<String> pieces = salted
+                .chars()
+                .mapToObj(_char -> String.valueOf((char)_char))
+                .collect(Collectors.groupingBy(stringChar -> splitCounter.getAndIncrement() / x
+                        ,Collectors.joining()))
+                .values();
+        String orginal="";
+        for (String s: pieces){
+            orginal+= s.substring(0,s.length()-1);
+        }
+
+        password=orginal;
+
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
         assert userRepo != null;
         List<User> users = userRepo.findUserByUsername(username);
@@ -360,9 +422,9 @@ public class UserServiceImpl implements UserService {
             user.setActivationCode(code);
 
             //code expiration
-            user.setResetPasswordExpiration(LocalDateTime.now().plusHours(2));
+            user.setResetPasswordExpiration(LocalDateTime.now().plusHours(passwordExpirationPeriod));
 
-            String message = "We received your request to reset your password. The code that follows will be valid for 2 hours. ";
+            String message = "We received your request to reset your password. The code that follows will be valid for "+passwordExpirationPeriod+" hours. ";
 
             //send email
             ArrayList<String> to= new ArrayList<>();
@@ -400,8 +462,52 @@ public class UserServiceImpl implements UserService {
         if (userList.get(0).getResetPasswordExpiration().isAfter(LocalDateTime.now())){
             if (code.equals(userList.get(0).getActivationCode()) && password1.equals(password2)){
 
+                //-----------decode password-----------
+                //get the values of d, num1, num2 and x
+                int split = password1.lastIndexOf('|');
+                split--;
+                String info= password1.substring(split);
+                String salted= password1.substring(0,split);
+
+                int d= Integer.parseInt(String.valueOf(info.charAt(0)));
+                info= info.substring(2);
+                int num1= Integer.parseInt(info.substring(0,info.indexOf('?')));
+                info=info.substring(info.indexOf('?')+1, info.length()-1);
+                int x= Integer.parseInt(String.valueOf(info.charAt(info.length()-1)));
+                info= info.substring(0,info.indexOf('*'));
+                int num2= Integer.parseInt(String.valueOf(info));
+
+                //shift the characters back to their original characters.
+                for (int i = x+d -1 ; i< salted.length() ; i+= x+d){
+                    char chr = salted.charAt(i);
+                    chr -= d;
+                    salted = salted.substring(0,i)+chr+salted.substring(i+1);
+                }
+
+                // remove extra characters
+                AtomicInteger splitCounter = new AtomicInteger(0);
+                Collection<String> pieces = salted
+                        .chars()
+                        .mapToObj(_char -> String.valueOf((char)_char))
+                        .collect(Collectors.groupingBy(stringChar -> splitCounter.getAndIncrement() / x
+                                ,Collectors.joining()))
+                        .values();
+                String orginal="";
+                for (String s: pieces){
+                    orginal+= s.substring(0,s.length()-1);
+                }
+
+                //-----------confirm the password is valid-----------
+                Pattern p = Pattern.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$");
+                Matcher m = p.matcher(orginal);
+                if (!m.find()){
+                    return new ResetPasswordFinalizeResponse("The password does not comply with the minimum requirements. " +
+                            "Your password should contain atleast 10 characters, one capital letter, one lower case letter, " +
+                            "one number and finally a minimum of one special character: #, ?, !, @, $, %, ^, &, *, -",false);
+                }
+
                 BCryptPasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
-                String passwordNew= passwordEncoder.encode(password1);
+                String passwordNew= passwordEncoder.encode(orginal);
                 userList.get(0).setPassword(passwordNew);
                 userList.get(0).setResetPasswordExpiration(LocalDateTime.now());
 

@@ -1,16 +1,10 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Button, Form} from 'react-bootstrap';
-
-import { makeStyles } from "@material-ui/core/styles";
-import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addDevice.css";
 import axios from "axios";
-import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 import Select from "react-select";
-
-const useStyles = makeStyles(componentStyles);
 
 const statusOptions = [
     { value: "NOT STARTED", label: "Not Started" },
@@ -26,9 +20,6 @@ const EditInspection = (props) => {
     const loader = useContext(LoadingContext)
     const toggleLoading = loader.toggleLoading
 
-    const selectDescription = (event) => {
-      setDescription(event.target.value)
-    }
 
     useEffect(() => {
         if (props){
@@ -67,7 +58,7 @@ const EditInspection = (props) => {
       });
 
         //set description
-        var body = {
+        body = {
             inspectionId: props.inspectionDetails.id,
             description: description,
         }

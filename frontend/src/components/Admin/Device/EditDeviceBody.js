@@ -1,7 +1,4 @@
 import React, {useContext, useEffect, useState} from "react";
-
-import { makeStyles } from "@material-ui/core/styles";
-import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addUser.css";
 // Be sure to include styles at some point, probably during your bootstrapping
 // import 'react-select/dist/react-select.css';
@@ -12,14 +9,11 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
 import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
-import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
-const { Form } = require( "react-bootstrap" );
+import { Form } from  "react-bootstrap";
+import {Alert} from "@material-ui/lab";
 
-
-
-const useStyles = makeStyles(componentStyles);
 const mapStyles = {
     width: `100%`,
     height: `100%`
@@ -27,18 +21,10 @@ const mapStyles = {
 
 const EditDeviceBody = (props) => {
 
-    // retrieved items from the DB to populate the select components
-    const [parkOptions, setParkOptions] = useState("")
-    const [siteOptions, setSiteOptions] = useState("")
-    const [siteLoading, setSiteLoading] = useState(true)
-    const [parkLoading, setParkLoading] = useState(true)
-
     // park must be selected before the site can be selected to maintain validity
 
     const [name, setName] = useState("")
-    const [park, setPark] = useState("") // id and name stored
-    const [site, setSite] = useState("") // id and name stored
-    const [model, setModel] = useState("ESP32")
+    const [model] = useState("ESP32")
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
     const [error, setError] = useState("")
@@ -47,13 +33,14 @@ const EditDeviceBody = (props) => {
     const loader = useContext(LoadingContext)
     const toggleLoading = loader.toggleLoading
 
-    function MapEvents() {
+    function MapEvents(props) {
         const map = useMapEvents({
             click: (e) => {
                 setLatitude(e.latlng.lat)
                 setLongitude(e.latlng.lng)
             }
         })
+        map.setView({lat: props.deviceDetails.deviceData.latitude, lng: props.deviceDetails.deviceData.longitude} )
         return null
     }
 
@@ -64,19 +51,21 @@ const EditDeviceBody = (props) => {
         {
             // set all your device details here
             setName(props.deviceDetails.deviceName)
+            setLatitude(props.deviceDetails.deviceData.latitude)
+            setLongitude(props.deviceDetails.deviceData.longitude)
         }
     },[props.deviceDetails])
 
     const submit = (e) => {
         toggleLoading()
         e.preventDefault()
+        setError(null)
 
         if(props && props.deviceDetails)
         {
             // device edit request
             let obj = {
-                parkName: park,
-                siteId: site,
+                deviceId: props.deviceDetails.deviceId,
                 deviceModel: model,
                 deviceType: "WaterSource",
                 deviceName: name,
@@ -84,8 +73,7 @@ const EditDeviceBody = (props) => {
                 longitude: longitude
             }
 
-
-            axios.post('http://localhost:8080/api/user/editDevice', obj, {
+            axios.put('http://localhost:8080/api/devices/editDevice', obj, {
                     headers: {
                         'Authorization': "Bearer " + user.token
                     }
@@ -93,7 +81,7 @@ const EditDeviceBody = (props) => {
             ).then((res)=>{
                 toggleLoading()
                 console.log("response:"+JSON.stringify(res))
-                if(res.data.success === "false")
+                if(res.data.success === false)
                 {
                     setError(res.data.status)
                     console.log("error with editing device")
@@ -107,8 +95,6 @@ const EditDeviceBody = (props) => {
                 console.log("response:"+JSON.stringify(res))
             });
         }
-
-
     }
 
 
@@ -153,16 +139,19 @@ const EditDeviceBody = (props) => {
                                 />
                                 <Marker position={[latitude, longitude]}>
                                     <Popup>
-                                        <h3>{name}</h3>
+                                        <p><b>{name}</b></p>
                                         location
                                     </Popup>
                                 </Marker>
-                                <MapEvents/>
+                                <MapEvents deviceDetails={props.deviceDetails}/>
                             </MapContainer>}
                         </div>
                     </Col>
                 </Row>
 
+                { error &&
+                    <Alert severity={"warning"} className="mb-3">{error}</Alert>
+                }
 
                 <Button background-color="primary" variant="primary" type="submit">
                     Edit

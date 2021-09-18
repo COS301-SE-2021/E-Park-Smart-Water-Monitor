@@ -21,12 +21,10 @@ import MenuIcon from "@material-ui/icons/Menu";
 // core components
 import componentStyles from "assets/theme/components/sidebar.js";
 import {UserContext} from "../../Context/UserContext";
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import {Contacts, Email, EmojiPeople, People, Pets, Smartphone} from "@material-ui/icons";
+import {Contacts, Email, People, Pets, Smartphone} from "@material-ui/icons";
 import Person from "@material-ui/icons/Person";
 import Button from "@material-ui/core/Button";
 import EditProfileContext from "../../Context/EditProfileContext";
-import LoadingContext from "../../Context/LoadingContext";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -60,7 +58,7 @@ export default function Sidebar({ routes, logo, dropdown, input }) {
 
     // Test admin status and remove that element from appearing
     let routesWithAdminConstraint = []
-    if(user.role && user.role !== "ADMIN")
+    if(user.role && user.role === "RANGER" )
     {
       // remove the admin prop from the array
       routesWithAdminConstraint = routes.filter((elem)=>{

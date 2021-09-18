@@ -1,8 +1,4 @@
 import React, {useContext, useEffect, useState} from "react";
-
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
-import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addDevice.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -40,7 +36,7 @@ const AddSiteBody = (props) => {
     },[])
 
     function MapEvents() {
-        const map = useMapEvents({
+        useMapEvents({
             click: (e) => {
                 setLatitude(e.latlng.lat)
                 setLongitude(e.latlng.lng)

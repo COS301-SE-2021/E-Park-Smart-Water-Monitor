@@ -53,6 +53,7 @@ public class DeviceController {
     public ResponseEntity<Object> getNumDevices(@RequestBody GetParkDevicesRequest getParkDevicesRequest) throws InvalidRequestException {
         return new ResponseEntity<>(devicesService.getParkDevices(getParkDevicesRequest), HttpStatus.OK);
     }
+
     @GetMapping("/getAllDevices")
     public ResponseEntity<Object> getNumDevices() {
         return new ResponseEntity<>(devicesService.getAllDevices(),HttpStatus.OK);

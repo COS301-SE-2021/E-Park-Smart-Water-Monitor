@@ -104,23 +104,65 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
-                .antMatchers("/api/devices/addDevice").hasAnyRole("ADMIN", "FIELD_ENGINEER")
+
+                //devices:
+                .antMatchers("/api/devices/receiveDeviceData").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/devices/getDevice").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/devices/getDevice").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/devices/getStatus").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/devices/getNumDevices").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/devices/getParkDevices").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/devices/getAllDevices").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/devices/getById").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/devices/getDeviceData").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/devices/setMetricFrequency").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
                 .antMatchers("/api/devices/editDevice").hasAnyRole("ADMIN", "FIELD_ENGINEER")
-                .antMatchers("addInspection/addInspection").hasAnyRole("ADMIN", "FIELD_ENGINEER")
+                .antMatchers("addInspection/deleteDevice").hasAnyRole("ADMIN", "FIELD_ENGINEER")
+                .antMatchers("/api/devices/addDevice").hasAnyRole("ADMIN", "FIELD_ENGINEER")
+
+                //inspections:
+                .antMatchers("/api/inspections/setComments").hasAnyRole("ADMIN", "FIELD_ENGINEER","RANGER")
+                .antMatchers("/api/inspections/getDeviceInspections").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/inspections/getSiteInspections").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/inspections/addInspection").hasAnyRole("ADMIN", "FIELD_ENGINEER")
+                .antMatchers("/api/inspections/setDescription").hasAnyRole("ADMIN", "FIELD_ENGINEER")
+                .antMatchers("/api/inspections/setStatus").hasAnyRole("ADMIN", "FIELD_ENGINEER")
+
+                //notifications:
+                .antMatchers("/api/notifications/mail").hasAnyRole("ADMIN")
+                .antMatchers("/api/notifications/sms").hasAnyRole("ADMIN")
+
+                //park:
                 .antMatchers("/api/park/addPark").hasAnyRole("ADMIN")
+                .antMatchers("/api/park/getParkWaterSites").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
                 .antMatchers("/api/park/editPark").hasAnyRole("ADMIN")
-                .antMatchers("/api/user/createUser").permitAll()
+                .antMatchers("/api/park/getAllParks").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/park/getAllParksAndSites").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/park/deletePark").hasAnyRole("ADMIN")
+
+                //user:
+                .antMatchers("/api/user/getUser").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/user/getAllUsers").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/user/createUser").hasAnyRole("ADMIN")
                 .antMatchers("/api/user/deleteUser").hasAnyRole("ADMIN")
                 .antMatchers("/api/user/editUser").hasAnyRole("ADMIN")
                 .antMatchers("/api/user/resetPassword").permitAll()
                 .antMatchers("/api/user/resetPasswordFinalize").permitAll()
-                .antMatchers("/api/sites/addSite").hasAnyRole("ADMIN")
                 .antMatchers("/api/user/login").permitAll()
+
+                //water site:
+                .antMatchers("/api/sites/getAllSites").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/sites/getSite").hasAnyRole("ADMIN", "FIELD_ENGINEER", "RANGER")
+                .antMatchers("/api/sites/addSite").hasAnyRole("ADMIN")
+                .antMatchers("/api/sites/deleteWaterSite").hasAnyRole("ADMIN")
+                .antMatchers("/api/sites/editWaterSite").hasAnyRole("ADMIN")
+
                 .anyRequest().fullyAuthenticated()
                 .and()
                 .httpBasic()
                 .and()
                 .csrf().disable();
+                http.cors();
 
         http.addFilter(new JwtAuthorizationFilter(authenticationManager(),jwtTokenProvider));
     }
