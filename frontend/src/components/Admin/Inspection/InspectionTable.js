@@ -24,6 +24,7 @@ import ForumIcon from '@material-ui/icons/Forum';
 import EditInspection from "./EditInspection";
 import Comments from "./Comments";
 import {ScaleLoader} from "react-spinners";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -77,39 +78,40 @@ const InspectionTable = () => {
                             <TableCell
                                 classes={{
                                     root:
-                                        classes.tableCellRoot +
-                                        " " +
-                                        classes.tableCellRootBodyHead,
+                                        classes.tableCellRoot 
+                                        // " " +
+                                        // classes.tableCellRootBodyHead,
                                 }}
-                                component="th"
-                                variant="head"
-                                scope="row"
+                                // component="th"
+                                // variant="head"
+                                // scope="row"
                             >
                                 { inspection.dateDue?.split("T")[0] }
                             </TableCell>
                             <TableCell classes={{ root: classes.tableCellRoot }}>
                                 { inspection.status }
                             </TableCell>
-                            <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
+                            <TableCell classes={{ root: classes.tableCellRoot }}>
                                 { inspection.description }
                             </TableCell>
                             <TableCell classes={{root: classes.tableCellRoot}}
                                        style={{verticalAlign: 'middle'}}>
                                 <Tooltip title="Comments" arrow>
-                                    <ForumIcon aria-label="forum"
-                                              onClick={ () => {setShowComments(true); setInspec(inspection)} }>
-                                    </ForumIcon>
+                                    <IconButton aria-label="comments" onClick={ () => {setShowComments(true); setInspec(inspection)} }>
+                                          <ForumIcon/>
+                                    </IconButton>
                                 </Tooltip>
                             </TableCell>
                             <TableCell classes={{root: classes.tableCellRoot}}
                                        style={{verticalAlign: 'middle'}}>
                                 <Tooltip title="Edit" arrow>
-                                    <EditIcon aria-label="edit"
-                                              onClick={() => {
-                                                  setShowEditInspection(true);
-                                                  setInspec(inspection)
-                                              }}>
-                                    </EditIcon>
+                                    <IconButton aria-label="edit" onClick={() => {
+                                        setShowEditInspection(true);
+                                        setInspec(inspection)
+                                    }}>
+                                        <EditIcon/>
+                                    </IconButton>
+
                                 </Tooltip>
                             </TableCell>
 
