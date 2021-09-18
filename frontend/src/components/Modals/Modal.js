@@ -16,7 +16,7 @@ const Modal = props => {
 
         if(props.title)
         {
-            let m =  <div className="modal" onClick={ props.onClose() }>
+            let m =  <div className="modal" onClick={ ()=>{props.onClose()} }>
                 <div className="modal-content" onClick={e => e.stopPropagation()}>
                     { props.title && <div className="modal-header">
 
@@ -31,7 +31,6 @@ const Modal = props => {
 
             setResult(m)
         }else{
-            alert("loader")
             let m =  <div className="modal" >
                 <div className="modal-content" onClick={e => e.stopPropagation()}>
                     <div className="modal-body">{props.children}</div>

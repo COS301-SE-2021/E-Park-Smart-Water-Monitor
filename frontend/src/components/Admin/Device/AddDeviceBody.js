@@ -68,14 +68,19 @@ const AddDeviceBody = (props) => {
     // get the parks to populate the select
     useEffect(() => {
 
-        let options = props.parksAndSites.parks.map((p)=>{
-            return {value: p.id, label: p.parkName}
-        })
+        if(props.parksAndSites)
+        {
+            let options = props.parksAndSites.parks.map((p)=>{
+                return {value: p.id, label: p.parkName}
+            })
 
-        //set all park options in select
-        setParkOptions(options)
-        // set the defult park option to the first item, will cause other useEffect to be sparked
-        setPark(options[0])
+            //set all park options in select
+            setParkOptions(options)
+            // set the defult park option to the first item, will cause other useEffect to be sparked
+            setPark(options[0])
+        }
+
+
 
     },[])
 
