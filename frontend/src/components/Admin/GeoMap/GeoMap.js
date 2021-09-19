@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
+import 'ol/ol.css';
 import { fromLonLat, transformExtent, toLonLat } from 'ol/proj';
 import Map from 'ol/Map'
 import View from 'ol/View'
+import {Control, defaults as defaultControls} from 'ol/control';
+import componentStyles from "assets/theme/views/admin/admin";
 import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
 import VectorSource from 'ol/source/Vector'
@@ -15,11 +18,32 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import GeoJSON from 'ol/format/GeoJSON';
 import "./GeoMap.css"
+import Box from "@material-ui/core/Box";
+import Modal from "../../Modals/Modal";
+import EditInspection from "../Inspection/EditInspection";
+import Comments from "../Inspection/Comments";
+import Grid from "@material-ui/core/Grid";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import Typography from "@material-ui/core/Typography";
+import {Tooltip} from "@material-ui/core";
+import {Refresh} from "@material-ui/icons";
+import {ScaleLoader} from "react-spinners";
+import TableContainer from "@material-ui/core/TableContainer";
+import Table from "@material-ui/core/Table";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import TableBody from "@material-ui/core/TableBody";
+import Container from "@material-ui/core/Container";
+import {makeStyles} from "@material-ui/core/styles";
 
 let isOn=false;
 
-function GeoMap(props) {
+const useStyles = makeStyles(componentStyles);
 
+function GeoMap(props) {
+    const classes = useStyles();
     const [ map, setMap ] = useState()
     const [ borderLayer, setBorderLayer ] = useState()
     const [ elevationLayer, setElevationLayer ] = useState()
@@ -138,6 +162,7 @@ function GeoMap(props) {
         // create map
         const initialMap = new Map({
             target: mapElement.current,
+            controls: defaultControls(),
             layers: [
 
                 new TileLayer({
@@ -162,7 +187,6 @@ function GeoMap(props) {
                 // visibility:0.2
                 //minZoom: 4,
             }),
-            controls:[]
         })
 
         // set map onclick handler
@@ -344,9 +368,9 @@ function GeoMap(props) {
     }
     // render component
     return (
+        <>
         <div>
 
-            <div ref={(mapElement)} className="map-container"></div>
             <div >
                 {/*<p>{ (selectedCoord) ? toStringXY(selectedCoord, 5) : '' }</p>*/}
                 <p>{(gatewayOn) }</p>
@@ -356,11 +380,173 @@ function GeoMap(props) {
             <div className="clicked-coord-label">
                 <p>{ (selectedCoord) ? toStringXY(selectedCoord, 5) : '' }</p>
             </div>
-            <button onClick={toggleBorder}>Toggle borderOverlay</button>
-            <button onClick={toggleElevation}>Toggle elevation</button>
-            <button onClick={toggleGateway}>Toggle gateway</button>
+
 
         </div>
+
+    <Container
+        maxWidth={false}
+        component={Box}
+        marginTop="-3rem"
+        classes={{ root: classes.containerRoot }}
+    >
+        {/*<Modal title= "Edit Inspection" onClose={() => setShowEditInspection(false)} show={showEditInspection}>*/}
+        {/*    <EditInspection reloadInspectionTable={ reloadInspectionTable } inspectionDetails={inspec} tog={() =>toggleshowEditInspection() }/>*/}
+        {/*</Modal>*/}
+        {/*<Modal title= "Inspection Comments" onClose={() => setShowComments(false)} show={showComments}>*/}
+        {/*    <Comments reloadInspectionTable={ reloadInspectionTable } inspectionDetails={inspec} tog={() =>toggleshowComments() }/>*/}
+        {/*</Modal>*/}
+        <Grid container component={Box} marginTop="3rem">
+            <Grid
+                item
+                xs={12}
+                xl={12}
+                component={Box}
+                classes={{ root: classes.gridItemRoot }}
+            >
+                <Card classes={{
+                    root: classes.cardRoot,
+                }}>
+                    <CardHeader
+                        subheader={
+                            <Grid
+                                container
+                                component={Box}
+                                alignItems="center"
+                                justifyContent="space-between"
+                            >
+                                <Grid item xs="auto">
+                                    <Box
+                                        component={Typography}
+                                        variant="h3"
+                                        marginBottom="0!important"
+                                    >
+                                        Elevation and Signal Map
+                                    </Box>
+                                </Grid>
+                                <Grid item xs="auto">
+                                    <Box
+                                        justifyContent="flex-end"
+                                        display="flex"
+                                        flexWrap="wrap"
+                                    >
+                                        {
+                                            // !reload &&
+                                        <Tooltip title="Refresh Inspections" arrow>
+                                            <Box
+                                                component={Refresh}
+                                                width="1.25rem!important"
+                                                height="1.25rem!important"
+                                                className={classes["text"]}
+                                                // onClick={()=>{ reloadInspectionTable() }}
+                                                onClick={()=>{
+
+                                                }}
+                                            />
+                                        </Tooltip>
+                                        }
+                                        {/*{ reload &&*/}
+                                        {/*<ScaleLoader size={10} height={15} color={"#5E72E4"} speedMultiplier={1.5} />*/}
+                                        {/*}*/}
+                                    </Box>
+                                </Grid>
+                            </Grid>
+                        }
+                        classes={{ root: classes.cardHeaderRoot }}
+
+                    >
+                    </CardHeader>
+
+                    <Grid
+                        container
+                        component={Box}
+                        alignItems="center"
+                        justifyContent="space-between"
+                    >
+                        <Grid item xs={10}>
+                            <Box
+                                // component={Typography}
+                                // variant="h3"
+                                // marginBottom="0!important"
+                            >
+                                <div ref={(mapElement)} className="map-container"></div>
+                            </Box>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Box
+                                // component={Typography}
+                                // variant="h3"
+                                // marginBottom="0!important"
+                            >
+
+                                <button onClick={toggleBorder}>Toggle borderOverlay</button> <br/>
+                                <button onClick={toggleElevation}>Toggle elevation</button><br/>
+                                <button onClick={toggleGateway}>Toggle gateway</button>
+                            </Box>
+                        </Grid>
+
+                        {/*<Grid item xs="auto">*/}
+                        {/*    <Box*/}
+                        {/*        justifyContent="flex-end"*/}
+                        {/*        display="flex"*/}
+                        {/*        flexWrap="wrap"*/}
+                        {/*    >*/}
+                        {/*        {*/}
+                        {/*            // !reload &&*/}
+                        {/*            <Tooltip title="Refresh Inspections" arrow>*/}
+                        {/*                <Box*/}
+                        {/*                    component={Refresh}*/}
+                        {/*                    width="1.25rem!important"*/}
+                        {/*                    height="1.25rem!important"*/}
+                        {/*                    className={classes["text"]}*/}
+                        {/*                    // onClick={()=>{ reloadInspectionTable() }}*/}
+                        {/*                    onClick={()=>{*/}
+
+                        {/*                    }}*/}
+                        {/*                />*/}
+                        {/*            </Tooltip>*/}
+                        {/*        }*/}
+                        {/*        /!*{ reload &&*!/*/}
+                        {/*        /!*<ScaleLoader size={10} height={15} color={"#5E72E4"} speedMultiplier={1.5} />*!/*/}
+                        {/*        /!*}*!/*/}
+                        {/*    </Box>*/}
+                        {/*</Grid>*/}
+                    </Grid>
+
+                </Card>
+            </Grid>
+            <Grid
+                item
+                xs={4}
+                xl={10}
+                component={Box}
+                marginBottom="3rem!important"
+                classes={{ root: classes.gridItemRoot }}
+            >
+            </Grid>
+            <Grid
+                item
+                justify="end"
+                xs={8}
+                xl={2}
+                component={Box}
+                marginBottom="3rem!important"
+                classes={{ root: classes.gridItemRoot }}
+                style={{ display: "flex", justifyContent: "flex-end", marginTop: "5px"}}>
+                {/*<Button*/}
+                {/*    variant="contained"*/}
+                {/*    color="primary"*/}
+                {/*    size="medium"*/}
+                {/*    style={{width:'200px'}}*/}
+                {/*    onClick={() => setShow(!show)}*/}
+                {/*>*/}
+                {/*    Refresh Table*/}
+                {/*</Button>*/}
+            </Grid>
+        </Grid>
+
+    </Container>
+        </>
     )
 
 }

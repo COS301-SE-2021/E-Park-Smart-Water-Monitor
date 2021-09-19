@@ -50,7 +50,7 @@ const overlay = css`
 
 const gmap = css`
   height: 50vh;
-  width: 70%;
+  width: 100%;
 `;
 function Admin() {
     const classes = useStyles();
@@ -218,6 +218,7 @@ function Admin() {
                             <SiteTable park={park}/>
                         </Grid>
                         }
+
 
 
                         {user.role === "ADMIN" &&
