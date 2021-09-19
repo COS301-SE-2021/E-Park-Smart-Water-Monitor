@@ -166,7 +166,7 @@
 	</dependencies>
 
 	<build>
-<!-- 		<testSourceDirectory>src/test/java/za/ac/up/cs/dynative/EParkSmartWaterMonitor</testSourceDirectory>
+		<testSourceDirectory>src/test/java/za/ac/up/cs/dynative/EParkSmartWaterMonitor</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -184,6 +184,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-		</plugins> -->
+		</plugins>
 	</build>
 </project>
