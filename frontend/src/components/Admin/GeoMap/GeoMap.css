@@ -20,17 +20,18 @@
 .map-container{
     height: 50vh;
     width: 100%;
+    z-index:1 ;
 }
 
 .clicked-coord-label{
-    float: right;
-    position: relative;
-    right: 0;
-    bottom: 0;
+    float: bottom;
+    position: absolute;
+    right: 20px;
+    bottom: -20px;
     background: white;
-    border-radius: 5px;
+    border-radius: 0px;
 }
 
 .clicked-coord-label p {
-    margin: 10px;
+    margin: 0px;
 }

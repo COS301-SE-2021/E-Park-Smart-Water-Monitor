@@ -37,7 +37,13 @@ import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import Container from "@material-ui/core/Container";
 import {makeStyles} from "@material-ui/core/styles";
-
+import Button from "@material-ui/core/Button";
+// import HeightIcon from '@mui/icons-material/Height';
+// import CellWifiIcon from '@mui/icons-material/CellWifi';
+import { MdSettingsInputAntenna } from "react-icons/md";
+import { MdTimeline } from "react-icons/md";
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 let isOn=false;
 
 const useStyles = makeStyles(componentStyles);
@@ -49,6 +55,7 @@ function GeoMap(props) {
     const [ elevationLayer, setElevationLayer ] = useState()
     const [ gatewayLayer, setGatewayLayer ] = useState()
     const [ selectedCoord , setSelectedCoord ] = useState()
+    const [view, setView] = React.useState("list");
 
     const [ gatewayOn , setGatewayOn,getGatewayOn ] = useState(props.gatewayOn)
     const [ reserveBorder , setReserveBorder ] = useState(props.mapO)
@@ -88,6 +95,18 @@ function GeoMap(props) {
     //  https://stackoverflow.com/a/60643670
     // pull refs
 
+    const handleChange = (event, nextView) => {
+        setView(nextView);
+        console.log(view)
+        // alert(nextView.valueOf());
+
+        if (view==="elevation")
+            toggleElevation()
+        if(view==="gateway")
+            toggleGateway()
+
+
+    };
     const mapElement = useRef()
 
     const mapRef = useRef()
@@ -369,21 +388,6 @@ function GeoMap(props) {
     // render component
     return (
         <>
-        <div>
-
-            <div >
-                {/*<p>{ (selectedCoord) ? toStringXY(selectedCoord, 5) : '' }</p>*/}
-                <p>{(gatewayOn) }</p>
-
-            </div>
-
-            <div className="clicked-coord-label">
-                <p>{ (selectedCoord) ? toStringXY(selectedCoord, 5) : '' }</p>
-            </div>
-
-
-        </div>
-
     <Container
         maxWidth={false}
         component={Box}
@@ -432,17 +436,8 @@ function GeoMap(props) {
                                     >
                                         {
                                             // !reload &&
-                                        <Tooltip title="Refresh Inspections" arrow>
-                                            <Box
-                                                component={Refresh}
-                                                width="1.25rem!important"
-                                                height="1.25rem!important"
-                                                className={classes["text"]}
-                                                // onClick={()=>{ reloadInspectionTable() }}
-                                                onClick={()=>{
-
-                                                }}
-                                            />
+                                        <Tooltip title="Coordinates" arrow>
+                                                <p>{ (selectedCoord) ? toStringXY(selectedCoord, 5) : '' }</p>
                                         </Tooltip>
                                         }
                                         {/*{ reload &&*/}
@@ -456,7 +451,38 @@ function GeoMap(props) {
 
                     >
                     </CardHeader>
+                    <Box style={{float:'right'}}>
 
+                        <ToggleButtonGroup value={view} exclusive onChange={handleChange}  style={{float:'right' , marginTop:'3%',zIndex: '100',overflow: 'auto'}}>
+                            <ToggleButton value="elevation" aria-label="elevation">
+                                <MdTimeline />
+                                Elevation
+                            </ToggleButton>
+                            <ToggleButton value="gateway" aria-label="gateway">
+                                <MdSettingsInputAntenna />
+                                Gateway
+                            </ToggleButton>
+                        </ToggleButtonGroup>
+
+                        {/*<Button*/}
+                        {/*    variant="contained"*/}
+                        {/*    color="primary"*/}
+                        {/*    size="medium"*/}
+                        {/*    style={{width: '100px'}}*/}
+                        {/*    onClick={toggleBorder}>Toggle<br/> mask</Button> <br/>*/}
+                        {/*<Button*/}
+                        {/*    variant="contained"*/}
+                        {/*    color="primary"*/}
+                        {/*    size="medium"*/}
+                        {/*    style={{width: '100px'}}*/}
+                        {/*    onClick={toggleElevation}>Toggle elevation</Button><br/>*/}
+                        {/*<Button*/}
+                        {/*    variant="contained"*/}
+                        {/*    color="primary"*/}
+                        {/*    size="medium"*/}
+                        {/*    style={{width: '100px'}}*/}
+                        {/*    onClick={toggleGateway}>Toggle gateway</Button>*/}
+                    </Box>
                     <Grid
                         container
                         component={Box}
@@ -468,41 +494,13 @@ function GeoMap(props) {
                                 <div ref={(mapElement)} className="map-container"></div>
                             </Box>
                         </Grid>
-                        <Grid item xs={2}>
+                        <Grid item xs={2} style={{height: '100%',float:'top'}}>
                             <Box>
-
-                                <button onClick={toggleBorder}>Toggle borderOverlay</button> <br/>
-                                <button onClick={toggleElevation}>Toggle elevation</button><br/>
-                                <button onClick={toggleGateway}>Toggle gateway</button>
+                                <div className="clicked-coord-label">
+                                    <p>{ (selectedCoord) ? toStringXY(selectedCoord, 5) : '' }</p>
+                                </div>
                             </Box>
                         </Grid>
-
-                        {/*<Grid item xs="auto">*/}
-                        {/*    <Box*/}
-                        {/*        justifyContent="flex-end"*/}
-                        {/*        display="flex"*/}
-                        {/*        flexWrap="wrap"*/}
-                        {/*    >*/}
-                        {/*        {*/}
-                        {/*            // !reload &&*/}
-                        {/*            <Tooltip title="Refresh Inspections" arrow>*/}
-                        {/*                <Box*/}
-                        {/*                    component={Refresh}*/}
-                        {/*                    width="1.25rem!important"*/}
-                        {/*                    height="1.25rem!important"*/}
-                        {/*                    className={classes["text"]}*/}
-                        {/*                    // onClick={()=>{ reloadInspectionTable() }}*/}
-                        {/*                    onClick={()=>{*/}
-
-                        {/*                    }}*/}
-                        {/*                />*/}
-                        {/*            </Tooltip>*/}
-                        {/*        }*/}
-                        {/*        /!*{ reload &&*!/*/}
-                        {/*        /!*<ScaleLoader size={10} height={15} color={"#5E72E4"} speedMultiplier={1.5} />*!/*/}
-                        {/*        /!*}*!/*/}
-                        {/*    </Box>*/}
-                        {/*</Grid>*/}
                     </Grid>
 
                 </Card>
