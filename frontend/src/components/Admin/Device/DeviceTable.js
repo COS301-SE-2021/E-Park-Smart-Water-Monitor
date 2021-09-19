@@ -77,7 +77,7 @@ const DeviceTable = () => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/park/getAllParksAndSites', {
+        axios.get('/park/getAllParksAndSites', {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
@@ -91,7 +91,7 @@ const DeviceTable = () => {
 
     useEffect(() => {
         // get all users
-        axios.get('http://localhost:8080/api/devices/getAllDevices', {
+        axios.get('/api/devices/getAllDevices', {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
