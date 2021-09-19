@@ -12,15 +12,6 @@ import {LoadingProvider} from "./Context/LoadingContext";
 import {EditProfileProvider} from "./Context/EditProfileContext";
 import Modal from "./components/Modals/Modal";
 import EditProfile from "./components/EditProfile/EditProfile";
-import {PuffLoader} from "react-spinners";
-import {css} from "@emotion/react";
-
-const override = css`
-  display: block;
-  margin: 0 auto;
-  border-color: red;
-`;
-
 
 const App = () => {
     const [loading, setLoading] = useState(false)
@@ -36,9 +27,7 @@ const App = () => {
 
     return (<ThemeProvider theme={theme}>
         <UserProvider>
-            <Modal onClose={() => setLoading(false)} show={loading}>
-                <PuffLoader css={override} size={150} color={"#123abc"} loading={true} speedMultiplier={1.5} />
-            </Modal>
+            <Modal onClose={() => setLoading(false)} show={loading}/>
 
             {/*<Loader onClose={() => setLoading(false)} show={loading}/>*/}
 
