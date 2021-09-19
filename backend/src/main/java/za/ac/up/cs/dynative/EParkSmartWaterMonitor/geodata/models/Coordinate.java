@@ -1,11 +1,13 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.geodata.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Coordinate
 {
     private double x;
     private double y;
 
-    public Coordinate(double x, double y)
+    public Coordinate(@JsonProperty("x") double x, @JsonProperty("y")double y)
     {
         this.x = x;
         this.y = y;

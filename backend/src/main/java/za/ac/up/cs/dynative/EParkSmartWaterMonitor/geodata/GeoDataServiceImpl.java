@@ -238,7 +238,6 @@ public class GeoDataServiceImpl implements GeoDataService
 
     };
 
-
     public String getLossColor(double loss){
         double range = maxLoss-minLoss;
         double segmentSize = range/9;
@@ -374,7 +373,7 @@ public class GeoDataServiceImpl implements GeoDataService
         }
         double kilometerToMileRatio= 0.621;
         double totalInMiles = (meters/1000.0)*kilometerToMileRatio;
-//        System.out.println(meters);
+
         double dBLoss;
 
         if (numberOfBlocks==0) {
@@ -383,9 +382,6 @@ public class GeoDataServiceImpl implements GeoDataService
         else {
             dBLoss = 36.56 + (20 * Math.log10(frequency) + (20 * Math.log10(totalInMiles)));
         }
-//        System.out.println(dBLoss);
-        if (numberOfBlocks==50)
-        System.out.println("VYFTIG BLOK: "+dBLoss);
         return  dBLoss;
 
     }

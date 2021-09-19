@@ -38,14 +38,17 @@ public class GeoDataController
           geoDataService.lineApproximation(geoDataService.convertCoordToGridBlock(new Coordinate(28.28863, -25.88380)),geoDataService.convertCoordToGridBlock(new Coordinate(28.28877, -25.87522)));
     }
     @PostMapping("/getSignalLoss")
-    public GeoJSON getSignalLoss(Double x,Double y)
+//    public GeoJSON getSignalLoss(Double x,Double y)
+    public GeoJSON getSignalLoss(@RequestBody Coordinate coordinate)
     {
-        System.out.println(x);
+        System.out.println(coordinate.getX());
+        System.out.println(coordinate.getY());
+//        System.out.println(y);
 //         return geoDataService.getSignalLoss(28.28863, -25.88380);
 //         return geoDataService.getSignalLoss(28.30442, -25.88985);//eh
 //        return geoDataService.getSignalLoss(28.28365, -25.88381);//bad
 //        return geoDataService.getSignalLoss(28.27875, -25.91299);//good
 //        return geoDataService.getSignalLoss(28.31113, -25.90530);//worst
-        return geoDataService.getSignalLoss(x,y);
+        return geoDataService.getSignalLoss(coordinate.getX(),coordinate.getY());
     }
 }

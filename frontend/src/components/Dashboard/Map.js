@@ -33,39 +33,39 @@ function Map(props) {
     // https://react-leaflet.js.org/docs/example-events/
 
 
-    useEffect(()=>{
-        if(props.device)
-        {
+    // useEffect(()=>{
+    //     if(props.device)
+    //     {
 
-        }
-    },[props.device])
+    //     }
+    // },[props.device])
 
-    // functional component declared
-    function MapEvents(p) {
-        const map = useMapEvents({})
-        let obj = { lat: p.device.deviceData.latitude, lng: p.device.deviceData.longitude }
-        map.flyTo(obj)
-        return null
-    }
+    // // functional component declared
+    // function MapEvents(p) {
+    //     const map = useMapEvents({})
+    //     let obj = { lat: p.device.deviceData.latitude, lng: p.device.deviceData.longitude }
+    //     map.flyTo(obj)
+    //     return null
+    // }
 
 
-    useEffect(() => {
-        if (props.devices) {
-            const m = props.devices.map((device) =>
-                <Marker
-                    key={device.deviceId}
-                    position={[device.deviceData.latitude, device.deviceData.longitude]}
-                >
-                    <Popup>
-                        {device.deviceName}
-                    </Popup>
-                </Marker>
-            );
-            setResponse(m);
-        } else {
-            console.log("no device prop added")
-        }
-    },[props.devices])
+    // useEffect(() => {
+    //     if (props.devices) {
+    //         const m = props.devices.map((device) =>
+    //             <Marker
+    //                 key={device.deviceId}
+    //                 position={[device.deviceData.latitude, device.deviceData.longitude]}
+    //             >
+    //                 <Popup>
+    //                     {device.deviceName}
+    //                 </Popup>
+    //             </Marker>
+    //         );
+    //         setResponse(m);
+    //     } else {
+    //         console.log("no device prop added")
+    //     }
+    // },[props.devices])
 
 
 
@@ -106,7 +106,7 @@ function Map(props) {
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
                 { response }
-                <MapEvents device={props.device}/>
+                {/* <MapEvents device={props.device}/> */}
             </MapContainer>
           </div>
 

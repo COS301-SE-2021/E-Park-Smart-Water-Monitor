@@ -18,7 +18,19 @@ import AddParkBody from "../../components/Admin/Park/AddParkBody";
 import Modal from "../../components/Modals/Modal";
 import {UserContext} from "../../Context/UserContext";
 import LoadingContext from "../../Context/LoadingContext";
+import Map from "components/Dashboard/Map.js"
+import GeoMap from "../../components/Admin/GeoMap/GeoMap";
+import "../../components/Admin/GeoMap/GeoMap.css"
 
+
+import mask from '@turf/mask'
+
+// openlayers
+import GeoJSON from 'ol/format/GeoJSON'
+import Feature from 'ol/Feature';
+
+// components
+import {transform} from "ol/proj";
 const useStyles = makeStyles(componentStyles);
 
 const override = css`
@@ -36,6 +48,10 @@ const overlay = css`
   z-index: 10;
 `;
 
+const gmap = css`
+  height: 50vh;
+  width: 70%;
+`;
 function Admin() {
     const classes = useStyles();
     const [park, setPark] = useState("") // for passing from park table to site table
@@ -43,6 +59,12 @@ function Admin() {
     const [loading, setLoading] = useState(false)
     const [show, setShow] = useState(false)
     const [value, setValue] = useState(0)
+
+    const [ elevation, setElevation ] = useState([])
+    const [ mapOutline, setMapOutline ] = useState([])
+    const [ gateway, setGateway ] = useState([])
+    const [ gatewayOn, setGatewayOn ] = useState(false)
+
 
     const user = useContext(UserContext)
 
@@ -72,7 +94,67 @@ function Admin() {
             {
                 setParksAndSites(res.data)
             }
-        });  
+        });
+
+
+        fetch('/lossAMid.json')
+            // fetch('/rOutline.json')
+            .then(response => response.json())
+            .then( (fetchedFeatures) => {
+
+                const wktOptions = {
+                    dataProjection: 'EPSG:4326',
+                    featureProjection: 'EPSG:3857'
+                }
+                const parsedFeatures = new GeoJSON().readFeatures(fetchedFeatures, wktOptions)
+
+                // set features into state (which will be passed into OpenLayers
+                //  map component as props)
+                console.log(parsedFeatures)
+                setGateway(parsedFeatures)
+
+            })
+
+        fetch('/elevation.json')
+            // fetch('/rOutline.json')
+            .then(response => response.json())
+            .then( (fetchedFeatures) => {
+
+                const wktOptions = {
+                    dataProjection: 'EPSG:4326',
+                    featureProjection: 'EPSG:3857'
+                }
+                const parsedFeatures = new GeoJSON().readFeatures(fetchedFeatures, wktOptions)
+
+                // set features into state (which will be passed into OpenLayers
+                //  map component as props)
+                setElevation(parsedFeatures)
+
+            })
+
+        fetch('/rOutline.json')
+            .then(response => response.json())
+            .then( (fetchedFeatures) => {
+
+                // parse fetched geojson into OpenLayers features
+                //  use options to convert feature from EPSG:4326 to EPSG:3857
+                const wktOptions =
+                    {
+                        featureProjection: 'EPSG:3857'
+                    }
+                const parsedFeatures = new GeoJSON().readFeatures( mask(fetchedFeatures),
+                    {
+                        featureProjection: 'EPSG:3857'
+                    }
+
+                )
+
+                // set features into state (which will be passed into OpenLayers
+                //  map component as props)
+                console.log(parsedFeatures)
+                setMapOutline(parsedFeatures)
+
+            })
     },[value])
 
     // Context explained
@@ -105,6 +187,20 @@ function Admin() {
                             {user.role === "ADMIN" &&
                             <UserTable/>
                             }
+                            {/*<Map/>*/}
+                            <GeoMap
+
+                                elevation={elevation}
+                                gateway={gateway}
+                                gatewayOn={gatewayOn}
+                                gatewayChanger={setGateway}
+                                mapO={mapOutline}
+                                outlineChanger={setMapOutline}
+                                gatewayOnChanger={setGatewayOn}
+                                ree={""}
+
+
+                            />
                             <DeviceTable/>
                             <InspectionTable/>
                         </Grid>
