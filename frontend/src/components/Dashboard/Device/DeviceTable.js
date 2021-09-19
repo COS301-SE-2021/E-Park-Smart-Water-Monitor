@@ -31,8 +31,6 @@ function DeviceTable(props) {
     const handleDeviceSelection = (device) => {
         // so that it doesn't run on render
         return () =>{
-            sessionStorage.setItem('device', JSON.stringify(device))
-
             props.load_device(device);
         }
     }
@@ -43,10 +41,6 @@ function DeviceTable(props) {
     }
 
     useEffect(() => {
-
-        setViewReload(true)
-
-
 
         let hoverStyle;
         if (hover) {
