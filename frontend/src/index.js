@@ -41,14 +41,13 @@ const App = () => {
             </Modal>
             {/*<Loader onClose={() => setLoading(false)} show={loading}/>*/}
 
-            <Modal title="Edit Profile" onClose={() => setShowEditProfile(false)} show={showEditProfile} >
-                <EditProfile  closeModall={() =>setShowEditProfile(false) } togglee={() =>toggleLoading}/>
-
-            </Modal>
             <CssBaseline />
             {/*Loading Modal*/}
             <EditProfileProvider value={ { toggleEditProfile: toggleEditProfile } } >
                 <LoadingProvider value={ { toggleLoading: toggleLoading } } >
+                    <Modal title="Edit Profile" onClose={() => setShowEditProfile(false)} show={showEditProfile} >
+                        <EditProfile  closeModall={() =>setShowEditProfile(false) } togglee={() =>toggleLoading}/>
+                    </Modal>
                     <Routing/>
                 </LoadingProvider>
             </EditProfileProvider>
