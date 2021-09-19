@@ -27,7 +27,8 @@ const App = () => {
     const [loading, setLoading] = useState(false)
     const [showEditProfile, setShowEditProfile] = useState(false)
 
-    axios.defaults.baseURL = 'https://e-park-backend.herokuapp.com/api';
+    // axios.defaults.baseURL = 'https://e-park-backend.herokuapp.com/api';
+    axios.defaults.baseURL = 'http://localhost:8080/api';
 
     const toggleLoading = ()=>{
         setLoading(loading=>!loading)

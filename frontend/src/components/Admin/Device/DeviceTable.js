@@ -91,7 +91,7 @@ const DeviceTable = () => {
 
     useEffect(() => {
         // get all users
-        axios.get('/api/devices/getAllDevices', {
+        axios.get('/devices/getAllDevices', {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
