@@ -83,8 +83,7 @@ public class DevicesServicesImpl implements DevicesService
                                @Qualifier("UserService") UserService userService,
                                @Qualifier("SourceDataRepo") MeasurementRepo measurementRepo
 
-    )
-    {
+    ) {
         this.deviceRepo = deviceRepo;
         this.inspectionService=inspectionService;
         this.userService=userService;

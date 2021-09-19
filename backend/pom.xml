@@ -15,6 +15,8 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
+		<sonar.organization>cos301-se-2021</sonar.organization>
+  		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -164,7 +166,7 @@
 	</dependencies>
 
 	<build>
-		<testSourceDirectory>src/test/java/za/ac/up/cs/dynative/EParkSmartWaterMonitor</testSourceDirectory>
+<!-- 		<testSourceDirectory>src/test/java/za/ac/up/cs/dynative/EParkSmartWaterMonitor</testSourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -182,6 +184,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-		</plugins>
+		</plugins> -->
 	</build>
 </project>
