@@ -464,20 +464,12 @@ function GeoMap(props) {
                         justifyContent="space-between"
                     >
                         <Grid item xs={10}>
-                            <Box
-                                // component={Typography}
-                                // variant="h3"
-                                // marginBottom="0!important"
-                            >
+                            <Box>
                                 <div ref={(mapElement)} className="map-container"></div>
                             </Box>
                         </Grid>
                         <Grid item xs={2}>
-                            <Box
-                                // component={Typography}
-                                // variant="h3"
-                                // marginBottom="0!important"
-                            >
+                            <Box>
 
                                 <button onClick={toggleBorder}>Toggle borderOverlay</button> <br/>
                                 <button onClick={toggleElevation}>Toggle elevation</button><br/>
