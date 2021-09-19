@@ -8,6 +8,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.models.User;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.park.models.Park;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -33,8 +34,8 @@ public interface UserRepo extends Neo4jRepository<User, UUID> {
     List<User> findUsersWorkingAtDevicePark(@Param("dName") String dName);
 
     @Query("MATCH (p:Park{id: $parkId})"+
-            "    CREATE (users:User{ role: $role, parkName: $parkName , idNumber: $idNumber, cellNumber: $cellNumber,resetPasswordExpiration:\"\", password:\"\" , surname: $surname, name: $name, activationCode: \"\", id: $id , email: $email , username: $username   })-[:WORKS_FOR]->(p)\n")
-    void addUser(UUID id,long idNumber, String email, String name, String surname, String password, String username, String role, UUID parkId , String parkName, String cellNumber);
+            "    CREATE (users:User{ role: $role, parkName: $parkName , idNumber: $idNumber, cellNumber: $cellNumber,resetPasswordExpiration:$expire, password:$password , surname: $surname, name: $name, activationCode: \"\", id: $id , email: $email , username: $username   })-[:WORKS_FOR]->(p)\n")
+    void addUser(UUID id, long idNumber, String email, String name, String surname, String password, String username, String role, UUID parkId , String parkName, String cellNumber, LocalDateTime expire);
 
     //void deleteUserById
 }
