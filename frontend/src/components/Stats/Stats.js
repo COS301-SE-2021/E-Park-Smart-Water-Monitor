@@ -22,11 +22,12 @@ const Stats = () => {
         setNumConnected(0)
         setNumCritical(0)
         setNumFine(0)
+        setNumInspections(0)
         setLoaded(false)
         setLoadedInspections(false)
 
         // get the devices
-        axios.get('/devices/getAllDevices',{
+        axios.get('http://localhost:8080/api/devices/getAllDevices',{
             headers: {
                 'Authorization': "Bearer " + user.token
             }
@@ -38,10 +39,12 @@ const Stats = () => {
                 site.forEach(elem => {
                     // count number connected
                     // eslint-disable-next-line no-unused-vars
-                    let a = elem.deviceData.lastSeen ? setNumConnected(numConnected => numConnected +1) : ""
+                    let a = elem.deviceData.deviceStatus !== "NOT CONNECTED" ? setNumConnected(numConnected => numConnected +1) : ""
                     // count number critical and not critical
                     // eslint-disable-next-line no-unused-vars
-                    let b = elem.deviceData.deviceStatus !== "FINE" ? setNumCritical(numCritical => numCritical +1) : setNumFine(numFine => numFine +1)
+                    let b = elem.deviceData.deviceStatus === "CRITICAL" ? setNumCritical(numCritical => numCritical +1) : ""
+                    // eslint-disable-next-line no-unused-vars
+                    let c = elem.deviceData.deviceStatus === "FINE" ? setNumFine(numFine => numFine +1) : ""
                 })
                 setLoaded(true)
 
@@ -52,7 +55,7 @@ const Stats = () => {
             console.log(JSON.stringify(res))
         });
 
-        axios.get('/inspections/getAllInspections', {
+        axios.get('http://localhost:8080/api/inspections/getAllInspections', {
             headers: {
                 'Authorization': "Bearer " + user.token
             }

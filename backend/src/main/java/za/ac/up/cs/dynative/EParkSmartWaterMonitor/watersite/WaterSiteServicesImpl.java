@@ -214,9 +214,17 @@ public class WaterSiteServicesImpl implements WaterSiteService
         else
             return new FindWaterSiteByDeviceResponse("Watersite not found",false,null);
     }
+
     public WaterSite getWaterSiteByRelatedDevice(UUID id)
     {
         return  waterSiteRepo.getWaterSiteByRelatedDevice(id);
     }
+
+    public DeleteWaterSiteInternalResponse deleteInternal(DeleteWaterSiteInternalRequest request){
+        waterSiteRepo.deleteById(request.getId());
+        //System.out.println(request.getId());
+        return new DeleteWaterSiteInternalResponse(true);
+    }
+
 
 }

@@ -67,8 +67,8 @@ public class Login {
         Mockito.when(userRepo.findUserByUsername("unitTest22")).thenReturn(new ArrayList<>());
 
         //test
-        String pass= "258";
-        LoginRequest request= new LoginRequest("unitTest22",passwordEncoder.encode(pass));
+        String passw= "t8#tkapb6ssc1|3?5*3/";
+        LoginRequest request= new LoginRequest("unitTest22",passw);
         LoginResponse response = userService.loginUser(request);
         assertNotNull(response);
         assertEquals(false,response.getSuccess());
@@ -82,14 +82,14 @@ public class Login {
         List<User> userList=new ArrayList<>();
         Park park= new Park();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
-        User user= new User(1234567890,"test@gmail.com","Unit","Surname",passwordEncoder.encode("Ok")
+        User user= new User(1234567890,"test@gmail.com","Unit","Surname",passwordEncoder.encode("t8#tkapb6ssc1|3?5*3/")
                 ,"unitTest22","RANGER",park,"1234567890");
         userList.add(user);
         Mockito.when(userRepo.findUserByUsername("unitTest22")).thenReturn(userList);
 
         //test
-        String pass= "258";
-        LoginRequest request= new LoginRequest("unitTest22",passwordEncoder.encode(pass));
+        String pass= "t8#tkalb6ssc1|3?7*3/";
+        LoginRequest request= new LoginRequest("unitTest22",pass);
         LoginResponse response = userService.loginUser(request);
         assertNotNull(response);
         assertEquals(false,response.getSuccess());
@@ -103,13 +103,13 @@ public class Login {
         List<User> userList=new ArrayList<>();
         Park park= new Park();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(15);
-        User user= new User(1234567890,"test@gmail.com","Unit","Surname",passwordEncoder.encode("Ok")
+        User user= new User(1234567890,"test@gmail.com","Unit","Surname",passwordEncoder.encode("t8#tkapb6ssc1|3?5*3/")
                 ,"unitTest22","RANGER",park,"1234567890");
         userList.add(user);
         Mockito.when(userRepo.findUserByUsername("unitTest2")).thenReturn(new ArrayList<>());
 
         //test
-        LoginRequest request= new LoginRequest("unitTest2",user.getPassword());
+        LoginRequest request= new LoginRequest("unitTest2","t8#tkapb6ssc1|3?5*3/");
         LoginResponse response = userService.loginUser(request);
         assertNotNull(response);
         assertEquals(false,response.getSuccess());

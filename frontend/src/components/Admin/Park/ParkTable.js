@@ -58,7 +58,7 @@ const ParkTable = (props) => {
         let obj = null;
 
         // if (parksAndSites && parksAndSites.parks) {
-        axios.get('/park/getAllParks',{
+        axios.get('http://localhost:8080/api/park/getAllParks',{
             headers: {
                 'Authorization': "Bearer " + user.token
             }
@@ -129,7 +129,7 @@ const ParkTable = (props) => {
 
         return ()=>{
             toggleLoading()
-            axios.delete('/park/deletePark', {
+            axios.delete('http://localhost:8080/api/park/deletePark', {
                 data: {
                     parkId: id
                 }

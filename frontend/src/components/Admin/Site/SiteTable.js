@@ -45,7 +45,7 @@ const SiteTable = () => {
     const removeSite = (id) => {
         return ()=>{
             toggleLoading()
-            axios.delete('/sites/deleteWaterSite',
+            axios.delete('http://localhost:8080/api/sites/deleteWaterSite',
             {
                 headers: {
                     'Authorization': "Bearer " + user.token
@@ -71,7 +71,7 @@ const SiteTable = () => {
 
 
     const setTable = () =>{
-        axios.post('/park/getParkWaterSites', {
+        axios.post('http://localhost:8080/api/park/getParkWaterSites', {
                 parkId: user.parkID
             },
             {

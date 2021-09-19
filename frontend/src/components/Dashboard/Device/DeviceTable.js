@@ -17,6 +17,7 @@ import TableBody from "@material-ui/core/TableBody";
 import "../../../index.css"
 import {Refresh} from "@material-ui/icons";
 import {Tooltip} from "@material-ui/core";
+import {ScaleLoader} from "react-spinners";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -24,19 +25,17 @@ function DeviceTable(props) {
   const classes = useStyles();
   const [response, setResponse] = useState(null)
   const [hover, setHover] = useState(true)
-  const [value, setValue] = useState(0)
+  const [viewReload, setViewReload] = useState(true)
+
 
     const handleDeviceSelection = (device) => {
         // so that it doesn't run on render
         return () =>{
+            sessionStorage.setItem('device', JSON.stringify(device))
+
             props.load_device(device);
         }
     }
-
-    const reloadDeviceTable = () =>{
-      setValue(value=>value+1)
-    }
-
 
 
     const toggleHover = ()=>{
@@ -44,6 +43,10 @@ function DeviceTable(props) {
     }
 
     useEffect(() => {
+
+        setViewReload(true)
+
+
 
         let hoverStyle;
         if (hover) {
@@ -80,20 +83,19 @@ function DeviceTable(props) {
                         { device.deviceData.deviceStatus }
                     </TableCell>
                     <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
-                        { device.deviceData.battery }%
-                    </TableCell>
-                    <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
-                        { device.deviceData.lastSeen ? device.deviceData.lastSeen.substr(0,10) : "Not Connected"}
+                        { device.deviceData.lastSeen && device.deviceData.deviceStatus !== "NOT CONNECTED" ? device.deviceData.lastSeen.substr(0,10) : "NA"}
                     </TableCell>
                 </TableRow>
 
 
             );
             setResponse(m);
+
+            // props.load_device(props.device)
         }else{
             console.log("no device prop added")
         }
-    },[props.devices, value])
+    },[props.devices])
 
   return (
     <>
@@ -101,9 +103,9 @@ function DeviceTable(props) {
             classes={{
                 root: classes.cardRoot,
             }}
+            style = {{height:"100%", maxHeight:"100%"}}
         >
             <CardHeader
-                style={{paddingBottom:"27.4px",paddingTop:"29.4px"}}
                 subheader={
                     <Grid
                         container
@@ -126,16 +128,29 @@ function DeviceTable(props) {
                                 display="flex"
                                 flexWrap="wrap"
                             >
-
-                                <Tooltip title="Refresh Devices" arrow>
+                                {
+                                    viewReload &&
+                                    <Tooltip title="Refresh Devices" arrow>
+                                        <Box
+                                            component={Refresh}
+                                            width="1.25rem!important"
+                                            height="1.25rem!important"
+                                            className={classes["text"]}
+                                            onClick={()=>{ props.reloadDeviceTable(); setViewReload(false) }}
+                                        />
+                                    </Tooltip>
+                                }
+                                {
+                                    !viewReload &&
                                     <Box
-                                        component={Refresh}
-                                        width="1.25rem!important"
-                                        height="1.25rem!important"
-                                        className={classes["text"]}
-                                        onClick={()=>{ reloadDeviceTable() }}
-                                    />
-                                </Tooltip>
+                                        paddingLeft="1.25rem"
+                                    >
+                                        <Tooltip title="Loading..." arrow>
+                                            <ScaleLoader size={10} height={15} color={"#5E72E4"} speedMultiplier={1.5} />
+                                        </Tooltip>
+                                    </Box>
+                                }
+
                             </Box>
                         </Grid>
                     </Grid>
@@ -143,12 +158,14 @@ function DeviceTable(props) {
                 classes={{ root: classes.cardHeaderRoot }}
             />
 
-            <div className="table-container">
-                <TableContainer style={{maxHeight:"400px",overflowY:"auto"}}>
+
+            <div className="table-container" style={{maxHeight:"100%"}} >
+                <TableContainer >
                     <Box
                         component={Table}
                         alignItems="center"
                         marginBottom="0!important"
+
                     >
                         <TableHead>
                             <TableRow>
@@ -171,16 +188,6 @@ function DeviceTable(props) {
                                     }}
                                 >
                                     Status
-                                </TableCell>
-                                <TableCell
-                                    classes={{
-                                        root:
-                                            classes.tableCellRoot +
-                                            " " +
-                                            classes.tableCellRootHead,
-                                    }}
-                                >
-                                    Battery Level
                                 </TableCell>
                                 <TableCell
                                     classes={{

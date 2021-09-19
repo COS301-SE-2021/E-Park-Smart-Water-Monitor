@@ -97,6 +97,7 @@ const AddDeviceBody = (props) => {
         e.preventDefault()
         setError(null)
 
+
         let obj = {
             parkName: park.label,
             siteId: site.value,
@@ -107,7 +108,7 @@ const AddDeviceBody = (props) => {
             longitude: longitude
         }
         console.log("Adding Device: "+JSON.stringify(obj))
-        axios.post('/devices/addDevice', obj, {
+        axios.post('http://localhost:8080/api/devices/addDevice', obj, {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
@@ -124,6 +125,7 @@ const AddDeviceBody = (props) => {
         }).catch((res) => {
 
             toggleLoading()
+            props.closeModal()
             console.log("error adding device: "+JSON.stringify(res))
 
         });

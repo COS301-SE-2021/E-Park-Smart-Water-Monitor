@@ -16,7 +16,7 @@ const AllUsers = () => {
     const [result, setResult] = useState(null)
 
     useEffect(() => {
-        axios.post('/devices/getNumDevices', {
+        axios.post('http://localhost:8080/api/devices/getNumDevices', {
             parkID: "2ea5ba27-9d8e-41a4-9628-485f0ae2fb57"
         }).then((res)=>{
             setResult(res.data)

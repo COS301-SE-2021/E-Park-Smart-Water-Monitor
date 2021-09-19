@@ -21,8 +21,8 @@ const AuthHeader = () => {
       <Box
         className={classes.header}
         position="relative"
-        paddingTop="8rem"
-        paddingBottom="8rem"
+        paddingTop="5rem"
+        paddingBottom="6rem"
       >
         <Container maxWidth="xl">
           <Box marginBottom="2rem" textAlign="center">
@@ -32,7 +32,7 @@ const AuthHeader = () => {
               justifyContent="center"
               color={theme.palette.white.main}
             >
-              <Grid item lg={5} md={6} xs={12}>
+              <Grid item lg={5} md={5} xs={12} mt={0}>
                 <h1>E-Park Monitoring</h1>
                 <Box
                   component="p"
@@ -49,7 +49,7 @@ const AuthHeader = () => {
         <Box
           position="absolute"
           zIndex="100"
-          height="70px"
+          height="60px"
           top="auto"
           bottom="0"
           pointerEvents="none"

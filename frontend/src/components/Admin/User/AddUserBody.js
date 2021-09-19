@@ -79,7 +79,7 @@ const AddUserBody = (props) => {
             cellNumber: `+27${cellNumber}`
         }
 
-        axios.post('/user/createUser', obj, {
+        axios.post('http://localhost:8080/api/user/createUser', obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }

@@ -24,6 +24,7 @@ import ForumIcon from '@material-ui/icons/Forum';
 import EditInspection from "./EditInspection";
 import Comments from "./Comments";
 import {ScaleLoader} from "react-spinners";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles(componentStyles);
 
@@ -52,7 +53,7 @@ const InspectionTable = () => {
 
     useEffect(() => {
         setReload(true)
-        axios.get('/inspections/getAllInspections', {
+        axios.get('http://localhost:8080/api/inspections/getAllInspections', {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
@@ -77,39 +78,40 @@ const InspectionTable = () => {
                             <TableCell
                                 classes={{
                                     root:
-                                        classes.tableCellRoot +
-                                        " " +
-                                        classes.tableCellRootBodyHead,
+                                        classes.tableCellRoot 
+                                        // " " +
+                                        // classes.tableCellRootBodyHead,
                                 }}
-                                component="th"
-                                variant="head"
-                                scope="row"
+                                // component="th"
+                                // variant="head"
+                                // scope="row"
                             >
                                 { inspection.dateDue?.split("T")[0] }
                             </TableCell>
                             <TableCell classes={{ root: classes.tableCellRoot }}>
                                 { inspection.status }
                             </TableCell>
-                            <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
+                            <TableCell classes={{ root: classes.tableCellRoot }}>
                                 { inspection.description }
                             </TableCell>
                             <TableCell classes={{root: classes.tableCellRoot}}
                                        style={{verticalAlign: 'middle'}}>
                                 <Tooltip title="Comments" arrow>
-                                    <ForumIcon aria-label="forum"
-                                              onClick={ () => {setShowComments(true); setInspec(inspection)} }>
-                                    </ForumIcon>
+                                    <IconButton aria-label="comments" onClick={ () => {setShowComments(true); setInspec(inspection)} }>
+                                          <ForumIcon/>
+                                    </IconButton>
                                 </Tooltip>
                             </TableCell>
                             <TableCell classes={{root: classes.tableCellRoot}}
                                        style={{verticalAlign: 'middle'}}>
                                 <Tooltip title="Edit" arrow>
-                                    <EditIcon aria-label="edit"
-                                              onClick={() => {
-                                                  setShowEditInspection(true);
-                                                  setInspec(inspection)
-                                              }}>
-                                    </EditIcon>
+                                    <IconButton aria-label="edit" onClick={() => {
+                                        setShowEditInspection(true);
+                                        setInspec(inspection)
+                                    }}>
+                                        <EditIcon/>
+                                    </IconButton>
+
                                 </Tooltip>
                             </TableCell>
 
@@ -135,7 +137,7 @@ const InspectionTable = () => {
                 <Modal title= "Edit Inspection" onClose={() => setShowEditInspection(false)} show={showEditInspection}>
                     <EditInspection reloadInspectionTable={ reloadInspectionTable } inspectionDetails={inspec} tog={() =>toggleshowEditInspection() }/>
                 </Modal>
-                <Modal title= "Inspection Comments" onClose={() => setShowComments(false)} show={showComments}>
+                <Modal title= "Inspection Comments" onClose={() => {reloadInspectionTable(); setShowComments(false)}} show={showComments}>
                     <Comments reloadInspectionTable={ reloadInspectionTable } inspectionDetails={inspec} tog={() =>toggleshowComments() }/>
                 </Modal>
                 <Grid container component={Box} marginTop="3rem">
@@ -202,7 +204,12 @@ const InspectionTable = () => {
                                     marginBottom="0!important"
                                 >
                                     <TableHead>
-                                        <TableRow style={{background: 'rgb(243 243 243)'}}>
+                                        <TableRow
+                                            style={{
+                                                backgroundColor: '#F3F3F3',
+                                                position: "sticky",
+                                                top: 0
+                                            }}>
                                             <TableCell
                                                 classes={{
                                                     root:

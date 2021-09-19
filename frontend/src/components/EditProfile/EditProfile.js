@@ -7,6 +7,7 @@ import axios from "axios";
 import {UserContext} from "../../Context/UserContext";
 import EditProfileContext from "../../Context/EditProfileContext";
 import { Form } from "react-bootstrap" ;
+import LoadingContext from "../../Context/LoadingContext";
 const styles = {
     col_left: {
         paddingRight:'3px'
@@ -37,14 +38,15 @@ const EditProfile = (props) => {
 
 
     const editProfile = useContext(EditProfileContext)
+    // eslint-disable-next-line no-unused-vars
     const toggleEditProfile = editProfile.toggleEditProfile
+    const toggleLoading = useContext(LoadingContext).toggleLoading
 
 
     // submit the edit of the user
     const submit = (e) => {
         e.preventDefault()
-
-        props.togglee()
+        toggleLoading()
 
         let temp_email = email
         if(email === user.email) {
@@ -68,16 +70,14 @@ const EditProfile = (props) => {
             cellNumber: "+27"+cellNumber
         }
 
-        axios.put('/user/editUser', obj, {
+        axios.put('http://localhost:8080/api/user/editUser', obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }
             }
         ).then((res)=>{
-            props.closeModall()
-            props.togglee()
-            //toggleLoading()
 
+            // props.togglee()
 
             console.log("response:"+JSON.stringify(res))
             if(res.data.success === "false")
@@ -85,8 +85,10 @@ const EditProfile = (props) => {
                 setError(res.data.status)
                 console.log("error with editing user")
             }else{
-                //toggleLoading()
-                //toggleEditProfile()
+                toggleLoading()
+                alert("here")
+                props.closeModall()
+
                 if (temp_username===""){
                     temp_username=username
                 }
@@ -99,7 +101,6 @@ const EditProfile = (props) => {
                 user.setSurname(surname)
                 user.setCellNumber("+27"+cellNumber)
                 user.setIDNumber(idNumber)
-                //toggleEditProfile()
             }
 
         }).catch((res)=>{
@@ -194,8 +195,7 @@ const EditProfile = (props) => {
                     </Col>
                 </Row>
 
-                <Button variant="primary" type="submit"
-                        onClick={toggleEditProfile}>
+                <Button variant="primary" type="submit">
                     Save
                 </Button>
             </Form>
