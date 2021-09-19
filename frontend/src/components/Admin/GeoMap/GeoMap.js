@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import 'ol/ol.css';
 import { fromLonLat, transformExtent, toLonLat } from 'ol/proj';
 import Map from 'ol/Map'
@@ -44,6 +44,9 @@ import { MdSettingsInputAntenna } from "react-icons/md";
 import { MdTimeline } from "react-icons/md";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import LoadingContext from "../../../Context/LoadingContext";
+import {UserContext} from "../../../Context/UserContext";
+import axios from "axios";
 let isOn=false;
 let isOnE=false;
 let previousToggle ="none"
@@ -61,6 +64,10 @@ function GeoMap(props) {
 
     const [ gatewayOn , setGatewayOn,getGatewayOn ] = useState(props.gatewayOn)
     const [ reserveBorder , setReserveBorder ] = useState(props.mapO)
+
+    const loader = useContext(LoadingContext)
+    const toggleLoading = loader.toggleLoading
+    const user = useContext(UserContext)
 
     const [ maskLayer , setMaskLayer ] = useState(
 
@@ -309,34 +316,58 @@ function GeoMap(props) {
         console.log(transormedCoord[0])
         console.log(transormedCoord[1])
 
+        // click gateway tab to send request, add loader
         if(isOn) {
+            toggleLoading()
             console.log("WE REQUESTING BOI")
             const requestOptions = {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUaGV5U2VlTWVSb2xhbiIsInJvbGVzIjoiQURNSU4iLCJleHAiOjE2MzIwNjQzMjd9.VQCkK2XCwaf8-TRftyqmZMrjrZv6qLyXvSSJiJPCDMK3anmFciiiMxbr3J8HtSuX42_a-9H3soUSVvh_KFspFA"
+                    Authorization: 'Bearer ' + user.token
 
                 },
                 body: JSON.stringify({x: transormedCoord[0], y: transormedCoord[1]})
             };
 
-            fetch(new URL("http:localhost:8080/api/geodata/getSignalLoss"),
-                requestOptions)
-                .then(response => response.json())
-                .then((fetchedFeatures) => {
 
-                    // parse fetched geojson into OpenLayers features
-                    //  use options to convert feature from EPSG:4326 to EPSG:3857
-                    const wktOptions =
-                        {
-                            featureProjection: 'EPSG:3857'
-                        }
-                    const parsedFeatures = new GeoJSON().readFeatures((fetchedFeatures),
-                        {
-                            featureProjection: 'EPSG:3857'
-                        }
-                    )
+            // fetch(new URL("http:localhost:8080/api/geodata/getSignalLoss"),
+            //     requestOptions)
+            //     .then(response => {response.json(); toggleLoading()})
+            //     .then((fetchedFeatures) => {
+            //
+            //         // parse fetched geojson into OpenLayers features
+            //         //  use options to convert feature from EPSG:4326 to EPSG:3857
+            //         const wktOptions =
+            //             {
+            //                 featureProjection: 'EPSG:3857'
+            //             }
+            //             console.log(fetchedFeatures)
+            //         const parsedFeatures = new GeoJSON().readFeatures((fetchedFeatures),
+            //             {
+            //                 featureProjection: 'EPSG:3857'
+            //             }
+            //         )
+            //
+            //         // set features into state (which will be passed into OpenLayers
+            //         //  map component as props)
+            //         console.log(parsedFeatures)
+            //         props.gatewayChanger(parsedFeatures)
+            //         // setMapOutline(parsedFeatures)
+            //
+            //     })
+
+
+            fetch('/lossAMid.json')
+                // fetch('/rOutline.json')
+                .then(response => response.json())
+                .then( (fetchedFeatures) => {
+
+                    const wktOptions = {
+                        dataProjection: 'EPSG:4326',
+                        featureProjection: 'EPSG:3857'
+                    }
+                    const parsedFeatures = new GeoJSON().readFeatures(fetchedFeatures, wktOptions)
 
                     // set features into state (which will be passed into OpenLayers
                     //  map component as props)

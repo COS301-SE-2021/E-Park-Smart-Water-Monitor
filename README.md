@@ -54,7 +54,7 @@
   <a href="https://docs.google.com/document/d/1ikdJGD2mMvUbiWejvXX4rgyWX0MuYbJIvR5ABKEp_s8/edit?usp=sharing">Coding Conventions</a>
 </h2>
 <h2 align="center">
-  <a href="https://drive.google.com/file/d/1l7cW8wc33HJ9JU8j95vGkWfgkf1KhCz9/view?usp=sharing">User Muanual</a>
+  <a href="https://drive.google.com/file/d/1Y18Sk4Dz5OwFHQn8wr1hL7KSdfy7fHUB/view?usp=sharing">User Manual</a>
 </h2>
 
 ## 📋 Table of Contents
