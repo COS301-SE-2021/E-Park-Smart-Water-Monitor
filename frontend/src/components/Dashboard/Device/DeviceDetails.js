@@ -12,7 +12,7 @@ import EditDeviceMetrics from "./EditDeviceMetrics";
 import Modal from "../../Modals/Modal";
 import {UserContext} from "../../../Context/UserContext";
 import Divider from "@material-ui/core/Divider";
-import {BatteryStd, CheckCircle, Visibility} from "@material-ui/icons";
+import {CheckCircle, Visibility} from "@material-ui/icons";
 import axios from "axios";
 import LoadingContext from "../../../Context/LoadingContext";
 import {ScaleLoader} from "react-spinners";
@@ -31,6 +31,7 @@ function DeviceDetails(props) {
   const [showPing, setShowPing] = useState(false)
   const [pingMessage, setPingMessage] = useState("") // will show a loader while waiting for ping response
   const [pinging, setPinging] = useState(false)
+  const [lastSeen, setLastSeen] = useState("")
 
     const user = useContext(UserContext)
     const toggleLoading = useContext(LoadingContext).toggleLoading
@@ -51,6 +52,7 @@ function DeviceDetails(props) {
             setStatus(props.device.deviceData.deviceStatus)
             setBattery(props.device.deviceData.deviceBattery)
             setMeasurements(props.device.measurementSet)
+            setLastSeen(props.device.deviceData.lastSeen)
             filterMetrics()
 
         }else{
@@ -124,8 +126,20 @@ function DeviceDetails(props) {
             if(res.data.success === true){
                 //ping successful
                 setPingMessage(res.data.status)
-                setMeasurements(res.data.measurements)
+                setMeasurements(res.data.innerResponses.measurements)
                 setStatus(res.data.deviceStatus)
+                let last
+                res.data.innerResponses.measurements.forEach((elem)=>{
+                    alert(elem)
+                if(elem.type === "WATER_QUALITY")
+                    alert(elem)
+                    {
+                        last = elem.deviceDateTime
+                    }
+                })
+
+                setLastSeen(last)
+
             }else
             {
                 setPingMessage(res.data.status)
@@ -148,7 +162,14 @@ function DeviceDetails(props) {
         let hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
         let mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
         let sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
-        return dDisplay + hDisplay + mDisplay + sDisplay;
+        let result = dDisplay + hDisplay + mDisplay + sDisplay;
+
+        if(sDisplay === "" || (mDisplay === "" && sDisplay === "") || (hDisplay === "" && mDisplay === "" && sDisplay === ""))
+        {
+            result = result.slice(0, -2)
+        }
+
+        return result;
     }
 
   return (
@@ -205,14 +226,14 @@ function DeviceDetails(props) {
                                 // paddingBottom="1rem"
                                 // className={classes.outlineNone}
                             >
-                                <Box>
-                                    { device && device.deviceData && device.deviceData.battery }%
-                                </Box>
-                                <Box
-                                    component={BatteryStd}
-                                    width="1rem!important"
-                                    height="1rem!important"
-                                />
+                                {/*<Box>*/}
+                                {/*    { device && device.deviceData && device.deviceData.battery }%*/}
+                                {/*</Box>*/}
+                                {/*<Box*/}
+                                {/*    component={BatteryStd}*/}
+                                {/*    width="1rem!important"*/}
+                                {/*    height="1rem!important"*/}
+                                {/*/>*/}
                                 <Box
                                     paddingLeft="1.25rem"
                                 >
@@ -272,7 +293,7 @@ function DeviceDetails(props) {
                                 marginRight="1.25rem!important"
                                 className={classes["text" + "PrimaryLight"]}
                             />
-                             { device && device.deviceData.lastSeen ? "Last Seen "+device.deviceData.lastSeen.substr(0,10) + "   at   "+device.deviceData.lastSeen.substr(11,8) : "Not Connected" }
+                             { lastSeen ? "Last Seen "+lastSeen.substr(0,10) + "   at   "+lastSeen.substr(11,8) : "Not Connected" }
                         </Box>
 
                     </Grid>

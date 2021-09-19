@@ -97,6 +97,7 @@ const AddDeviceBody = (props) => {
         e.preventDefault()
         setError(null)
 
+
         let obj = {
             parkName: park.label,
             siteId: site.value,
@@ -124,6 +125,7 @@ const AddDeviceBody = (props) => {
         }).catch((res) => {
 
             toggleLoading()
+            props.closeModal()
             console.log("error adding device: "+JSON.stringify(res))
 
         });

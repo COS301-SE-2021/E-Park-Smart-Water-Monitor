@@ -81,12 +81,13 @@ const EditInspection = (props) => {
         <>
             <Form onSubmit={handleSubmit}>
 
+                <Form.Label>Status</Form.Label>
+                <Select required={"required"} className="mb-3" name="park" options={ statusOptions } value={status} onChange={e => setStatus(e)}/>
                 <Form.Group controlId="formBasicPassword">
                     <Form.Label>Description</Form.Label>
                     <Form.Control type="text" Required={"required"} value={description} onChange={e => setDescription(e.target.value)}/>
                 </Form.Group>
-                <Form.Label>Status</Form.Label>
-                <Select required={"required"} className="mb-3" name="park" options={ statusOptions } value={status} onChange={e => setStatus(e)}/>
+
                 <Button background-color="primary" variant="primary" type="submit" >
                     Submit
                 </Button>
