@@ -45,6 +45,8 @@ import { MdTimeline } from "react-icons/md";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 let isOn=false;
+let isOnE=false;
+let previousToggle ="none"
 
 const useStyles = makeStyles(componentStyles);
 
@@ -55,7 +57,7 @@ function GeoMap(props) {
     const [ elevationLayer, setElevationLayer ] = useState()
     const [ gatewayLayer, setGatewayLayer ] = useState()
     const [ selectedCoord , setSelectedCoord ] = useState()
-    const [view, setView] = React.useState("list");
+    const [view, setView] = React.useState("elevation");
 
     const [ gatewayOn , setGatewayOn,getGatewayOn ] = useState(props.gatewayOn)
     const [ reserveBorder , setReserveBorder ] = useState(props.mapO)
@@ -97,14 +99,49 @@ function GeoMap(props) {
 
     const handleChange = (event, nextView) => {
         setView(nextView);
-        console.log(view)
+        console.log("nv: " +nextView)
         // alert(nextView.valueOf());
 
-        if (view==="elevation")
-            toggleElevation()
-        if(view==="gateway")
-            toggleGateway()
+        if (nextView==="elevation")
+        {            // toggleElevation()
 
+
+            isOn=false
+            gatewayLayer.setVisible(false)
+            elevationLayer.setVisible(true)
+            previousToggle="elevation"
+
+        }
+        if(nextView==="gateway")
+        {
+
+            isOn=true
+            elevationLayer.setVisible(false)
+            gatewayLayer.setVisible(true)
+            previousToggle="gateway"
+        }
+
+        if(nextView==null)
+        {
+            isOn=false
+            if (previousToggle=="gateway")
+            {
+                gatewayLayer.setVisible(false)
+
+            }
+            if (previousToggle=="elevation"||previousToggle=="none")
+            {
+                elevationLayer.setVisible(false)
+
+            }
+            if (previousToggle=="none")
+            {
+                elevationLayer.setVisible(false)
+                gatewayLayer.setVisible(false)
+            }
+
+            previousToggle=null
+        }
 
     };
     const mapElement = useRef()
@@ -314,20 +351,22 @@ function GeoMap(props) {
 
     const toggleBorder =()=>
     {
-        if (borderLayer.getVisible())
+        if (isOnE)
         {
             // props.outlineChanger([])
             console.log("OFF")
             borderLayer.setVisible(false)
             gatewayLayer.setVisible(false)
             elevationLayer.setVisible(false)
-
+            isOnE=false
         }
         else
         {
             console.log("ON")
-
+            isOnE=true
             borderLayer.setVisible(true)
+            elevationLayer.setVisible(false)
+
 
         }
         isOn=false
@@ -353,6 +392,7 @@ function GeoMap(props) {
 
         }
         isOn=false
+        isOnE=false
         console.log("Allow VAL"+ isOn)
 
     }
@@ -434,15 +474,8 @@ function GeoMap(props) {
                                         display="flex"
                                         flexWrap="wrap"
                                     >
-                                        {
-                                            // !reload &&
-                                        <Tooltip title="Coordinates" arrow>
-                                                <p>{ (selectedCoord) ? toStringXY(selectedCoord, 5) : '' }</p>
-                                        </Tooltip>
-                                        }
-                                        {/*{ reload &&*/}
-                                        {/*<ScaleLoader size={10} height={15} color={"#5E72E4"} speedMultiplier={1.5} />*/}
-                                        {/*}*/}
+                                        {/*<Box style={{float:'right'}}>*/}
+
                                     </Box>
                                 </Grid>
                             </Grid>
@@ -453,7 +486,10 @@ function GeoMap(props) {
                     </CardHeader>
                     <Box style={{float:'right'}}>
 
-                        <ToggleButtonGroup value={view} exclusive onChange={handleChange}  style={{float:'right' , marginTop:'3%',zIndex: '100',overflow: 'auto'}}>
+                        <ToggleButtonGroup   color="primary"
+                                             value={view}
+                                             exclusive onChange={handleChange}
+                                             style={{background:'white',right:'0', marginTop:'1%',marginRight:'3%',zIndex: '100',position: 'absolute'}}>
                             <ToggleButton value="elevation" aria-label="elevation">
                                 <MdTimeline />
                                 Elevation
@@ -489,7 +525,7 @@ function GeoMap(props) {
                         alignItems="center"
                         justifyContent="space-between"
                     >
-                        <Grid item xs={10}>
+                        <Grid item xs={12}>
                             <Box>
                                 <div ref={(mapElement)} className="map-container"></div>
                             </Box>
