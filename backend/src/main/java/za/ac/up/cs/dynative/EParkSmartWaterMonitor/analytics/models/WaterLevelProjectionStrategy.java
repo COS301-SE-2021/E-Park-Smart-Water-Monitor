@@ -425,7 +425,7 @@ public class WaterLevelProjectionStrategy extends AbstractProjectionStrategy
             for (int i = size; i < dailyAverageWaterLevelFinal.size(); i++)
             {
                 adjustedPredictionValue = dailyAverageWaterLevelFinal.get(i);
-                adjustedPredictionValue += averageError;
+                adjustedPredictionValue += (averageError * (i - size) + 1);
                 dailyAverageWaterLevelFinal.set(i,Math.abs(adjustedPredictionValue));
             }
         }
@@ -434,7 +434,7 @@ public class WaterLevelProjectionStrategy extends AbstractProjectionStrategy
             for (int i = size; i < dailyAverageWaterLevelFinal.size(); i++)
             {
                 adjustedPredictionValue = dailyAverageWaterLevelFinal.get(i);
-                adjustedPredictionValue -= averageError;
+                adjustedPredictionValue -= (averageError * (i - size) + 1);
                 dailyAverageWaterLevelFinal.set(i,Math.abs(adjustedPredictionValue));
             }
         }

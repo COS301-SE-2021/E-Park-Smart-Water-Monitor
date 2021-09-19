@@ -64,6 +64,7 @@ public class ResetPasswordFinalize {
         ResetPasswordResponse response = userService.resetPassword(request);
         assertNotNull(response);
         assertEquals(user.getActivationCode(),response.getCode());
+        user.setResetPasswordExpiration(LocalDateTime.now().plusHours(3));
 
         //test
         ResetPasswordFinalizeRequest requestFinal = new ResetPasswordFinalizeRequest("testing","abc","123","123");
@@ -88,7 +89,7 @@ public class ResetPasswordFinalize {
         user.setResetPasswordExpiration(LocalDateTime.now());
 
         //test
-        ResetPasswordFinalizeRequest requestFinal = new ResetPasswordFinalizeRequest("testing","abc","123","123");
+        ResetPasswordFinalizeRequest requestFinal = new ResetPasswordFinalizeRequest("testing","te#t8apb6ksc1|3?5*3/","te#t8apb6ksc1|3?5*3/","123");
         ResetPasswordFinalizeResponse responseFinal = userService.resetPasswordFinalize(requestFinal);
         assertNotNull(response);
         assertEquals("Password reset failed, code expired",responseFinal.getMessage());
@@ -107,12 +108,38 @@ public class ResetPasswordFinalize {
         ResetPasswordResponse response = userService.resetPassword(request);
         assertNotNull(response);
         assertEquals(user.getActivationCode(),response.getCode());
+        user.setResetPasswordExpiration(LocalDateTime.now().plusHours(1));
 
         //test
-        ResetPasswordFinalizeRequest requestFinal = new ResetPasswordFinalizeRequest("testing", user.getActivationCode(), "123","123");
+        ResetPasswordFinalizeRequest requestFinal = new ResetPasswordFinalizeRequest("testing", user.getActivationCode(), "te#T%666t8apb6ksc1|3?5*3/","te#T%666t8apb6ksc1|3?5*3/");
         ResetPasswordFinalizeResponse responseFinal = userService.resetPasswordFinalize(requestFinal);
         assertNotNull(response);
         assertEquals("Password successfully changed",responseFinal.getMessage());
         assertEquals(true,responseFinal.isSuccess());
+    }
+
+    @Test
+    @DisplayName("Password does not match the requirements")
+    public void ResetPasswordRegexFail() throws InvalidRequestException {
+        //setup
+        User user = new User();
+        List<User> users = new ArrayList<>();
+        users.add(user);
+        Mockito.when(userRepo.findUserByUsername("testing")).thenReturn(users);
+        ResetPasswordRequest request = new ResetPasswordRequest("testing");
+        ResetPasswordResponse response = userService.resetPassword(request);
+        assertNotNull(response);
+        assertEquals(user.getActivationCode(),response.getCode());
+        user.setResetPasswordExpiration(LocalDateTime.now().plusHours(1));
+
+        //test
+        ResetPasswordFinalizeRequest requestFinal = new ResetPasswordFinalizeRequest("testing", user.getActivationCode(), "te#t8apb6ksc1|3?5*3/","te#t8apb6ksc1|3?5*3/");
+        ResetPasswordFinalizeResponse responseFinal = userService.resetPasswordFinalize(requestFinal);
+        assertNotNull(response);
+        assertEquals("The password does not comply with the minimum requirements. Your password should contain" +
+                " atleast 10 characters, one capital letter" +
+                ", one lower case letter, one number and finally a minimum of one " +
+                "special character: #, ?, !, @, $, %, ^, &, *, -",responseFinal.getMessage());
+        assertEquals(false,responseFinal.isSuccess());
     }
 }
