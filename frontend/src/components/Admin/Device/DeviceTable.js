@@ -154,11 +154,11 @@ const DeviceTable = () => {
                 component={Box}
                 classes={{ root: classes.containerRoot }}
             >
-                { parksAndSites && <Modal title="Add Device" onClose={() => setShow(false)} show={show}>
-                    <AddDeviceBody parksAndSites={ parksAndSites } reloadDeviceTable={ reloadDeviceTable } closeModal={()=>{ setShow(false) }}/>
-                </Modal> }
+                <Modal title="Add Device" onClose={() => setShow(false)} show={show}>
+                    <AddDeviceBody parksAndSites={parksAndSites} reloadDeviceTable={ reloadDeviceTable } closeModal={()=>{ setShow(false) }}/>
+                </Modal>
 
-                { parksAndSites && device && <Modal title="Edit Device" onClose={() => setShowEdit(false)} show={ showEdit }>
+                { device && <Modal title="Edit Device" onClose={() => setShowEdit(false)} show={ showEdit }>
                     <EditDeviceBody parksAndSites={parksAndSites} deviceDetails={ device } reloadDeviceTable={ reloadDeviceTable } closeModal={()=>{ setShowEdit(false) }}/>
                 </Modal> }
 

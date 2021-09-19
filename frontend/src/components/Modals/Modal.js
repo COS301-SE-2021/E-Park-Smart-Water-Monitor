@@ -2,15 +2,6 @@ import React, {useEffect, useState} from "react";
 import ReactDOM from "react-dom";
 import { CSSTransition } from "react-transition-group";
 import "../../assets/css/modal.css";
-import {PuffLoader} from "react-spinners";
-import {css} from "@emotion/react";
-
-const override = css`
-  display: block;
-  margin: 0 auto;
-  border-color: red;
-  opacity: 100%
-`;
 
 const Modal = props => {
     const [result, setResult] = useState("")
@@ -42,9 +33,7 @@ const Modal = props => {
         }else{
             let m =  <div className="modal" >
                 <div className="modal-content" onClick={e => e.stopPropagation()}>
-                    <div className="modal-body">
-                        <PuffLoader css={override} size={150} color={"#123abc"} loading={true} speedMultiplier={1.5} />
-                    </div>
+                    <div className="modal-body">{props.children}</div>
                 </div>
             </div>
 
