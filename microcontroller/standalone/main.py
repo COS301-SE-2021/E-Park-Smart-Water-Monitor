@@ -44,59 +44,101 @@ def write_config():
 
 def read_measurements():
     logger.log('Getting readings...')
+    global DEVICE_CONFIG
 
+    try:
+        rtc = machine.RTC()
+        localtime = rtc.datetime()
+        #localtime = time.localtime()
+        timeString = str("%02d"%localtime[0]) + "-" + str("%02d"%localtime[1]) + "-" + str("%02d"%localtime[2]) + " " + str("%02d"%localtime[4]) + ":" + str("%02d"%localtime[5]) + ":" + str("%02d"%localtime[6])
+        
+        
+        message = {
+            "deviceName": "Device1",
+            "measurements": [],
+            "reason": "STARTUP"
+        }
+        
+        lvl = -999
+        temp = -999
+        ph = -999
+            
+        if "depth" in DEVICE_CONFIG["sensor_modules"]:
+            lvl = read_depth()
+        
+        message["measurements"].append(
+            {
+                "type": "WATER_LEVEL",
+                "value": lvl,
+                "unitOfMeasurement": "CENTIMETER",
+                "deviceDateTime": timeString
+            }
+        )
+        
+        if "temp" in DEVICE_CONFIG["sensor_modules"]:
+            temp = read_temp()
+            
+        message["measurements"].append(
+            {
+                "type": "WATER_TEMP",
+                "value": temp,
+                "unitOfMeasurement": "CENTIGRADE",
+                "deviceDateTime": timeString
+            }
+        )
+            
+
+        if "ph" in DEVICE_CONFIG["sensor_modules"]:
+            ph = read_ph()
+            
+        message["measurements"].append(
+            {
+                "type": "WATER_QUALITY",
+                "value": ph,
+                "unitOfMeasurement": "PH",
+                "deviceDateTime": timeString
+            }
+        )
+    
+        return message
+    
+    except Exception as e:
+        raise CustomException("ERROR in read_measurements(): " + str(e))
+    
+def read_temp():
     try:
         logger.log("Reading temperature...")
         i2c = machine.I2C(1, scl=machine.Pin(22), sda=machine.Pin(21))
         sensor = bmp280.BMP280(i2c)
         temp = str(sensor.getTemp())
         logger.log("Temperature = " + temp + "C")
-
+        return temp
+        
+    except Exception as e:
+        raise CustomException("ERROR in read_temp(): " + str(e))
+    
+def read_depth():
+    try:
         logger.log("Reading water level...")
         depthSensor = jsn.JSN(13, 12)
         lvl = str(depthSensor.measureDist())
         logger.log("Distance = " + lvl + "cm")
+        return lvl
         
+    except Exception as e:
+        raise CustomException("ERROR in read_depth(): " + str(e))
+    
+def read_ph():
+    try:
         logger.log("Reading water PH...")
         phSensor = PH(32)
         ph = str(phSensor.readPH())
         logger.log("PH = " + ph)
+        return ph
         
-        rtc = machine.RTC()
-        localtime = rtc.datetime()
-        #localtime = time.localtime()
-        timeString = str("%02d"%localtime[0]) + "-" + str("%02d"%localtime[1]) + "-" + str(localtime[2]) + " " + str("%02d"%localtime[4]) + ":" + str("%02d"%localtime[5]) + ":" + str("%02d"%localtime[6])
-        
-        message = {
-            "deviceName": "Device1",
-            "measurements":
-            [
-                {
-                    "type": "WATER_LEVEL",
-                    "value": lvl,
-                    "unitOfMeasurement": "CENTIMETER",
-                    "deviceDateTime": timeString
-                },
-                {
-                    "type": "WATER_TEMP",
-                    "value": temp,
-                    "unitOfMeasurement": "CENTIGRADE",
-                    "deviceDateTime": timeString
-                },
-                {
-                    "type": "WATER_QUALITY",
-                    "value": ph,
-                    "unitOfMeasurement": "PH",
-                    "deviceDateTime": timeString
-                }
-            ]
-        }
-    
-        return message
-    
     except Exception as e:
-        raise CustomException("ERROR in read_measurements(): " + str(e))
-
+        raise CustomException("ERROR in read_ph(): " + str(e))
+        
 
 def connect_mqtt():    
     global MQTT_CLIENT
@@ -130,18 +172,28 @@ def handle_msg(topic, msg):
     global DEVICE_CONFIG
     
     try:
-        if (topic.decode() == DEVICE_CONFIG["mqtt_topic_ping"]):
+        if (topic.decode() == DEVICE_CONFIG["mqtt_topic_ping"] and json.loads(msg.decode())["DeviceName"] == DEVICE_CONFIG["device_id"]):
             logger.log("Ping topic received")
-            publish(read_measurements())
+            publish(read_measurements(), DEVICE_CONFIG["mqtt_topic_main"])
         
         elif (topic.decode() == DEVICE_CONFIG["mqtt_topic_shadow"]):
             logger.log("Shadow topic received")
             shadow = json.loads(msg)
             DEVICE_CONFIG["publish_interval"] = float(next(i for i in shadow["state"]["reported"]["DeviceData"]["deviceConfiguration"] if i["sensorConfiguration"]["settingType"] == "reportingFrequency")["sensorConfiguration"]["value"])
             write_config()
-            time.sleep(5)
-            logger.log("Restarting device...")
-            machine.reset()
+            #time.sleep(5)
+            #logger.log("Restarting device...")
+            #machine.reset()
+            
+        elif (topic.decode() == "iot/dump"):
+            logger.log("Log dump topic received")
+            f = open("log.txt", "r")
+            logs = f.read()
+            message = {
+                "deviceName": "Device1",
+                "logs": logs
+            }
+            publish(message, "iot/logdump")
         
         else:
             logger.log("Unrecognizable topic")
@@ -163,12 +215,12 @@ def subscribe(topic):
         raise CustomException("ERROR in subscribe(): " + str(e))
 
 
-def publish(msg):
+def publish(msg, topic):
     logger.log("Running publish method...")
     global MQTT_CLIENT
     
     try:    
-        MQTT_CLIENT.publish(DEVICE_CONFIG["mqtt_topic_main"], json.dumps(msg))
+        MQTT_CLIENT.publish(topic, json.dumps(msg))
         logger.log("Message published")
         
     except Exception as e:
@@ -181,7 +233,7 @@ async def pub_loop():
     
     try:
         while True:
-            publish(read_measurements())
+            publish(read_measurements(), DEVICE_CONFIG["mqtt_topic_main"])
             await uasyncio.sleep(3600 * float(DEVICE_CONFIG["publish_interval"]))
             
     except Exception as e:
@@ -197,12 +249,12 @@ async def sub_loop():
             if (wlan.isconnected() != True):
                 logger.log("WiFi has disconnected!")
             
-            print("Checking for messages...")
+            logger.log("Checking for messages...")
             
             while MQTT_CLIENT.check_msg() != None:
                 pass
             
-            print("Subscribe sleeping...")
+            logger.log("Subscribe sleeping...")
             await uasyncio.sleep(30)
             
     except Exception as e:
@@ -217,9 +269,27 @@ def handle_exception(loop, context):
 try:
     read_config()
     connect_wifi(DEVICE_CONFIG["wifi_ssid"], DEVICE_CONFIG["wifi_pw"])
+    
+    rtc = machine.RTC()
+    t = rtc.datetime()
+    
+    if (t[0] < 2021):
+        import ntptime
+        logger.log('Setting time...')
+        tm = utime.gmtime(ntptime.time())
+        machine.RTC().datetime((tm[0], tm[1], tm[2], tm[6] + 1, tm[3] + 2, tm[4], tm[5], 0))
+        logger.log('Time is set!')
+    
+    
+    
     connect_mqtt()
     subscribe(DEVICE_CONFIG["mqtt_topic_ping"])
     subscribe(DEVICE_CONFIG["mqtt_topic_shadow"])
+    
+    for i in DEVICE_CONFIG["topics"]:
+        subscribe(i)
+        
+    
     
     loop = uasyncio.get_event_loop()
     loop.create_task(sub_loop())
@@ -228,6 +298,6 @@ try:
     loop.run_forever()
 
 except Exception as e:
-    logger.log(str(e))
-    logger.log("Exception caught. Restarting device...")
+    logger.log(str(e), "SEVERE")
+    logger.log("Exception caught. Restarting device...", "SEVERE")
     machine.reset()
