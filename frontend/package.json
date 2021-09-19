@@ -22,7 +22,8 @@
   "dependencies": {
     "@capacitor-community/http": "^1.2.0",
     "@capacitor/android": "^3.2.0",
-    "@capacitor/core": "^3.2.2",
+    "@capacitor/cli": "^3.0.2",
+    "@capacitor/core": "^3.0.2",
     "@emotion/react": "11.1.5",
     "@emotion/styled": "11.1.5",
     "@fortawesome/fontawesome-free": "5.15.2",
@@ -66,7 +67,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@capacitor/cli": "^3.2.2",
     "@types/leaflet": "^1.7.0",
     "eslint": "7.20.0",
     "eslint-plugin-react": "^7.25.1",
