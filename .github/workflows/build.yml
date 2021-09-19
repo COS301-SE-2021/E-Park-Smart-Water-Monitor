@@ -10,7 +10,7 @@ on:
       - master
       - development
 jobs:
-  build:
+  Tests_and_Sonar_Quality:
     name: Build
     runs-on: ubuntu-latest
     env:
