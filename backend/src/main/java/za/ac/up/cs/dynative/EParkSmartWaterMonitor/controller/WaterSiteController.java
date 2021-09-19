@@ -11,6 +11,7 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.models.WaterSite;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses.GetSiteByIdResponse;
 
+
 /**
  * This class will map all the http requests made related to water sites to their
  * respected functions in the water site service implementation.

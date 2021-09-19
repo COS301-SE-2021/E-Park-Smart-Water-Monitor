@@ -11,11 +11,13 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.models.Device;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.devices.requests.*;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestException;
 
+
 /**
  * This class will map all the http requests made related to devices to their
  * appropriate functions in the device service implementation.
  * The http methods that will be used: get, post, delete and put.
  */
+
 
 @CrossOrigin
 @RestController

@@ -9,11 +9,13 @@ import za.ac.up.cs.dynative.EParkSmartWaterMonitor.exceptions.InvalidRequestExce
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.UserService;
 import za.ac.up.cs.dynative.EParkSmartWaterMonitor.user.requests.*;
 
+
 /**
  * This class will map all the http requests made related to users to their
  * respected functions in the user service implementation.
  * The http methods that will be used: post, put, get, and delete.
  */
+
 
 @CrossOrigin
 @RestController
