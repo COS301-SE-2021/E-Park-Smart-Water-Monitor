@@ -42,7 +42,9 @@ function Dashboard() {
   }
 
   const reloadDeviceTable = () => {
+
     setValue(value => value+1)
+
   }
 
   useEffect(() => {
@@ -58,7 +60,15 @@ function Dashboard() {
 
         if(site && site[0])
         {
-          setDevice(site[0])
+          let tempDevice = JSON.parse(sessionStorage.getItem('device'))
+          console.log("temp" + tempDevice)
+          if(tempDevice && tempDevice !== {})
+          {
+            setDevice(tempDevice)
+          }else{
+            setDevice(site[0])
+          }
+
         }
 
       }else{
@@ -93,8 +103,6 @@ function Dashboard() {
         }
       }
     })
-
-
 
   }, [])
 
