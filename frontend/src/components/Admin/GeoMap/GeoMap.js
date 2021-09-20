@@ -331,23 +331,44 @@ function GeoMap(props) {
             };
 
 
-            // fetch(new URL("http:localhost:8080/api/geodata/getSignalLoss"),
-            //     requestOptions)
-            //     .then(response => {response.json(); toggleLoading()})
-            //     .then((fetchedFeatures) => {
+            fetch(new URL("http:localhost:8080/api/geodata/getSignalLoss"),
+                requestOptions)
+                .then(response => response.json())
+                .then((fetchedFeatures) => {
+
+                    // parse fetched geojson into OpenLayers features
+                    //  use options to convert feature from EPSG:4326 to EPSG:3857
+                    const wktOptions =
+                        {
+                            featureProjection: 'EPSG:3857'
+                        }
+                        console.log(fetchedFeatures)
+                    const parsedFeatures = new GeoJSON().readFeatures((fetchedFeatures),
+                        {
+                            featureProjection: 'EPSG:3857'
+                        }
+                    )
+
+                    // set features into state (which will be passed into OpenLayers
+                    //  map component as props)
+                    console.log(parsedFeatures)
+                    props.gatewayChanger(parsedFeatures)
+                    toggleLoading()
+                    // setMapOutline(parsedFeatures)
+
+                })
+
+
+            // fetch('/lossAMid.json')
+            //     // fetch('/rOutline.json')
+            //     .then(response => response.json())
+            //     .then( (fetchedFeatures) => {
             //
-            //         // parse fetched geojson into OpenLayers features
-            //         //  use options to convert feature from EPSG:4326 to EPSG:3857
-            //         const wktOptions =
-            //             {
-            //                 featureProjection: 'EPSG:3857'
-            //             }
-            //             console.log(fetchedFeatures)
-            //         const parsedFeatures = new GeoJSON().readFeatures((fetchedFeatures),
-            //             {
-            //                 featureProjection: 'EPSG:3857'
-            //             }
-            //         )
+            //         const wktOptions = {
+            //             dataProjection: 'EPSG:4326',
+            //             featureProjection: 'EPSG:3857'
+            //         }
+            //         const parsedFeatures = new GeoJSON().readFeatures(fetchedFeatures, wktOptions)
             //
             //         // set features into state (which will be passed into OpenLayers
             //         //  map component as props)
@@ -356,26 +377,6 @@ function GeoMap(props) {
             //         // setMapOutline(parsedFeatures)
             //
             //     })
-
-
-            fetch('/lossAMid.json')
-                // fetch('/rOutline.json')
-                .then(response => response.json())
-                .then( (fetchedFeatures) => {
-
-                    const wktOptions = {
-                        dataProjection: 'EPSG:4326',
-                        featureProjection: 'EPSG:3857'
-                    }
-                    const parsedFeatures = new GeoJSON().readFeatures(fetchedFeatures, wktOptions)
-
-                    // set features into state (which will be passed into OpenLayers
-                    //  map component as props)
-                    console.log(parsedFeatures)
-                    props.gatewayChanger(parsedFeatures)
-                    // setMapOutline(parsedFeatures)
-
-                })
         }
 
     }
