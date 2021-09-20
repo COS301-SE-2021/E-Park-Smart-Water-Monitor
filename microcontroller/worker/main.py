@@ -12,6 +12,7 @@ from machine import Pin, SPI
 from sx127x import SX127x
 import _thread
 import cryptolib
+import ubinascii
 
 DEVICE_CONFIG = None
 LORA = None
@@ -82,9 +83,8 @@ def read_measurements():
         
         message["m"].append(
             {
-                "t": "WATER_LEVEL",
+                "t": "WL",
                 "v": lvl,
-                "u": "CENTIMETER",
             }
         )
         
@@ -93,9 +93,8 @@ def read_measurements():
             
         message["m"].append(
             {
-                "t": "WATER_TEMP",
+                "t": "WT",
                 "v": temp,
-                "u": "CENTIGRADE",
             }
         )
             
@@ -105,11 +104,9 @@ def read_measurements():
             
         message["m"].append(
             {
-                "t": "WATER_QUALITY",
+                "t": "WQ",
                 "v": ph,
-                "u": "PH",
             }
-            
         )
     
         return message
@@ -230,7 +227,7 @@ def lora_send(message):
     logger.log("Sending LoRa message: " + message)
     
     try:
-        LORA.println(message)
+        LORA.println(encrypt(message))
         
     except Exception as e:
         raise CustomException("ERROR in lora_send(): " + str(e))
@@ -242,20 +239,27 @@ def encrypt(string):
     try:
         padding = "X" * (16 - len(string) % 16)
         string = padding + string
-        return CRYP_ENC.encrypt(string)
+        encrypted = CRYP_ENC.encrypt(string)
+        hexlified = ubinascii.hexlify(encrypted)
+        payload = hexlified.decode()
+        print(payload)
+        return payload
     
     except Exception as e:
         raise CustomException("ERROR in encrypt(): " + str(e))
     
-def decrypt(string):
-    logger.log("Decrypting string")
+def decrypt(payload):
+    logger.log("Decrypting payload")
     global CRYP_DEC
     
     try:
+        encrypted = ubinascii.unhexlify(payload)
+        string = CRYP_DEC.decrypt(encrypted).decode()
+        
         while (string[0] == 'X'):
             string = string[1:]
         
-        return CRYP_ENC.decrypt(string)
+        return string
     
     except Exception as e:
         raise CustomException("ERROR in decrypt(): " + str(e))
@@ -290,14 +294,14 @@ def receive_loop():
         while True:
             if (LORA_SENDING != True):
                 if LORA.received_packet():
-                    handle_message(LORA.read_payload())
+                    handle_message(decrypt(LORA.read_payload()))
             
     except Exception as e:
         raise CustomException("ERROR in receive_loop(): " + str(e))
 
 try:
     read_config()
-    #cryp_init()
+    cryp_init()
     lora_init()
     
     _thread.start_new_thread(send_loop, ())
