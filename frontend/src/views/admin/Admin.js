@@ -1,4 +1,6 @@
-import React, {useContext, useState} from "react";
+/* eslint-disable */
+
+import React, {useContext, useEffect, useState} from "react";
 import AdminHeader from "../../components/Headers/AdminHeader";
 import UserTable from "../../components/Admin/User/UserTable";
 import Grid from "@material-ui/core/Grid";
@@ -25,6 +27,8 @@ import Feature from 'ol/Feature';
 
 // components
 import {transform} from "ol/proj";
+import {css} from "@emotion/react";
+import axios from "axios";
 const useStyles = makeStyles(componentStyles);
 
 const override = css`
@@ -82,7 +86,7 @@ function Admin() {
         }).then((res)=>{
             if(res)
             {
-                setParksAndSites(res.data)
+                // setParksAndSites(res.data)
             }
         });
 
@@ -145,7 +149,7 @@ function Admin() {
                 setMapOutline(parsedFeatures)
 
             })
-    },[value])
+    },[])
 
     // Context explained
     // https://medium.com/nerd-for-tech/using-context-api-in-react-with-functional-components-dbc653c7d485

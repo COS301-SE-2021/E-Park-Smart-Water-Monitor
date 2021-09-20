@@ -1,9 +1,10 @@
+/* eslint-disable  */
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import 'ol/ol.css';
-import { fromLonLat, transformExtent, toLonLat } from 'ol/proj';
+import { fromLonLat } from 'ol/proj';
 import Map from 'ol/Map'
 import View from 'ol/View'
-import {Control, defaults as defaultControls} from 'ol/control';
+import { defaults as defaultControls} from 'ol/control';
 import componentStyles from "assets/theme/views/admin/admin";
 import TileLayer from 'ol/layer/Tile'
 import VectorLayer from 'ol/layer/Vector'
@@ -12,32 +13,16 @@ import VectorImageLayer from 'ol/layer/VectorImage';
 import XYZ from 'ol/source/XYZ'
 import {transform} from 'ol/proj'
 import {toStringXY} from 'ol/coordinate';
-import mask from '@turf/mask'
-import {Circle as CircleStyle,Icon, Fill, Stroke, Style} from 'ol/style';
-import Feature from 'ol/Feature';
-import Point from 'ol/geom/Point';
+import { Fill, Stroke, Style} from 'ol/style';
 import GeoJSON from 'ol/format/GeoJSON';
 import "./GeoMap.css"
 import Box from "@material-ui/core/Box";
-import Modal from "../../Modals/Modal";
-import EditInspection from "../Inspection/EditInspection";
-import Comments from "../Inspection/Comments";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import Typography from "@material-ui/core/Typography";
-import {Tooltip} from "@material-ui/core";
-import {Refresh} from "@material-ui/icons";
-import {ScaleLoader} from "react-spinners";
-import TableContainer from "@material-ui/core/TableContainer";
-import Table from "@material-ui/core/Table";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableCell from "@material-ui/core/TableCell";
-import TableBody from "@material-ui/core/TableBody";
 import Container from "@material-ui/core/Container";
 import {makeStyles} from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
 // import HeightIcon from '@mui/icons-material/Height';
 // import CellWifiIcon from '@mui/icons-material/CellWifi';
 import { MdSettingsInputAntenna } from "react-icons/md";
@@ -46,7 +31,6 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import LoadingContext from "../../../Context/LoadingContext";
 import {UserContext} from "../../../Context/UserContext";
-import axios from "axios";
 let isOn=false;
 let isOnE=false;
 let previousToggle ="none"
@@ -62,14 +46,16 @@ function GeoMap(props) {
     const [ selectedCoord , setSelectedCoord ] = useState()
     const [view, setView] = React.useState("elevation");
 
+    // eslint-disable-next-line no-unused-vars
     const [ gatewayOn , setGatewayOn,getGatewayOn ] = useState(props.gatewayOn)
+    // eslint-disable-next-line no-unused-vars
     const [ reserveBorder , setReserveBorder ] = useState(props.mapO)
 
     const loader = useContext(LoadingContext)
     const toggleLoading = loader.toggleLoading
     const user = useContext(UserContext)
 
-    const [ maskLayer , setMaskLayer ] = useState(
+    const [ maskLayer ] = useState(
 
         new VectorLayer({
             source: new VectorSource({
@@ -338,10 +324,6 @@ function GeoMap(props) {
 
                     // parse fetched geojson into OpenLayers features
                     //  use options to convert feature from EPSG:4326 to EPSG:3857
-                    const wktOptions =
-                        {
-                            featureProjection: 'EPSG:3857'
-                        }
                         console.log(fetchedFeatures)
                     const parsedFeatures = new GeoJSON().readFeatures((fetchedFeatures),
                         {
