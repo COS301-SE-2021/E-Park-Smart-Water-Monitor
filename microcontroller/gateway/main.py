@@ -10,6 +10,7 @@ from machine import Pin, SPI
 from sx127x import SX127x
 import cryptolib
 import uasyncio
+import ubinascii
 
 
 MQTT_CLIENT = None
@@ -127,7 +128,7 @@ def lora_send(message):
     logger.log("Sending LoRa message")
     
     try:
-        LORA.println(message)
+        LORA.println(encrypt(message))
         
     except Exception as e:
         raise CustomException("ERROR in lora_send(): " + str(e))
@@ -171,20 +172,27 @@ def encrypt(string):
     try:
         padding = "X" * (16 - len(string) % 16)
         string = padding + string
-        return CRYP_ENC.encrypt(string)
+        encrypted = CRYP_ENC.encrypt(string)
+        hexlified = ubinascii.hexlify(encrypted)
+        payload = hexlified.decode()
+        print(payload)
+        return payload
     
     except Exception as e:
         raise CustomException("ERROR in encrypt(): " + str(e))
     
-def decrypt(string):
-    logger.log("Decrypting string")
+def decrypt(payload):
+    logger.log("Decrypting payload")
     global CRYP_DEC
     
     try:
+        encrypted = ubinascii.unhexlify(payload)
+        string = CRYP_DEC.decrypt(encrypted).decode()
+        
         while (string[0] == 'X'):
             string = string[1:]
         
-        return CRYP_ENC.decrypt(string)
+        return string
     
     except Exception as e:
         raise CustomException("ERROR in decrypt(): " + str(e))
@@ -207,11 +215,7 @@ def publish(msg, topic):
     logger.log("Running publish method...")
     global MQTT_CLIENT
     
-    try:        
-        logger.log("Pinging MQTT...")
-        MQTT_CLIENT.ping()
-        logger.log("Done")
-        
+    try:                
         MQTT_CLIENT.publish(topic, msg)
         logger.log("Message published")
         
@@ -235,11 +239,26 @@ def handle_publish(data):
         }
         
         for m in data["m"]:
+            u = ""
+            t = ""
+            if (m["t"] == "WL"):
+                u = "CENTIMETER"
+                t = "WATER_LEVEL"
+                
+            elif (m["t"] == "WT"):
+                u = "CENTIGRADE"
+                t = "WATER_TEMP"
+                
+            elif (m["t"] == "WQ"):
+                u = "PH"
+                t = "WATER_QUALITY"
+                
+            
             message["measurements"].append(
                 {
-                      "type": m["t"],
+                      "type": t,
                       "value": m["v"],
-                      "unitOfMeasurement": m["u"],
+                      "unitOfMeasurement": u,
                       "deviceDateTime": timeString
                 }    
             )
@@ -277,7 +296,7 @@ def lora_loop():
                 
             if LORA.received_packet():
                 with LORA_LOCK:
-                    m = handle_publish(LORA.read_payload().decode())
+                    m = handle_publish(decrypt(LORA.read_payload()))
                     LORA_DATA.append(json.dumps(m))
                     logger.log("LoRa message received: " + json.dumps(m))
                     LORA_AVAIL = True
@@ -379,6 +398,7 @@ try:
     
     mqtt_init()
     lora_init()
+    cryp_init()
     
     _thread.start_new_thread(lora_loop, ())
     mqtt_loop()
