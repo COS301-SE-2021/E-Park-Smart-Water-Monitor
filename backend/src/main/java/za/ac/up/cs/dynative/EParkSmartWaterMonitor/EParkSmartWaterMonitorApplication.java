@@ -11,8 +11,4 @@ public class EParkSmartWaterMonitorApplication {
 		SpringApplication.run(EParkSmartWaterMonitorApplication.class, args);
 
 	}
-
-
-
-
 }

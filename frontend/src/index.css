@@ -23,8 +23,8 @@ code {
 }
 
 .table-container {
-  border: 1px solid #eeccee;
-  max-height: 300px;
-  overflow-y: scroll;
+  overflow-y: auto;
   width: 100%;
+  overscroll-behavior-y: auto
+    
 }

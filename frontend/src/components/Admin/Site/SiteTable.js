@@ -21,22 +21,18 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditSiteBody from "./EditSiteBody";
 import {Tooltip} from "@material-ui/core";
-import AdminContext from "../AdminContext";
 import LoadingContext from "../../../Context/LoadingContext";
 import {UserContext} from "../../../Context/UserContext";
 
 const useStyles = makeStyles(componentStyles);
 
-const SiteTable = (props) => {
+const SiteTable = () => {
     const classes = useStyles();
     const [show, setShow] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
     const [response, setResponse] = useState(false);
     const [site, setSite] = useState({});
-    const [park, setPark] = useState({});
     const [value, setValue] = useState({});
-    const [parkOptions, setParkOptions] = useState("")
-    const [parksAndSites, setParksAndSites] = useState(null)
 
     const toggleLoading = useContext(LoadingContext).toggleLoading
     const user = useContext(UserContext)
@@ -49,7 +45,7 @@ const SiteTable = (props) => {
     const removeSite = (id) => {
         return ()=>{
             toggleLoading()
-            axios.delete('http://localhost:8080/api/sites/deleteWaterSite',
+            axios.delete('/sites/deleteWaterSite',
             {
                 headers: {
                     'Authorization': "Bearer " + user.token
@@ -57,12 +53,12 @@ const SiteTable = (props) => {
                 data: {
                     id: id,
                 }
-            }).then((res)=> {
+            }).then(()=> {
                 toggleLoading()
                 reloadSiteTable()
+                // eslint-disable-next-line no-unused-vars
             }).catch((res)=>{
                 toggleLoading()
-                console.log(JSON.stringify(res))
             })
         }
     }
@@ -75,7 +71,7 @@ const SiteTable = (props) => {
 
 
     const setTable = () =>{
-        axios.post('http://localhost:8080/api/park/getParkWaterSites', {
+        axios.post('/park/getParkWaterSites', {
                 parkId: user.parkID
             },
             {
@@ -122,8 +118,8 @@ const SiteTable = (props) => {
                 </TableRow>
             )
             setResponse(m);
+            // eslint-disable-next-line no-unused-vars
         }).catch((res)=>{
-            console.log("error occurred getting watersites: "+JSON.stringify(res))
         });
 
     }
@@ -171,23 +167,12 @@ const SiteTable = (props) => {
                                                 marginBottom="0!important"
                                             >
                                                 Watersites for {user.parkName}
-
-                                                {/*Reload Button*/}
-                                                {/*<Box*/}
-                                                {/*    component={Replay}*/}
-                                                {/*    width="1rem!important"*/}
-                                                {/*    height="1rem!important"*/}
-                                                {/*    marginLeft="1.25rem"*/}
-                                                {/*    onClick={()=>{return reloadSiteTable}}*/}
-                                                {/*/>*/}
                                             </Box>
-
                                         </Grid>
-
                                     </Grid>
                                 }
                                 classes={{ root: classes.cardHeaderRoot }}
-                            ></CardHeader>
+                            />
                             <TableContainer
                                 style={{maxHeight:"300px",overflowY:"auto"}}>
                                 <Box

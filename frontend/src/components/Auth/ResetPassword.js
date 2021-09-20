@@ -5,7 +5,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import axios from "axios";
 import LoadingContext from "../../Context/LoadingContext";
-import {UserContext} from "../../Context/UserContext";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -20,9 +19,7 @@ import {useTheme} from "@material-ui/core/styles";
 
 const ResetPassword = (props) => {
     const theme = useTheme();
-
     const [username, setUsername] = useState("")
-    const [code, setCode] = useState(false) // code on our side, can be used to match
     const [resetCode, setResetCode] = useState(false) // the code they type in to verify on backend on second API call
     const [error, setError] = useState(false)
     const [errorConfirmation, setErrorConfirmation] = useState(false)
@@ -43,27 +40,25 @@ const ResetPassword = (props) => {
             username : username
         }
 
-        axios.post('http://localhost:8080/api/user/resetPassword', obj).then((res) => {
+        axios.post('/user/resetPassword', obj).then((res) => {
 
             toggleLoading();
-
-            // console.log(JSON.stringify(res.data))
-
             if(res.data.code === "User not found"){
                 setError(res.data.code)
             }else{
-                setCode(res.data.code)
                 setNext(true)
-                // console.log("code: "+code)
-                // console.log("next")
             }
 
         }).catch((res) => {
 
             toggleLoading()
-            console.log("error sending username to reset password: "+JSON.stringify(res))
 
         });
+    }
+
+    function setCharAt(str,index,chr) {
+        if(index > str.length-1) return str;
+        return str.substring(0,index) + chr + str.substring(index+1);
     }
 
     useEffect(()=>{
@@ -78,46 +73,85 @@ const ResetPassword = (props) => {
         if(newPassword !== newPasswordConfirmed)
         {
             setErrorConfirmation("Passwords do not match")
-        }else{
-            toggleLoading()
-            // console.log("submitting new password")
-
-            let obj = {
-                username: username,
-                resetCode: resetCode,
-                newPassword: newPassword,
-                newPasswordConfirmed: newPasswordConfirmed
+        }else {
+            let passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{10,}$/;
+            if (!passwordRegex.test(newPassword)) {
+                setErrorConfirmation("The password does not comply with the minimum requirements. " +
+                    "Your password should contain atleast 10 characters, one capital letter, one lower case letter, " +
+                    "one number and finally a minimum of one special character: #, ?, !, @, $, %, ^, &, *, -")
             }
+            else{
+                toggleLoading()
 
-            axios.post('http://localhost:8080/api/user/resetPasswordFinalize', obj).then((res) => {
+                let num1= Math.floor((Math.random() * newPassword.length) + 1)
+                let num2= newPassword.length- num1
+                let x = Math.floor((Math.random() * 3) + 2)
+                const alpha = "abc"
+                let c= alpha[Math.floor(Math.random()*alpha.length)]
+                let d = Math.floor((Math.random() * 3) + 1)
+                let codes=["z13b76cCHh!+gfdI68[egs=sD3skr@kb9L;rk9df",
+                           "0bHd8pb=4N4iKLhek)8fbgl3lSdi-ickt!~dw4^",
+                           "#a6bF&;5c&4dlF/r*lbp+N]fu;Fzzzb98aQlkbl;"]
 
-                toggleLoading();
-                // console.log(JSON.stringify(res))
-
-                if(res.data.success === false)
-                {
-                    setErrorConfirmation(res.data.message)
-                }else{
-                    setShowAlert(true)
-                    setTimeout(()=>{
-                        setShowAlert(false)
-                        props.closeModal()
-                    }, 5000)
+                let pieces= []
+                let pieces2= []
+                for (let i = 0, charsLength = newPassword.length; i < charsLength; i += (x-1)) {
+                    pieces.push(newPassword.substring(i, i + (x-1)));
+                }
+                for (let i = 0, charsLength = newPasswordConfirmed.length; i < charsLength; i += (x-1)) {
+                    pieces2.push(newPasswordConfirmed.substring(i, i + (x-1)));
                 }
 
+                let word=""
+                if (c=="a"){
+                    word = codes[0]
+                }else if (c=="b"){
+                    word = codes[1]
+                }else if (c=="c"){
+                    word = codes[2]
+                }
 
-            }).catch((res) => {
+                let scramble1 =""
+                let scramble2 =""
+                for (let i =0; i<pieces.length; i++){
+                    scramble1+=pieces[i]+word[i]
+                    scramble2+=pieces2[i]+word[i]
+                }
 
-                toggleLoading()
-                console.log("error sending username to reset password: "+JSON.stringify(res))
+                for (let i =(x+d-1); i<scramble1.length;i+=(x+d)){
+                    scramble1= setCharAt(scramble1,i,String.fromCharCode((scramble1[i].charCodeAt())+d))
+                    scramble2= setCharAt(scramble2,i,String.fromCharCode((scramble2[i].charCodeAt())+d))
+                }
 
-            });
+                const randoms = "abcdefghijklASDFGJKLMNBVCX123456789^&/@}{[]"
+                let f= randoms[Math.floor(Math.random()*randoms.length)]
+
+                scramble1+=d+"|"+num1+"?"+num2+"*"+x+f
+                scramble2+=d+"|"+num1+"?"+num2+"*"+x+f
+                
+                let obj = {
+                    username: username,
+                    resetCode: resetCode,
+                    newPassword: scramble1,
+                    newPasswordConfirmed: scramble2
+                }
+                axios.post('http://localhost:8080/api/user/resetPasswordFinalize', obj).then((res) => {
+                    toggleLoading();
+
+                    if (res.data.success === false) {
+                        setErrorConfirmation(res.data.message)
+                    } else {
+                        setShowAlert(true)
+                        setTimeout(() => {
+                            setShowAlert(false)
+                            props.closeModal()
+                        }, 5000)
+                    }
+                }).catch((res) => {
+                    toggleLoading()
+                });
         }
-
-
-
-
-
+        }
     }
 
     return (

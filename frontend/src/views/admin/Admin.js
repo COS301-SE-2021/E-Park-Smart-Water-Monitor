@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import AdminHeader from "../../components/Headers/AdminHeader";
 import UserTable from "../../components/Admin/User/UserTable";
 import Grid from "@material-ui/core/Grid";
@@ -10,12 +10,6 @@ import DeviceTable from "../../components/Admin/Device/DeviceTable";
 import ParkTable from "../../components/Admin/Park/ParkTable";
 import InspectionTable from "components/Admin/Inspection/InspectionTable";
 import SiteTable from "../../components/Admin/Site/SiteTable";
-import { AdminProvider } from '../../components/Admin/AdminContext'
-import axios from "axios";
-import {BeatLoader, DotLoader, PuffLoader} from "react-spinners";
-import {css} from "@emotion/react";
-import AddParkBody from "../../components/Admin/Park/AddParkBody";
-import Modal from "../../components/Modals/Modal";
 import {UserContext} from "../../Context/UserContext";
 import LoadingContext from "../../Context/LoadingContext";
 import Map from "components/Dashboard/Map.js"
@@ -55,10 +49,6 @@ const gmap = css`
 function Admin() {
     const classes = useStyles();
     const [park, setPark] = useState("") // for passing from park table to site table
-    const [parksAndSites, setParksAndSites] = useState(null) // all the parks and sites
-    const [loading, setLoading] = useState(false)
-    const [show, setShow] = useState(false)
-    const [value, setValue] = useState(0)
 
     const [ elevation, setElevation ] = useState([])
     const [ mapOutline, setMapOutline ] = useState([])
@@ -164,11 +154,7 @@ function Admin() {
     return (
         <>
                 <AdminHeader/>
-                <Modal onClose={() => setShow(false)} show={show}>
-                    <div className="sweet-loading" style={ overlay }>
-                        <PuffLoader css={override} size={150} color={"#123abc"} loading={loading} speedMultiplier={1.5} />
-                    </div>
-                </Modal>
+
                 <Container
                     maxWidth={false}
                     component={Box}

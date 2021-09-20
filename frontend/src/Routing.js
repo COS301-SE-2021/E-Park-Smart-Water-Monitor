@@ -7,6 +7,9 @@ import {UserContext} from "./Context/UserContext";
 
 const Routing = () => {
 
+    // Context explained
+    // https://medium.com/nerd-for-tech/using-context-api-in-react-with-functional-components-dbc653c7d485
+    // https://medium.com/@danfyfe/using-react-context-with-functional-components-153cbd9ba214
     const user = useContext(UserContext)
 
     return (

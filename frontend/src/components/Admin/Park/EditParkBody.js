@@ -1,20 +1,13 @@
 import React, {useContext, useEffect, useState} from "react";
-
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
-import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addDevice.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Button, Form} from "react-bootstrap";
-import Select from "react-select";
 import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
 import axios from "axios";
-import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 
-const useStyles = makeStyles(componentStyles);
 const mapStyles = {
     width: `100%`,
     height: `100%`
@@ -24,6 +17,7 @@ const EditParkBody = (props) => {
     const [name, setName] = useState("")
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
+    // eslint-disable-next-line no-unused-vars
     const [error, setError] = useState("")
 
     const user = useContext(UserContext)
@@ -37,6 +31,7 @@ const EditParkBody = (props) => {
                 setLongitude(e.latlng.lng)
             }
         })
+        map.setView({lat: props.parkDetails.latitude, lng: props.parkDetails.longitude} )
         return null
     }
 
@@ -63,27 +58,25 @@ const EditParkBody = (props) => {
                 longitude: longitude
             }
 
-            axios.post('http://localhost:8080/api/park/editPark', obj, {
+            axios.post('/park/editPark', obj, {
                     headers: {
                         'Authorization': "Bearer " + user.token
                     }
                 }
             ).then((res)=>{
 
-                console.log("response:"+JSON.stringify(res))
                 if(res.data.success == "false")
                 {
                     toggleLoading()
                     setError(res.data.status)
-                    console.log("error with editing park")
                 }else{
                     toggleLoading()
                     props.closeModal()
                     props.reloadParkTable()
                 }
 
+                // eslint-disable-next-line no-unused-vars
             }).catch((res)=>{
-                console.log("response:"+JSON.stringify(res))
             });
         }
 

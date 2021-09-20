@@ -13,33 +13,23 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
-import Select from "react-select";
 import componentStyles from "assets/theme/views/admin/admin";
 import Modal from "../../Modals/Modal";
 import axios from "axios";
-import AddInspectionBody from "./AddInspectionBody";
 import {UserContext} from "../../../Context/UserContext";
-import LoadingContext from "../../../Context/LoadingContext";
-import Button from "@material-ui/core/Button";
-import {BatteryStd, Refresh, Replay} from "@material-ui/icons";
+import {Refresh} from "@material-ui/icons";
 import {Tooltip} from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import ForumIcon from '@material-ui/icons/Forum';
-import AssignmentTurnedInIcon from "@material-ui/icons/AssignmentTurnedIn";
 import EditInspection from "./EditInspection";
 import Comments from "./Comments";
 import {ScaleLoader} from "react-spinners";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles(componentStyles);
 
 const InspectionTable = () => {
     const classes = useStyles();
-    const [show, setShow] = useState(false);
-    const [status, setStatus] = useState(false);
-
-    const [inspections, setInspections] = useState([])
     const [showEditInspection, setShowEditInspection] = useState(false)
     const [response, setResponse] = useState([])
     const [value, setValue] =useState(0)
@@ -51,11 +41,6 @@ const InspectionTable = () => {
         setValue(value => value+1)
     }
 
-    const statusOptions = [
-        { value: "NOT STARTED", label: "Not Started" },
-        { value: "DONE", label: "Done" }
-    ]
-
     const toggleshowEditInspection = ()=>{
         setShowEditInspection(showEditInspection=>!showEditInspection)
     }
@@ -65,29 +50,10 @@ const InspectionTable = () => {
     }
 
     const user = useContext(UserContext)
-    const toggleLoading = useContext(LoadingContext).toggleLoading
-
-    const changeStatus = (id)=>{
-
-        toggleLoading()
-        let obj = {
-            inspectionId: id,
-            status: status.value
-        }
-        axios.post('http://localhost:8080/api/inspections/setStatus', obj,{
-            headers: {
-                'Authorization': "Bearer " + user.token
-            }
-        }).then((res) => {
-            console.log(JSON.stringify(res))
-            toggleLoading()
-        });
-
-    }
 
     useEffect(() => {
         setReload(true)
-        axios.get('http://localhost:8080/api/inspections/getAllInspections', {
+        axios.get('/inspections/getAllInspections', {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
@@ -112,47 +78,40 @@ const InspectionTable = () => {
                             <TableCell
                                 classes={{
                                     root:
-                                        classes.tableCellRoot +
-                                        " " +
-                                        classes.tableCellRootBodyHead,
+                                        classes.tableCellRoot 
+                                        // " " +
+                                        // classes.tableCellRootBodyHead,
                                 }}
-                                component="th"
-                                variant="head"
-                                scope="row"
+                                // component="th"
+                                // variant="head"
+                                // scope="row"
                             >
                                 { inspection.dateDue?.split("T")[0] }
                             </TableCell>
                             <TableCell classes={{ root: classes.tableCellRoot }}>
-
-                                {/*Dropdown select for different parks*/}
-                                {/*<Grid item xs={12} >*/}
-                                {/*    <Box>*/}
-                                {/*        <Select required={"required"} className="mb-3" name="park" options={ statusOptions } value={ status } onChange={e => { setStatus(e); changeStatus()}}/>*/}
-                                {/*        /!*<Select required={"required"} className="mb-3" name="park" />*!/*/}
-                                {/*    </Box>*/}
-                                {/*</Grid>*/}
                                 { inspection.status }
                             </TableCell>
-                            <TableCell className="table-sticky-column" classes={{ root: classes.tableCellRoot }}>
+                            <TableCell classes={{ root: classes.tableCellRoot }}>
                                 { inspection.description }
                             </TableCell>
                             <TableCell classes={{root: classes.tableCellRoot}}
                                        style={{verticalAlign: 'middle'}}>
                                 <Tooltip title="Comments" arrow>
-                                    <ForumIcon aria-label="forum"
-                                              onClick={ () => {setShowComments(true); setInspec(inspection)} }>
-                                    </ForumIcon>
+                                    <IconButton aria-label="comments" onClick={ () => {setShowComments(true); setInspec(inspection)} }>
+                                          <ForumIcon/>
+                                    </IconButton>
                                 </Tooltip>
                             </TableCell>
                             <TableCell classes={{root: classes.tableCellRoot}}
                                        style={{verticalAlign: 'middle'}}>
                                 <Tooltip title="Edit" arrow>
-                                    <EditIcon aria-label="edit"
-                                              onClick={() => {
-                                                  setShowEditInspection(true);
-                                                  setInspec(inspection)
-                                              }}>
-                                    </EditIcon>
+                                    <IconButton aria-label="edit" onClick={() => {
+                                        setShowEditInspection(true);
+                                        setInspec(inspection)
+                                    }}>
+                                        <EditIcon/>
+                                    </IconButton>
+
                                 </Tooltip>
                             </TableCell>
 
@@ -178,7 +137,7 @@ const InspectionTable = () => {
                 <Modal title= "Edit Inspection" onClose={() => setShowEditInspection(false)} show={showEditInspection}>
                     <EditInspection reloadInspectionTable={ reloadInspectionTable } inspectionDetails={inspec} tog={() =>toggleshowEditInspection() }/>
                 </Modal>
-                <Modal title= "Inspection Comments" onClose={() => setShowComments(false)} show={showComments}>
+                <Modal title= "Inspection Comments" onClose={() => {reloadInspectionTable(); setShowComments(false)}} show={showComments}>
                     <Comments reloadInspectionTable={ reloadInspectionTable } inspectionDetails={inspec} tog={() =>toggleshowComments() }/>
                 </Modal>
                 <Grid container component={Box} marginTop="3rem">
@@ -245,7 +204,12 @@ const InspectionTable = () => {
                                     marginBottom="0!important"
                                 >
                                     <TableHead>
-                                        <TableRow style={{background: 'rgb(243 243 243)'}}>
+                                        <TableRow
+                                            style={{
+                                                backgroundColor: '#F3F3F3',
+                                                position: "sticky",
+                                                top: 0
+                                            }}>
                                             <TableCell
                                                 classes={{
                                                     root:

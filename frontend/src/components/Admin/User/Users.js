@@ -12,15 +12,11 @@ import GroupAdd from "@material-ui/icons/GroupAdd";
 import EmojiEvents from "@material-ui/icons/EmojiEvents";
 
 
-
-
-
 const AllUsers = () => {
     const [result, setResult] = useState(null)
 
-
     useEffect(() => {
-        axios.post('http://localhost:8080/api/devices/getNumDevices', {
+        axios.post('/devices/getNumDevices', {
             parkID: "2ea5ba27-9d8e-41a4-9628-485f0ae2fb57"
         }).then((res)=>{
             setResult(res.data)

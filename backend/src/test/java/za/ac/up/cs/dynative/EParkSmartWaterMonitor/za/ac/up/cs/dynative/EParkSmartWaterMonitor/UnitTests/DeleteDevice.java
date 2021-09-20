@@ -66,7 +66,9 @@ public class DeleteDevice {
     @DisplayName("Successfully delete the device")
     public void DeleteDeviceSuccess() {
         //setup
-        Optional<Device> device = Optional.of(new Device());
+        Device d = new Device();
+        d.setDeviceName("testing");
+        Optional<Device> device = Optional.of(d);
         Mockito.when(deviceRepo.findById(Mockito.any())).thenReturn(device);
 
         //test

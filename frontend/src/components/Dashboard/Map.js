@@ -12,7 +12,6 @@ import CardContent from "@material-ui/core/CardContent";
 import componentStyles from "assets/theme/components/card-stats.js";
 import CardHeader from "@material-ui/core/CardHeader";
 import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
-import axios from 'axios'
 import {UserContext} from "../../Context/UserContext";
 
 const useStyles = makeStyles(componentStyles);
@@ -26,46 +25,36 @@ function Map(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [response, setResponse] = useState(null)
-    const [position, setPosition] = useState(null)
 
     const user = useContext(UserContext)
 
     // https://react-leaflet.js.org/docs/example-events/
 
-
-    // useEffect(()=>{
-    //     if(props.device)
-    //     {
-
-    //     }
-    // },[props.device])
-
-    // // functional component declared
-    // function MapEvents(p) {
-    //     const map = useMapEvents({})
-    //     let obj = { lat: p.device.deviceData.latitude, lng: p.device.deviceData.longitude }
-    //     map.flyTo(obj)
-    //     return null
-    // }
+    // functional component declared
+    function MapEvents(p) {
+        const map = useMapEvents({})
+        let obj = { lat: p.device.deviceData.latitude, lng: p.device.deviceData.longitude }
+        map.flyTo(obj)
+        return null
+    }
 
 
-    // useEffect(() => {
-    //     if (props.devices) {
-    //         const m = props.devices.map((device) =>
-    //             <Marker
-    //                 key={device.deviceId}
-    //                 position={[device.deviceData.latitude, device.deviceData.longitude]}
-    //             >
-    //                 <Popup>
-    //                     {device.deviceName}
-    //                 </Popup>
-    //             </Marker>
-    //         );
-    //         setResponse(m);
-    //     } else {
-    //         console.log("no device prop added")
-    //     }
-    // },[props.devices])
+    useEffect(() => {
+        if (props.devices) {
+            const m = props.devices.map((device) =>
+                <Marker
+                    key={device.deviceId}
+                    position={[device.deviceData.latitude, device.deviceData.longitude]}
+                >
+                    <Popup>
+                        {device.deviceName}
+                    </Popup>
+                </Marker>
+            );
+            setResponse(m);
+        } else {
+        }
+    },[props.devices])
 
 
 
@@ -95,7 +84,7 @@ function Map(props) {
               marginBottom: "0!important",
               color: "initial",
             }}
-        ></CardHeader>
+        />
         <CardContent>
 
           <div style={ { height: 350 } }>

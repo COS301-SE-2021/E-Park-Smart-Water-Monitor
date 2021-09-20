@@ -1,34 +1,17 @@
 import React, {useContext, useState} from "react";
 import {Button, Form} from 'react-bootstrap';
-
-import { makeStyles } from "@material-ui/core/styles";
-import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addDevice.css";
 import axios from "axios";
-import AdminContext from "../AdminContext";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 
-const useStyles = makeStyles(componentStyles);
-
 const AddInspectionBody = (props) => {
 
-    const [device, setDevice] = useState("")
-    const [site, setSite] = useState("33de6fd6-5f26-4020-a58f-f41b0de7b839")
     const [description, setDescription] = useState("")
     const [date, setDate] = useState(null)
-
     const user = useContext(UserContext)
     const loader = useContext(LoadingContext)
     const toggleLoading = loader.toggleLoading
-
-    const selectDevice = (event) => {
-      setDevice(event.target.value)
-    }
-
-    const selectSite = (event) => {
-      setSite(event.target.value)
-    }
 
     const selectDescription = (event) => {
       setDescription(event.target.value)
@@ -36,31 +19,29 @@ const AddInspectionBody = (props) => {
 
     const selectDate = (event) => {
       setDate(event.target.value)
-      console.log(event.target.value)
     }
 
     const handleSubmit = (event) => {
       event.preventDefault()
 
-      var body = {
+      let body = {
         deviceId: props.device_id,
         dateDue: date,
         description: description,
       }
 
-      console.log("body: ", body)
 
         toggleLoading()
-      axios.post('http://localhost:8080/api/inspections/addInspection', body, {
+      axios.post('/inspections/addInspection', body, {
           headers: {
               'Authorization': "Bearer " + user.token
           }
+          // eslint-disable-next-line no-unused-vars
       }).then((res)=>{
-            console.log(res)
             props.closeModal()
             toggleLoading()
+          // eslint-disable-next-line no-unused-vars
       }).catch( (res)=> {
-            console.log(JSON.stringify(res))
             toggleLoading()
       });
     }

@@ -1,15 +1,13 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import "../../assets/css/addUser.css";
-import Select from 'react-select';
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import axios from "axios";
-import AdminContext from "../Admin/AdminContext";
 import {UserContext} from "../../Context/UserContext";
-import LoadingContext from "../../Context/LoadingContext";
 import EditProfileContext from "../../Context/EditProfileContext";
-const { Form } = require( "react-bootstrap" );
+import { Form } from "react-bootstrap" ;
+import LoadingContext from "../../Context/LoadingContext";
 const styles = {
     col_left: {
         paddingRight:'3px'
@@ -24,7 +22,6 @@ const styles = {
 }
 
 const EditProfile = (props) => {
-    const context = useContext(AdminContext)
     const user = useContext(UserContext)
 
     const [idNumber, setIDNumber] = useState(user.IDNumber)
@@ -36,18 +33,20 @@ const EditProfile = (props) => {
     let cell = user.cellNumber;
     cell = cell.substr(3)
     const [cellNumber, setCellNumber] = useState(cell)
+    // eslint-disable-next-line no-unused-vars
     const [error, setError] = useState("")
 
 
     const editProfile = useContext(EditProfileContext)
+    // eslint-disable-next-line no-unused-vars
     const toggleEditProfile = editProfile.toggleEditProfile
+    const toggleLoading = useContext(LoadingContext).toggleLoading
 
 
     // submit the edit of the user
     const submit = (e) => {
         e.preventDefault()
-
-        props.togglee()
+        toggleLoading()
 
         let temp_email = email
         if(email === user.email) {
@@ -71,25 +70,22 @@ const EditProfile = (props) => {
             cellNumber: "+27"+cellNumber
         }
 
-        axios.put('http://localhost:8080/api/user/editUser', obj, {
+        axios.put('/user/editUser', obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }
             }
         ).then((res)=>{
-            props.closeModall()
-            props.togglee()
-            //toggleLoading()
 
+            // props.togglee()
 
-            console.log("response:"+JSON.stringify(res))
             if(res.data.success === "false")
             {
                 setError(res.data.status)
-                console.log("error with editing user")
             }else{
-                //toggleLoading()
-                //toggleEditProfile()
+                toggleLoading()
+                props.closeModall()
+
                 if (temp_username===""){
                     temp_username=username
                 }
@@ -102,11 +98,10 @@ const EditProfile = (props) => {
                 user.setSurname(surname)
                 user.setCellNumber("+27"+cellNumber)
                 user.setIDNumber(idNumber)
-                //toggleEditProfile()
             }
 
+            // eslint-disable-next-line no-unused-vars
         }).catch((res)=>{
-            console.log("response:"+JSON.stringify(res))
         });
 
 
@@ -197,8 +192,7 @@ const EditProfile = (props) => {
                     </Col>
                 </Row>
 
-                <Button variant="primary" type="submit"
-                        onClick={toggleEditProfile}>
+                <Button variant="primary" type="submit">
                     Save
                 </Button>
             </Form>

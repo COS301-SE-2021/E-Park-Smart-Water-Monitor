@@ -69,7 +69,7 @@ function BarChart() {
               marginBottom: "0!important",
               color: "initial",
             }}
-        ></CardHeader>
+        />
         <CardContent>
           <Box position="relative" height="350px">
             <Bar

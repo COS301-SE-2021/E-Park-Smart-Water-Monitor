@@ -164,7 +164,6 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
                 http.cors();
 
-
         http.addFilter(new JwtAuthorizationFilter(authenticationManager(),jwtTokenProvider));
     }
 

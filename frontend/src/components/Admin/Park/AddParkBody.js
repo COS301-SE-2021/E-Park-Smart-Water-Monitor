@@ -1,28 +1,19 @@
 import React, {useContext, useState} from "react";
-
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
-import componentStyles from "assets/theme/views/admin/admin";
 import "../../../assets/css/addDevice.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Button, Form} from "react-bootstrap";
-import Select from "react-select";
 import {MapContainer, Marker, Popup, TileLayer, useMapEvents} from "react-leaflet";
-import AdminContext from "../AdminContext";
 import axios from "axios";
 import {UserContext} from "../../../Context/UserContext";
 import LoadingContext from "../../../Context/LoadingContext";
 
-const useStyles = makeStyles(componentStyles);
 const mapStyles = {
     width: `100%`,
     height: `100%`
 };
 
 const AddParkBody = (props) => {
-    const classes = useStyles();
-    const theme = useTheme();
     const [name, setName] = useState("")
     const [latitude, setLatitude] = useState(-25.899494434)
     const [longitude, setLongitude] = useState(28.280765508)
@@ -33,7 +24,7 @@ const AddParkBody = (props) => {
 
     // getting the clicked location on
     function MapEvents() {
-        const map = useMapEvents({
+        useMapEvents({
             click: (e) => {
                 setLatitude(e.latlng.lat)
                 setLongitude(e.latlng.lng)
@@ -51,23 +42,22 @@ const AddParkBody = (props) => {
             longitude: longitude
         }
 
-        console.log("Adding Park: "+JSON.stringify(obj))
-        axios.post('http://localhost:8080/api/park/addPark',
+        axios.post('/park/addPark',
             obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }
             }
-        ).then((res) => {
+        ).then(() => {
 
             toggleLoading();
             props.closeModal()
             props.reloadParkTable();
 
+            // eslint-disable-next-line no-unused-vars
         }).catch((res) => {
 
             toggleLoading()
-            console.log("error adding park: "+JSON.stringify(res))
 
         });
     }
