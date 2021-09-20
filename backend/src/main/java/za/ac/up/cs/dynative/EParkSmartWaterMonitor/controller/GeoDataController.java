@@ -44,11 +44,13 @@ public class GeoDataController
         System.out.println(coordinate.getX());
         System.out.println(coordinate.getY());
 //        System.out.println(y);
-//         return geoDataService.getSignalLoss(28.28863, -25.88380);
-//         return geoDataService.getSignalLoss(28.30442, -25.88985);//eh
-//        return geoDataService.getSignalLoss(28.28365, -25.88381);//bad
-//        return geoDataService.getSignalLoss(28.27875, -25.91299);//good
-//        return geoDataService.getSignalLoss(28.31113, -25.90530);//worst
-        return geoDataService.getSignalLoss(coordinate.getX(),coordinate.getY());
+////         return geoDataService.getSignalLoss(28.28863, -25.88380);
+////         return geoDataService.getSignalLoss(28.30442, -25.88985);//eh
+////        return geoDataService.getSignalLoss(28.28365, -25.88381);//bad
+////        return geoDataService.getSignalLoss(28.27875, -25.91299);//good
+////        return geoDataService.getSignalLoss(28.31113, -25.90530);//worst
+//        return geoDataService.getSignalLoss(coordinate.getX(),coordinate.getY());
+        return geoDataService.getSignalLoss(28.275058697133765,-25.856529659106542);
+//        return null;
     }
 }

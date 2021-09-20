@@ -315,7 +315,7 @@ function GeoMap(props) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUaGV5U2VlTWVSb2xhbiIsInJvbGVzIjoiQURNSU4iLCJleHAiOjE2MzIwNjQzMjd9.VQCkK2XCwaf8-TRftyqmZMrjrZv6qLyXvSSJiJPCDMK3anmFciiiMxbr3J8HtSuX42_a-9H3soUSVvh_KFspFA"
+                    Authorization: "Bearer " + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJUaGV5U2VlTWVSb2xhbiIsInJvbGVzIjoiQURNSU4iLCJleHAiOjE2MzIxNTE4OTN9.BkFn98SPuuzvjsL-iZW-ECi0jkG0tIwrJhfGy974jROqcSTaGj8taBTxSMkEs7vpIW0wMOIfHpopvGnFahDBeQ"
 
                 },
                 body: JSON.stringify({x: transormedCoord[0], y: transormedCoord[1]})
@@ -332,6 +332,7 @@ function GeoMap(props) {
                         {
                             featureProjection: 'EPSG:3857'
                         }
+                        console.log(fetchedFeatures)
                     const parsedFeatures = new GeoJSON().readFeatures((fetchedFeatures),
                         {
                             featureProjection: 'EPSG:3857'
