@@ -62,7 +62,7 @@ const DeviceTable = () => {
                       }
             },{
                 headers: {
-                    Authorization: "Bearer " + user.token
+                    'Authorization': "Bearer " + user.token
                 },
                 data: {
                     id: id,
