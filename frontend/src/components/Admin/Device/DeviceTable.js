@@ -56,11 +56,7 @@ const DeviceTable = () => {
         return ()=>{
 
             toggleLoading()
-            axios.delete('/devices/deleteDevice', {
-                data: {
-                         id: id
-                      }
-            },{
+            axios.delete('/devices/deleteDevice',{
                 headers: {
                     'Authorization': "Bearer " + user.token
                 },
