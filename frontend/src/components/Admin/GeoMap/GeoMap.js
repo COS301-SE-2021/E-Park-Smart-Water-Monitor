@@ -92,7 +92,7 @@ function GeoMap(props) {
 
     const handleChange = (event, nextView) => {
         setView(nextView);
-        console.log("nv: " +nextView)
+        // console.log("nv: " +nextView)
         // alert(nextView.valueOf());
 
         if (nextView==="elevation")
@@ -147,7 +147,7 @@ function GeoMap(props) {
 
     // initialize map on first render - logic formerly put into componentDidMount
     useEffect( () => {
-    console.log(allowClick.current)
+    // console.log(allowClick.current)
         // fetch('/rOutline.json')
         //     .then(response => response.json())
         //     .then( (fetchedFeatures) => {
@@ -299,13 +299,13 @@ function GeoMap(props) {
         // transform coord to EPSG 4326 standard Lat Long
         const transormedCoord = transform( clickedCoord, 'EPSG:3857', 'EPSG:4326')
         setSelectedCoord( transormedCoord )
-        console.log(transormedCoord[0])
-        console.log(transormedCoord[1])
+        // console.log(transormedCoord[0])
+        // console.log(transormedCoord[1])
 
         // click gateway tab to send request, add loader
         if(isOn) {
             toggleLoading()
-            console.log("WE REQUESTING BOI")
+            // console.log("WE REQUESTING BOI")
             const requestOptions = {
                 method: 'POST',
                 headers: {
@@ -317,14 +317,14 @@ function GeoMap(props) {
             };
 
 
-            fetch(new URL("/geodata/getSignalLoss"),
+            fetch(new URL("https://9517-41-216-201-32.ngrok.io/api/geodata/getSignalLoss"),
                 requestOptions)
                 .then(response => response.json())
                 .then((fetchedFeatures) => {
 
                     // parse fetched geojson into OpenLayers features
                     //  use options to convert feature from EPSG:4326 to EPSG:3857
-                        console.log(fetchedFeatures)
+                    //     console.log(fetchedFeatures)
                     const parsedFeatures = new GeoJSON().readFeatures((fetchedFeatures),
                         {
                             featureProjection: 'EPSG:3857'
@@ -333,7 +333,7 @@ function GeoMap(props) {
 
                     // set features into state (which will be passed into OpenLayers
                     //  map component as props)
-                    console.log(parsedFeatures)
+                    // console.log(parsedFeatures)
                     props.gatewayChanger(parsedFeatures)
                     toggleLoading()
                     // setMapOutline(parsedFeatures)
@@ -368,7 +368,7 @@ function GeoMap(props) {
         if (isOnE)
         {
             // props.outlineChanger([])
-            console.log("OFF")
+            // console.log("OFF")
             borderLayer.setVisible(false)
             gatewayLayer.setVisible(false)
             elevationLayer.setVisible(false)
@@ -376,7 +376,7 @@ function GeoMap(props) {
         }
         else
         {
-            console.log("ON")
+            // console.log("ON")
             isOnE=true
             borderLayer.setVisible(true)
             elevationLayer.setVisible(false)
@@ -384,7 +384,7 @@ function GeoMap(props) {
 
         }
         isOn=false
-        console.log("Allow VAL"+ isOn)
+        // console.log("Allow VAL"+ isOn)
 
     }
 
@@ -393,13 +393,13 @@ function GeoMap(props) {
         if (elevationLayer.getVisible())
         {
             // props.outlineChanger([])
-            console.log("OFF")
+            // console.log("OFF")
             elevationLayer.setVisible(false)
 
         }
         else
         {
-            console.log("ON")
+            // console.log("ON")
 
             elevationLayer.setVisible(true)
             gatewayLayer.setVisible(false)
@@ -407,7 +407,7 @@ function GeoMap(props) {
         }
         isOn=false
         isOnE=false
-        console.log("Allow VAL"+ isOn)
+        // console.log("Allow VAL"+ isOn)
 
     }
 
@@ -416,23 +416,23 @@ function GeoMap(props) {
         //as aan
         if (gatewayLayer.getVisible())
         {
-            console.log("OFF")
+            // console.log("OFF")
             gatewayLayer.setVisible(false)
             setGatewayOn(false)
             // props.gatewayOnChanger(false)
             isOn=false
-            console.log("Allow VAL"+ isOn)
+            // console.log("Allow VAL"+ isOn)
             // props.clickFlipper()
 
 
         }
         else
         {
-            console.log("ON")
+            // console.log("ON")
             gatewayLayer.setVisible(true)
             elevationLayer.setVisible(false)
             isOn=true
-            console.log("ALLOW VAL"+isOn)
+            // console.log("ALLOW VAL"+isOn)
 
 
         }
