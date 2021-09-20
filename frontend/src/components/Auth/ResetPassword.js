@@ -49,7 +49,7 @@ const ResetPassword = (props) => {
                 setNext(true)
             }
 
-        }).catch((res) => {
+        }).catch(() => {
 
             toggleLoading()
 
@@ -147,7 +147,7 @@ const ResetPassword = (props) => {
                             props.closeModal()
                         }, 5000)
                     }
-                }).catch((res) => {
+                }).catch(() => {
                     toggleLoading()
                 });
         }

@@ -52,7 +52,6 @@ function Map(props) {
                 </Marker>
             );
             setResponse(m);
-        } else {
         }
     },[props.devices])
 

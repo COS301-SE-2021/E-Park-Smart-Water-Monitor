@@ -121,7 +121,7 @@ const AddDeviceBody = (props) => {
                 props.reloadDeviceTable()
             }
 
-        }).catch((res) => {
+        }).catch(() => {
 
             toggleLoading()
             props.closeModal()
