@@ -317,7 +317,7 @@ function GeoMap(props) {
             };
 
 
-            fetch(new URL("http:localhost:8080/api/geodata/getSignalLoss"),
+            fetch(new URL("/geodata/getSignalLoss"),
                 requestOptions)
                 .then(response => response.json())
                 .then((fetchedFeatures) => {
