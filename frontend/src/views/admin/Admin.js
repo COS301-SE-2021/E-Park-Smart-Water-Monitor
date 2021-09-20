@@ -198,8 +198,6 @@ function Admin() {
                                 outlineChanger={setMapOutline}
                                 gatewayOnChanger={setGatewayOn}
                                 ree={""}
-
-
                             />
                             <DeviceTable/>
                             <InspectionTable/>
