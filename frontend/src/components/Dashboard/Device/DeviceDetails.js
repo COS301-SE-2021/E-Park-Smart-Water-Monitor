@@ -130,9 +130,9 @@ function DeviceDetails(props) {
                 setStatus(res.data.deviceStatus)
                 let last
                 res.data.innerResponses.measurements.forEach((elem)=>{
-                    alert(elem)
+
                 if(elem.type === "WATER_QUALITY")
-                    alert(elem)
+
                     {
                         last = elem.deviceDateTime
                     }
