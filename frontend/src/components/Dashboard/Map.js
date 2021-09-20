@@ -53,7 +53,6 @@ function Map(props) {
             );
             setResponse(m);
         } else {
-            console.log("no device prop added")
         }
     },[props.devices])
 

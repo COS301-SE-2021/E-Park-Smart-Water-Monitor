@@ -61,7 +61,6 @@ function Dashboard() {
         if(site && site[0])
         {
           let tempDevice = JSON.parse(sessionStorage.getItem('device'))
-          console.log("temp" + tempDevice)
           if(tempDevice && tempDevice !== {})
           {
             setDevice(tempDevice)
@@ -72,10 +71,10 @@ function Dashboard() {
         }
 
       }else{
-        console.log('res.data null')
+        // console.log('res.data null')
       }
+      // eslint-disable-next-line no-unused-vars
     }).catch((res)=>{
-      console.log(JSON.stringify(res))
     });
   }, [value]) // second param [] is a list of dependency to watch and run useEffect
 

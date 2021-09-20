@@ -141,9 +141,9 @@ const ParkTable = (props) => {
                 toggleLoading()
                 reloadParkTable()
 
+                // eslint-disable-next-line no-unused-vars
             }).catch((res)=>{
                 toggleLoading()
-                console.log(JSON.stringify(res))
             })
         }
     }

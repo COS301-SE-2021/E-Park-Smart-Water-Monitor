@@ -79,11 +79,9 @@ const EditProfile = (props) => {
 
             // props.togglee()
 
-            console.log("response:"+JSON.stringify(res))
             if(res.data.success === "false")
             {
                 setError(res.data.status)
-                console.log("error with editing user")
             }else{
                 toggleLoading()
                 props.closeModall()
@@ -102,8 +100,8 @@ const EditProfile = (props) => {
                 user.setIDNumber(idNumber)
             }
 
+            // eslint-disable-next-line no-unused-vars
         }).catch((res)=>{
-            console.log("response:"+JSON.stringify(res))
         });
 
 

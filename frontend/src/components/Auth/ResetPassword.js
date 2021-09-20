@@ -52,7 +52,6 @@ const ResetPassword = (props) => {
         }).catch((res) => {
 
             toggleLoading()
-            console.log("error sending username to reset password: "+JSON.stringify(res))
 
         });
     }
@@ -150,7 +149,6 @@ const ResetPassword = (props) => {
                     }
                 }).catch((res) => {
                     toggleLoading()
-                    console.log("error sending username to reset password: " + JSON.stringify(res))
                 });
         }
         }

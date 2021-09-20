@@ -88,7 +88,6 @@ function LineChart(props) {
 
     // GET THE PROJECTION DATA
     useEffect(()=>{
-        console.log(props.device)
         setUnsuccessful(false)
 
         setProjectionsData(() => {
@@ -219,7 +218,6 @@ function LineChart(props) {
 
 
         }).catch(()=>{
-            console.log("Projections failed.")
         });
     },[props.device, numPredictions, readingType])
 

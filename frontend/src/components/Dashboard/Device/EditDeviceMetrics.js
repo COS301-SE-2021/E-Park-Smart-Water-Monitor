@@ -39,8 +39,8 @@ const EditDeviceMetricsBody = (props) => {
             setSeconds(sec)
             setReadable(secondsToDhms(sec))
 
+            // eslint-disable-next-line no-unused-vars
         }).catch((res)=>{
-            console.log("response getById:"+JSON.stringify(res))
         });
 
     },[])

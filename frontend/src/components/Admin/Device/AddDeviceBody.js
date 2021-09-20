@@ -60,7 +60,7 @@ const AddDeviceBody = (props) => {
             setSiteOptions(options)
             setSite(options[0])
         }else{
-            console.log("park watersites cannot be obtained")
+            //console.log("park watersites cannot be obtained")
         }
 
     }
@@ -107,7 +107,6 @@ const AddDeviceBody = (props) => {
             latitude: latitude,
             longitude: longitude
         }
-        console.log("Adding Device: "+JSON.stringify(obj))
         axios.post('/devices/addDevice', obj, {
             headers: {
                 'Authorization': "Bearer " + user.token
@@ -126,7 +125,6 @@ const AddDeviceBody = (props) => {
 
             toggleLoading()
             props.closeModal()
-            console.log("error adding device: "+JSON.stringify(res))
 
         });
     }

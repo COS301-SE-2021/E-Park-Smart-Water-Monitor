@@ -43,18 +43,17 @@ const EditInspection = (props) => {
         inspectionId: props.inspectionDetails.id,
         status: status.value,
       }
-      console.log("body: ", body)
         //toggleLoading()
       axios.post('/inspections/setStatus', body, {
           headers: {
               'Authorization': "Bearer " + user.token
           }
+          // eslint-disable-next-line no-unused-vars
       }).then((res)=>{
-            console.log(res)
             props.reloadInspectionTable()
           //props.tog()
+          // eslint-disable-next-line no-unused-vars
       }).catch( (res)=> {
-            console.log(JSON.stringify(res))
       });
 
         //set description
@@ -62,18 +61,17 @@ const EditInspection = (props) => {
             inspectionId: props.inspectionDetails.id,
             description: description,
         }
-        console.log("body: ", body)
         axios.post('/inspections/setDescription', body, {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
+            // eslint-disable-next-line no-unused-vars
         }).then((res)=>{
-            console.log(res)
             props.reloadInspectionTable()
             props.tog()
             toggleLoading()
+            // eslint-disable-next-line no-unused-vars
         }).catch( (res)=> {
-            console.log(JSON.stringify(res))
         });
     }
 

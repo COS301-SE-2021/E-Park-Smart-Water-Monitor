@@ -118,7 +118,6 @@ const EditUserBody = (props) => {
                 }
             ).then((res)=>{
 
-                console.log("response:"+JSON.stringify(res))
                 toggleLoading()
                 if(res.data.success === false)
                 {
@@ -128,8 +127,8 @@ const EditUserBody = (props) => {
                     props.reloadUserTable()
                 }
 
+                // eslint-disable-next-line no-unused-vars
             }).catch((res)=>{
-                console.log("response:"+JSON.stringify(res))
             });
         }
 

@@ -49,10 +49,10 @@ const Stats = () => {
                 setLoaded(true)
 
             }else{
-                console.log('res.data null')
+                // console.log('res.data null')
             }
+            // eslint-disable-next-line no-unused-vars
         }).catch((res)=>{
-            console.log(JSON.stringify(res))
         });
 
         axios.get('/inspections/getAllInspections', {

@@ -56,9 +56,9 @@ const SiteTable = () => {
             }).then(()=> {
                 toggleLoading()
                 reloadSiteTable()
+                // eslint-disable-next-line no-unused-vars
             }).catch((res)=>{
                 toggleLoading()
-                console.log(JSON.stringify(res))
             })
         }
     }
@@ -118,8 +118,8 @@ const SiteTable = () => {
                 </TableRow>
             )
             setResponse(m);
+            // eslint-disable-next-line no-unused-vars
         }).catch((res)=>{
-            console.log("error occurred getting watersites: "+JSON.stringify(res))
         });
 
     }

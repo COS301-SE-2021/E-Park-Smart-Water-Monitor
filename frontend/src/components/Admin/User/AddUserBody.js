@@ -94,8 +94,8 @@ const AddUserBody = (props) => {
                 props.reloadUserTable();
             }
 
+            // eslint-disable-next-line no-unused-vars
         }).catch((res)=>{
-            console.log("response:"+JSON.stringify(res))
         });
 
     }

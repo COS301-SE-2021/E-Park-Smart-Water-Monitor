@@ -19,7 +19,6 @@ const AddInspectionBody = (props) => {
 
     const selectDate = (event) => {
       setDate(event.target.value)
-      console.log(event.target.value)
     }
 
     const handleSubmit = (event) => {
@@ -31,19 +30,18 @@ const AddInspectionBody = (props) => {
         description: description,
       }
 
-      console.log("body: ", body)
 
         toggleLoading()
       axios.post('/inspections/addInspection', body, {
           headers: {
               'Authorization': "Bearer " + user.token
           }
+          // eslint-disable-next-line no-unused-vars
       }).then((res)=>{
-            console.log(res)
             props.closeModal()
             toggleLoading()
+          // eslint-disable-next-line no-unused-vars
       }).catch( (res)=> {
-            console.log(JSON.stringify(res))
             toggleLoading()
       });
     }

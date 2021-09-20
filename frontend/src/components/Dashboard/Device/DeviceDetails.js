@@ -56,7 +56,7 @@ function DeviceDetails(props) {
             filterMetrics()
 
         }else{
-            console.log("no device prop added")
+            // console.log("no device prop added")
         }
 
     },[props.device])
@@ -122,7 +122,6 @@ function DeviceDetails(props) {
         ).then((res)=>{
             setPinging(false)
             setShowPing(true)
-            console.log(JSON.stringify(res.data))
             if(res.data.success === true){
                 //ping successful
                 setPingMessage(res.data.status)
@@ -143,9 +142,9 @@ function DeviceDetails(props) {
                 setPingMessage(res.data.status)
             }
 
+            // eslint-disable-next-line no-unused-vars
         }).catch((res)=>{
             toggleLoading()
-            console.log("response ping:"+JSON.stringify(res))
         });
     }
 

@@ -65,20 +65,18 @@ const EditParkBody = (props) => {
                 }
             ).then((res)=>{
 
-                console.log("response:"+JSON.stringify(res))
                 if(res.data.success == "false")
                 {
                     toggleLoading()
                     setError(res.data.status)
-                    console.log("error with editing park")
                 }else{
                     toggleLoading()
                     props.closeModal()
                     props.reloadParkTable()
                 }
 
+                // eslint-disable-next-line no-unused-vars
             }).catch((res)=>{
-                console.log("response:"+JSON.stringify(res))
             });
         }
 

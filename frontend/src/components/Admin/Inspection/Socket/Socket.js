@@ -3,14 +3,12 @@ let socket;
 export const initiateSocket = (room) => {
     // the server connection
     socket = io('http://localhost:5000'); // server address
-    console.log(`Connecting to chat...`);
     if (socket && room) {
         socket.emit('join', room)
     }
     
 }
 export const disconnectSocket = () => {
-    console.log('Disconnecting from chat...');
     if(socket) socket.disconnect();
 }
 

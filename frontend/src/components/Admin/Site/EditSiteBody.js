@@ -63,11 +63,10 @@ const EditSiteBody = (props) => {
             props.closeModal()
             props.reloadSiteTable();
 
+            // eslint-disable-next-line no-unused-vars
         }).catch((res) => {
 
             toggleLoading()
-            console.log("error editing site: "+JSON.stringify(res))
-
         });
     }
 

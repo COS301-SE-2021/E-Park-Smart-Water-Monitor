@@ -93,7 +93,7 @@ function DeviceTable(props) {
 
             // props.load_device(props.device)
         }else{
-            console.log("no device prop added")
+            // console.log("no device prop added")
         }
     },[props.devices])
 
