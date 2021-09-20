@@ -9,6 +9,7 @@ import network
 from machine import Pin, SPI
 from sx127x import SX127x
 import cryptolib
+import uasyncio
 
 
 MQTT_CLIENT = None
@@ -282,44 +283,6 @@ def lora_loop():
                     LORA_AVAIL = True
         
     except Exception as e:
-        raise CustomException("ERROR in lora_loop(): " + str(e))
-    
-def mqtt_loop():
-    logger.log("Starting MQTT loop")
-    
-    global DEVICE_CONFIG
-    global LORA_AVAIL
-    global LORA_DATA
-    global LORA_LOCK
-    
-    try:
-        while True:
-            if LORA_AVAIL:
-                with LORA_LOCK:
-                    for m in LORA_DATA[::-1]:
-                        logger.log("Sending MQTT message: " + m)
-                        publish(m, DEVICE_CONFIG["mqtt_topic_main"])
-                    LORA_DATA = []
-                    LORA_AVAIL = False
-                
-            wlan = network.WLAN(network.STA_IF)
-            if (wlan.isconnected() != True):
-                logger.log("WiFi has disconnected!")
-                
-            logger.log("Pinging MQTT...")
-            MQTT_CLIENT.ping()
-            logger.log("Done")
-            
-            logger.log("Checking for MQTT messages...")
-            
-            while MQTT_CLIENT.check_msg() != None:
-                pass
-            
-            logger.log("MQTT sleeping...")
-            time.sleep(15)
-            
-            
-    except Exception as e:
         logger.log(str(e), "SEVERE")
         logger.log("Exception caught in thread. Restarting device...", "SEVERE")
         machine.reset()
@@ -336,7 +299,69 @@ def mqtt_init():
             subscribe(i)
     
     except Exception as e:
-        raise CustomException("ERROR in mqtt_init(): " + str(e))        
+        raise CustomException("ERROR in mqtt_init(): " + str(e))   
+    
+def mqtt_loop():
+    logger.log("Starting MQTT loop")
+    
+    try:
+        loop = uasyncio.get_event_loop()
+        loop.create_task(sub_loop())
+        loop.create_task(pub_loop())
+        loop.set_exception_handler(handle_exception)
+        loop.run_forever()           
+            
+    except Exception as e:
+        raise CustomException("ERROR in mqtt_loop(): " + str(e))
+
+    
+#############################################
+
+ 
+async def pub_loop():
+    logger.log("Starting publish loop...")
+    global DEVICE_CONFIG
+    global LORA_AVAIL
+    global LORA_DATA
+    global LORA_LOCK
+    
+    try:
+        while True:
+            if LORA_AVAIL:
+                with LORA_LOCK:
+                    for m in LORA_DATA[::-1]:
+                        logger.log("Sending MQTT message: " + m)
+                        publish(m, DEVICE_CONFIG["mqtt_topic_main"])
+                    LORA_DATA = []
+                    LORA_AVAIL = False
+            await uasyncio.sleep(15)
+            
+    except Exception as e:
+        raise CustomException("ERROR in pub_loop(): " + str(e))
+
+async def sub_loop():
+    logger.log("Starting subscribe loop...")
+    global MQTT_CLIENT
+    
+    try:
+        while True:
+            wlan = network.WLAN(network.STA_IF)
+            if (wlan.isconnected() != True):
+                logger.log("WiFi has disconnected!")
+            
+            logger.log("Checking for MQTT messages...")
+            
+            while MQTT_CLIENT.check_msg() != None:
+                pass
+            
+            logger.log("MQTT sleeping...")
+            await uasyncio.sleep(15)
+            
+    except Exception as e:
+        raise CustomException("ERROR in sub_loop(): " + str(e))
+
+
+#############################################
  
 try:
     read_config()
@@ -355,8 +380,8 @@ try:
     mqtt_init()
     lora_init()
     
-    _thread.start_new_thread(mqtt_loop, ())
-    lora_loop()
+    _thread.start_new_thread(lora_loop, ())
+    mqtt_loop()
 
 except Exception as e:
     logger.log(str(e), "SEVERE")
