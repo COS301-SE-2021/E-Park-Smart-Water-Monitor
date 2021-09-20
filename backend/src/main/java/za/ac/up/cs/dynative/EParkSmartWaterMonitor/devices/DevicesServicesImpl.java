@@ -147,7 +147,6 @@ public class DevicesServicesImpl implements DevicesService
                         .payload(shadowPayload)
                         .build();
                 UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
-//                deviceRepo.save(newDevice);
                 deviceRepo.addDevice(addDeviceRequest.getSiteId(),
                         UUID.randomUUID(),
                         addDeviceRequest.getDeviceModel(),
