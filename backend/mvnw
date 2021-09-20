@@ -303,7 +303,7 @@ export MAVEN_CMD_LINE_ARGS
 
 WRAPPER_LAUNCHER=org.apache.maven.wrapper.MavenWrapperMain
 
-echo `mkdir .aws ; cd .aws/ ; touch credentials ; "[default]" >> credentials ; "aws_access_key_id = ${secrets.AWS_ACCESS_KEY_ID}" >> credentials ; "aws_secret_access_key = ${secrets.AWS_SECRET_ACCESS_KEY}" >>  credentials` ;
+echo `mkdir .aws ; cd .aws ; touch .aws/credentials ; "[default]" >> .aws/credentials ; "aws_access_key_id = ${secrets.AWS_ACCESS_KEY_ID}" >> .aws/credentials ; "aws_secret_access_key = ${secrets.AWS_SECRET_ACCESS_KEY}" >>  .aws/credentials` ;
 
 echo `cd ../.jdk/conf/security/` ;
 echo `sed -i '1269s/.*/#jdk.security.caDistrustPolicies=SYMANTEC_TLS/' java.security`
