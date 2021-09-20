@@ -12,6 +12,7 @@
     "url": "git+https://github.com/creativetimofficial/argon-dashboard-material-ui.git"
   },
   "scripts": {
+    "runsocket": "cd ./socket-server && node socket-server.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
