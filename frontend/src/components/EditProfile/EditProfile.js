@@ -86,7 +86,6 @@ const EditProfile = (props) => {
                 console.log("error with editing user")
             }else{
                 toggleLoading()
-                alert("here")
                 props.closeModall()
 
                 if (temp_username===""){
