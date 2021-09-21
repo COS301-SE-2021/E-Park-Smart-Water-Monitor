@@ -53,7 +53,7 @@ const UserTable = () => {
         
         return ()=>{
             toggleLoading()
-            axios.delete('http://localhost:8080/api/user/deleteUser', {
+            axios.delete('/user/deleteUser', {
                 headers: {
                     'Authorization': "Bearer " + userContext.token
                 },
@@ -71,7 +71,7 @@ const UserTable = () => {
     // Get parks and sites
     useEffect(() => {
         // toggleGeneralLoading()
-        axios.get('http://localhost:8080/api/park/getAllParksAndSites', {
+        axios.get('/park/getAllParksAndSites', {
             headers: {
                 'Authorization': "Bearer " + userContext.token
             }
@@ -87,7 +87,7 @@ const UserTable = () => {
 
     useEffect(() => {
         // get all users
-        axios.get('http://localhost:8080/api/user/getAllUsers',{
+        axios.get('/user/getAllUsers',{
             headers: {
                 'Authorization': "Bearer " + userContext.token
             }

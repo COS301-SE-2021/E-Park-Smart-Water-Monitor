@@ -10,7 +10,7 @@ on:
       - master
       - development
 jobs:
-  build:
+  Tests_and_Sonar_Quality:
     name: Build
     runs-on: ubuntu-latest
     env:
@@ -68,3 +68,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: cd /home/runner/work/E-Park-Smart-Water-Monitor/E-Park-Smart-Water-Monitor/backend; mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=COS301-SE-2021_E-Park-Smart-Water-Monitor
+ 

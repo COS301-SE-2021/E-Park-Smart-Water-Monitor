@@ -42,8 +42,7 @@ const AddParkBody = (props) => {
             longitude: longitude
         }
 
-        console.log("Adding Park: "+JSON.stringify(obj))
-        axios.post('http://localhost:8080/api/park/addPark',
+        axios.post('/park/addPark',
             obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
@@ -55,10 +54,10 @@ const AddParkBody = (props) => {
             props.closeModal()
             props.reloadParkTable();
 
+            // eslint-disable-next-line no-unused-vars
         }).catch((res) => {
 
             toggleLoading()
-            console.log("error adding park: "+JSON.stringify(res))
 
         });
     }

@@ -58,7 +58,7 @@ const ParkTable = (props) => {
         let obj = null;
 
         // if (parksAndSites && parksAndSites.parks) {
-        axios.get('http://localhost:8080/api/park/getAllParks',{
+        axios.get('/park/getAllParks',{
             headers: {
                 'Authorization': "Bearer " + user.token
             }
@@ -129,7 +129,7 @@ const ParkTable = (props) => {
 
         return ()=>{
             toggleLoading()
-            axios.delete('http://localhost:8080/api/park/deletePark', {
+            axios.delete('/park/deletePark', {
                 data: {
                     parkId: id
                 }
@@ -141,9 +141,9 @@ const ParkTable = (props) => {
                 toggleLoading()
                 reloadParkTable()
 
+                // eslint-disable-next-line no-unused-vars
             }).catch((res)=>{
                 toggleLoading()
-                console.log(JSON.stringify(res))
             })
         }
     }

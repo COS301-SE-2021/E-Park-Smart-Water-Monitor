@@ -20,7 +20,7 @@ const EditDeviceMetricsBody = (props) => {
     useEffect(() => {
 
         // get the device details by id
-        axios.post('http://localhost:8080/api/devices/getById', {
+        axios.post('/devices/getById', {
                 deviceID: props.deviceDetails.deviceId
             },
             {
@@ -39,8 +39,8 @@ const EditDeviceMetricsBody = (props) => {
             setSeconds(sec)
             setReadable(secondsToDhms(sec))
 
+            // eslint-disable-next-line no-unused-vars
         }).catch((res)=>{
-            console.log("response getById:"+JSON.stringify(res))
         });
 
     },[])
@@ -56,7 +56,12 @@ const EditDeviceMetricsBody = (props) => {
             value: Number((seconds/60/60).toFixed(6))
         }
 
-        axios.put('http://localhost:8080/api/devices/setMetricFrequency', obj
+        axios.put('/devices/setMetricFrequency', obj ,
+            {
+                headers: {
+                    'Authorization': "Bearer " + user.token
+                }
+            }
         ).then(()=>{
 
             toggleLoading()
@@ -98,7 +103,14 @@ const EditDeviceMetricsBody = (props) => {
         let hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
         let mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
         let sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
-        return dDisplay + hDisplay + mDisplay + sDisplay;
+        let result = dDisplay + hDisplay + mDisplay + sDisplay;
+
+        if(sDisplay === "" || (mDisplay === "" && sDisplay === "") || (hDisplay === "" && mDisplay === "" && sDisplay === ""))
+        {
+            result = result.slice(0, -2)
+        }
+
+        return result;
     }
 
     function getSliderValue(val){

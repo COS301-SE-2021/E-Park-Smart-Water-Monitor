@@ -43,18 +43,17 @@ const EditInspection = (props) => {
         inspectionId: props.inspectionDetails.id,
         status: status.value,
       }
-      console.log("body: ", body)
         //toggleLoading()
-      axios.post('http://localhost:8080/api/inspections/setStatus', body, {
+      axios.post('/inspections/setStatus', body, {
           headers: {
               'Authorization': "Bearer " + user.token
           }
+          // eslint-disable-next-line no-unused-vars
       }).then((res)=>{
-            console.log(res)
             props.reloadInspectionTable()
           //props.tog()
+          // eslint-disable-next-line no-unused-vars
       }).catch( (res)=> {
-            console.log(JSON.stringify(res))
       });
 
         //set description
@@ -62,18 +61,17 @@ const EditInspection = (props) => {
             inspectionId: props.inspectionDetails.id,
             description: description,
         }
-        console.log("body: ", body)
-        axios.post('http://localhost:8080/api/inspections/setDescription', body, {
+        axios.post('/inspections/setDescription', body, {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
+            // eslint-disable-next-line no-unused-vars
         }).then((res)=>{
-            console.log(res)
             props.reloadInspectionTable()
             props.tog()
             toggleLoading()
+            // eslint-disable-next-line no-unused-vars
         }).catch( (res)=> {
-            console.log(JSON.stringify(res))
         });
     }
 
@@ -81,12 +79,13 @@ const EditInspection = (props) => {
         <>
             <Form onSubmit={handleSubmit}>
 
+                <Form.Label>Status</Form.Label>
+                <Select required={"required"} className="mb-3" name="park" options={ statusOptions } value={status} onChange={e => setStatus(e)}/>
                 <Form.Group controlId="formBasicPassword">
                     <Form.Label>Description</Form.Label>
                     <Form.Control type="text" Required={"required"} value={description} onChange={e => setDescription(e.target.value)}/>
                 </Form.Group>
-                <Form.Label>Status</Form.Label>
-                <Select required={"required"} className="mb-3" name="park" options={ statusOptions } value={status} onChange={e => setStatus(e)}/>
+
                 <Button background-color="primary" variant="primary" type="submit" >
                     Submit
                 </Button>

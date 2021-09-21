@@ -51,7 +51,7 @@ const EditSiteBody = (props) => {
             longitude: longitude,
         }
 
-        axios.put('http://localhost:8080/api/sites/editWaterSite',
+        axios.put('/sites/editWaterSite',
             obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
@@ -63,11 +63,10 @@ const EditSiteBody = (props) => {
             props.closeModal()
             props.reloadSiteTable();
 
+            // eslint-disable-next-line no-unused-vars
         }).catch((res) => {
 
             toggleLoading()
-            console.log("error editing site: "+JSON.stringify(res))
-
         });
     }
 

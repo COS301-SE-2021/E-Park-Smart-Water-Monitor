@@ -88,7 +88,6 @@ function LineChart(props) {
 
     // GET THE PROJECTION DATA
     useEffect(()=>{
-        console.log(props.device)
         setUnsuccessful(false)
 
         setProjectionsData(() => {
@@ -135,7 +134,7 @@ function LineChart(props) {
             length: num
         }
 
-        axios.post('http://localhost:8080/api/analytics/deviceProjection', obj, {
+        axios.post('/analytics/deviceProjection', obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }
@@ -219,7 +218,6 @@ function LineChart(props) {
 
 
         }).catch(()=>{
-            console.log("Projections failed.")
         });
     },[props.device, numPredictions, readingType])
 

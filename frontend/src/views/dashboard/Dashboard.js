@@ -42,11 +42,13 @@ function Dashboard() {
   }
 
   const reloadDeviceTable = () => {
+
     setValue(value => value+1)
+
   }
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/devices/getAllDevices',{
+    axios.get('/devices/getAllDevices',{
       headers: {
         'Authorization': "Bearer " + user.token
       }
@@ -58,21 +60,28 @@ function Dashboard() {
 
         if(site && site[0])
         {
-          setDevice(site[0])
+          let tempDevice = JSON.parse(sessionStorage.getItem('device'))
+          if(tempDevice && tempDevice !== {})
+          {
+            setDevice(tempDevice)
+          }else{
+            setDevice(site[0])
+          }
+
         }
 
       }else{
-        console.log('res.data null')
+        // console.log('res.data null')
       }
+      // eslint-disable-next-line no-unused-vars
     }).catch((res)=>{
-      console.log(JSON.stringify(res))
     });
   }, [value]) // second param [] is a list of dependency to watch and run useEffect
 
 
   // Get all inspections for the park
   useEffect(() => {
-    axios.get('http://localhost:8080/api/inspections/getAllInspections', {
+    axios.get('/inspections/getAllInspections', {
       headers: {
         'Authorization': "Bearer " + user.token
       }
@@ -93,8 +102,6 @@ function Dashboard() {
         }
       }
     })
-
-
 
   }, [])
 
@@ -140,7 +147,7 @@ function Dashboard() {
               classes={{ root: classes.gridItemRoot }}
           >
 
-            { devices && <DeviceTable load_device={load_device} devices={ devices }/> }
+            { device && devices && <DeviceTable device={ device } reloadDeviceTable={ reloadDeviceTable } load_device={load_device} devices={ devices }/> }
 
           </Grid>
 
@@ -152,7 +159,7 @@ function Dashboard() {
               marginBottom="3rem!important"
               classes={{ root: classes.gridItemRoot }}
           >
-            { device && <DeviceDetails reloadDeviceTable={reloadDeviceTable} device={ device }/> }
+            { device && <DeviceDetails reloadDeviceTable={ reloadDeviceTable } device={ device }/> }
           </Grid>
         </Grid>
 

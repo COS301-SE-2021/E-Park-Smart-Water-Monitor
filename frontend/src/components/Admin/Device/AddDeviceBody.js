@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {useContext, useEffect, useState} from "react";
 import {Button, Form} from 'react-bootstrap';
 import "../../../assets/css/addDevice.css";
@@ -60,7 +61,7 @@ const AddDeviceBody = (props) => {
             setSiteOptions(options)
             setSite(options[0])
         }else{
-            console.log("park watersites cannot be obtained")
+            //console.log("park watersites cannot be obtained")
         }
 
     }
@@ -97,6 +98,7 @@ const AddDeviceBody = (props) => {
         e.preventDefault()
         setError(null)
 
+
         let obj = {
             parkName: park.label,
             siteId: site.value,
@@ -106,8 +108,7 @@ const AddDeviceBody = (props) => {
             latitude: latitude,
             longitude: longitude
         }
-        console.log("Adding Device: "+JSON.stringify(obj))
-        axios.post('http://localhost:8080/api/devices/addDevice', obj, {
+        axios.post('/devices/addDevice', obj, {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
@@ -121,10 +122,10 @@ const AddDeviceBody = (props) => {
                 props.reloadDeviceTable()
             }
 
-        }).catch((res) => {
+        }).catch(() => {
 
             toggleLoading()
-            console.log("error adding device: "+JSON.stringify(res))
+            props.closeModal()
 
         });
     }

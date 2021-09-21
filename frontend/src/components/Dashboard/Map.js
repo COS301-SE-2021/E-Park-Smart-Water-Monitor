@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {useState, useEffect, useContext} from "react";
 // import PropTypes from "prop-types";
 // @material-ui/core components
@@ -52,8 +53,6 @@ function Map(props) {
                 </Marker>
             );
             setResponse(m);
-        } else {
-            console.log("no device prop added")
         }
     },[props.devices])
 
@@ -96,7 +95,7 @@ function Map(props) {
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                   />
                 { response }
-                <MapEvents device={props.device}/>
+                {/* <MapEvents device={props.device}/> */}
             </MapContainer>
           </div>
 

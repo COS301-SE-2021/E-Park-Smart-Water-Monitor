@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, {useContext, useEffect, useState} from "react";
 import {Form} from 'react-bootstrap';
 import Button from "@material-ui/core/Button";
@@ -40,7 +41,7 @@ const ResetPassword = (props) => {
             username : username
         }
 
-        axios.post('http://localhost:8080/api/user/resetPassword', obj).then((res) => {
+        axios.post('/user/resetPassword', obj).then((res) => {
 
             toggleLoading();
             if(res.data.code === "User not found"){
@@ -49,10 +50,9 @@ const ResetPassword = (props) => {
                 setNext(true)
             }
 
-        }).catch((res) => {
+        }).catch(() => {
 
             toggleLoading()
-            console.log("error sending username to reset password: "+JSON.stringify(res))
 
         });
     }
@@ -148,9 +148,8 @@ const ResetPassword = (props) => {
                             props.closeModal()
                         }, 5000)
                     }
-                }).catch((res) => {
+                }).catch(() => {
                     toggleLoading()
-                    console.log("error sending username to reset password: " + JSON.stringify(res))
                 });
         }
         }

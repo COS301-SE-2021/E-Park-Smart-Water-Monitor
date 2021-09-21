@@ -2,15 +2,13 @@ import io from 'socket.io-client';
 let socket;
 export const initiateSocket = (room) => {
     // the server connection
-    socket = io('http://localhost:5000'); // server address
-    console.log(`Connecting to chat...`);
+    socket = io('http://3.142.210.254:5555'); // server address
     if (socket && room) {
         socket.emit('join', room)
     }
     
 }
 export const disconnectSocket = () => {
-    console.log('Disconnecting from chat...');
     if(socket) socket.disconnect();
 }
 

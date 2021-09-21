@@ -52,6 +52,7 @@ public class User {
         this.role = role;
         this.cellNumber = cellNumber;
         this.parkName = park.getParkName();
+        this.resetPasswordExpiration= LocalDateTime.now();
     }
 
     public User(int idNumber, String email, String name, String surname, String password, String username, String role) {
@@ -64,6 +65,7 @@ public class User {
         this.password = password;
         this.username = username;
         this.role = role;
+        this.resetPasswordExpiration=LocalDateTime.now();
     }
 
     public User() {

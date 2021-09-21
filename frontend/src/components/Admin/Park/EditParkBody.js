@@ -58,27 +58,25 @@ const EditParkBody = (props) => {
                 longitude: longitude
             }
 
-            axios.post('http://localhost:8080/api/park/editPark', obj, {
+            axios.post('/park/editPark', obj, {
                     headers: {
                         'Authorization': "Bearer " + user.token
                     }
                 }
             ).then((res)=>{
 
-                console.log("response:"+JSON.stringify(res))
                 if(res.data.success == "false")
                 {
                     toggleLoading()
                     setError(res.data.status)
-                    console.log("error with editing park")
                 }else{
                     toggleLoading()
                     props.closeModal()
                     props.reloadParkTable()
                 }
 
+                // eslint-disable-next-line no-unused-vars
             }).catch((res)=>{
-                console.log("response:"+JSON.stringify(res))
             });
         }
 

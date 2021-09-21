@@ -147,7 +147,6 @@ public class DevicesServicesImpl implements DevicesService
                         .payload(shadowPayload)
                         .build();
                 UpdateThingShadowResponse updateThingShadowResponse = iotDataPlaneClient.updateThingShadow(updateThingShadowRequest);
-//                deviceRepo.save(newDevice);
                 deviceRepo.addDevice(addDeviceRequest.getSiteId(),
                         UUID.randomUUID(),
                         addDeviceRequest.getDeviceModel(),
@@ -520,6 +519,14 @@ public class DevicesServicesImpl implements DevicesService
                         {
                             findDeviceResponse.getDevice().getDeviceData().setLastSeen(latestDeviceTimeDate);
                             findDeviceResponse.getDevice().getDeviceData().setDeviceStatus("FINE");
+
+                            findDeviceResponse.getDevice().wipeData();
+                            measurementRepo.removeOldMeasurementSet(findDeviceResponse.getDevice().getDeviceName());
+                            for (Measurement targetedMeasurement: deviceDataResponse.getInnerResponses().get(0).getMeasurements())
+                            {
+                                findDeviceResponse.getDevice().addDeviceDataProduced(targetedMeasurement);
+                            }
+
                             deviceRepo.save(findDeviceResponse.getDevice());
                             return new PingDeviceResponse("Device: " + deviceName + " says hello.", true, deviceName, findDeviceResponse.getDevice().getDeviceData().getDeviceStatus(), deviceDataResponse.getInnerResponses().get(0));
                         }

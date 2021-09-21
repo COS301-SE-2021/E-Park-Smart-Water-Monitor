@@ -59,24 +59,22 @@ const AddSiteBody = (props) => {
             radius: radius
         }
 
-        console.log("Adding watersite: "+JSON.stringify(obj))
-        axios.post('http://localhost:8080/api/sites/addSite',
+        axios.post('/sites/addSite',
             obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }
             }
+            // eslint-disable-next-line no-unused-vars
         ).then((res) => {
-
-            console.log("added site: "+JSON.stringify(res))
             toggleLoading();
             props.closeModal()
             props.reloadSiteTable();
 
+            // eslint-disable-next-line no-unused-vars
         }).catch((res) => {
 
             toggleLoading()
-            console.log("error adding site: "+JSON.stringify(res))
 
         });
     }

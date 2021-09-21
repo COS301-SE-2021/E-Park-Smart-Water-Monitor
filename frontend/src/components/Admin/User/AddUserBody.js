@@ -79,7 +79,7 @@ const AddUserBody = (props) => {
             cellNumber: `+27${cellNumber}`
         }
 
-        axios.post('http://localhost:8080/api/user/createUser', obj, {
+        axios.post('/user/createUser', obj, {
                 headers: {
                     'Authorization': "Bearer " + user.token
                 }
@@ -94,8 +94,8 @@ const AddUserBody = (props) => {
                 props.reloadUserTable();
             }
 
+            // eslint-disable-next-line no-unused-vars
         }).catch((res)=>{
-            console.log("response:"+JSON.stringify(res))
         });
 
     }

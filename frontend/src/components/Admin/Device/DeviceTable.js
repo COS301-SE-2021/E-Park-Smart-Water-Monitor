@@ -56,13 +56,12 @@ const DeviceTable = () => {
         return ()=>{
 
             toggleLoading()
-            axios.delete('http://localhost:8080/api/devices/deleteDevice', {
-                data: {
-                         id: id
-                      }
-            },{
+            axios.delete('/devices/deleteDevice',{
                 headers: {
                     'Authorization': "Bearer " + user.token
+                },
+                data: {
+                    id: id,
                 }
             }).then(()=> {
                 toggleLoading()
@@ -74,7 +73,7 @@ const DeviceTable = () => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:8080/api/park/getAllParksAndSites', {
+        axios.get('/park/getAllParksAndSites', {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
@@ -88,7 +87,7 @@ const DeviceTable = () => {
 
     useEffect(() => {
         // get all users
-        axios.get('http://localhost:8080/api/devices/getAllDevices', {
+        axios.get('/devices/getAllDevices', {
             headers: {
                 'Authorization': "Bearer " + user.token
             }
