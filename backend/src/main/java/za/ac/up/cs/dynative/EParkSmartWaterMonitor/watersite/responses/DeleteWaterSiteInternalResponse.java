@@ -1,5 +1,8 @@
 package za.ac.up.cs.dynative.EParkSmartWaterMonitor.watersite.responses;
 
+/**
+ * This class is used for internal testing purposes only.
+ */
 public class DeleteWaterSiteInternalResponse {
     private Boolean success;
 
