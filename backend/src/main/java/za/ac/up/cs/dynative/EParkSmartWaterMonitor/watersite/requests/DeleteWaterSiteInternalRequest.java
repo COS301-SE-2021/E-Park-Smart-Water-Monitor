@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
 
+/**
+ * This class is used for internal testing purposes only.
+ */
 public class DeleteWaterSiteInternalRequest {
     private UUID id;
 

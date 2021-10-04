@@ -15,7 +15,7 @@ public interface WaterSiteRepo extends Neo4jRepository<WaterSite, UUID>
     WaterSite findByWaterSiteName(String SiteName);
 
     /**
-     * custom queries
+     * custom queries to be used instead of the object mapper
      */
     @Query("MATCH (w:WaterSite {id: $id})-[*0..]->(graphFromWatersiteOutward) detach delete graphFromWatersiteOutward")
     void deletEntireWaterSite(@Param("id") UUID id);

@@ -4,8 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
 
+/**
+ * This request class will contain the details needed to add a new water site.
+ */
 public class AddSiteRequest {
 
+    /**
+     * attributes:
+     */
     private UUID parkId;
     private String siteName;
     private double latitude;
@@ -15,6 +21,17 @@ public class AddSiteRequest {
     private double width;
     private double radius;
 
+    /**
+     * The custom constructor, initializing the object.
+     * @param parkId The id of the park the site will be added to.
+     * @param siteName The name of the newly created water site.
+     * @param latitude The coordinate of the new water site.
+     * @param longitude The coordinate of the new water site.
+     * @param shape Shape the water site will be (rectangular or circle)
+     * @param length Measurements if the shape (applicable to the square).
+     * @param width  Measurements if the shape (applicable to the square).
+     * @param radius  Measurements if the shape (only applicable to the circle)
+     */
     public AddSiteRequest(@JsonProperty("parkId") UUID parkId,
                           @JsonProperty("siteName") String siteName,
                           @JsonProperty("latitude") double latitude,
@@ -33,9 +50,15 @@ public class AddSiteRequest {
         this.radius = radius;
     }
 
+    /**
+     * Default constructor
+     */
     public AddSiteRequest() {
     }
 
+    /**
+     * getters and setters:
+     */
     public UUID getParkId() {
         return parkId;
     }

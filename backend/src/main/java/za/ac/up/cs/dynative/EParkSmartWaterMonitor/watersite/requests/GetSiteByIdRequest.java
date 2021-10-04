@@ -4,15 +4,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
 
-public class GetSiteByIdRequest
-{
+/**
+ * Get water site by id request representation
+ */
+public class GetSiteByIdRequest {
+    /**
+     * Attribute:
+     */
     UUID siteId;
-    public GetSiteByIdRequest(@JsonProperty("siteId") UUID siteId)
-    {
+
+    /**
+     * The custom constructor:
+     * @param siteId The id to be searched.
+     */
+    public GetSiteByIdRequest(@JsonProperty("siteId") UUID siteId) {
         this.siteId=siteId;
 
     }
 
+    /**
+     * getter for the attribute:
+     */
     public UUID getSiteId() {
         return siteId;
     }

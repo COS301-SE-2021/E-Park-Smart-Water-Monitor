@@ -4,12 +4,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.UUID;
 
+/**
+ * This class will represent the edit request objects.
+ */
 public class EditWaterSiteRequest {
+    /**
+     * Attributes:
+     */
     private UUID id;
     private String siteName;
     private double latitude;
     private double longitude;
 
+    /**
+     * Custom Constructor to initialize the attributes:
+     * @param id The id of the watersite to be updated.
+     * @param siteName The new name of the site.
+     * @param latitude The new coordinates of the site.
+     * @param longitude The new coordinates of the site.
+     */
     public EditWaterSiteRequest(@JsonProperty("id") UUID id,
                                 @JsonProperty("siteName") String siteName,
                                 @JsonProperty("latitude") double latitude,
@@ -21,6 +34,9 @@ public class EditWaterSiteRequest {
         this.longitude = longitude;
     }
 
+    /**
+     * Getters and setters:
+     */
     public UUID getId() {
         return id;
     }
