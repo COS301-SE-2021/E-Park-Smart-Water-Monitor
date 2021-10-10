@@ -1,0 +1,6 @@
+{
+	"appId": "com.epark.www",
+	"appName": "e-Park Water Monitor",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}
