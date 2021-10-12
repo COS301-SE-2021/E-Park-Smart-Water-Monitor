@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
             comments: message,
         }
         console.log("sending body: ", body)
-        axios.post('http://localhost:8080/api/inspections/setComments', body, {
+        axios.post('https://c7df-105-229-81-248.ngrok.io/api/inspections/setComments', body, {
           headers: {
               'Authorization': "Bearer " + token
           }
