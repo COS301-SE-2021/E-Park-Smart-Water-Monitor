@@ -2,7 +2,11 @@ let app = require('express')();
 const cors = require('cors');
 app.use(cors());
 let server = require('http').Server(app);
-const io = require('socket.io')(server)
+const io = require('socket.io')(server, {
+    cors: {
+        origin: '',
+    }
+});
 // const readline = require('readline'); // terminal commands
 
 // call "set PORT=7777" in terminal
