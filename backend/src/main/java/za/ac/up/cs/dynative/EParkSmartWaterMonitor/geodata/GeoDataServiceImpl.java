@@ -92,7 +92,7 @@ public class GeoDataServiceImpl implements GeoDataService
 //        System.out.println(approximatedPath.toString());
 
 //      t
-        System.out.println("LENGTH: "+approximatedPath.size());
+//        System.out.println("LENGTH: "+approximatedPath.size());
         return approximatedPath;
 
     }
@@ -449,6 +449,7 @@ public class GeoDataServiceImpl implements GeoDataService
         System.out.println(minLoss);
         System.out.println(maxLoss);
         GeoJSON responseGeoJSON = new GeoJSON(features);
+        System.out.println();
         return responseGeoJSON;
 //        return new GetLossDataResponse("Data successfully retrieved",true,minLoss,maxLoss,responseGeoJSON);
 
