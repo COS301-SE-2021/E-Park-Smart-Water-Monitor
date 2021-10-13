@@ -136,7 +136,7 @@ const ResetPassword = (props) => {
                     newPassword: scramble1,
                     newPasswordConfirmed: scramble2
                 }
-                axios.post('http://localhost:8080/api/user/resetPasswordFinalize', obj).then((res) => {
+                axios.post('/user/resetPasswordFinalize', obj).then((res) => {
                     toggleLoading();
 
                     if (res.data.success === false) {
