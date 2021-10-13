@@ -81,7 +81,7 @@ const Comments = (props) => {
 
     return (
         <div>
-            <div style={{ position:"sticky", top:"0", backgroundColor:"#9F9F9F", padding:"10px", borderRadius:"10px", color:"white"}} className="mt-3 mb-3" >Conversation on &quot;{ props.inspectionDetails.description}&quot;.</div>
+            <div style={{ top:"0", backgroundColor:"#9F9F9F", padding:"10px", borderRadius:"10px", color:"white"}} className="mt-3 mb-3" >Conversation on &quot;{ props.inspectionDetails.description}&quot;.</div>
             { comments && <PrevComments comments={ comments } inspection={props.inspectionDetails} user={user.username}/> }
             <br/>
 

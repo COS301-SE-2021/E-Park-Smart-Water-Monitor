@@ -31,15 +31,15 @@ const Modal = props => {
             timeout={{ enter: 0, exit: 300 }}
         >
              <div className="modal" >
-                <div className="modal-content" onClick={e => e.stopPropagation()}>
-                    { props.title && <div className="modal-header">
+                <div className="modal-content" onClick={e => e.stopPropagation()} style={{ overflow: "hidden"}}>
+                    { props.title && <div className="modal-header" >
 
                         <h3 className="modal-title">{props.title}</h3>
                         <button type="button" className="close" data-dismiss="modal" onClick={()=>{props.onClose()}}>&times;</button>
 
                     </div> }
 
-                    <div className="modal-body">{props.children}</div>
+                    <div className="modal-body" style={{overflowY: "scroll"}}>{props.children}</div>
                 </div>
             </div>
         </CSSTransition>,
