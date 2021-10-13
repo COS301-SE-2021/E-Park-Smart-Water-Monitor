@@ -1,8 +1,8 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.epark.www',
-  appName: 'e-Park Water Monitor',
+  appId: 'com.example.app',
+  appName: 'epark-water-monitoring',
   webDir: 'build',
   bundledWebRuntime: false
 };
