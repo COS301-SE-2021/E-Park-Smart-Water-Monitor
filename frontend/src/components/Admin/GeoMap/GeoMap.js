@@ -317,7 +317,7 @@ function GeoMap(props) {
             };
 
 
-            fetch(new URL("https://c7df-105-229-81-248.ngrok.io/api/geodata/getSignalLoss"),
+            fetch(new URL("https://c086-105-229-81-248.ngrok.io/api/geodata/getSignalLoss"),
                 requestOptions)
                 .then(response => response.json())
                 .then((fetchedFeatures) => {
