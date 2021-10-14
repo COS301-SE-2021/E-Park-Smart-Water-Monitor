@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 let socket;
 export const initiateSocket = (room) => {
     // the server connection
-    socket = io('https://5aed-172-107-93-164.ngrok.io/'); // server address
+    socket = io('https://ac93-105-229-81-248.ngrok.io/'); // server address
     if (socket && room) {
         socket.emit('join', room)
     }
